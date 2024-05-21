@@ -5,7 +5,7 @@ import {
 	HttpException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
-import { proxy } from "packages/bib-api/src/proxy";
+import { proxy } from "packages/bib-api/src/proxy/proxy.middleware";
 
 @Catch(HttpException)
 export class NotFoundFilter implements ExceptionFilter {
