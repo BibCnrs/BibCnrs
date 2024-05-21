@@ -1,7 +1,14 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
 	"files": {
-		"ignore": ["node_modules/**", "**/build/**", "**/dist/**"]
+		"ignore": [
+			"node_modules/**",
+			"**/build/**",
+			"**/dist/**",
+			"packages/bib-api-old/**",
+			"docker-compose.dev.env",
+			"docker-compose.dev.env.sample"
+		]
 	},
 	"organizeImports": {
 		"enabled": true
