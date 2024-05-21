@@ -30,8 +30,15 @@ reset-db: env-copy 						## Reset the database and apply all migration
 start: env-copy							## Start stack in development mode
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up -d --build --remove-orphans
 
+
 stop: env-copy							## Stop stack
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down 
+
+logs: env-copy							## Show logs
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f
+
+logs-front: env-copy					## Show logs for front
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-front
 
 lint-apply: 							## Apply lint for each projects
 	yarn lint:apply
@@ -44,3 +51,4 @@ docker-build-api: env-copy				## Build docker image for api
 
 bib-old-add-admin-dev: env-copy			## create admin user
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml run --rm bib-api-old node bin/addAdminUser.js
+

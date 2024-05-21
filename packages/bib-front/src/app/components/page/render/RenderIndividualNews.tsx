@@ -1,0 +1,79 @@
+import { useMemo } from "react";
+import { getDomains, getFavouriteDomain } from "../../../services/user/Session";
+import { useLanguageKey } from "../../../shared/locales/I18N";
+import type {
+	TestNewDataType,
+	TestNewUrlDataType,
+} from "../../../shared/types/data.types";
+import ColoredPaper from "../../element/paper/colored/ColoredPaper";
+import TestsNewsFooter from "../../element/render/TestsNewsFooter";
+import { getInstituteColor } from "../../internal/provider/LocalizedThemeProvider";
+import "./scss/News.scss";
+
+/* eslint-disable camelcase */
+const RenderIndividualNews = ({
+	id,
+	page,
+	urls,
+	content_fr,
+	content_en,
+	from,
+	to,
+}: TestNewDataType) => {
+	const language = useLanguageKey();
+
+	const favouriteDomain = getFavouriteDomain();
+	const userDomains = getDomains();
+
+	const selectedDomain = useMemo(() => {
+		const filteredUserDomain = userDomains.filter(
+			(domain) => domain !== favouriteDomain,
+		);
+		return favouriteDomain || filteredUserDomain[0];
+	}, [favouriteDomain, userDomains]);
+
+	const getUrl = (url: TestNewUrlDataType): string => {
+		return url.proxy
+			? `https://${selectedDomain}.bib.cnrs.fr/login?url=${url.url}`
+			: url.url;
+	};
+
+	return (
+		<div id="tests-news-content">
+			<ColoredPaper
+				className="individual-news"
+				color={getInstituteColor(selectedDomain)}
+				elevation={4}
+				border
+			>
+				<div
+					className="tests-news-content cms-content"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+					dangerouslySetInnerHTML={{
+						__html: language === "en" ? content_en : content_fr,
+					}}
+				/>
+				{Array.isArray(urls) && urls.length > 0 ? (
+					<div key={`${id}-urls`}>
+						<ul>
+							{urls.map((url) => (
+								<li key={url.name}>
+									<a
+										className="link"
+										href={getUrl(url)}
+										rel="noreferrer noopener nofollow"
+									>
+										{url.name}
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				) : null}
+				<TestsNewsFooter id={id} page={page} from={from} to={to} />
+			</ColoredPaper>
+		</div>
+	);
+};
+
+export default RenderIndividualNews;

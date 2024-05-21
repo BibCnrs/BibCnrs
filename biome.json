@@ -32,6 +32,16 @@
 					}
 				}
 			}
+		},
+		{
+			"include": ["packages/bib-front/**"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noForEach": "off"
+					}
+				}
+			}
 		}
 	]
 }

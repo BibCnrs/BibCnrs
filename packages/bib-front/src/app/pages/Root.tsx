@@ -1,0 +1,71 @@
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import AlertPaper from "../components/element/paper/alert/AlertPaper";
+import RenderContent from "../components/page/render/RenderContent";
+import SearchBar from "../components/page/searchbar/SearchBar";
+import { alert, home } from "../services/common/CMS";
+import { RouteArticle, updatePageQueryUrl } from "../shared/Routes";
+import { useTranslator } from "../shared/locales/I18N";
+import type { CMSResultDataType } from "../shared/types/data.types";
+import "./Root.scss";
+
+const Root = () => {
+	const navigate = useNavigate();
+	const t = useTranslator();
+
+	const { data: alertData } = useQuery<
+		CMSResultDataType,
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		any,
+		CMSResultDataType,
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		any
+	>({
+		queryKey: ["alert"],
+		queryFn: alert,
+		placeholderData: keepPreviousData,
+		staleTime: 3600000, // 1 hour of cache
+		gcTime: 3600000, // 1000 * 60 * 60
+	});
+
+	const { data: homeData } = useQuery<
+		CMSResultDataType,
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		any,
+		CMSResultDataType,
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		any
+	>({
+		queryKey: ["home"],
+		queryFn: home,
+		placeholderData: keepPreviousData,
+		staleTime: 3600000, // 1 hour of cache
+		gcTime: 3600000, // 1000 * 60 * 60
+	});
+
+	const handleSearch = (q: string | undefined) => {
+		updatePageQueryUrl(RouteArticle, navigate, { q });
+	};
+
+	return (
+		<div>
+			<div className="header-footer">
+				<SearchBar
+					placeholder={t("pages.article.searchBar")}
+					onSearch={handleSearch}
+				/>
+			</div>
+			<div id="app">
+				<RenderContent
+					data={alertData}
+					page="root"
+					t={t}
+					Container={AlertPaper}
+				/>
+				<RenderContent data={homeData} page="root" t={t} />
+			</div>
+		</div>
+	);
+};
+
+export default Root;

@@ -1,0 +1,105 @@
+import type {
+	ArticleDataType,
+	HistoryDataType,
+} from "../../shared/types/data.types";
+import type { Institute } from "../../shared/types/types";
+import { createQuery, environment, json, throwIfNotOk } from "../Environment";
+import type { ArticleParam, ArticlePayLoad } from "../search/Article";
+
+export const history = async (
+	limit: number,
+	offset: number,
+	displayOnlyAlert: boolean,
+): Promise<HistoryDataType> => {
+	const query = createQuery(environment.get.account.history, {
+		limit,
+		offset,
+	});
+	const response: Response = await fetch(query, {
+		credentials: "include",
+	});
+	throwIfNotOk(response);
+	const results = await json<HistoryDataType>(response);
+
+	if (displayOnlyAlert) {
+		return results.filter((value) => value.hasAlert);
+	}
+
+	return results;
+};
+
+export const addHistory = async (
+	payload: Partial<ArticlePayLoad>,
+	param: ArticleParam,
+	domain: Institute,
+	result: ArticleDataType,
+): Promise<void> => {
+	if (!result) {
+		return;
+	}
+	const query = createQuery(environment.post.account.history);
+
+	const limiters: ArticleParam["limiters"] & {
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		publicationId: any;
+		publicationDate: {
+			from: number | null;
+			to: number | null;
+		};
+	} = {
+		fullText: false,
+		openAccess: false,
+		peerReviewed: false,
+		publicationDate: {
+			from: null,
+			to: null,
+		},
+		publicationId: null,
+	};
+	Object.assign(limiters, param.limiters);
+	if (limiters.dateRange) {
+		limiters.publicationDate = limiters.dateRange;
+		limiters.dateRange = undefined;
+	}
+
+	const response: Response = await fetch(query, {
+		credentials: "include",
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			history: {
+				activeFacets: payload.activeFacets ?? {},
+				domain,
+				limiters,
+				queries: payload.queries,
+				resultsPerPage: payload.resultsPerPage,
+				sort: payload.sort,
+				totalHits: result.totalHits,
+			},
+		}),
+	});
+	throwIfNotOk(response);
+};
+
+export const deleteHistory = async (): Promise<void> => {
+	const query = createQuery(environment.delete.account.histories);
+	const response: Response = await fetch(query, {
+		method: "DELETE",
+		credentials: "include",
+	});
+	throwIfNotOk(response);
+};
+
+export const deleteHistoryEntry = async (id: number): Promise<void> => {
+	const query = createQuery(environment.delete.account.history, {
+		id,
+	});
+	const response: Response = await fetch(query, {
+		method: "DELETE",
+		credentials: "include",
+	});
+	throwIfNotOk(response);
+};

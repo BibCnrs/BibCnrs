@@ -3,9 +3,9 @@ services:
     build:
       context: .
       dockerfile: ./ops/api/Dockerfile
-    user: '${UID}:${GID}'
+    user: "${UID}:${GID}"
     ports:
-      - '3001:3000'
+      - "3001:3000"
     volumes:
       - .:/app
     working_dir: /app/packages/bib-api
@@ -19,12 +19,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: ${API_MAX_MEMORY:-2G}
   bib-db:
     image: postgres:14
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=bibcnrs
       - POSTGRES_PASSWORD=S3cr3t
@@ -32,7 +32,7 @@ services:
     volumes:
       - bib-db-data:/var/lib/postgresql/data
     healthcheck:
-      test: [ 'CMD-SHELL', 'pg_isready' ]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -74,6 +74,22 @@ services:
     ports:
       - "1080:1080"
       - "1025:1025"
+
+  bib-front:
+    user: "${UID}:${GID}"
+    container_name: bib-front
+    image: node:22-alpine
+    environment:
+      NODE_ENV: development
+      VITE_ENV: development
+      VITE_BIBAPI_HOST: http://localhost:3000
+      VITE_SOURCE_MAP: true
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+    working_dir: /app/packages/bib-front
+    command: yarn run dev
 
 volumes:
   bib-db-data:
