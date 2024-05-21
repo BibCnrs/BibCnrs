@@ -16,11 +16,13 @@ services:
       - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
       - POSTGRES_URL=postgres://bibcnrs:S3cr3t@bib-db/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
+      - OLD_API_URL=${OLD_API_URL}
     deploy:
       resources:
         limits:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-2G}
+
   bib-db:
     image: postgres:14
     ports:
@@ -36,44 +38,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  ## Old Bib API services
-  bib-api-old:
-    build:
-      context: ./packages/bib-api-old
-      dockerfile: ../../ops/api-old/Dockerfile
-    working_dir: /app
-    environment:
-      NODE_ENV: development
-      BIBAPI_HOST: ${BIBAPI_HOST}
-      BIB_CONTENT_DELIVERY_HOST: ${BIBAPI_HOST}/medias/
-      POSTGRES_USER: bibcnrs
-      POSTGRES_PASSWORD: S3cr3t
-      POSTGRES_DB: bibcnrs
-      POSTGRES_HOST: bib-db
-      REDIS_HOST: bib-redis
-      MAIL_SERVER_HOST: bib-mail
-      MAIL_SERVER_PORT: 1025
-      EZ_UNPAYWALL_URL: "${EZ_UNPAYWALL_URL}"
-      EZ_UNPAYWALL_KEY: "${EZ_UNPAYWALL_KEY}"
-      DATABASE_URL: postgres://bibcnrs:S3cr3t@bib-db/bibcnrs
-      METADORE_URL: "${METADORE_URL}"
-      METADORE_API_KEY: "${METADORE_API_KEY}"
-      DOAJ_URL: ${DOAJ_URL}
-    command: npm run dev
-    depends_on:
-      - bib-db
-      - bib-redis
-      - bib-mail
-
-  bib-redis:
-    image: redis:6.2.6
-
-  bib-mail:
-    image: maildev/maildev:2.1.0
-    ports:
-      - "1080:1080"
-      - "1025:1025"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: ${API_MAX_MEMORY:-1G}
 
   bib-front:
     user: "${UID}:${GID}"
