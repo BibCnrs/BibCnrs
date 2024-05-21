@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./ops/api/Dockerfile
+      target: dev
     user: '${UID}:${GID}'
     ports:
       - '3001:3000'
