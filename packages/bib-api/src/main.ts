@@ -1,9 +1,15 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "packages/bib-api/src/app.module";
-import { NotFoundFilter } from "packages/bib-api/src/not-found.filter";
+import { NotFoundFilter } from "packages/bib-api/src/proxy/not-found.filter";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	app.enableCors({
+		origin: "*",
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
+	});
 	app.useGlobalFilters(new NotFoundFilter());
 	await app.listen(3000);
 }
