@@ -1,0 +1,40 @@
+services:
+  bib-api:
+    build:
+      context: .
+      dockerfile: ./ops/api/Dockerfile
+    user: '${UID}:${GID}'
+    ports:
+      - '3001:3000'
+    volumes:
+      - .:/app
+    working_dir: /app/packages/bib-api
+    depends_on:
+      bib-db:
+        condition: service_healthy
+    environment:
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+      - POSTGRES_URL=postgres://bibcnrs:S3cr3t@bib-db/bibcnrs
+      - NODE_ENV=${NODE_ENV:-development}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: ${API_MAX_MEMORY:-2G}
+  bib-db:
+    image: postgres:14
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=bibcnrs
+      - POSTGRES_PASSWORD=S3cr3t
+      - POSTGRES_DB=bibcnrs
+    volumes:
+      - bib-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  bib-db-data:
