@@ -11,10 +11,6 @@ export class EbscoCmsService {
 	}
 
 	async getContent(page: string, take = 0) {
-		console.log(
-			"getContent",
-			await this.prismaService.content_management.findMany(),
-		);
 		return this.prismaService.content_management.findMany({
 			take,
 			where: {
