@@ -1,3 +1,4 @@
+import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "packages/bib-api/src/app.module";
 import { NotFoundFilter } from "packages/bib-api/src/proxy/not-found.filter";
@@ -11,6 +12,11 @@ async function bootstrap() {
 		optionsSuccessStatus: 204,
 	});
 	app.useGlobalFilters(new NotFoundFilter());
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+		}),
+	);
 	await app.listen(3000);
 }
 bootstrap();
