@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - dev
   pull_request:
     types:
       - opened
@@ -11,15 +10,35 @@ on:
       - synchronize
       - ready_for_review
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: write
+  checks: write
+  pull-requests: write
+
 jobs:
   lint:
-    name: 🔬 Lint
+    name: ⬣ Lint
     timeout-minutes: 10
     runs-on: ubuntu-latest
     if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
+
+      - name: 📑 Yarn Lock Changes
+        uses: Simek/yarn-lock-changes@main
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          collapsibleThreshold: 25
+          failOnDowngrade: false
+          path: yarn.lock
+          updateComment: true
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
