@@ -5,7 +5,6 @@
 			"node_modules/**",
 			"**/build/**",
 			"**/dist/**",
-			"packages/bib-api-old/**",
 			"docker-compose.dev.env",
 			"docker-compose.dev.env.sample"
 		]
@@ -20,7 +19,8 @@
 		}
 	},
 	"formatter": {
-		"enabled": true
+		"enabled": true,
+		"ignore": ["package.json", "**/package.json"]
 	},
 	"overrides": [
 		{

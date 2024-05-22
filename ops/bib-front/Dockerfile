@@ -1,15 +1,17 @@
 FROM node:22-alpine as base
 
 RUN apk upgrade
+RUN mkdir -p /app/.yarn
 RUN mkdir -p /app/packages/bib-front
 
 # Copy all files used by yarn
+COPY package.json                       /app/package.json
+COPY yarn.lock                          /app/yarn.lock
+COPY .yarnrc.yml                        /app/.yarnrc.yml
+COPY .yarn/releases                     /app/.yarn/releases
+COPY packages/bib-front/package.json    /app/packages/bib-front/package.json
+
 WORKDIR /app
-
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY packages/bib-front/package.json ./packages/bib-front/package.json
-
-RUN yes | corepack enable && yarn -v
 
 FROM base as sources
 
@@ -34,7 +36,7 @@ ENV VITE_BIBAPI_HOST=$BIBAPI_HOST \
     VITE_ENV="prod" \
     VITE_SOURCE_MAP=$SOURCE_MAP
 
-RUN yarn workspace @bibcnrs/bib-api run build
+RUN yarn workspace @bibcnrs/bib-front run build
 
 FROM nginx:1.25-alpine
 
