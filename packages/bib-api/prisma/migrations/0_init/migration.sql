@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "admin_user" (
+CREATE TABLE "admin_user" (
     "id" SERIAL NOT NULL,
     "username" VARCHAR(40) NOT NULL,
     "password" VARCHAR(40) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS "admin_user" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "community" (
+CREATE TABLE "community" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(40) NOT NULL,
     "gate" VARCHAR(40) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS "community" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "database" (
+CREATE TABLE "database" (
     "id" SERIAL NOT NULL,
     "name_fr" VARCHAR(40) NOT NULL,
     "text_fr" VARCHAR(65535) NOT NULL,
@@ -40,13 +40,13 @@ CREATE TABLE IF NOT EXISTS "database" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "database_community" (
+CREATE TABLE "database_community" (
     "database_id" INTEGER NOT NULL,
     "community_id" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "history" (
+CREATE TABLE "history" (
     "id" SERIAL NOT NULL,
     "user_id" VARCHAR(40) NOT NULL,
     "event" JSON NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS "history" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "inist_account" (
+CREATE TABLE "inist_account" (
     "id" SERIAL NOT NULL,
     "username" VARCHAR(60) NOT NULL,
     "password" VARCHAR(40) NOT NULL,
@@ -83,28 +83,28 @@ CREATE TABLE IF NOT EXISTS "inist_account" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "inist_account_community" (
+CREATE TABLE "inist_account_community" (
     "community_id" INTEGER NOT NULL,
     "inist_account_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "inist_account_institute" (
+CREATE TABLE "inist_account_institute" (
     "institute_id" INTEGER NOT NULL,
     "inist_account_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "inist_account_unit" (
+CREATE TABLE "inist_account_unit" (
     "unit_id" INTEGER NOT NULL,
     "inist_account_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "institute" (
+CREATE TABLE "institute" (
     "id" SERIAL NOT NULL,
     "code" VARCHAR(40) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
@@ -113,14 +113,14 @@ CREATE TABLE IF NOT EXISTS "institute" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "institute_community" (
+CREATE TABLE "institute_community" (
     "community_id" INTEGER NOT NULL,
     "institute_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "janus_account" (
+CREATE TABLE "janus_account" (
     "id" SERIAL NOT NULL,
     "primary_institute" INTEGER,
     "primary_unit" INTEGER,
@@ -140,28 +140,28 @@ CREATE TABLE IF NOT EXISTS "janus_account" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "janus_account_community" (
+CREATE TABLE "janus_account_community" (
     "community_id" INTEGER NOT NULL,
     "janus_account_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "janus_account_institute" (
+CREATE TABLE "janus_account_institute" (
     "institute_id" INTEGER NOT NULL,
     "janus_account_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "janus_account_unit" (
+CREATE TABLE "janus_account_unit" (
     "unit_id" INTEGER NOT NULL,
     "janus_account_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "migrat" (
+CREATE TABLE "migrat" (
     "key" VARCHAR(22) NOT NULL,
     "value" TEXT,
 
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS "migrat" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "revue" (
+CREATE TABLE "revue" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(1023) NOT NULL,
     "url" VARCHAR(1023) NOT NULL,
@@ -178,13 +178,13 @@ CREATE TABLE IF NOT EXISTS "revue" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "revue_community" (
+CREATE TABLE "revue_community" (
     "revue_id" INTEGER NOT NULL,
     "community_id" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "section_cn" (
+CREATE TABLE "section_cn" (
     "id" SERIAL NOT NULL,
     "code" VARCHAR(255) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
@@ -194,21 +194,21 @@ CREATE TABLE IF NOT EXISTS "section_cn" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "section_cn_primary_institute" (
+CREATE TABLE "section_cn_primary_institute" (
     "section_cn_id" INTEGER NOT NULL,
     "institute_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "section_cn_secondary_institute" (
+CREATE TABLE "section_cn_secondary_institute" (
     "section_cn_id" INTEGER NOT NULL,
     "institute_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "unit" (
+CREATE TABLE "unit" (
     "id" SERIAL NOT NULL,
     "code" VARCHAR(255) NOT NULL,
     "comment" VARCHAR(65535),
@@ -242,28 +242,28 @@ CREATE TABLE IF NOT EXISTS "unit" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "unit_community" (
+CREATE TABLE "unit_community" (
     "community_id" INTEGER NOT NULL,
     "unit_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "unit_institute" (
+CREATE TABLE "unit_institute" (
     "institute_id" INTEGER NOT NULL,
     "unit_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "unit_section_cn" (
+CREATE TABLE "unit_section_cn" (
     "section_cn_id" INTEGER NOT NULL,
     "unit_id" INTEGER NOT NULL,
     "index" INTEGER DEFAULT 0
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "license" (
+CREATE TABLE "license" (
     "id" SERIAL NOT NULL,
     "name_fr" VARCHAR(255) NOT NULL,
     "name_en" VARCHAR(255) NOT NULL,
@@ -277,85 +277,85 @@ CREATE TABLE IF NOT EXISTS "license" (
 );
 
 -- CreateTable
-CREATE TABLE IF NOT EXISTS "_license_community" (
+CREATE TABLE "_license_community" (
     "license_id" INTEGER NOT NULL,
     "community_id" INTEGER NOT NULL
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_admin_username" ON "admin_user"("username");
+CREATE UNIQUE INDEX "unique_admin_username" ON "admin_user"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_community_name" ON "community"("name");
+CREATE UNIQUE INDEX "unique_community_name" ON "community"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_database_name" ON "database"("name_fr");
+CREATE UNIQUE INDEX "unique_database_name" ON "database"("name_fr");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"database_community_constraint" ON "database_community"("database_id", "community_id");
+CREATE UNIQUE INDEX "database_community_constraint" ON "database_community"("database_id", "community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_inist_account_username" ON "inist_account"("username");
+CREATE UNIQUE INDEX "unique_inist_account_username" ON "inist_account"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"inist_account_community_constraint" ON "inist_account_community"("inist_account_id", "community_id");
+CREATE UNIQUE INDEX "inist_account_community_constraint" ON "inist_account_community"("inist_account_id", "community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"inist_account_institute_constraint" ON "inist_account_institute"("institute_id", "inist_account_id");
+CREATE UNIQUE INDEX "inist_account_institute_constraint" ON "inist_account_institute"("institute_id", "inist_account_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"inist_account_unit_constraint" ON "inist_account_unit"("unit_id", "inist_account_id");
+CREATE UNIQUE INDEX "inist_account_unit_constraint" ON "inist_account_unit"("unit_id", "inist_account_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_institute_code" ON "institute"("code");
+CREATE UNIQUE INDEX "unique_institute_code" ON "institute"("code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"institute_community_constraint" ON "institute_community"("institute_id", "community_id");
+CREATE UNIQUE INDEX "institute_community_constraint" ON "institute_community"("institute_id", "community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"janus_account_uid_constraint" ON "janus_account"("uid");
+CREATE UNIQUE INDEX "janus_account_uid_constraint" ON "janus_account"("uid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"janus_account_community_constraint" ON "janus_account_community"("janus_account_id", "community_id");
+CREATE UNIQUE INDEX "janus_account_community_constraint" ON "janus_account_community"("janus_account_id", "community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"janus_account_institute_constraint" ON "janus_account_institute"("institute_id", "janus_account_id");
+CREATE UNIQUE INDEX "janus_account_institute_constraint" ON "janus_account_institute"("institute_id", "janus_account_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"janus_account_unit_constraint" ON "janus_account_unit"("unit_id", "janus_account_id");
+CREATE UNIQUE INDEX "janus_account_unit_constraint" ON "janus_account_unit"("unit_id", "janus_account_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_revue_title" ON "revue"("title");
+CREATE UNIQUE INDEX "unique_revue_title" ON "revue"("title");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"revue_community_constraint" ON "revue_community"("revue_id", "community_id");
+CREATE UNIQUE INDEX "revue_community_constraint" ON "revue_community"("revue_id", "community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_section_cn_code" ON "section_cn"("code");
+CREATE UNIQUE INDEX "unique_section_cn_code" ON "section_cn"("code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"section_cn_primary_institute_constraint" ON "section_cn_primary_institute"("section_cn_id", "institute_id");
+CREATE UNIQUE INDEX "section_cn_primary_institute_constraint" ON "section_cn_primary_institute"("section_cn_id", "institute_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"section_cn_secondary_institute_constraint" ON "section_cn_secondary_institute"("section_cn_id", "institute_id");
+CREATE UNIQUE INDEX "section_cn_secondary_institute_constraint" ON "section_cn_secondary_institute"("section_cn_id", "institute_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unique_unit_name" ON "unit"("code");
+CREATE UNIQUE INDEX "unique_unit_name" ON "unit"("code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unit_community_constraint" ON "unit_community"("unit_id", "community_id");
+CREATE UNIQUE INDEX "unit_community_constraint" ON "unit_community"("unit_id", "community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unit_institute_constraint" ON "unit_institute"("institute_id", "unit_id");
+CREATE UNIQUE INDEX "unit_institute_constraint" ON "unit_institute"("institute_id", "unit_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"unit_section_cn_constraint" ON "unit_section_cn"("section_cn_id", "unit_id");
+CREATE UNIQUE INDEX "unit_section_cn_constraint" ON "unit_section_cn"("section_cn_id", "unit_id");
 
 -- CreateIndex
 CREATE INDEX "_license_community_B_index" ON "_license_community"("community_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX IF NOT EXISTS"_license_community_AB_unique" ON "_license_community"("license_id", "community_id");
+CREATE UNIQUE INDEX "_license_community_AB_unique" ON "_license_community"("license_id", "community_id");
 
 -- AddForeignKey
 ALTER TABLE "database_community" ADD CONSTRAINT "database_community_community_id_fkey" FOREIGN KEY ("community_id") REFERENCES "community"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
@@ -461,3 +461,4 @@ ALTER TABLE "_license_community" ADD CONSTRAINT "_license_community_community_id
 
 -- AddForeignKey
 ALTER TABLE "_license_community" ADD CONSTRAINT "_license_community_license_id_fkey" FOREIGN KEY ("license_id") REFERENCES "license"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
