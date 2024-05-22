@@ -1,7 +1,7 @@
 import loadImage from "blueimp-load-image";
 import { stringify } from "query-string";
 import jsonServerProvider from "ra-data-json-server";
-import { fetchUtils, type DataProvider, type Options } from "react-admin";
+import { type DataProvider, type Options, fetchUtils } from "react-admin";
 
 const apiUrl = `${import.meta.env.VITE_BIBAPI_HOST}/admin`;
 

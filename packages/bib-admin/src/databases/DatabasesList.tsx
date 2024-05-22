@@ -5,9 +5,9 @@ import {
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
+	type RaRecord,
 	TextInput,
 	downloadCSV,
-	type RaRecord,
 } from "react-admin";
 import { ListActions } from "../components/Actions";
 import BulkActionButtons from "../components/BulkActionButtons";

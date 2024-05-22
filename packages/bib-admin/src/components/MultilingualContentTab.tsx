@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { RichTextInput } from "ra-input-rich-text";
-import { useState, type SyntheticEvent } from "react";
+import { type SyntheticEvent, useState } from "react";
 import { TextInput, required } from "react-admin";
 import { useFormState } from "react-hook-form";
 import TabPanel from "./TabPanel";
