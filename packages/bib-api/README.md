@@ -1,9 +1,7 @@
-# BibAdmin
+# BibApi
 
-Administration interface for [BibApi](https://github.com/BibCnrs/BibApi).
-It uses the tool [react-admin](https://github.com/marmelab/react-admin).
-
-It allows managing access rights by institute, unit individual to documentary resources exposed through [BibEzProxy](https://github.com/BibCnrs/BibEzProxy).
+Built with [NestJS](https://nestjs.com/). It provides a REST API to manage the data of the
+BibCnrs. It uses a PostgreSQL database.
 
 ## Installation
 
@@ -17,7 +15,7 @@ make install
 
 ```bash
 make start
-make logs-admin
+make logs-api
 ```
 
 ## Contributing

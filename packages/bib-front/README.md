@@ -1,37 +1,31 @@
-# BibCNRS Front
+# BibFront
 
-## Installation and development
+BibFront is a front-end application for the BibCnrs project.
+It is built with [React](https://reactjs.org/) and [Material-UI](https://material-ui.com/).
+Using Vite as a bundler.
 
-Install required dependencies: `npm install`
+## Installation
 
-To run the development server use : `npm run dev`
+Use the Makefile commands at the root of the project to install the package.
 
-To run the preview server use: `npm run build` and `npm run preview`
+```bash
+make install
+```
 
-## Comment faire les branch pour les Pulls requests
+## Usage
 
-Structure :
+```bash
+make start
+make logs-front
+```
 
-`<préfixe>/<nom-de-la-fonctionnalités>`
+## Contributing
 
-Liste des préfixes :
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-| préfixe       | description                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| **feat**      | Ajoute de fonctionnalités                                                                         |
-| **fix**       | Correction d'un bug                                                                               |
-| **refactor**  | Change des element structure du code sans forcément changé le fonctionnement final                |
-| **style**     | Correction de typos, formatage du code et autre element ne changent pas le fonctionnement du code |
-| **build**     | Modification du système lié au build et dependence de l'application                               |
-| **ci**        | Modification de la ci / cd                                                                        |
-| **prototype** | Branch experimental qui a pour vocation de testé des fonctionnalités                              |
+Please make sure to update tests as appropriate.
 
-Exemple :
+## License
 
-- Valide
-  - `feat/history`
-  - `feat/article-page`
-  - `prototype/new-table-rendering`
-- Non valide
-  - `article-page` - Doit avoir un préfixe
-  - `feat/ajoute-historique` - Doit être en anglais et contenir uniquement l'essentiel
+[CeCILL](http://www.cecill.info)
