@@ -1,0 +1,89 @@
+name: 📋 Check
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  lint:
+    name: ⬣ Lint
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: 📑 Yarn Lock Changes
+        uses: Simek/yarn-lock-changes@main
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          collapsibleThreshold: 25
+          failOnDowngrade: false
+          path: yarn.lock
+          updateComment: true
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: 📥 Download deps
+        run: make install-immutable
+
+      - name: 🔎 Lint check
+        run: make lint-check
+
+  typecheck:
+    name: ʦ TypeScript
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: 📥 Download deps
+        run: make install-immutable
+
+      - name: 🔎 Type check
+        run: make typecheck
+
+  test:
+    name: 🔎 Test
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: 🔎 Test API
+        run: make test-api
