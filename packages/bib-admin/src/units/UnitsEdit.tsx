@@ -21,7 +21,7 @@ const UnitsTitle = () => {
 	return record ? record.name : "";
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 const convertEmptyNumberInputToNull = (data: any) => {
 	if (data.nb_researcher_cnrs === "") {
 		data.nb_researcher_cnrs = null;

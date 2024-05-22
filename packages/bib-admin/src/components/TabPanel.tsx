@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 const TabPanel = (props: any) => {
 	const { children, valueTab, index, ...other } = props;
 

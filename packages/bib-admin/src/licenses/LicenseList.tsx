@@ -39,7 +39,7 @@ const BulkActionLicensesButtons = () => {
 				refresh();
 				notify("License commune mise à jour", { type: "success" });
 			},
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 			onError: (error: any) => {
 				notify(`License commune non mise à jour: ${error.message}`, {
 					type: "warning",
@@ -104,7 +104,7 @@ const LicenseList = () => (
 			<EditButton />
 			<DeleteWithConfirmButton />
 			<FunctionField
-				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 				render={(record: any) =>
 					record.common && (
 						<Tooltip title="License Commune">

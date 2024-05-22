@@ -1,15 +1,17 @@
 FROM node:22-alpine as base
 
 RUN apk upgrade
+RUN mkdir -p /app/.yarn
 RUN mkdir -p /app/packages/bib-api
 
 # Copy all files used by yarn
+COPY package.json                       /app/package.json
+COPY yarn.lock                          /app/yarn.lock
+COPY .yarnrc.yml                        /app/.yarnrc.yml
+COPY .yarn/releases                     /app/.yarn/releases
+COPY packages/bib-api/package.json      /app/packages/bib-api/package.json
+
 WORKDIR /app
-
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY packages/bib-api/package.json ./packages/bib-api/package.json
-
-RUN yes | corepack enable && yarn -v
 
 # Stage 1 - Build the application
 FROM base as sources

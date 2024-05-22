@@ -19,9 +19,9 @@ const divStyle: CSSProperties = {
 	width: "100%",
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 export const validate = (values: any) => {
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const errors: any = {};
 	if (!values.content_en) {
 		errors.content_en = "ra.validation.required";

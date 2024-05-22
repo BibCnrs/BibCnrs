@@ -2,14 +2,14 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { RichTextInput } from "ra-input-rich-text";
-import { type SyntheticEvent, useState } from "react";
+import { useState, type SyntheticEvent } from "react";
 import { TextInput, required } from "react-admin";
 import { useFormState } from "react-hook-form";
 import TabPanel from "./TabPanel";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 export const validateMultilingualContentCreation = (values: any) => {
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const errors: any = {};
 	if (!values.content_en) {
 		errors.content_en = "ra.validation.required";

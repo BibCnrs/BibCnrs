@@ -7,9 +7,7 @@ import {
 	Datagrid,
 	DeleteWithConfirmButton,
 	EditButton,
-	type FieldProps,
 	List,
-	type RaRecord,
 	ReferenceArrayField,
 	ReferenceField,
 	ReferenceInput,
@@ -18,6 +16,8 @@ import {
 	TextInput,
 	downloadCSV,
 	useRecordContext,
+	type FieldProps,
+	type RaRecord,
 } from "react-admin";
 import { Link } from "react-router-dom";
 import { ListActions } from "../components/Actions";
@@ -88,11 +88,11 @@ const UnitsFilter = [
 const exporter = async (
 	records: RaRecord[],
 	fetchRelatedRecords: (
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 		data: any,
 		field: string,
 		resource: string,
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	) => Promise<any>,
 ) => {
 	const listPrincipalIt = await fetchRelatedRecords(

@@ -18,7 +18,7 @@ const SectionsTitle = () => {
 	return record ? record.name : "";
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 const fromArrayToInt = (value: any) => {
 	if (Array.isArray(value)) {
 		return value[0];
@@ -26,7 +26,7 @@ const fromArrayToInt = (value: any) => {
 	return value;
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 const transform = (data: any) => {
 	return {
 		...data,
@@ -37,7 +37,7 @@ const transform = (data: any) => {
 const SectionsEdit = () => {
 	const notify = useNotify();
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const onError = (error: any) => {
 		if (error.body.error.includes("constraint failed")) {
 			// biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>

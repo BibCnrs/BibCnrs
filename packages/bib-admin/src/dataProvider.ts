@@ -1,7 +1,7 @@
 import loadImage from "blueimp-load-image";
 import { stringify } from "query-string";
 import jsonServerProvider from "ra-data-json-server";
-import { type DataProvider, type Options, fetchUtils } from "react-admin";
+import { fetchUtils, type DataProvider, type Options } from "react-admin";
 
 const apiUrl = `${import.meta.env.VITE_BIBAPI_HOST}/admin`;
 
@@ -70,7 +70,7 @@ const dataProvider: DataProvider = {
 		const { field, order } = params.sort;
 		const filters = fetchUtils.flattenObject(params.filter);
 
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 		const query: any = {
 			_page: page || 1,
 			_perPage: perPage || 10,

@@ -19,7 +19,7 @@ import {
 import { EditActions } from "../components/Actions";
 import EditToolbar from "../components/EditToolbar";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 const convertEmptyDateInputToNull = (data: any) => {
 	if (data.subscription_date === "") {
 		data.subscription_date = null;

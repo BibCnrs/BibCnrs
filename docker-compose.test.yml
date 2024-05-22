@@ -1,0 +1,57 @@
+services:
+  bib-api-test:
+    build:
+      context: .
+      dockerfile: ./ops/bib-api/Dockerfile
+      target: dev
+    user: "${UID}:${GID}"
+    working_dir: /app/packages/bib-api
+    depends_on:
+      bib-db-test:
+        condition: service_healthy
+    environment:
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+      - POSTGRES_URL=postgres://bibcnrs_test:S3cr3t@bib-db-test/bibcnrs
+      - NODE_ENV=${NODE_ENV:-development}
+      - OLD_API_URL=https://bib.cnrs.fr
+      - MAIL_SERVER_HOST= bib-mail
+      - MAIL_SERVER_PORT= 1025
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: ${API_MAX_MEMORY:-2G}
+
+  bib-front-test:
+    user: "${UID}:${GID}"
+    build:
+      context: .
+      dockerfile: ./ops/bib-front/Dockerfile
+      target: dev
+    environment:
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+      - NODE_ENV=development
+      - VITE_ENV=development
+      - VITE_BIBAPI_HOST=http://localhost:3000/api
+      - VITE_SOURCE_MAP=true
+    working_dir: /app/packages/bib-front
+    depends_on:
+      - bib-api-test
+
+  bib-db-test:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=bibcnrs_test
+      - POSTGRES_PASSWORD=S3cr3t
+      - POSTGRES_DB=bibcnrs_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: ${API_MAX_MEMORY:-1G}
+

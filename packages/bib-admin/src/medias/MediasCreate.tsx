@@ -8,9 +8,9 @@ import {
 } from "react-admin";
 import { CreateActions } from "../components/Actions";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 function validate(values: any) {
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const errors: any = {};
 	if (!values.name) {
 		errors.name = "ra.validation.required";

@@ -14,7 +14,7 @@ import { CreateActions } from "../components/Actions";
 const SectionsCreate = () => {
 	const notify = useNotify();
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const onError = (error: any) => {
 		if (error.body.error.includes("constraint failed")) {
 			notify("Impossible de créer une section car le code est déjà utilisé", {

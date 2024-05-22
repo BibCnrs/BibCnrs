@@ -5,10 +5,10 @@ import {
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
-	type RaRecord,
 	ReferenceInput,
 	TextInput,
 	downloadCSV,
+	type RaRecord,
 } from "react-admin";
 import { ListActions } from "../components/Actions";
 import BulkActionButtons from "../components/BulkActionButtons";
@@ -62,11 +62,11 @@ const SectionsFilter = [
 const exporter = async (
 	records: RaRecord[],
 	fetchRelatedRecords: (
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 		data: any,
 		field: string,
 		resource: string,
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	) => Promise<any>,
 ) => {
 	const listPrincipalUnit = await fetchRelatedRecords(

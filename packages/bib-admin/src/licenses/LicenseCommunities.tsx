@@ -24,7 +24,7 @@ export const LicenseCommunities = () => {
 
 		// if object with communityId is already selected, remove it
 		const communityIndex = selectedCommunities.findIndex(
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 			(community: any) => community.community_id === communityId,
 		);
 		if (communityIndex !== -1) {
@@ -62,7 +62,7 @@ export const LicenseCommunities = () => {
 						onClick={() => handleClick(community.id)}
 						color={
 							selectedCommunities?.find(
-								// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+								// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 								(license: any) => license.community_id === community.id,
 							)
 								? "primary"
