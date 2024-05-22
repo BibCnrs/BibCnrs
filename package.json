@@ -2,7 +2,9 @@
 	"name": "@bibcnrs/monorepo",
 	"private": true,
 	"packageManager": "yarn@4.2.2",
-	"workspaces": ["packages/*"],
+	"workspaces": [
+		"packages/*"
+	],
 	"devDependencies": {
 		"@biomejs/biome": "^1.7.3"
 	}
