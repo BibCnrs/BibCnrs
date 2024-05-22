@@ -282,6 +282,61 @@ CREATE TABLE "_license_community" (
     "community_id" INTEGER NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "content_management" (
+    "id" SERIAL NOT NULL,
+    "name_fr" VARCHAR(255) NOT NULL,
+    "name_en" VARCHAR(255) NOT NULL,
+    "content_fr" TEXT NOT NULL,
+    "content_en" TEXT NOT NULL,
+    "page" TEXT NOT NULL,
+    "from" TIMESTAMP(3) NOT NULL,
+    "to" TIMESTAMP(3),
+    "enable" BOOLEAN NOT NULL DEFAULT true,
+
+    CONSTRAINT "content_management_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "medias" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "file_name" TEXT NOT NULL,
+    "file" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+
+    CONSTRAINT "medias_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "resources" (
+    "id" SERIAL NOT NULL,
+    "name_fr" TEXT NOT NULL,
+    "name_en" TEXT NOT NULL,
+    "href" TEXT NOT NULL,
+    "community" TEXT NOT NULL,
+    "enable" BOOLEAN NOT NULL DEFAULT true,
+
+    CONSTRAINT "resources_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "tests_news" (
+    "id" SERIAL NOT NULL,
+    "name_fr" VARCHAR(255) NOT NULL,
+    "name_en" VARCHAR(255) NOT NULL,
+    "content_fr" TEXT NOT NULL,
+    "content_en" TEXT NOT NULL,
+    "page" TEXT NOT NULL,
+    "from" TIMESTAMP(3) NOT NULL,
+    "to" TIMESTAMP(3),
+    "urls" JSON,
+    "domains" JSON,
+    "enable" BOOLEAN NOT NULL DEFAULT true,
+
+    CONSTRAINT "tests_news_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "unique_admin_username" ON "admin_user"("username");
 
