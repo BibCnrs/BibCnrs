@@ -20,6 +20,7 @@ COPY tsconfig.json ./
 COPY packages/bib-api/ ./packages/bib-api/
 
 RUN yarn workspaces focus @bibcnrs/bib-api
+RUN yarn workspace @bibcnrs/bib-api prisma generate
 
 FROM sources as dev
 
@@ -50,8 +51,6 @@ COPY --from=prod-builder    /app/package.json                   /app/package.jso
 COPY --from=prod-builder    /app/packages/bib-api/package.json  /app/packages/bib-api/package.json
 COPY --from=prod-builder    /app/packages/bib-api/dist          /app/packages/bib-api/dist
 COPY --from=prod-deps       /app/node_modules                   /app/node_modules
-
-# RUN yarn prisma generate
 
 EXPOSE 3000
 

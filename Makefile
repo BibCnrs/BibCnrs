@@ -12,6 +12,7 @@ help:						## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 install: 								## Install all dependencies for all packages
+	corepack enable yarn
 	yarn install
 	yarn workspace @bibcnrs/bib-api prisma generate
 
