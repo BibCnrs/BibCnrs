@@ -42,6 +42,24 @@ services:
     depends_on:
       - bib-api
 
+  bib-admin:
+    user: "${UID}:${GID}"
+    build:
+      context: .
+      dockerfile: ./ops/bib-admin/Dockerfile
+      target: dev
+    environment:
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+      - NODE_ENV=development
+      - VITE_ENV=development
+      - VITE_BIBAPI_HOST=http://localhost:3000/api
+      - VITE_SOURCE_MAP=true
+    volumes:
+      - ./packages/bib-admin:/app/packages/bib-admin
+    working_dir: /app/packages/bib-admin
+    depends_on:
+      - bib-api
+
   bib-proxy:
     build:
       context: .
@@ -51,6 +69,7 @@ services:
     depends_on:
       - bib-api
       - bib-front
+      - bib-admin
 
   bib-db:
     image: postgres:14
