@@ -1,0 +1,4 @@
+*.sql
+
+/uploads/*
+!/uploads/.gitkeep
