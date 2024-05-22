@@ -31,6 +31,11 @@ migrate-dev-create-only: env-copy 		## Create migration file in development envi
 reset-db: env-copy 						## Reset the database and apply all migration
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml run --rm bib-api yarn prisma migrate reset
 
+init-db: stop							## Initialize the database with seed data
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up -d --wait bib-db
+	PGPASSWORD=S3cr3t psql -h localhost -U bibcnrs bibcnrs -f data/seed.sql
+	docker compose -f docker-compose.dev.yml run --build --rm bib-api yarn run prisma migrate resolve --applied 0_init
+
 start: env-copy							## Start stack in development mode
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up -d --build --remove-orphans
 

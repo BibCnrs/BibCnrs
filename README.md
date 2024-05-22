@@ -34,6 +34,10 @@ To install all dependencies, run:
 make install
 ```
 
+## Init DB
+
+Copy preprod export to `data/seed.sql`, then run `make init-db`
+
 ## Usage
 
 To start all packages in development mode, run:
