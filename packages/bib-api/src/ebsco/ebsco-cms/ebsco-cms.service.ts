@@ -10,7 +10,11 @@ export class EbscoCmsService {
 		return new Date(now);
 	}
 
-	async getContent(page: string, take: number) {
+	async getContent(page: string, take = 0) {
+		console.log(
+			"getContent",
+			await this.prismaService.content_management.findMany(),
+		);
 		return this.prismaService.content_management.findMany({
 			take,
 			where: {

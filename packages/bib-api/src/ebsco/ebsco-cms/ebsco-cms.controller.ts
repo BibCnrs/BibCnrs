@@ -7,10 +7,11 @@ export class EbscoCmsController {
 
 	@Get()
 	async getContent(
-		@Query("page") page: string,
-		@Query("first") first: string | null,
+		@Query("page") page: string | null,
+		@Query("first") first: string | null = null,
 	) {
 		const take = first != null ? 1 : 100;
+		console.log("take", take);
 		return this.ebscoCmsService.getContent(page, take);
 	}
 }
