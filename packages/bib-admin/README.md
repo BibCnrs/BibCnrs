@@ -1,8 +1,9 @@
-# BibFront
+# BibAdmin
 
-BibFront is a front-end application for the BibCnrs project.
-It is built with [React](https://reactjs.org/) and [Material-UI](https://material-ui.com/).
-Using Vite as a bundler.
+Administration interface for [BibApi](https://github.com/BibCnrs/BibApi).
+It uses the tool [react-admin](https://github.com/marmelab/react-admin).
+
+It allows managing access rights by institute, unit individual to documentary resources exposed through [BibEzProxy](https://github.com/BibCnrs/BibEzProxy).
 
 ## Installation
 
@@ -16,7 +17,7 @@ make install
 
 ```bash
 make start
-make logs-front
+make logs-admin
 ```
 
 ## Contributing

@@ -1,1 +1,71 @@
 # BibCnrs
+
+<!-- BIB LOGO -->
+<p align="center">
+  <img src="
+https://bib.cnrs.fr/wp-content/uploads/2018/04/bibcnrs-logo-visite.png" alt="BibCnrs Logo" width="200" />
+
+This is a monorepo containing several packages for the BibCnrs project. Each package serves a different purpose and can be used independently.
+
+<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+<img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white" />
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+
+## Packages
+
+### bib-admin
+
+This is the admin package for our project. It uses the tool [react-admin](https://github.com/marmelab/react-admin) and allows managing access rights by institute, unit, individual to documentary resources exposed through [BibEzProxy](https://github.com/BibCnrs/BibEzProxy).
+
+### bib-api
+
+This is the API package for our project. It provides the backend services and data management for the other packages.
+
+### bib-front
+
+This is the frontend package for our project. It provides the user interface and interacts with the `bib-api` package to fetch and display data.
+
+## Installation
+
+To install all dependencies, run:
+
+```sh
+make install
+```
+
+## Usage
+
+To start all packages in development mode, run:
+
+```sh
+make start
+```
+
+To view different logs, run:
+
+```sh
+make logs-api
+make logs-admin
+make logs-front
+
+make logs
+```
+
+## Makefile
+
+The Makefile at the root of the project contains several commands to help you manage the packages. You can run `make help` to see all available commands.
+
+```sh
+make help
+```
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[CeCILL](http://www.cecill.info)

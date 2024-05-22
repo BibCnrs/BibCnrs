@@ -1,8 +1,7 @@
-# BibFront
+# BibApi
 
-BibFront is a front-end application for the BibCnrs project.
-It is built with [React](https://reactjs.org/) and [Material-UI](https://material-ui.com/).
-Using Vite as a bundler.
+Built with [NestJS](https://nestjs.com/). It provides a REST API to manage the data of the
+BibCnrs. It uses a PostgreSQL database.
 
 ## Installation
 
@@ -16,7 +15,7 @@ make install
 
 ```bash
 make start
-make logs-front
+make logs-api
 ```
 
 ## Contributing

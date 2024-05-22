@@ -48,6 +48,12 @@ logs: env-copy							## Show logs
 logs-front: env-copy					## Show logs for front
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-front
 
+logs-api: env-copy					## Show logs for api
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-api
+
+logs-admin: env-copy					## Show logs for admin
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-admin
+	
 typecheck:								## Run typecheck for all packages
 	yarn workspaces foreach --all --parallel --verbose run typecheck
 
