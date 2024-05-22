@@ -12,8 +12,11 @@ help:						## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 install: 								## Install all dependencies for all packages
-	corepack enable yarn
 	yarn install
+	yarn workspace @bibcnrs/bib-api prisma generate
+
+install-immutable: 						## Install all dependencies for all packages
+	yarn install --immutable
 	yarn workspace @bibcnrs/bib-api prisma generate
 
 env-copy:
@@ -31,9 +34,13 @@ reset-db: env-copy 						## Reset the database and apply all migration
 start: env-copy							## Start stack in development mode
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up -d --build --remove-orphans
 
-
 stop: env-copy							## Stop stack
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down 
+
+test: test-api							## Run tests for all packages
+
+test-api:								## Run tests for bib-api
+	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn test
 
 logs: env-copy							## Show logs
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f
@@ -41,15 +48,14 @@ logs: env-copy							## Show logs
 logs-front: env-copy					## Show logs for front
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-front
 
+typecheck:								## Run typecheck for all packages
+	yarn workspaces foreach --all --parallel --verbose run typecheck
+
 lint-apply: 							## Apply lint for each projects
-	yarn lint:apply
+	yarn run biome check --apply * **/* 
 
 lint-check: 							## Check lint for each projects
-	yarn lint:check
+	yarn run biome check * **/*
 
 docker-build-api: env-copy				## Build docker image for api
 	docker build -t bib-api --progress=plain --no-cache -f ./ops/api/Dockerfile .
-
-bib-old-add-admin-dev: env-copy			## create admin user
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml run --rm bib-api-old node bin/addAdminUser.js
-

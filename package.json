@@ -2,13 +2,7 @@
 	"name": "@bibcnrs/monorepo",
 	"private": true,
 	"packageManager": "yarn@4.2.2",
-	"workspaces": [
-		"packages/*"
-	],
-	"scripts": {
-		"lint:check": "biome check * **/*",
-		"lint:apply": "biome check --apply * **/*"
-	},
+	"workspaces": ["packages/*"],
 	"devDependencies": {
 		"@biomejs/biome": "^1.7.3"
 	}
