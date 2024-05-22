@@ -7,7 +7,9 @@ import {
 	Datagrid,
 	DeleteWithConfirmButton,
 	EditButton,
+	type FieldProps,
 	List,
+	type RaRecord,
 	ReferenceArrayField,
 	ReferenceField,
 	ReferenceInput,
@@ -16,8 +18,6 @@ import {
 	TextInput,
 	downloadCSV,
 	useRecordContext,
-	type FieldProps,
-	type RaRecord,
 } from "react-admin";
 import { Link } from "react-router-dom";
 import { ListActions } from "../components/Actions";
