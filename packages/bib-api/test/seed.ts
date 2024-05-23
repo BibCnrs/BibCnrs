@@ -44,6 +44,26 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+	await prisma.community.createMany({
+		data: [
+			{
+				name: "community1",
+				gate: "gate1",
+				user_id: "user_id1",
+				password: "password1",
+				profile: "profile1",
+				ebsco: true,
+			},
+			{
+				name: "community2",
+				gate: "gate2",
+				user_id: "user_id2",
+				password: "password2",
+				profile: "profile2",
+				ebsco: false,
+			},
+		],
+	});
 })()
 	.then(async () => {
 		await prisma.$disconnect();

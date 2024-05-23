@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { admin_user } from "@prisma/client";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin-users/admin-users.type";
 import {
 	CreateAdminUserDto,
 	UpdateAdminUserDto,
 } from "packages/bib-api/src/admin/admin-users/dto/admin-user.dto";
+import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
 import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import {
 	FilterQuery,
