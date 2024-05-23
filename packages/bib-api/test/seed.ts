@@ -106,6 +106,26 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+
+	// Resources
+	await prisma.resources.createMany({
+		data: [
+			{
+				community: "INSHS",
+				name_en: "Bib Preprod",
+				name_fr: "Bib Preprod",
+				href: "https://bib-preprod.inist.fr/",
+				enable: true,
+			},
+			{
+				community: "INSHS",
+				name_en: "Bib",
+				name_fr: "Bib",
+				href: "https://bib.cnrs.fr/",
+				enable: true,
+			},
+		],
+	});
 })()
 	.then(async () => {
 		await prisma.$disconnect();
