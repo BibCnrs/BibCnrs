@@ -41,6 +41,7 @@ start: env-copy							## Start stack in development mode
 
 stop: env-copy							## Stop stack
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down 
+	docker compose -f docker-compose.test.yml down
 
 test: test-api							## Run tests for all packages
 

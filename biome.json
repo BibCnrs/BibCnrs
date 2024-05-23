@@ -30,6 +30,11 @@
 	"overrides": [
 		{
 			"include": ["packages/bib-api/**"],
+			"javascript": {
+				"parser": {
+					"unsafeParameterDecoratorsEnabled": true
+				}
+			},
 			"linter": {
 				"rules": {
 					"style": {

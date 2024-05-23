@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "packages/bib-api/src/auth/auth.module";
 import config from "packages/bib-api/src/config";
+import { EbscoModule } from "packages/bib-api/src/ebsco/ebsco.module";
 import { MailModule } from "packages/bib-api/src/mail/mail.module";
 import { AdminModule } from "./admin/admin.module";
 import { AppController } from "./app.controller";
@@ -19,6 +20,7 @@ import { PrismaModule } from "./prisma/prisma.module";
 		AuthModule,
 		AdminModule,
 		PrismaModule,
+		EbscoModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
