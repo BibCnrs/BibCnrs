@@ -33,15 +33,15 @@ describe("AdminUserController", () => {
 				expect.arrayContaining([
 					expect.objectContaining({
 						id: 1,
-						name: "community1",
-						gate: "gate1",
+						name: "INSHS",
+						gate: "inshs",
 						ebsco: true,
 					}),
 					expect.objectContaining({
 						id: 2,
-						name: "community2",
-						gate: "gate2",
-						ebsco: false,
+						name: "INSB",
+						gate: "insb",
+						ebsco: true,
 					}),
 				]),
 			);
@@ -51,12 +51,12 @@ describe("AdminUserController", () => {
 			const data = await communitiesController.findOne(2);
 			expect(data).toStrictEqual({
 				id: 2,
-				name: "community2",
-				gate: "gate2",
-				user_id: "user_id2",
-				password: "password2",
-				profile: "profile2",
-				ebsco: false,
+				name: "INSB",
+				gate: "insb",
+				user_id: "insb_user_id",
+				password: "insb_password",
+				profile: "wsapi",
+				ebsco: true,
 			});
 		});
 
