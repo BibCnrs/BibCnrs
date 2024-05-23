@@ -57,17 +57,17 @@ export class DatabasesService {
 	async create(createDatabaseDto: CreateDatabaseDto) {
 		const { communities, domains, ...databaseData } = createDatabaseDto;
 
-		const toto = await this.prismaService.database.create({
+		const createdDatabase = await this.prismaService.database.create({
 			data: databaseData,
 		});
 		await this.prismaService.database_community.createMany({
 			data: communities.map((community) => ({
-				database_id: toto.id,
+				database_id: createdDatabase.id,
 				community_id: community,
 			})),
 		});
 
-		return this.findOne(toto.id);
+		return this.findOne(createdDatabase.id);
 	}
 
 	async findAll(
