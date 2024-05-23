@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 
 @Injectable()
-export class EbscoCmsService {
+export class EbscoTestNewsService {
 	constructor(private prismaService: PrismaService) {}
 
 	private getNow() {
@@ -10,12 +10,12 @@ export class EbscoCmsService {
 		return new Date(now);
 	}
 
-	async getContent(page: string, first = false) {
-		return this.prismaService.content_management.findMany({
+	async getTestNews(page: string, first = false) {
+		return this.prismaService.tests_news.findMany({
 			take: first ? 1 : 100,
 			where: {
 				AND: {
-					page,
+					page: page,
 					enable: true,
 				},
 				OR: [
@@ -34,6 +34,27 @@ export class EbscoCmsService {
 					from: "asc",
 				},
 			],
+		});
+	}
+
+	async findTestNewsById(id: number) {
+		return this.prismaService.tests_news.findFirst({
+			where: {
+				AND: {
+					id,
+					enable: true,
+				},
+				OR: [
+					{
+						to: {
+							gte: this.getNow(),
+						},
+					},
+					{
+						to: null,
+					},
+				],
+			},
 		});
 	}
 }
