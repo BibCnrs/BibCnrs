@@ -1,21 +1,9 @@
 import { Test, type TestingModule } from "@nestjs/testing";
-import { Prisma } from "@prisma/client";
 import { EbscoCmsController } from "packages/bib-api/src/ebsco/ebsco-cms/ebsco-cms.controller";
 import { EbscoCmsService } from "packages/bib-api/src/ebsco/ebsco-cms/ebsco-cms.service";
 import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 
 describe("EbscoCmsController", () => {
-	const TEST_FAQ_CONTENT: Prisma.content_managementCreateArgs["data"] = {
-		page: "faq",
-		enable: true,
-		from: new Date("2021-01-01"),
-		to: null,
-		name_en: "Hello",
-		name_fr: "Bonjour",
-		content_en: "Hello!",
-		content_fr: "Bonjour!",
-	};
-
 	let ebscoCmsController: EbscoCmsController;
 
 	beforeEach(async () => {
@@ -25,22 +13,51 @@ describe("EbscoCmsController", () => {
 		}).compile();
 
 		ebscoCmsController = ebscoCms.get<EbscoCmsController>(EbscoCmsController);
-
-		const prismaService = ebscoCms.get<PrismaService>(PrismaService);
-
-		await prismaService.$transaction([
-			prismaService.content_management.deleteMany(),
-			prismaService.content_management.create({
-				data: TEST_FAQ_CONTENT,
-			}),
-		]);
 	});
 
 	describe("root", () => {
-		it('should return "Hello World!"', async () => {
-			expect(await ebscoCmsController.getContent("faq")).toStrictEqual([
-				expect.objectContaining(TEST_FAQ_CONTENT),
+		it("should return content for the home page", async () => {
+			expect(await ebscoCmsController.getContent("home")).toStrictEqual([
+				expect.objectContaining({
+					page: "home",
+					enable: true,
+					from: new Date("2021-01-01"),
+					to: null,
+					name_en: "Hello 1",
+					name_fr: "Bonjour 1",
+					content_en: "Hello! 1",
+					content_fr: "Bonjour! 1",
+				}),
+				expect.objectContaining({
+					page: "home",
+					enable: true,
+					from: new Date("2022-01-01"),
+					to: null,
+					name_en: "Hello 2",
+					name_fr: "Bonjour 2",
+					content_en: "Hello! 2",
+					content_fr: "Bonjour! 2",
+				}),
 			]);
+		});
+
+		it("should return the last item for home page", async () => {
+			expect(await ebscoCmsController.getContent("home", "")).toStrictEqual([
+				expect.objectContaining({
+					page: "home",
+					enable: true,
+					from: new Date("2021-01-01"),
+					to: null,
+					name_en: "Hello 1",
+					name_fr: "Bonjour 1",
+					content_en: "Hello! 1",
+					content_fr: "Bonjour! 1",
+				}),
+			]);
+		});
+
+		it("should return no content for the help page", async () => {
+			expect(await ebscoCmsController.getContent("help")).toStrictEqual([]);
 		});
 	});
 });

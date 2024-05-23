@@ -10,7 +10,6 @@ export class EbscoCmsController {
 		@Query("page") page: string | null,
 		@Query("first") first: string | null = null,
 	) {
-		const take = first != null ? 1 : 100;
-		return this.ebscoCmsService.getContent(page, take);
+		return this.ebscoCmsService.getContent(page ?? "", first != null);
 	}
 }
