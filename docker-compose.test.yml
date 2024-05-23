@@ -6,6 +6,8 @@ services:
       target: dev
     user: "${UID}:${GID}"
     working_dir: /app/packages/bib-api
+    volumes:
+      - ./packages/bib-api:/app/packages/bib-api
     depends_on:
       bib-db-test:
         condition: service_healthy
@@ -54,4 +56,3 @@ services:
         limits:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-1G}
-

@@ -48,6 +48,9 @@ test: test-api							## Run tests for all packages
 test-api:								## Run tests for bib-api
 	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn test --detectOpenHandles
 
+test-api-watch:							## Run tests for bib-api in watch mode
+	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn test:watch
+
 logs: env-copy							## Show logs
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f
 
