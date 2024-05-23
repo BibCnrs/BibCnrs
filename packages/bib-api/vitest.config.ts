@@ -2,14 +2,10 @@ import swc from "unplugin-swc";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+	cacheDir: ".vitest",
 	test: {
 		globals: true,
 		root: "./../..",
-	},
-	server: {
-		deps: {
-			cacheDir: ".vitest",
-		},
 	},
 	plugins: [
 		swc.vite({
