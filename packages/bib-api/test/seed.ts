@@ -4,6 +4,22 @@ const prisma = new PrismaClient();
 
 (async () => {
 	console.log("Seedig test database");
+	await prisma.admin_user.createMany({
+		data: [
+			{
+				username: "admin1",
+				password: "admin1",
+				comment: "admin1",
+				salt: "admin1",
+			},
+			{
+				username: "admin2",
+				password: "admin2",
+				comment: "admin2",
+				salt: "admin2",
+			},
+		],
+	});
 	await prisma.content_management.createMany({
 		data: [
 			{

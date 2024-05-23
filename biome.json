@@ -22,6 +22,11 @@
 		"enabled": true,
 		"ignore": ["package.json", "**/package.json"]
 	},
+	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	},
 	"overrides": [
 		{
 			"include": ["packages/bib-api/**"],

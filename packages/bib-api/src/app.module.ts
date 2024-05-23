@@ -4,9 +4,10 @@ import { AuthModule } from "packages/bib-api/src/auth/auth.module";
 import config from "packages/bib-api/src/config";
 import { EbscoModule } from "packages/bib-api/src/ebsco/ebsco.module";
 import { MailModule } from "packages/bib-api/src/mail/mail.module";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { AdminModule } from "./admin/admin.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { PrismaModule } from "./prisma/prisma.module";
 
 @Module({
 	imports: [
@@ -15,9 +16,10 @@ import { AppService } from "./app.service";
 			load: [config],
 			isGlobal: true,
 		}),
-		PrismaModule,
 		MailModule,
 		AuthModule,
+		AdminModule,
+		PrismaModule,
 		EbscoModule,
 	],
 	controllers: [AppController],
