@@ -11,7 +11,7 @@ services:
         condition: service_healthy
     environment:
       - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-      - POSTGRES_URL=postgres://bibcnrs_test:S3cr3t@bib-db-test/bibcnrs
+      - DATABASE_URL=postgres://postgres:S3cr3t@bib-db-test/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
       - OLD_API_URL=https://bib.cnrs.fr
       - MAIL_SERVER_HOST= bib-mail
@@ -41,7 +41,7 @@ services:
   bib-db-test:
     image: postgres:14
     environment:
-      - POSTGRES_USER=bibcnrs_test
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=S3cr3t
       - POSTGRES_DB=bibcnrs_test
     healthcheck:
