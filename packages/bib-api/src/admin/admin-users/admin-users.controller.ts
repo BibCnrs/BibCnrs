@@ -12,9 +12,12 @@ import {
 	Res,
 } from "@nestjs/common";
 import { Response } from "express";
+import { AdminUsersService } from "packages/bib-api/src/admin/admin-users/admin-users.service";
 import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin-users/admin-users.type";
-import { AdminUsersService } from "./admin-users.service";
-import { CreateAdminUserDto, UpdateAdminUserDto } from "./dto/admin-user.dto";
+import {
+	CreateAdminUserDto,
+	UpdateAdminUserDto,
+} from "packages/bib-api/src/admin/admin-users/dto/admin-user.dto";
 
 @Controller("api/admin/adminUsers")
 export class AdminUsersController {

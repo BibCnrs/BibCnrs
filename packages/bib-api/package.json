@@ -11,6 +11,7 @@
 		"start:dev": "prisma migrate deploy && nest start --watch",
 		"start:prod": "node dist/main",
 		"test": "prisma migrate reset --force && ts-node ./test/seed.ts && vitest --no-cache --watch=false",
+		"test:watch": "prisma migrate reset --force && ts-node ./test/seed.ts && vitest --no-cache --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {

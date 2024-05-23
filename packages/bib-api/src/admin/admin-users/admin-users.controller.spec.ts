@@ -5,6 +5,7 @@ import { AdminUsersController } from "packages/bib-api/src/admin/admin-users/adm
 import { AdminUsersService } from "packages/bib-api/src/admin/admin-users/admin-users.service";
 
 import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
+import { beforeEach, describe, expect, it, test, vi } from "vitest";
 
 describe("AdminUserController", () => {
 	let adminUsersController: AdminUsersController;
@@ -20,10 +21,10 @@ describe("AdminUserController", () => {
 	});
 
 	describe("root", () => {
-		it("should return list of admin users", async () => {
+		test("should return list of admin users", async () => {
 			const res = {
-				header: jest.fn(),
-				send: jest.fn(),
+				header: vi.fn(),
+				send: vi.fn(),
 			};
 
 			await adminUsersController.findAll({}, res as unknown as Response);
@@ -43,7 +44,7 @@ describe("AdminUserController", () => {
 			);
 		});
 
-		it("should return a single admin user", async () => {
+		test("should return a single admin user", async () => {
 			const data = await adminUsersController.findOne(2);
 			expect(data).toStrictEqual({
 				id: 2,
@@ -52,7 +53,7 @@ describe("AdminUserController", () => {
 			});
 		});
 
-		it("should create a new admin user, update it and delete it", async () => {
+		test("should create a new admin user, update it and delete it", async () => {
 			const randomUsername = `newAdmin${Math.floor(Math.random() * 1000)}`;
 
 			const createdAdmin = await adminUsersController.create({
@@ -89,7 +90,7 @@ describe("AdminUserController", () => {
 			).rejects.toThrow(HttpException);
 		});
 
-		it("should fail to create admin with the same username", async () => {
+		test("should fail to create admin with the same username", async () => {
 			await expect(
 				adminUsersController.create({
 					username: "admin1",
