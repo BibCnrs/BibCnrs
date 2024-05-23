@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 (async () => {
-	console.log("Seedig test database");
+	console.log("Seeding test database");
 	await prisma.admin_user.createMany({
 		data: [
 			{
@@ -20,6 +20,8 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+
+	// CMS
 	await prisma.content_management.createMany({
 		data: [
 			{
@@ -44,23 +46,63 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+
+	// Communities
 	await prisma.community.createMany({
 		data: [
 			{
-				name: "community1",
-				gate: "gate1",
-				user_id: "user_id1",
-				password: "password1",
-				profile: "profile1",
+				name: "INSHS",
+				gate: "inshs",
+				user_id: "inshs_user_id",
+				profile: "wsapi",
+				password: "inshs_password",
 				ebsco: true,
 			},
 			{
-				name: "community2",
-				gate: "gate2",
-				user_id: "user_id2",
-				password: "password2",
-				profile: "profile2",
-				ebsco: false,
+				name: "INSB",
+				gate: "insb",
+				user_id: "insb_user_id",
+				profile: "wsapi",
+				password: "insb_password",
+				ebsco: true,
+			},
+		],
+	});
+
+	// Licenses
+
+	await prisma.license.createMany({
+		data: [
+			{
+				name_fr: "Cadre d’utilisation",
+				name_en: "Framework of Use",
+				content_fr: "<p>Cadre d’utilisation</p>",
+				content_en: "<p>Framework of use</p>",
+				enable: true,
+			},
+			{
+				name_fr: "Test de licence",
+				name_en: "License Test",
+				content_fr: "<p>Test de licence</p>",
+				content_en: "<p>License Test</p>",
+				enable: true,
+			},
+		],
+	});
+
+	await prisma.license_community.createMany({
+		data: [
+			{
+				license_id: 1,
+				community_id: 1,
+			},
+			{
+				license_id: 1,
+				community_id: 2,
+			},
+			{
+				license_id: 2,
+				community_id: 1,
 			},
 		],
 	});
