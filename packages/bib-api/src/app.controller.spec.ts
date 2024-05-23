@@ -1,7 +1,7 @@
 import { Test, type TestingModule } from "@nestjs/testing";
+import { AppController } from "packages/bib-api/src/app.controller";
+import { AppService } from "packages/bib-api/src/app.service";
 import { beforeEach, describe, expect, it } from "vitest";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 
 describe("AppController", () => {
 	let appController: AppController;

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { beforeEach, describe, expect, it } from "vitest";
-import { PrismaModule } from "../../prisma/prisma.module";
-import { AdminUsersService } from "./admin-users.service";
+import { AdminUsersService } from "packages/bib-api/src/admin/admin-users/admin-users.service";
+import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { beforeEach, describe, expect, test } from "vitest";
 
 describe("AdminUsersService", () => {
 	let service: AdminUsersService;
@@ -16,7 +16,7 @@ describe("AdminUsersService", () => {
 		service = module.get<AdminUsersService>(AdminUsersService);
 	});
 
-	it("should be defined", () => {
+	test("should be defined", () => {
 		expect(service).toBeDefined();
 	});
 });
