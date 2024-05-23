@@ -34,9 +34,15 @@ To install all dependencies, run:
 make install
 ```
 
-## Init DB
+## Seed DB
 
-Copy preprod export to `data/seed.sql`, then run `make init-db`
+Warn: `seed-db` script will erase all your data from your local database.
+
+To init your db, you will need :
+
+- To install [`psql`](https://www.postgresql.org/download/) CLI
+- To copy preprod export to `data/seed.sql`
+- Run `make seed-db`
 
 ## Usage
 
