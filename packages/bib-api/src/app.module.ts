@@ -1,13 +1,13 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { AdminModule } from "packages/bib-api/src/admin/admin.module";
+import { AppController } from "packages/bib-api/src/app.controller";
+import { AppService } from "packages/bib-api/src/app.service";
 import { AuthModule } from "packages/bib-api/src/auth/auth.module";
 import config from "packages/bib-api/src/config";
 import { EbscoModule } from "packages/bib-api/src/ebsco/ebsco.module";
 import { MailModule } from "packages/bib-api/src/mail/mail.module";
-import { AdminModule } from "./admin/admin.module";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { PrismaModule } from "./prisma/prisma.module";
+import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
 
 @Module({
 	imports: [

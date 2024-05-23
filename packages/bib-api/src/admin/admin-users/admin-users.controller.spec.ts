@@ -3,9 +3,8 @@ import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
 import { AdminUsersController } from "packages/bib-api/src/admin/admin-users/admin-users.controller";
 import { AdminUsersService } from "packages/bib-api/src/admin/admin-users/admin-users.service";
-
 import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
-import { beforeEach, describe, expect, it, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 describe("AdminUserController", () => {
 	let adminUsersController: AdminUsersController;
