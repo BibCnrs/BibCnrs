@@ -70,7 +70,6 @@ const prisma = new PrismaClient();
 	});
 
 	// Licenses
-
 	await prisma.license.createMany({
 		data: [
 			{
@@ -103,6 +102,51 @@ const prisma = new PrismaClient();
 			{
 				license_id: 2,
 				community_id: 1,
+			},
+		],
+	});
+
+	// Databases
+	await prisma.database.createMany({
+		data: [
+			{
+				name_fr: "Wiley",
+				text_fr: "Plateforme multidisciplinaire",
+				text_en: "Multidisciplinary platform",
+				url_fr: "https://onlinelibrary.wiley.com/",
+				url_en: "https://onlinelibrary.wiley.com/",
+				name_en: "Wiley",
+				active: true,
+				oa: true,
+				use_proxy: true,
+			},
+			{
+				name_fr: "Springer",
+				text_fr: "Plateforme multidisciplinaire springer",
+				text_en: "Multidisciplinary platform springer",
+				url_fr: "https://link.springer.com/",
+				url_en: "https://link.springer.com/",
+				name_en: "Springer",
+				active: true,
+				oa: false,
+				use_proxy: false,
+			},
+		],
+	});
+
+	await prisma.database_community.createMany({
+		data: [
+			{
+				database_id: 1,
+				community_id: 1,
+			},
+			{
+				database_id: 2,
+				community_id: 1,
+			},
+			{
+				database_id: 2,
+				community_id: 2,
 			},
 		],
 	});

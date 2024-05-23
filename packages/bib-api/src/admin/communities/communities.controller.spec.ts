@@ -7,7 +7,7 @@ import { CommunitiesService } from "packages/bib-api/src/admin/communities/commu
 import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
-describe("AdminUserController", () => {
+describe("CommunitiesController", () => {
 	let communitiesController: CommunitiesController;
 
 	beforeEach(async () => {

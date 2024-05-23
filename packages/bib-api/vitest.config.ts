@@ -6,6 +6,7 @@ export default defineConfig({
 	test: {
 		globals: true,
 		root: "./../..",
+		testTimeout: 20000,
 	},
 	plugins: [
 		swc.vite({
