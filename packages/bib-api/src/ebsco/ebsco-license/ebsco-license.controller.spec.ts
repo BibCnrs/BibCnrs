@@ -1,8 +1,8 @@
 import { Test, type TestingModule } from "@nestjs/testing";
-import { EbscoLicenseController } from "packages/bib-api/src/ebsco/ebsco-license/ebsco-license.controller";
-import { EbscoLicenseService } from "packages/bib-api/src/ebsco/ebsco-license/ebsco-license.service";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import { beforeEach, describe, expect, it } from "vitest";
+import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoLicenseController } from "./ebsco-license.controller";
+import { EbscoLicenseService } from "./ebsco-license.service";
 
 describe("EbscoLicenseController", () => {
 	let ebscoLicenseController: EbscoLicenseController;

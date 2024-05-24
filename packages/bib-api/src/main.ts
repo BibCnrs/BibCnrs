@@ -1,7 +1,7 @@
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "packages/bib-api/src/app.module";
-import { NotFoundFilter } from "packages/bib-api/src/proxy/not-found.filter";
+import { AppModule } from "./app.module";
+import { NotFoundFilter } from "./proxy/not-found.filter";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);

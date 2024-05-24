@@ -1,15 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { revue } from "@prisma/client";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import {
-	CreateRevueDto,
-	UpdateRevueDto,
-} from "packages/bib-api/src/admin/revues/dto/revue.dto";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
-import {
-	FilterQuery,
-	transformFilters,
-} from "packages/bib-api/src/utils/filter";
+import { PrismaService } from "../../prisma/prisma.service";
+import { FilterQuery, transformFilters } from "../../utils/filter";
+import { FindAllQueryArgs } from "../admin.type";
+import { CreateRevueDto, UpdateRevueDto } from "./dto/revue.dto";
 
 @Injectable()
 export class RevuesService {

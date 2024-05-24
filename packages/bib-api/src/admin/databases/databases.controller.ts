@@ -12,12 +12,9 @@ import {
 	Res,
 } from "@nestjs/common";
 import { Response } from "express";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import { DatabasesService } from "packages/bib-api/src/admin/databases/databases.service";
-import {
-	CreateDatabaseDto,
-	UpdateDatabaseDto,
-} from "packages/bib-api/src/admin/databases/dto/database.dto";
+import { FindAllQueryArgs } from "../admin.type";
+import { DatabasesService } from "./databases.service";
+import { CreateDatabaseDto, UpdateDatabaseDto } from "./dto/database.dto";
 
 @Controller("api/admin/databases")
 export class DatabasesController {

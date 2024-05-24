@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { RevuesController } from "packages/bib-api/src/admin/revues/revues.controller";
-import { RevuesService } from "packages/bib-api/src/admin/revues/revues.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { RevuesController } from "./revues.controller";
+import { RevuesService } from "./revues.service";
 
 @Module({
 	controllers: [RevuesController],

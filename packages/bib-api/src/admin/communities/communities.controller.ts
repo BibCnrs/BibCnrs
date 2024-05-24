@@ -6,19 +6,15 @@ import {
 	HttpException,
 	HttpStatus,
 	Param,
-	Patch,
 	Post,
 	Put,
 	Query,
 	Res,
 } from "@nestjs/common";
 import { Response } from "express";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import { CommunitiesService } from "packages/bib-api/src/admin/communities/communities.service";
-import {
-	CreateCommunityDto,
-	UpdateCommunityDto,
-} from "packages/bib-api/src/admin/communities/dto/community.dto";
+import { FindAllQueryArgs } from "../admin.type";
+import { CommunitiesService } from "./communities.service";
+import { CreateCommunityDto, UpdateCommunityDto } from "./dto/community.dto";
 
 @Controller("api/admin/communities")
 export class CommunitiesController {

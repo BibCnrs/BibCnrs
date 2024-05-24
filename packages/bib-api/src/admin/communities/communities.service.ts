@@ -1,15 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { community } from "@prisma/client";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import {
-	CreateCommunityDto,
-	UpdateCommunityDto,
-} from "packages/bib-api/src/admin/communities/dto/community.dto";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
-import {
-	FilterQuery,
-	transformFilters,
-} from "packages/bib-api/src/utils/filter";
+import { PrismaService } from "../../prisma/prisma.service";
+import { FilterQuery, transformFilters } from "../../utils/filter";
+import { FindAllQueryArgs } from "../admin.type";
+import { CreateCommunityDto, UpdateCommunityDto } from "./dto/community.dto";
 
 @Injectable()
 export class CommunitiesService {

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { AdminUsersController } from "packages/bib-api/src/admin/admin-users/admin-users.controller";
-import { AdminUsersService } from "packages/bib-api/src/admin/admin-users/admin-users.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { AdminUsersController } from "./admin-users.controller";
+import { AdminUsersService } from "./admin-users.service";
 
 @Module({
 	controllers: [AdminUsersController],

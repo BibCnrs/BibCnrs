@@ -1,5 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
-import { EbscoTestNewsService } from "packages/bib-api/src/ebsco/ebsco-test-news/ebsco-test-news.service";
+import { EbscoTestNewsService } from "./ebsco-test-news.service";
 
 @Controller("/api/ebsco/news")
 export class EbscoTestNewsController {

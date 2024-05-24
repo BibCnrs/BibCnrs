@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { EbscoLicenseController } from "packages/bib-api/src/ebsco/ebsco-license/ebsco-license.controller";
-import { EbscoLicenseService } from "packages/bib-api/src/ebsco/ebsco-license/ebsco-license.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { EbscoLicenseController } from "./ebsco-license.controller";
+import { EbscoLicenseService } from "./ebsco-license.service";
 
 @Module({
 	imports: [PrismaModule],

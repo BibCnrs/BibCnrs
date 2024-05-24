@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { EbscoLicenseService } from "packages/bib-api/src/ebsco/ebsco-license/ebsco-license.service";
-import { parsePage } from "packages/bib-api/src/utils/page";
+import { parsePage } from "../../utils/page";
+import { EbscoLicenseService } from "./ebsco-license.service";
 
 @Controller("/api/ebsco/licenses")
 export class EbscoLicenseController {

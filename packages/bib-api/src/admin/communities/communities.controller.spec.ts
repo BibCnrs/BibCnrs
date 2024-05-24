@@ -1,11 +1,11 @@
 import { HttpException } from "@nestjs/common";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
-import { CommunitiesController } from "packages/bib-api/src/admin/communities/communities.controller";
-import { CommunitiesService } from "packages/bib-api/src/admin/communities/communities.service";
+import { CommunitiesController } from "./communities.controller";
+import { CommunitiesService } from "./communities.service";
 
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import { PrismaService } from "../../prisma/prisma.service";
 
 describe("CommunitiesController", () => {
 	let communitiesController: CommunitiesController;

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { CommunitiesController } from "packages/bib-api/src/admin/communities/communities.controller";
-import { CommunitiesService } from "packages/bib-api/src/admin/communities/communities.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { CommunitiesController } from "./communities.controller";
+import { CommunitiesService } from "./communities.service";
 
 @Module({
 	controllers: [CommunitiesController],

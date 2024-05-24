@@ -1,15 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { database } from "@prisma/client";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import {
-	CreateDatabaseDto,
-	UpdateDatabaseDto,
-} from "packages/bib-api/src/admin/databases/dto/database.dto";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
-import {
-	FilterQuery,
-	transformFilters,
-} from "packages/bib-api/src/utils/filter";
+import { PrismaService } from "../../prisma/prisma.service";
+import { FilterQuery, transformFilters } from "../../utils/filter";
+import { FindAllQueryArgs } from "../admin.type";
+import { CreateDatabaseDto, UpdateDatabaseDto } from "./dto/database.dto";
 
 @Injectable()
 export class DatabasesService {

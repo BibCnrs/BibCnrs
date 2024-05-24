@@ -4,15 +4,27 @@ services:
       context: .
       dockerfile: ./ops/bib-api/Dockerfile
       target: dev
-    user: "${UID}:${GID}"
-    working_dir: /app/packages/bib-api
-    volumes:
-      - ./packages/bib-api:/app/packages/bib-api
+    command: ["yarn", "workspace", "@bibcnrs/bib-api", "run", "test:watch"]
+    develop:
+      watch:
+        - action: sync
+          path:   ./packages/bib-api/src
+          target: /app/packages/bib-api/src
+        - action: sync
+          path:   ./packages/bib-api/vitest.config.mts
+          target: /app/packages/bib-api/vitest.config.mts
+        - action: rebuild
+          path:   ./packages/bib-api/test/seed.ts
+        - action: rebuild
+          path:   ./packages/bib-api/prisma/schema.prisma
+        - action: rebuild
+          path:   ./package.json
+        - action: rebuild
+          path:   ./packages/bib-api/package.json
     depends_on:
       bib-db-test:
         condition: service_healthy
     environment:
-      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
       - DATABASE_URL=postgres://postgres:S3cr3t@bib-db-test/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
       - OLD_API_URL=https://bib.cnrs.fr
@@ -25,18 +37,15 @@ services:
           memory: ${API_MAX_MEMORY:-2G}
 
   bib-front-test:
-    user: "${UID}:${GID}"
     build:
       context: .
       dockerfile: ./ops/bib-front/Dockerfile
       target: dev
     environment:
-      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
       - NODE_ENV=development
       - VITE_ENV=development
       - VITE_BIBAPI_HOST=http://localhost:3000/api
       - VITE_SOURCE_MAP=true
-    working_dir: /app/packages/bib-front
     depends_on:
       - bib-api-test
 
@@ -51,6 +60,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    ports:
+      - "15432:5432"
     deploy:
       resources:
         limits:
