@@ -47,6 +47,38 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Insitute
+
+	await prisma.institute.createMany({
+		data: [
+			{
+				code: "CNRS",
+				name: "CNRS",
+			},
+		],
+	});
+
+	// Unit
+	await prisma.unit.createMany({
+		data: [
+			{
+				code: "A",
+			},
+			{
+				code: "B",
+			},
+		],
+	});
+
+	await prisma.unit_institute.createMany({
+		data: [
+			{
+				institute_id: 1,
+				unit_id: 2,
+			},
+		],
+	});
+
 	// Communities
 	await prisma.community.createMany({
 		data: [
@@ -224,6 +256,36 @@ const prisma = new PrismaClient();
 			{
 				revue_id: 2,
 				community_id: 2,
+			},
+		],
+	});
+
+	// Inist account
+	await prisma.inist_account.createMany({
+		data: [
+			{
+				username: "INIST",
+				password: "INIST",
+				active: true,
+				mail: "inist@cnrs.fr",
+			},
+		],
+	});
+
+	await prisma.inist_account_community.createMany({
+		data: [
+			{
+				inist_account_id: 1,
+				community_id: 1,
+			},
+		],
+	});
+
+	await prisma.inist_account_unit.createMany({
+		data: [
+			{
+				inist_account_id: 1,
+				unit_id: 1,
 			},
 		],
 	});

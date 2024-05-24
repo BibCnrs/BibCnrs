@@ -3,8 +3,10 @@ import { ConfigModule } from "@nestjs/config";
 import { AdminModule } from "./admin/admin.module";
 import config from "./config";
 import { EbscoModule } from "./ebsco/ebsco.module";
+import { InistModule } from "./inist/inist.module";
 import { MailModule } from "./mail/mail.module";
 import { PrismaModule } from "./prisma/prisma.module";
+import { SecurityModule } from "./security/security.module";
 
 @Module({
 	imports: [
@@ -13,9 +15,11 @@ import { PrismaModule } from "./prisma/prisma.module";
 			load: [config],
 			isGlobal: true,
 		}),
-		MailModule,
-		AdminModule,
 		PrismaModule,
+		SecurityModule,
+		MailModule,
+		InistModule,
+		AdminModule,
 		EbscoModule,
 	],
 	controllers: [],
