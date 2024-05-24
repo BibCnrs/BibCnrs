@@ -2,6 +2,7 @@ interface SearchField {
 	field: string;
 	mode: string;
 	excludeMatch?: boolean;
+	excludeBatch?: boolean;
 }
 
 export interface Filters {
