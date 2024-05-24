@@ -196,6 +196,37 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+
+	// Revues
+	await prisma.revue.createMany({
+		data: [
+			{
+				title: "ACM",
+				url: "https://dl.acm.org",
+			},
+			{
+				title: "IEEE",
+				url: "https://ieeexplore.ieee.org",
+			},
+		],
+	});
+
+	await prisma.revue_community.createMany({
+		data: [
+			{
+				revue_id: 1,
+				community_id: 1,
+			},
+			{
+				revue_id: 2,
+				community_id: 1,
+			},
+			{
+				revue_id: 2,
+				community_id: 2,
+			},
+		],
+	});
 })()
 	.then(async () => {
 		await prisma.$disconnect();

@@ -22,7 +22,7 @@ export const transformFilters = (
 
 	let filterQuery: FilterQuery = {};
 	for (const key in filters) {
-		if (filters[key] === "") {
+		if (!filters[key]) {
 			continue;
 		}
 		if (key === "match") {
