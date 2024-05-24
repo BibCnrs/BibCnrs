@@ -101,14 +101,7 @@ describe("LicensesController", () => {
 				enable: true,
 				common: true,
 				pdf: { title: "title", src: "src" },
-				license_community: [
-					{
-						community_id: 1,
-					},
-					{
-						community_id: 2,
-					},
-				],
+				license_community: [],
 			});
 
 			expect(createdLicence).toEqual(
