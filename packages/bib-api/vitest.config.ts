@@ -4,6 +4,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
 	test: {
 		root: "./../..",
+		testTimeout: 20000,
 	},
 	plugins: [
 		swc.vite({

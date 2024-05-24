@@ -106,6 +106,51 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Databases
+	await prisma.database.createMany({
+		data: [
+			{
+				name_fr: "Wiley",
+				text_fr: "Plateforme multidisciplinaire",
+				text_en: "Multidisciplinary platform",
+				url_fr: "https://onlinelibrary.wiley.com/",
+				url_en: "https://onlinelibrary.wiley.com/",
+				name_en: "Wiley",
+				active: true,
+				oa: true,
+				use_proxy: true,
+			},
+			{
+				name_fr: "Springer",
+				text_fr: "Plateforme multidisciplinaire springer",
+				text_en: "Multidisciplinary platform springer",
+				url_fr: "https://link.springer.com/",
+				url_en: "https://link.springer.com/",
+				name_en: "Springer",
+				active: true,
+				oa: false,
+				use_proxy: false,
+			},
+		],
+	});
+
+	await prisma.database_community.createMany({
+		data: [
+			{
+				database_id: 1,
+				community_id: 1,
+			},
+			{
+				database_id: 2,
+				community_id: 1,
+			},
+			{
+				database_id: 2,
+				community_id: 2,
+			},
+		],
+	});
+
 	// Resources
 	await prisma.resources.createMany({
 		data: [
@@ -148,6 +193,37 @@ const prisma = new PrismaClient();
 				name_fr: "News 1",
 				content_en: "Test News 1",
 				content_fr: "Test News 1",
+			},
+		],
+	});
+
+	// Revues
+	await prisma.revue.createMany({
+		data: [
+			{
+				title: "ACM",
+				url: "https://dl.acm.org",
+			},
+			{
+				title: "IEEE",
+				url: "https://ieeexplore.ieee.org",
+			},
+		],
+	});
+
+	await prisma.revue_community.createMany({
+		data: [
+			{
+				revue_id: 1,
+				community_id: 1,
+			},
+			{
+				revue_id: 2,
+				community_id: 1,
+			},
+			{
+				revue_id: 2,
+				community_id: 2,
 			},
 		],
 	});
