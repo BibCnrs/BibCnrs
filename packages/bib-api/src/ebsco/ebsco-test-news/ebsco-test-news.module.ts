@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { EbscoTestNewsController } from "packages/bib-api/src/ebsco/ebsco-test-news/ebsco-test-news.controller";
-import { EbscoTestNewsService } from "packages/bib-api/src/ebsco/ebsco-test-news/ebsco-test-news.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { EbscoTestNewsController } from "./ebsco-test-news.controller";
+import { EbscoTestNewsService } from "./ebsco-test-news.service";
 
 @Module({
 	imports: [PrismaModule],

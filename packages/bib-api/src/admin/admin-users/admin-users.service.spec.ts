@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AdminUsersService } from "packages/bib-api/src/admin/admin-users/admin-users.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
 import { beforeEach, describe, expect, test } from "vitest";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { AdminUsersService } from "./admin-users.service";
 
 describe("AdminUsersService", () => {
 	let service: AdminUsersService;

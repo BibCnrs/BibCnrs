@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { MailService } from "packages/bib-api/src/mail/mail.service";
+import { MailService } from "./mail.service";
 
 @Module({
 	imports: [],

@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { EbscoCmsService } from "packages/bib-api/src/ebsco/ebsco-cms/ebsco-cms.service";
+import { EbscoCmsService } from "./ebsco-cms.service";
 
 @Controller("/api/ebsco/cms")
 export class EbscoCmsController {

@@ -1,15 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { admin_user } from "@prisma/client";
-import {
-	CreateAdminUserDto,
-	UpdateAdminUserDto,
-} from "packages/bib-api/src/admin/admin-users/dto/admin-user.dto";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
-import {
-	FilterQuery,
-	transformFilters,
-} from "packages/bib-api/src/utils/filter";
+import { PrismaService } from "../../prisma/prisma.service";
+import { FilterQuery, transformFilters } from "../../utils/filter";
+import { FindAllQueryArgs } from "../admin.type";
+import { CreateAdminUserDto, UpdateAdminUserDto } from "./dto/admin-user.dto";
 @Injectable()
 export class AdminUsersService {
 	constructor(private prismaService: PrismaService) {}

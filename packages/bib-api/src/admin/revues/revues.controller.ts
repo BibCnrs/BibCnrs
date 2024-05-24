@@ -6,19 +6,15 @@ import {
 	HttpException,
 	HttpStatus,
 	Param,
-	Patch,
 	Post,
 	Put,
 	Query,
 	Res,
 } from "@nestjs/common";
 import { Response } from "express";
-import { FindAllQueryArgs } from "packages/bib-api/src/admin/admin.type";
-import {
-	CreateRevueDto,
-	UpdateRevueDto,
-} from "packages/bib-api/src/admin/revues/dto/revue.dto";
-import { RevuesService } from "packages/bib-api/src/admin/revues/revues.service";
+import { FindAllQueryArgs } from "../admin.type";
+import { CreateRevueDto, UpdateRevueDto } from "./dto/revue.dto";
+import { RevuesService } from "./revues.service";
 
 @Controller("api/admin/revues")
 export class RevuesController {

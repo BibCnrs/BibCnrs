@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { EbscoCmsController } from "packages/bib-api/src/ebsco/ebsco-cms/ebsco-cms.controller";
-import { EbscoCmsService } from "packages/bib-api/src/ebsco/ebsco-cms/ebsco-cms.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { EbscoCmsController } from "./ebsco-cms.controller";
+import { EbscoCmsService } from "./ebsco-cms.service";
 
 @Module({
 	imports: [PrismaModule],

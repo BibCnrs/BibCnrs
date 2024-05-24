@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { CommunitiesService } from "packages/bib-api/src/admin/communities/communities.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
 import { beforeEach, describe, expect, it } from "vitest";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { CommunitiesService } from "./communities.service";
 
 describe("CommunitiesService", () => {
 	let service: CommunitiesService;

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { EbscoResourceController } from "packages/bib-api/src/ebsco/ebsco-resource/ebsco-resource.controller";
-import { EbscoResourceService } from "packages/bib-api/src/ebsco/ebsco-resource/ebsco-resource.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { EbscoResourceController } from "./ebsco-resource.controller";
+import { EbscoResourceService } from "./ebsco-resource.service";
 
 @Module({
 	imports: [PrismaModule],

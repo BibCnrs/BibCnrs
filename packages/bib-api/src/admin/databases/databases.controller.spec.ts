@@ -1,11 +1,11 @@
 import { HttpException } from "@nestjs/common";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
-import { DatabasesController } from "packages/bib-api/src/admin/databases/databases.controller";
-import { DatabasesService } from "packages/bib-api/src/admin/databases/databases.service";
+import { DatabasesController } from "./databases.controller";
+import { DatabasesService } from "./databases.service";
 
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import { PrismaService } from "../../prisma/prisma.service";
 
 describe("DatabasesController", () => {
 	let databasesController: DatabasesController;

@@ -1,8 +1,8 @@
 import { Test, type TestingModule } from "@nestjs/testing";
-import { EbscoResourceController } from "packages/bib-api/src/ebsco/ebsco-resource/ebsco-resource.controller";
-import { EbscoResourceService } from "packages/bib-api/src/ebsco/ebsco-resource/ebsco-resource.service";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import { beforeEach, describe, expect, it } from "vitest";
+import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoResourceController } from "./ebsco-resource.controller";
+import { EbscoResourceService } from "./ebsco-resource.service";
 
 describe("EbscoResourcesController", () => {
 	let ebscoResourcesController: EbscoResourceController;

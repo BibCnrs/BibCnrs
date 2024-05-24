@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { EbscoResourceService } from "packages/bib-api/src/ebsco/ebsco-resource/ebsco-resource.service";
+import { EbscoResourceService } from "./ebsco-resource.service";
 
 @Controller("/api/ebsco/resources")
 export class EbscoResourceController {

@@ -1,6 +1,3 @@
-export UID = $(shell id -u)
-export GID = $(shell id -g)
-
 ifneq (,$(wildcard .env))
 include .env
 export $(shell sed 's/=.*//' .env)
@@ -32,13 +29,13 @@ reset-db: env-copy 						## Reset the database and apply all migration
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml run --rm bib-api yarn prisma migrate reset
 
 seed-db: 								## Initialize the database with seed data
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down --volumes
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up --renew-anon-volumes -d --wait bib-db
+	docker compose -f docker-compose.dev.yml down --volumes
+	docker compose -f docker-compose.dev.yml up --renew-anon-volumes -d --wait bib-db
 	docker exec bibcnrs-bib-db-1 psql -U postgres bibcnrs -f /data/seed.sql
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml run --build --rm bib-api yarn run prisma migrate resolve --applied 0_init
+	docker compose -f docker-compose.dev.yml run --build --rm bib-api yarn run prisma migrate resolve --applied 0_init
 
 start: env-copy							## Start stack in development mode
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up -d --build --remove-orphans
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up --build --remove-orphans --watch --no-attach=bib-db --no-attach=bib-mail --no-attach=bib-proxy
 
 stop: env-copy							## Stop stack
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down 
@@ -47,10 +44,10 @@ stop: env-copy							## Stop stack
 test: test-api							## Run tests for all packages
 
 test-api:								## Run tests for bib-api
-	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn test
+	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn workspace @bibcnrs/bib-api run test
 
 test-api-watch:							## Run tests for bib-api in watch mode
-	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn test:watch
+	docker compose -f docker-compose.test.yml up --build --remove-orphans --watch bib-db-test bib-api-test --no-attach=bib-db-test
 
 logs: env-copy							## Show logs
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f

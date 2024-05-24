@@ -1,8 +1,8 @@
 import { Test, type TestingModule } from "@nestjs/testing";
-import { EbscoTestNewsController } from "packages/bib-api/src/ebsco/ebsco-test-news/ebsco-test-news.controller";
-import { EbscoTestNewsService } from "packages/bib-api/src/ebsco/ebsco-test-news/ebsco-test-news.service";
-import { PrismaService } from "packages/bib-api/src/prisma/prisma.service";
 import { beforeEach, describe, expect, it } from "vitest";
+import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoTestNewsController } from "./ebsco-test-news.controller";
+import { EbscoTestNewsService } from "./ebsco-test-news.service";
 
 describe("EbscoTestNewsController", () => {
 	let ebscoTestNewsController: EbscoTestNewsController;

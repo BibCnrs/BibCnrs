@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { DatabasesController } from "packages/bib-api/src/admin/databases/databases.controller";
-import { DatabasesService } from "packages/bib-api/src/admin/databases/databases.service";
-import { PrismaModule } from "packages/bib-api/src/prisma/prisma.module";
+import { PrismaModule } from "../../prisma/prisma.module";
+import { DatabasesController } from "./databases.controller";
+import { DatabasesService } from "./databases.service";
 
 @Module({
 	controllers: [DatabasesController],

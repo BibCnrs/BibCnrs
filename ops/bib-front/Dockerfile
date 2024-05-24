@@ -17,8 +17,9 @@ FROM base as sources
 
 ENV NODE_ENV=production
 
-COPY tsconfig.json ./
-COPY packages/bib-front/ ./packages/bib-front/
+COPY --chown=node:node  tsconfig.json           ./tsconfig.json
+COPY --chown=node:node  packages/bib-front/     ./packages/bib-front/
+
 RUN yarn workspaces focus @bibcnrs/bib-front
 
 FROM sources as dev
