@@ -14,3 +14,7 @@
 
 **/node_modules
 *.env
+
+# Production
+/backups
+/postgresql

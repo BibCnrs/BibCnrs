@@ -34,6 +34,27 @@ To install all dependencies, run:
 make install
 ```
 
+## Start development mode
+
+Requires Docker Compose > v2.22.0
+
+```sh
+make start-dev  # Start all services
+make stop-dev   # Stop all services
+```
+
+## Test
+
+Requires Docker Compose > v2.22.0
+
+```sh
+make test             # Runs all tests and exits
+
+# OR
+
+make test-api-watch   # Runs API tests in watch mode
+```
+
 ## Seed DB
 
 Warn: `seed-db` script will erase all your data from your local database.
@@ -60,6 +81,21 @@ make logs-admin
 make logs-front
 
 make logs
+```
+
+## Deploy
+
+First you wil need to buil all containers
+
+```sh
+BIBAPI_VERSION=latest make build-api
+BIBAPI_HOST="http://localhost:3000/api" BIBFRONT_VERSION=latest make build-front
+BIBAPI_HOST="http://localhost:3000/api" BIBADMIN_VERSION=latest make build-admin
+
+# OR one-liner
+
+BIBAPI_HOST="http://localhost:3000/api" BIBAPI_VERSION=latest BIBFRONT_VERSION=latest BIBADMIN_VERSION=latest make build
+
 ```
 
 ## Makefile

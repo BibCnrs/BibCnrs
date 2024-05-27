@@ -52,7 +52,10 @@ ENV NODE_ENV=production
 COPY --from=prod-builder    /app/package.json                   /app/package.json
 COPY --from=prod-builder    /app/packages/bib-api/package.json  /app/packages/bib-api/package.json
 COPY --from=prod-builder    /app/packages/bib-api/dist          /app/packages/bib-api/dist
+COPY --from=sources         /app/packages/bib-api/prisma        /app/packages/bib-api/prisma  
 COPY --from=prod-deps       /app/node_modules                   /app/node_modules
+COPY --from=sources         /app/node_modules/.prisma           /app/node_modules/.prisma
+COPY --from=sources         /app/node_modules/@prisma           /app/node_modules/@prisma
 
 EXPOSE 3000
 
