@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
 import crypto from "node:crypto";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class SecurityService {
