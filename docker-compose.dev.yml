@@ -5,7 +5,7 @@ services:
       dockerfile: ./ops/bib-api/Dockerfile
       target: dev
     volumes:
-      - ./data/uploads:/uploads
+      - ./data/uploads:/app/packages/bib-api/uploads
     develop:
       watch:
         - action: sync
@@ -29,7 +29,7 @@ services:
       - cookie_secret=${cookie_secret}
       - header_secret=${header_secret}
       - admin_secret=${admin_secret}
-      - BIBAPI_HOST=http://localhost:3000/api
+      - CONTENT_DELIVRY_HOST=http://localhost:3000/files
     deploy:
       resources:
         limits:
@@ -97,7 +97,7 @@ services:
     develop:
       watch:
         - action: rebuild
-          path:   ./ops/bib-proxy/nginx.conf
+          path: ./ops/bib-proxy/nginx.conf
     volumes:
       - ./ops/bib-proxy/nginx.conf:/etc/nginx/nginx.conf
       - ./data/uploads:/usr/share/nginx/html/files

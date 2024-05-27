@@ -18,7 +18,6 @@ import { ConfigService } from "@nestjs/config";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Response } from "express";
 import { diskStorage } from "multer";
-import { v4 as uuidv4 } from "uuid";
 import { Config } from "../../config";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateMediaDto, UpdateMediaDto } from "./dto/media.dto";
@@ -26,10 +25,14 @@ import { MediasService } from "./medias.service";
 
 @Controller("api/admin/medias")
 export class MediasController {
+	private readonly contentDeliveryConfig: Config["contentDelivery"];
 	constructor(
 		private readonly mediasService: MediasService,
-		private configService: ConfigService<Config, true>,
-	) {}
+		private readonly configService: ConfigService<Config, true>,
+	) {
+		this.contentDeliveryConfig =
+			this.configService.get<Config["contentDelivery"]>("contentDelivery");
+	}
 
 	@Post()
 	@UseInterceptors(
@@ -49,14 +52,14 @@ export class MediasController {
 		@UploadedFile() file: Express.Multer.File,
 		@Body() createMediaDto: CreateMediaDto,
 	) {
-		console.log("file", file);
-		const contentDelivery =
-			this.configService.get<Config["contentDelivery"]>("contentDelivery");
 		const media = {
 			...createMediaDto,
 			file_name: file.filename,
 			file: `${file.path}`,
-			url: `${contentDelivery.host}/${file.path.replace("uploads", "media")}`,
+			url: `${this.contentDeliveryConfig.host}${file.path.replace(
+				"uploads",
+				"",
+			)}`,
 		};
 		return this.mediasService.create(media);
 	}

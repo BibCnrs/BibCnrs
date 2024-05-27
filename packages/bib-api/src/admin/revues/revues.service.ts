@@ -48,7 +48,6 @@ export class RevuesService {
 		query: FindAllQueryArgs,
 	): Promise<{ data: Partial<revue>[]; total: number }> {
 		const filters = this.parseFilters(query);
-		console.log("filters", filters);
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
 

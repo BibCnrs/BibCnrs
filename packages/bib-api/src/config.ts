@@ -10,7 +10,7 @@ const configFunction = () => ({
 		expiresIn: 10 * 3600, // 10 hours
 	},
 	contentDelivery: {
-		host: process.env.BIBAPI_HOST,
+		host: process.env.CONTENT_DELIVRY_HOST,
 	},
 });
 
