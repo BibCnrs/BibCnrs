@@ -19,18 +19,21 @@ const ResourcesEdit = () => {
 					sx={{ width: "100%" }}
 					name="href"
 					source="href"
+					required
 				/>
 				<TextInput
 					label="Titre français"
 					sx={{ width: "100%" }}
 					name="name_fr"
 					source="name_fr"
+					required
 				/>
 				<TextInput
 					label="Titre anglais"
 					sx={{ width: "100%" }}
 					name="name_en"
 					source="name_en"
+					required
 				/>
 			</SimpleForm>
 		</Edit>

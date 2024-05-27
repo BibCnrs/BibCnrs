@@ -5,6 +5,7 @@ import { ContentsManagementModule } from "./contentsManagement/contents-manageme
 import { DatabasesModule } from "./databases/databases.module";
 import { LicensesModule } from "./licenses/licenses.module";
 import { MediasModule } from "./medias/medias.module";
+import { ResourcesModule } from "./resources/resources.module";
 import { RevuesModule } from "./revues/revues.module";
 
 @Module({
@@ -16,6 +17,7 @@ import { RevuesModule } from "./revues/revues.module";
 		LicensesModule,
 		ContentsManagementModule,
 		MediasModule,
+		ResourcesModule,
 	],
 	controllers: [],
 	providers: [],
