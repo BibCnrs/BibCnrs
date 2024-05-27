@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 import { AdminModule } from "./admin/admin.module";
 import config from "./config";
 import { EbscoModule } from "./ebsco/ebsco.module";
@@ -14,6 +15,9 @@ import { SecurityModule } from "./security/security.module";
 			ignoreEnvFile: true,
 			load: [config],
 			isGlobal: true,
+		}),
+		JwtModule.register({
+			global: true,
 		}),
 		PrismaModule,
 		SecurityModule,

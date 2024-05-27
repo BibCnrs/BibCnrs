@@ -8,9 +8,8 @@ import {
 import { Response } from "express";
 import { InistAccountService } from "../../inist/inist-account/inist-account.service";
 import { LoginDto } from "./dto/login";
+import { LOGIN_COOKIE_NAME } from "./ebsco-auth.const";
 import { EbscoAuthService } from "./ebsco-auth.service";
-
-const LOGIN_COOKIE_NAME = "bibapi_token";
 
 @Controller("/api/ebsco")
 export class EbscoAuthController {

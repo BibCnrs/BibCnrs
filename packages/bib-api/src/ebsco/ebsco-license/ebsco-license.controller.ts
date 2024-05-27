@@ -1,8 +1,10 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { parsePage } from "../../utils/page";
+import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
 import { EbscoLicenseService } from "./ebsco-license.service";
 
 @Controller("/api/ebsco/licenses")
+@UseGuards(EbscoAuthGuard)
 export class EbscoLicenseController {
 	constructor(private readonly ebscoLicenseService: EbscoLicenseService) {}
 

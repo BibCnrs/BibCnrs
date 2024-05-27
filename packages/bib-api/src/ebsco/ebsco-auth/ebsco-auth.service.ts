@@ -3,9 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import * as jwt from "jsonwebtoken";
 import { Config } from "../../config";
 import { InistAccount } from "../../inist/inist-account/inist-account.type";
-
-const TOKEN_ORIGIN = "inist";
-const JWT_ALG: jwt.Algorithm = "HS256";
+import { JWT_ALG, TOKEN_ORIGIN } from "./ebsco-auth.const";
 
 @Injectable()
 export class EbscoAuthService {
