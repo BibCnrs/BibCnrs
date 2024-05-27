@@ -70,5 +70,35 @@ lint-apply: 							## Apply lint for each projects
 lint-check: 							## Check lint for each projects
 	yarn run biome check * **/*
 
-docker-build-api: env-copy				## Build docker image for api
-	docker build -t bib-api --progress=plain --no-cache -f ./ops/api/Dockerfile .
+build:									## Build all docker images								
+	$(MAKE) build-api
+	$(MAKE) build-front
+	$(MAKE) build-admin
+
+build-api:								## Build docker image for api args: <BIBAPI_VERSION> build bibcnrs/api:<BIBAPI_VERSION> docker image default <BIBAPI_VERSION> to latest
+	docker build \
+		-f ./ops/bib-api/Dockerfile \
+		--progress=plain \
+		--no-cache \
+		--build-arg http_proxy \
+		--build-arg https_proxy \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:${BIBAPI_VERSION}' \
+		.
+
+build-front:
+	docker build \
+		-f ./ops/bib-front/Dockerfile \
+		--progress=plain \
+		--no-cache \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}' \
+		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
+		.
+
+build-admin:
+	docker build \
+		-f ./ops/bib-admin/Dockerfile \
+		--progress=plain \
+		--no-cache \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}' \
+		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
+		.

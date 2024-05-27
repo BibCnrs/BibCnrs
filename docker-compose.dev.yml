@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: ./ops/bib-api/Dockerfile
       target: dev
+    volumes:
+      - ./data/uploads:/uploads
     develop:
       watch:
         - action: sync
@@ -84,15 +86,20 @@ services:
       - bib-api
 
   bib-proxy:
-    build:
-      context: .
-      dockerfile: ./ops/bib-proxy/Dockerfile
+    image: nginx:1.25-alpine
     ports:
       - "3000:80"
     depends_on:
       - bib-api
       - bib-front
       - bib-admin
+    develop:
+      watch:
+        - action: rebuild
+          path:   ./ops/bib-proxy/nginx.conf
+    volumes:
+      - ./ops/bib-proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./data/uploads:/usr/share/nginx/html/files
 
   bib-db:
     image: postgres:14

@@ -31,7 +31,7 @@ CMD ["yarn", "workspace", "@bibcnrs/bib-admin", "run", "dev"]
 FROM sources as prod-builder
 
 ARG BIBAPI_HOST
-ARG SOURCE_MAP
+ARG SOURCE_MAP=false
 
 ENV VITE_BIBAPI_HOST=$BIBAPI_HOST \
     VITE_ENV="prod" \
@@ -42,7 +42,7 @@ RUN yarn workspace @bibcnrs/bib-admin run build
 FROM nginx:1.25-alpine
 
 RUN rm -rf /usr/share/nginx/html/*
-COPY /nginx.conf  /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+ADD ./packages/bib-admin/nginx.conf             /etc/nginx/conf.d/default.conf
+COPY --from=prod-builder    /app/packages/bib-admin/dist    /usr/share/nginx/html
 
-EXPOSE 8080
+EXPOSE 80
