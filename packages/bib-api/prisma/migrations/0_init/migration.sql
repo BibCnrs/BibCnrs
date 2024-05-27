@@ -271,7 +271,7 @@ CREATE TABLE "license" (
     "content_en" TEXT NOT NULL,
     "pdf" JSON,
     "enable" BOOLEAN NOT NULL DEFAULT true,
-    "common" BOOLEAN NOT NULL DEFAULT false,
+    "common" BOOLEAN DEFAULT false,
 
     CONSTRAINT "license_pkey" PRIMARY KEY ("id")
 );
@@ -290,8 +290,8 @@ CREATE TABLE "content_management" (
     "content_fr" TEXT NOT NULL,
     "content_en" TEXT NOT NULL,
     "page" TEXT NOT NULL,
-    "from" TIMESTAMP(3) NOT NULL,
-    "to" TIMESTAMP(3),
+    "from" DATE NOT NULL,
+    "to" DATE,
     "enable" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "content_management_pkey" PRIMARY KEY ("id")
@@ -300,8 +300,8 @@ CREATE TABLE "content_management" (
 -- CreateTable
 CREATE TABLE "medias" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "file_name" TEXT NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "file_name" VARCHAR(255) NOT NULL,
     "file" TEXT NOT NULL,
     "url" TEXT NOT NULL,
 
@@ -311,10 +311,10 @@ CREATE TABLE "medias" (
 -- CreateTable
 CREATE TABLE "resources" (
     "id" SERIAL NOT NULL,
-    "name_fr" TEXT NOT NULL,
-    "name_en" TEXT NOT NULL,
+    "name_fr" VARCHAR(255) NOT NULL,
+    "name_en" VARCHAR(255) NOT NULL,
     "href" TEXT NOT NULL,
-    "community" TEXT NOT NULL,
+    "community" VARCHAR(255) NOT NULL,
     "enable" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "resources_pkey" PRIMARY KEY ("id")
@@ -328,8 +328,8 @@ CREATE TABLE "tests_news" (
     "content_fr" TEXT NOT NULL,
     "content_en" TEXT NOT NULL,
     "page" TEXT NOT NULL,
-    "from" TIMESTAMP(3) NOT NULL,
-    "to" TIMESTAMP(3),
+    "from" DATE NOT NULL,
+    "to" DATE,
     "urls" JSON,
     "domains" JSON,
     "enable" BOOLEAN NOT NULL DEFAULT true,
@@ -516,4 +516,3 @@ ALTER TABLE "_license_community" ADD CONSTRAINT "_license_community_community_id
 
 -- AddForeignKey
 ALTER TABLE "_license_community" ADD CONSTRAINT "_license_community_license_id_fkey" FOREIGN KEY ("license_id") REFERENCES "license"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
-
