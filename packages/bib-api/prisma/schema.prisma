@@ -327,7 +327,7 @@ model license {
   content_en        String
   pdf               Json?               @db.Json
   enable            Boolean             @default(true)
-  common            Boolean             @default(false)
+  common            Boolean?            @default(false)
   license_community license_community[] @relation("license_communityTolicense")
 }
 
@@ -349,25 +349,25 @@ model content_management {
   content_fr String
   content_en String
   page       String
-  from       DateTime
-  to         DateTime?
+  from       DateTime  @db.Date()
+  to         DateTime? @db.Date()
   enable     Boolean   @default(true)
 }
 
 model medias {
   id        Int    @id @default(autoincrement())
-  name      String
-  file_name String
+  name      String @db.VarChar(255)
+  file_name String @db.VarChar(255)
   file      String
   url       String
 }
 
 model resources {
   id        Int     @id @default(autoincrement())
-  name_fr   String
-  name_en   String
+  name_fr   String  @db.VarChar(255)
+  name_en   String  @db.VarChar(255)
   href      String
-  community String
+  community String  @db.VarChar(255)
   enable    Boolean @default(true)
 }
 
@@ -378,8 +378,8 @@ model tests_news {
   content_fr String
   content_en String
   page       String
-  from       DateTime
-  to         DateTime?
+  from       DateTime  @db.Date()
+  to         DateTime? @db.Date()
   urls       Json?     @db.Json
   domains    Json?     @db.Json
   enable     Boolean   @default(true)
