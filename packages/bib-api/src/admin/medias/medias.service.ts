@@ -41,11 +41,6 @@ export class MediasService {
 			},
 		});
 
-		// data = data.map((entry) => {
-		// 	entry.url = content_delivery.host + entry.url;
-		// 	return entry;
-		// });
-
 		const total = await this.prismaService.medias.count({
 			where: filters,
 		});
