@@ -7,6 +7,7 @@ import { LicensesModule } from "./licenses/licenses.module";
 import { MediasModule } from "./medias/medias.module";
 import { ResourcesModule } from "./resources/resources.module";
 import { RevuesModule } from "./revues/revues.module";
+import { TestsNewsModule } from "./testsNews/tests-news.module";
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { RevuesModule } from "./revues/revues.module";
 		ContentsManagementModule,
 		MediasModule,
 		ResourcesModule,
+		TestsNewsModule,
 	],
 	controllers: [],
 	providers: [],
