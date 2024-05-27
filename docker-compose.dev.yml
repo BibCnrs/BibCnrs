@@ -7,14 +7,14 @@ services:
     develop:
       watch:
         - action: sync
-          path:   ./packages/bib-api/src
+          path: ./packages/bib-api/src
           target: /app/packages/bib-api/src
         - action: rebuild
-          path:   ./packages/bib-api/prisma/schema.prisma
+          path: ./packages/bib-api/prisma/schema.prisma
         - action: rebuild
-          path:   ./package.json
+          path: ./package.json
         - action: rebuild
-          path:   ./packages/bib-api/package.json
+          path: ./packages/bib-api/package.json
     depends_on:
       bib-db:
         condition: service_healthy
@@ -27,6 +27,7 @@ services:
       - cookie_secret=${cookie_secret}
       - header_secret=${header_secret}
       - admin_secret=${admin_secret}
+      - BIBAPI_HOST=http://localhost:3000/api
     deploy:
       resources:
         limits:
@@ -46,15 +47,15 @@ services:
     develop:
       watch:
         - action: sync
-          path:   ./packages/bib-front/src
+          path: ./packages/bib-front/src
           target: /app/packages/bib-front/src
         - action: sync
-          path:   ./packages/bib-front/public
+          path: ./packages/bib-front/public
           target: /app/packages/bib-front/public
         - action: rebuild
-          path:   ./package.json
+          path: ./package.json
         - action: rebuild
-          path:   ./packages/bib-front/package.json
+          path: ./packages/bib-front/package.json
     depends_on:
       - bib-api
 
@@ -71,15 +72,15 @@ services:
     develop:
       watch:
         - action: sync
-          path:   ./packages/bib-admin/src
+          path: ./packages/bib-admin/src
           target: /app/packages/bib-admin/src
         - action: sync
-          path:   ./packages/bib-admin/public
+          path: ./packages/bib-admin/public
           target: /app/packages/bib-admin/public
         - action: rebuild
-          path:   ./package.json
+          path: ./package.json
         - action: rebuild
-          path:   ./packages/bib-admin/package.json
+          path: ./packages/bib-admin/package.json
     depends_on:
       - bib-api
 

@@ -9,6 +9,9 @@ const configFunction = () => ({
 		adminSecret: process.env.admin_secret,
 		expiresIn: 10 * 3600, // 10 hours
 	},
+	contentDelivery: {
+		host: process.env.BIBAPI_HOST,
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;

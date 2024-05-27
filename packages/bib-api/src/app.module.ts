@@ -1,5 +1,7 @@
+import { join } from "node:path";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { ServeStaticModule } from "@nestjs/serve-static";
 import { AdminModule } from "./admin/admin.module";
 import config from "./config";
 import { EbscoModule } from "./ebsco/ebsco.module";
