@@ -31,6 +31,9 @@ services:
       - OLD_API_URL=https://bib.cnrs.fr
       - MAIL_SERVER_HOST= bib-mail
       - MAIL_SERVER_PORT= 1025
+      - cookie_secret=S3cr3t!C00kie
+      - header_secret=S3cr3t!H34d3r
+      - admin_secret=S3cr3t!4dm1n
     deploy:
       resources:
         limits:

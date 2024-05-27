@@ -47,7 +47,7 @@ test-api:								## Run tests for bib-api
 	docker compose -f docker-compose.test.yml run --build --rm bib-api-test yarn workspace @bibcnrs/bib-api run test
 
 test-api-watch:							## Run tests for bib-api in watch mode
-	docker compose -f docker-compose.test.yml up --build --remove-orphans --watch bib-db-test bib-api-test --no-attach=bib-db-test
+	docker compose -f docker-compose.test.yml up --build --remove-orphans --watch bib-db-test bib-api-test --no-attach=bib-db-test --no-log-prefix
 
 logs: env-copy							## Show logs
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f
