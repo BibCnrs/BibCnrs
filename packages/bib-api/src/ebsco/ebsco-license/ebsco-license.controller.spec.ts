@@ -1,6 +1,10 @@
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModule, JwtService } from "@nestjs/jwt";
 import { Test, type TestingModule } from "@nestjs/testing";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
 import { EbscoLicenseController } from "./ebsco-license.controller";
 import { EbscoLicenseService } from "./ebsco-license.service";
 
@@ -9,8 +13,18 @@ describe("EbscoLicenseController", () => {
 
 	beforeEach(async () => {
 		const ebscoLicense: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					ignoreEnvFile: true,
+					load: [configFunction],
+					isGlobal: false,
+				}),
+				JwtModule.register({
+					global: false,
+				}),
+			],
 			controllers: [EbscoLicenseController],
-			providers: [EbscoLicenseService, PrismaService],
+			providers: [EbscoLicenseService, PrismaService, EbscoAuthGuard],
 		}).compile();
 
 		ebscoLicenseController = ebscoLicense.get<EbscoLicenseController>(
@@ -19,6 +33,19 @@ describe("EbscoLicenseController", () => {
 	});
 
 	describe("root", () => {
+		it("should ensure the EbscoAuthGuard is applied to the controller", async () => {
+			const JwtServiceMock = vi.mocked(JwtService);
+
+			const configService = new ConfigService<Config, true>();
+			vi.spyOn(configService, "get").mockReturnValue({});
+
+			const guards = Reflect.getMetadata("__guards__", EbscoLicenseController);
+			const guard = new guards[0](new JwtServiceMock(), configService);
+
+			expect(guard).toBeInstanceOf(EbscoAuthGuard);
+			expect(configService.get).toHaveBeenCalledWith("auth");
+		});
+
 		it("should return content for a single domain", async () => {
 			expect(
 				await ebscoLicenseController.getLicenses({
