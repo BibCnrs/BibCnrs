@@ -34,6 +34,7 @@ services:
       - cookie_secret=S3cr3t!C00kie
       - header_secret=S3cr3t!H34d3r
       - admin_secret=S3cr3t!4dm1n
+      - CONTENT_DELIVRY_HOST=http://localhost:3000/files
     deploy:
       resources:
         limits:
