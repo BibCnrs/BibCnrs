@@ -1,9 +1,14 @@
 export UID = $(shell id -u)
 export GID = $(shell id -g)
 
-ifneq (,$(wildcard .env))
-include .env
-export $(shell sed 's/=.*//' .env)
+# If the first argument is one of the supported commands...
+SUPPORTED_COMMANDS := restore-db _restore_db restore-db-dev _restore_db_dev
+SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+ifneq "$(SUPPORTS_MAKE_ARGS)" ""
+    # use the rest as arguments for the command
+    COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+    # ...and turn them into do-nothing targets
+    $(eval $(COMMAND_ARGS):;@:)
 endif
 
 default: help
@@ -20,7 +25,8 @@ install-immutable: 						## Install all dependencies for all packages
 	yarn workspace @bibcnrs/bib-api prisma generate
 
 env-copy:
-	@cp -n docker-compose.dev.env.sample docker-compose.dev.env
+	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env
+	@cp -n docker-compose.prod.env.sample 	docker-compose.prod.env
 
 migrate-dev: env-copy					## Run migrations in development environment
 	docker compose \
@@ -65,11 +71,12 @@ seed-db: 								## Initialize the database with seed data
 		--rm bib-api \
 		yarn workspace @bibcnrs/bib-api run prisma migrate resolve --applied 0_init
 
-start: env-copy							## Start stack in development mode
+start-dev: env-copy							## Start stack in development mode
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up --build --remove-orphans --watch --no-attach=bib-db --no-attach=bib-mail --no-attach=bib-proxy
 
-stop: env-copy							## Stop stack
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down 
+stop-dev: env-copy							## Stop stack
+	docker compose --env-file docker-compose.prod.env -f docker-compose.prod.yml down
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down
 	docker compose -f docker-compose.test.yml down
 
 test: test-api							## Run tests for all packages
@@ -147,3 +154,41 @@ build-admin:
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}' \
 		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
 		.
+# Production
+start:									## Start stack in production mode
+	docker compose -f docker-compose.prod.yml up -d
+
+stop:									## Stop stack in production mode
+	docker compose -f docker-compose.prod.yml down
+
+start-prod: stop-dev					## Start stack in production mode with local env
+	@mkdir -p backups postgresql
+	docker compose \
+		--env-file docker-compose.prod.env \
+		-f docker-compose.prod.yml \
+		up
+
+save-db: ## create postgres dump for prod database in backups directory with given name or default to current date
+	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
+
+_pre_restore_db:
+	docker compose -f docker-compose.prod.yml stop
+	docker compose -f docker-compose.prod.yml start bibcnrs-api-postgres
+
+_post_restore_db:
+	docker compose -f docker-compose.prod.yml stop
+
+_restore_db: save-db
+	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
+	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
+	docker exec bibcnrs-api-postgres bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@bibcnrs-api-postgres:5432/$$POSTGRES_DB'
+
+restore-db:  ## restore a given dump to the postgres database list all dump if none specified
+ifdef COMMAND_ARGS
+	@make _pre_restore_db
+	@make _restore_db $(COMMAND_ARGS)
+	@make _post_restore_db_dev
+else
+	echo 'please specify backup to restore':
+	@ls -h ./backups
+endif
