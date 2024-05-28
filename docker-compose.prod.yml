@@ -65,6 +65,7 @@ services:
       # Database host is the name of the database services
       POSTGRES_HOST: bibcnrs-api-postgres
       REDIS_HOST: bibcnrs-api-redis
+      OLD_API_URL: ${OLD_API_URL:-https://bib-preprod.inist.fr}
     restart: always
     ports:
       - "3000:3000"

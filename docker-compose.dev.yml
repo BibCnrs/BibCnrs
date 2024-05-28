@@ -29,6 +29,7 @@ services:
       - header_secret=${header_secret}
       - admin_secret=${admin_secret}
       - CONTENT_DELIVRY_HOST=http://localhost:3000/files
+      - OLD_API_URL=${OLD_API_URL:-https://bib-preprod.inist.fr}
     deploy:
       resources:
         limits:
