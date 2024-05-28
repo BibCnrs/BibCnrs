@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CreateTestNewsDto, UpdateTestNewsDto } from "./dto/test-news.dto";
 import { TestsNewsService } from "./tests-news.service";
 
-@Controller("api/admin/news")
+@Controller("admin/news")
 export class TestsNewsController {
 	constructor(private readonly contentsManagementService: TestsNewsService) {}
 

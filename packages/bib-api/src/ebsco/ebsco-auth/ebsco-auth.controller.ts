@@ -11,7 +11,7 @@ import { LoginDto } from "./dto/login";
 import { LOGIN_COOKIE_NAME } from "./ebsco-auth.const";
 import { EbscoAuthService } from "./ebsco-auth.service";
 
-@Controller("/api/ebsco")
+@Controller("ebsco")
 export class EbscoAuthController {
 	constructor(
 		private readonly inistAccountService: InistAccountService,

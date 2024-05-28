@@ -3,7 +3,7 @@ import { parsePage } from "../../utils/page";
 import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
 import { EbscoLicenseService } from "./ebsco-license.service";
 
-@Controller("/api/ebsco/licenses")
+@Controller("ebsco/licenses")
 @UseGuards(EbscoAuthGuard)
 export class EbscoLicenseController {
 	constructor(private readonly ebscoLicenseService: EbscoLicenseService) {}

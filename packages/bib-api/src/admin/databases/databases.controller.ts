@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { DatabasesService } from "./databases.service";
 import { CreateDatabaseDto, UpdateDatabaseDto } from "./dto/database.dto";
 
-@Controller("api/admin/databases")
+@Controller("admin/databases")
 export class DatabasesController {
 	constructor(private readonly databasesService: DatabasesService) {}
 

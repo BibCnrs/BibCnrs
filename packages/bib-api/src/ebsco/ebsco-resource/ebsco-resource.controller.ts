@@ -1,7 +1,7 @@
 import { Controller, Get } from "@nestjs/common";
 import { EbscoResourceService } from "./ebsco-resource.service";
 
-@Controller("/api/ebsco/resources")
+@Controller("ebsco/resources")
 export class EbscoResourceController {
 	constructor(private readonly ebscoResourcesService: EbscoResourceService) {}
 

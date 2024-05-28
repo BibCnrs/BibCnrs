@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CommunitiesService } from "./communities.service";
 import { CreateCommunityDto, UpdateCommunityDto } from "./dto/community.dto";
 
-@Controller("api/admin/communities")
+@Controller("admin/communities")
 export class CommunitiesController {
 	constructor(private readonly communitiesService: CommunitiesService) {}
 

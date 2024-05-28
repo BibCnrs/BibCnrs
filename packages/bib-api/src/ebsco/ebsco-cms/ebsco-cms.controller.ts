@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { EbscoCmsService } from "./ebsco-cms.service";
 
-@Controller("/api/ebsco/cms")
+@Controller("ebsco/cms")
 export class EbscoCmsController {
 	constructor(private readonly ebscoCmsService: EbscoCmsService) {}
 

@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CreateRevueDto, UpdateRevueDto } from "./dto/revue.dto";
 import { RevuesService } from "./revues.service";
 
-@Controller("api/admin/revues")
+@Controller("admin/revues")
 export class RevuesController {
 	constructor(private readonly revuesService: RevuesService) {}
 

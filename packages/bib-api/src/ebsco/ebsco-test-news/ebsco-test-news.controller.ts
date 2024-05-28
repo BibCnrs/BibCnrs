@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { EbscoTestNewsService } from "./ebsco-test-news.service";
 
-@Controller("/api/ebsco/news")
+@Controller("ebsco/news")
 export class EbscoTestNewsController {
 	constructor(private readonly ebscoTestNewsService: EbscoTestNewsService) {}
 

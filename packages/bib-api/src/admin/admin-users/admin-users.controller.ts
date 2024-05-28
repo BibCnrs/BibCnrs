@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { AdminUsersService } from "./admin-users.service";
 import { CreateAdminUserDto, UpdateAdminUserDto } from "./dto/admin-user.dto";
 
-@Controller("api/admin/adminUsers")
+@Controller("admin/adminUsers")
 export class AdminUsersController {
 	constructor(private readonly adminUsersService: AdminUsersService) {}
 

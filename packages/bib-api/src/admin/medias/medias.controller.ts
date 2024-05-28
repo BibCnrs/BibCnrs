@@ -6,7 +6,6 @@ import {
 	HttpException,
 	HttpStatus,
 	Param,
-	Patch,
 	Post,
 	Put,
 	Query,
@@ -23,7 +22,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CreateMediaDto, UpdateMediaDto } from "./dto/media.dto";
 import { MediasService } from "./medias.service";
 
-@Controller("api/admin/medias")
+@Controller("admin/medias")
 export class MediasController {
 	private readonly contentDeliveryConfig: Config["contentDelivery"];
 	constructor(

@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CreateResourceDto, UpdateResourceDto } from "./dto/resource.dto";
 import { ResourcesService } from "./resources.service";
 
-@Controller("api/admin/resources")
+@Controller("admin/resources")
 export class ResourcesController {
 	constructor(private readonly resourcesService: ResourcesService) {}
 

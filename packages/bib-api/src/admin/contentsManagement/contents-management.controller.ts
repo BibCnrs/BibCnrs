@@ -19,7 +19,7 @@ import {
 	UpdateContentManagementDto,
 } from "./dto/contents-management.dto";
 
-@Controller("api/admin/contentManagement")
+@Controller("admin/contentManagement")
 export class ContentsManagementController {
 	constructor(
 		private readonly contentsManagementService: ContentsManagementService,

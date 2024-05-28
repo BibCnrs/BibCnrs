@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CreateLicenseDto, UpdateLicenseDto } from "./dto/license.dto";
 import { LicensesService } from "./licenses.service";
 
-@Controller("api/admin/licenses")
+@Controller("admin/licenses")
 export class LicensesController {
 	constructor(private readonly licensesService: LicensesService) {}
 
