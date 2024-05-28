@@ -156,13 +156,14 @@ build-admin:
 		.
 # Production
 start:									## Start stack in production mode
+	@mkdir -p ../storage/backups ../storage/logs ../storage/postgresql ../storage/uploads
 	docker compose -f docker-compose.prod.yml up -d
 
 stop:									## Stop stack in production mode
 	docker compose -f docker-compose.prod.yml down
 
 start-prod: stop-dev					## Start stack in production mode with local env
-	@mkdir -p backups postgresql
+	@mkdir -p ../storage/backups ../storage/logs ../storage/postgresql ../storage/uploads
 	docker compose \
 		--env-file docker-compose.prod.env \
 		-f docker-compose.prod.yml \
