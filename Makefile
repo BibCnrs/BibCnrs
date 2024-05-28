@@ -172,11 +172,11 @@ save-db: ## create postgres dump for prod database in backups directory with giv
 	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
 
 _pre_restore_db:
-	docker compose -f docker-compose.yml stop
-	docker compose -f docker-compose.yml start bibcnrs-api-postgres
+	docker compose -f docker-compose.prod.yml stop
+	docker compose -f docker-compose.prod.yml start bibcnrs-api-postgres
 
 _post_restore_db:
-	docker compose -f docker-compose.yml stop
+	docker compose -f docker-compose.prod.yml stop
 
 _restore_db: save-db
 	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
