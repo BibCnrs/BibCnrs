@@ -25,7 +25,7 @@ export class EbscoAuthGuard implements CanActivate {
 	async canActivate(
 		context: Pick<ExecutionContext, "switchToHttp">,
 	): Promise<boolean> {
-		const request = context.switchToHttp().getRequest();
+		const request = context.switchToHttp().getRequest<Request>();
 		const token = this.extractTokenFromCookie(request);
 		if (!token) {
 			throw new UnauthorizedException();

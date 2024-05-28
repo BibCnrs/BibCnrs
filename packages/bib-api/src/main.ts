@@ -7,12 +7,12 @@ import { NotFoundFilter } from "./proxy/not-found.filter";
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.use(cookieParser());
-	app.useGlobalFilters(new NotFoundFilter());
 	app.useGlobalPipes(
 		new ValidationPipe({
 			transform: true,
 		}),
 	);
+	app.useGlobalFilters(new NotFoundFilter());
 	await app.listen(3000);
 }
 bootstrap();

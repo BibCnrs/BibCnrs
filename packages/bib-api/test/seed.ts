@@ -269,6 +269,41 @@ const prisma = new PrismaClient();
 				active: true,
 				mail: "inist@cnrs.fr",
 			},
+			{
+				username: "MARMELAB",
+				password: "MARMELAB",
+				active: true,
+				mail: "marmelab@cnrs.fr",
+			},
+		],
+	});
+
+	await prisma.history.createMany({
+		data: [
+			{
+				user_id: "1",
+				event: { test: "test 1" },
+				active: true,
+				has_alert: true,
+				last_results: [],
+				nb_results: 0,
+			},
+			{
+				user_id: "1",
+				event: { test: "test 2" },
+				active: true,
+				has_alert: false,
+				last_results: [],
+				nb_results: 0,
+			},
+			{
+				user_id: "2",
+				event: { test: "test 3" },
+				active: true,
+				has_alert: true,
+				last_results: [],
+				nb_results: 0,
+			},
 		],
 	});
 
