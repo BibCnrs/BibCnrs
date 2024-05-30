@@ -43,6 +43,9 @@ describe("InistAccountsController", () => {
 
 		test("should return a single inist account", async () => {
 			const data = await inistAccountsController.findOne(1);
+			const date = new Date();
+			date.setUTCHours(0, 0, 0, 0);
+
 			expect(data).toStrictEqual({
 				active: true,
 				all_communities: [1],
@@ -53,7 +56,7 @@ describe("InistAccountsController", () => {
 				firstname: null,
 				id: 1,
 				institutes: [],
-				last_connexion: new Date("2024-05-28"),
+				last_connexion: date,
 				mail: "inist@cnrs.fr",
 				main_institute: null,
 				main_institute_communities: [],
@@ -62,7 +65,7 @@ describe("InistAccountsController", () => {
 				name: null,
 				password: "INIST",
 				phone: null,
-				subscription_date: new Date("2024-05-28"),
+				subscription_date: date,
 				units: [1],
 				username: "INIST",
 			});
