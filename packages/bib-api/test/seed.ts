@@ -21,6 +21,28 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Communities
+	await prisma.community.createMany({
+		data: [
+			{
+				name: "INSHS",
+				gate: "inshs",
+				user_id: "inshs_user_id",
+				profile: "wsapi",
+				password: "inshs_password",
+				ebsco: true,
+			},
+			{
+				name: "INSB",
+				gate: "insb",
+				user_id: "insb_user_id",
+				profile: "wsapi",
+				password: "insb_password",
+				ebsco: true,
+			},
+		],
+	});
+
 	// CMS
 	await prisma.content_management.createMany({
 		data: [
@@ -48,12 +70,28 @@ const prisma = new PrismaClient();
 	});
 
 	// Insitute
-
 	await prisma.institute.createMany({
 		data: [
 			{
 				code: "CNRS",
 				name: "CNRS",
+			},
+			{
+				code: "INSB",
+				name: "INSB",
+			},
+		],
+	});
+
+	await prisma.institute_community.createMany({
+		data: [
+			{
+				institute_id: 1,
+				community_id: 1,
+			},
+			{
+				institute_id: 2,
+				community_id: 1,
 			},
 		],
 	});
@@ -75,28 +113,6 @@ const prisma = new PrismaClient();
 			{
 				institute_id: 1,
 				unit_id: 2,
-			},
-		],
-	});
-
-	// Communities
-	await prisma.community.createMany({
-		data: [
-			{
-				name: "INSHS",
-				gate: "inshs",
-				user_id: "inshs_user_id",
-				profile: "wsapi",
-				password: "inshs_password",
-				ebsco: true,
-			},
-			{
-				name: "INSB",
-				gate: "insb",
-				user_id: "insb_user_id",
-				profile: "wsapi",
-				password: "insb_password",
-				ebsco: true,
 			},
 		],
 	});

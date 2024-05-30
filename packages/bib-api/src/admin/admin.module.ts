@@ -3,6 +3,8 @@ import { AdminUsersModule } from "./admin-users/admin-users.module";
 import { CommunitiesModule } from "./communities/communities.module";
 import { ContentsManagementModule } from "./contentsManagement/contents-management.module";
 import { DatabasesModule } from "./databases/databases.module";
+import { InistAccountsModule } from "./inistAccounts/inist-accounts.module";
+import { InstitutesModule } from "./institutes/institutes.module";
 import { LicensesModule } from "./licenses/licenses.module";
 import { MediasModule } from "./medias/medias.module";
 import { ResourcesModule } from "./resources/resources.module";
@@ -20,6 +22,8 @@ import { TestsNewsModule } from "./testsNews/tests-news.module";
 		MediasModule,
 		ResourcesModule,
 		TestsNewsModule,
+		InstitutesModule,
+		InistAccountsModule,
 	],
 	controllers: [],
 	providers: [],
