@@ -5,6 +5,7 @@ import { ContentsManagementModule } from "./contentsManagement/contents-manageme
 import { DatabasesModule } from "./databases/databases.module";
 import { InistAccountsModule } from "./inistAccounts/inist-accounts.module";
 import { InstitutesModule } from "./institutes/institutes.module";
+import { JanusAccountsModule } from "./janusAccounts/janus-accounts.module";
 import { LicensesModule } from "./licenses/licenses.module";
 import { MediasModule } from "./medias/medias.module";
 import { ResourcesModule } from "./resources/resources.module";
@@ -24,6 +25,7 @@ import { TestsNewsModule } from "./testsNews/tests-news.module";
 		TestsNewsModule,
 		InstitutesModule,
 		InistAccountsModule,
+		JanusAccountsModule,
 	],
 	controllers: [],
 	providers: [],
