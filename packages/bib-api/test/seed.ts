@@ -294,6 +294,42 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Janus account
+	await prisma.janus_account.createMany({
+		data: [
+			{
+				primary_institute: null,
+				primary_unit: 1,
+				uid: "test.test",
+				mail: "test@inist.fr",
+				name: "TEST",
+				firstname: "test",
+				cnrs: true,
+				comment: "",
+				last_connexion: new Date(),
+				favorite_domain: "INSHS",
+				first_connexion: new Date(),
+				active: true,
+				favourite_resources: null,
+			},
+			{
+				primary_institute: null,
+				primary_unit: 2,
+				uid: "test2.test2",
+				mail: "test@inist.fr",
+				name: "OTHERTEST",
+				firstname: "OTHERTEST",
+				cnrs: true,
+				comment: "",
+				last_connexion: new Date(),
+				favorite_domain: "INSB",
+				first_connexion: new Date(),
+				active: true,
+				favourite_resources: null,
+			},
+		],
+	});
+
 	await prisma.history.createMany({
 		data: [
 			{

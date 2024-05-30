@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { inist_account, institute } from "@prisma/client";
 import {
+	selectAdditionalInstituteName,
 	selectCommunities,
 	selectInstitutes,
 	selectMainInstituteCommunities,
@@ -150,6 +151,43 @@ export class InistAccountsService {
 			where: filters,
 		});
 		return { data, total };
+	}
+
+	async findAllExport() {
+		const dataForExport = await this.prismaService.$queryRaw`
+			SELECT inist_account.id, inist_account.username, inist_account.password, inist_account.name, 
+				inist_account.firstname, inist_account.mail, inist_account.phone, inist_account.dr, inist_account.comment, 
+				inist_account.subscription_date, inist_account.expiration_date, inist_account.last_connexion, inist_account.active, 
+				institute.name AS main_institute,
+				unit.code AS main_unit,
+				community.name AS communities,
+				ARRAY(${selectAdditionalInstituteName}) AS institutes
+			FROM inist_account 
+			LEFT JOIN institute ON inist_account.main_institute = institute.id
+			LEFT JOIN unit ON inist_account.main_unit = unit.id
+			LEFT JOIN inist_account_community ON (inist_account.id = inist_account_community.inist_account_id)
+			LEFT JOIN community ON inist_account_community.community_id = community.id`;
+		const listForExport = [];
+		// Group by communities id
+		for (const element of dataForExport as {
+			id: number;
+			communities?: unknown[];
+		}[]) {
+			const object = listForExport.find((n) => n.id === element.id);
+			if (object) {
+				if (element.communities) {
+					object.communities.push(element.communities);
+				}
+			} else {
+				if (element.communities) {
+					element.communities = [element.communities];
+				} else {
+					element.communities = [];
+				}
+				listForExport.push(element);
+			}
+		}
+		return listForExport;
 	}
 
 	async findOne(id: number) {

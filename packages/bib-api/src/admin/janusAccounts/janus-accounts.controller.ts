@@ -14,25 +14,25 @@ import {
 import { Response } from "express";
 import { FindAllQueryArgs } from "../admin.type";
 import {
-	CreateInistAccountDto,
-	UpdateInistAccountDto,
-} from "./dto/inist-account.dto";
-import { InistAccountsService } from "./inist-accounts.service";
+	CreateJanusAccountDto,
+	UpdateJanusAccountDto,
+} from "./dto/janus-account.dto";
+import { JanusAccountsService } from "./janus-accounts.service";
 
-@Controller("admin/inistAccounts")
-export class InistAccountsController {
-	constructor(private readonly inistAccountsService: InistAccountsService) {}
+@Controller("admin/janusAccounts")
+export class JanusAccountsController {
+	constructor(private readonly janusAccountsService: JanusAccountsService) {}
 
 	@Get()
 	async findAll(@Query() query: FindAllQueryArgs, @Res() res: Response) {
 		if (!query || query._perPage !== "100000") {
-			const { data, total } = await this.inistAccountsService.findAll(query);
+			const { data, total } = await this.janusAccountsService.findAll(query);
 			res.header("Content-Range", `${total}`);
 			res.header("Access-Control-Expose-Headers", "Content-Range");
 			return res.send(data);
 		}
 
-		const data = await this.inistAccountsService.findAllExport();
+		const data = await this.janusAccountsService.findAllExport();
 		res.header("Content-Range", `${data.length}`);
 		res.header("Access-Control-Expose-Headers", "Content-Range");
 		return res.send(data);
@@ -40,7 +40,7 @@ export class InistAccountsController {
 
 	@Get(":id")
 	async findOne(@Param("id") id: number) {
-		const data = await this.inistAccountsService.findOne(id);
+		const data = await this.janusAccountsService.findOne(id);
 
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -50,8 +50,8 @@ export class InistAccountsController {
 	}
 
 	@Post()
-	async create(@Body() createInistAccountDto: CreateInistAccountDto) {
-		const data = await this.inistAccountsService.create(createInistAccountDto);
+	async create(@Body() createJanusAccountDto: CreateJanusAccountDto) {
+		const data = await this.janusAccountsService.create(createJanusAccountDto);
 		if (!data) {
 			throw new HttpException(
 				"INTERNAL SERVER ERROR",
@@ -65,11 +65,11 @@ export class InistAccountsController {
 	@Put(":id")
 	async update(
 		@Param("id") id: number,
-		@Body() updateInistAccountDto: UpdateInistAccountDto,
+		@Body() updateJanusAccountDto: UpdateJanusAccountDto,
 	) {
-		const data = await this.inistAccountsService.update(
+		const data = await this.janusAccountsService.update(
 			id,
-			updateInistAccountDto,
+			updateJanusAccountDto,
 		);
 
 		if (!data) {
@@ -81,7 +81,7 @@ export class InistAccountsController {
 
 	@Delete(":id")
 	async remove(@Param("id") id: number) {
-		const data = await this.inistAccountsService.remove(id);
+		const data = await this.janusAccountsService.remove(id);
 
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);

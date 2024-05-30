@@ -16,7 +16,7 @@ import { FindAllQueryArgs } from "../admin.type";
 import { CreateInstituteDto, UpdateInstituteDto } from "./dto/institute.dto";
 import { InstitutesService } from "./institutes.service";
 
-@Controller("api/admin/institutes")
+@Controller("admin/institutes")
 export class InstitutesController {
 	constructor(private readonly institutesService: InstitutesService) {}
 
