@@ -11,6 +11,7 @@ import { MediasModule } from "./medias/medias.module";
 import { ResourcesModule } from "./resources/resources.module";
 import { RevuesModule } from "./revues/revues.module";
 import { TestsNewsModule } from "./testsNews/tests-news.module";
+import { UnitsModule } from "./units/units.module";
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { TestsNewsModule } from "./testsNews/tests-news.module";
 		InstitutesModule,
 		InistAccountsModule,
 		JanusAccountsModule,
+		UnitsModule,
 	],
 	controllers: [],
 	providers: [],
