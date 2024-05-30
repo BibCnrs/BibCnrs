@@ -2,6 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Config } from "../../config";
 
+type RawQuery = {
+	queries: string;
+	resultsPerPage: number;
+	currentPage: number;
+};
+
 @Injectable()
 export class EbscoMetadoreService {
 	private readonly metadoreConfig: Config["metadore"];
@@ -11,14 +17,13 @@ export class EbscoMetadoreService {
 			this.configService.get<Config["metadore"]>("metadore");
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private parseMetadoreSearch(rawQuery: any) {
+	private parseMetadoreSearch(rawQuery: RawQuery) {
 		const parsedQueries = JSON.parse(rawQuery.queries);
 		const term = parsedQueries[0].term;
 		const field = parsedQueries[0].field || "*";
 		const size = rawQuery.resultsPerPage;
 		const page = rawQuery.currentPage || 1;
-		let query =
+		let query: string =
 			field === "attributes.titles.title"
 				? term
 						.split(" ")
@@ -29,8 +34,8 @@ export class EbscoMetadoreService {
 			"AND((attributes.types.resourceType:Dataset)OR(attributes.types.resourceTypeGeneral:Dataset))&sort=attributes.publicationYear:desc";
 		const metadoreQuery = {
 			query,
-			size,
-			page,
+			size: size.toString(10),
+			page: page.toString(10),
 		};
 		return new URLSearchParams(metadoreQuery);
 	}
@@ -75,8 +80,7 @@ export class EbscoMetadoreService {
 		}));
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	async metadoreRequest(query: any) {
+	async metadoreRequest(query: RawQuery) {
 		const queryString = this.parseMetadoreSearch(query);
 		return fetch(`${this.metadoreConfig.url}/search?${queryString}`, {
 			headers: {
