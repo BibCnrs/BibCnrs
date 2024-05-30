@@ -169,6 +169,11 @@ start-prod: stop-dev					## Start stack in production mode with local env
 		-f docker-compose.prod.yml \
 		up
 
+prod-init-db:
+	docker compose -f docker-compose.prod.yml up -d --wait bibcnrs-api-postgres
+	docker exec bibcnrs-bib-db-1 psql -U $(POSTGRES_USER) $(POSTGRES_DB) -f /backups/seed.sql
+	docker compose -f docker-compose.prod.yml run --rm bibcnrs-api yarn workspace @bibcnrs/bib-api run prisma migrate resolve --applied 0_init
+
 save-db: ## create postgres dump for prod database in backups directory with given name or default to current date
 	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
 
