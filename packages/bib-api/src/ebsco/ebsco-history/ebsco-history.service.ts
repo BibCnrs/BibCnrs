@@ -75,4 +75,64 @@ export class EbscoHistoryService {
 
 		return this.findHistory(id);
 	}
+
+	async deleteHistory(userId: string, id: number) {
+		return this.prismaService.history.deleteMany({
+			where: {
+				id,
+				user_id: userId,
+			},
+		});
+	}
+
+	async toggleAlert(userId: string, id: number) {
+		const history = await this.findHistory(id);
+		if (!history || history.user_id !== userId) {
+			return null;
+		}
+
+		await this.prismaService.history.update({
+			where: {
+				id,
+				user_id: userId,
+			},
+			data: {
+				active: !history.active,
+			},
+		});
+
+		return this.findHistory(id);
+	}
+
+	async toggleAllAlerts(userId: string) {
+		const firstUserAlert = await this.getHistory(userId, 1, 0, true);
+		const active = firstUserAlert.length > 0 ? !firstUserAlert[0].active : true;
+		await this.prismaService.history.updateMany({
+			where: {
+				has_alert: true,
+				user_id: userId,
+			},
+			data: {
+				active,
+			},
+		});
+	}
+
+	async deleteHistoryNotAlert(userId: string) {
+		return this.prismaService.history.deleteMany({
+			where: {
+				user_id: userId,
+				has_alert: false,
+			},
+		});
+	}
+
+	async countHistory(userId: string, hasAlert: boolean) {
+		return this.prismaService.history.count({
+			where: {
+				user_id: userId,
+				has_alert: hasAlert,
+			},
+		});
+	}
 }

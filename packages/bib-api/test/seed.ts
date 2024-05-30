@@ -320,6 +320,22 @@ const prisma = new PrismaClient();
 				last_results: [],
 				nb_results: 0,
 			},
+			{
+				user_id: "4",
+				event: { test: "test 4" },
+				active: true,
+				has_alert: true,
+				last_results: [],
+				nb_results: 0,
+			},
+			{
+				user_id: "4",
+				event: { test: "test 4" },
+				active: true,
+				has_alert: false,
+				last_results: [],
+				nb_results: 0,
+			},
 		],
 	});
 
