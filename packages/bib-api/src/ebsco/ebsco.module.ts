@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { EbscoAuthModule } from "./ebsco-auth/ebsco-auth.module";
 import { EbscoCmsModule } from "./ebsco-cms/ebsco-cms.module";
+import { EbscoDatabaseService } from "./ebsco-database/ebsco-database.service";
 import { EbscoDomainModule } from "./ebsco-domain/ebsco-domain.module";
 import { EbscoHistoryModule } from "./ebsco-history/ebsco-history.module";
 import { EbscoLicenseModule } from "./ebsco-license/ebsco-license.module";
@@ -18,6 +19,7 @@ import { EbscoTestNewsModule } from "./ebsco-test-news/ebsco-test-news.module";
 		EbscoResourceModule,
 		EbscoHistoryModule,
 		EbscoRisModule,
+		EbscoDatabaseService,
 	],
 })
 export class EbscoModule {}
