@@ -1,6 +1,6 @@
+import { join } from "node:path";
 import { Logger } from "@nestjs/common";
 import { createProxyMiddleware, fixRequestBody } from "http-proxy-middleware";
-import { join } from "node:path";
 
 const OLD_API_URL = process.env.OLD_API_URL;
 if (!OLD_API_URL) {

@@ -22,6 +22,7 @@
 	},
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
+		"source.organizeImports": "never",
 		"source.organizeImports.biome": "explicit"
 	},
 	"javascript.preferences.importModuleSpecifier": "relative",
