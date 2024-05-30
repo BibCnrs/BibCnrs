@@ -23,12 +23,20 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:S3cr3t@bib-db/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
+      - BIBAPI_HOST= http://localhost:3000/api
       - MAIL_SERVER_HOST=bib-mail
       - MAIL_SERVER_PORT=1025
       - cookie_secret=${cookie_secret}
       - header_secret=${header_secret}
       - admin_secret=${admin_secret}
+      - ticket_secret=${ticket_secret}
       - CONTENT_DELIVRY_HOST=http://localhost:3000/files
+      - ebsco_host=${ebsco_host}
+      - EZ_UNPAYWALL_URL=${EZ_UNPAYWALL_URL}
+      - EZ_UNPAYWALL_KEY=${EZ_UNPAYWALL_KEY}
+      - METADORE_URL=${METADORE_URL}
+      - METADORE_API_KEY=${METADORE_API_KEY}
+      - DOAJ_URL=${DOAJ_URL}
       - OLD_API_URL=${OLD_API_URL:-https://bib-preprod.inist.fr}
     deploy:
       resources:

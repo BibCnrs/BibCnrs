@@ -12,6 +12,10 @@ const configFunction = () => ({
 	contentDelivery: {
 		host: process.env.CONTENT_DELIVRY_HOST,
 	},
+	metadore: {
+		url: process.env.METADORE_URL,
+		apiKey: process.env.METADORE_API_KEY,
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;
