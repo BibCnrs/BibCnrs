@@ -10,6 +10,7 @@ import { LicensesModule } from "./licenses/licenses.module";
 import { MediasModule } from "./medias/medias.module";
 import { ResourcesModule } from "./resources/resources.module";
 import { RevuesModule } from "./revues/revues.module";
+import { SectionsCNModule } from "./sectionsCN/sectionsCN.module";
 import { TestsNewsModule } from "./testsNews/tests-news.module";
 import { UnitsModule } from "./units/units.module";
 
@@ -28,6 +29,7 @@ import { UnitsModule } from "./units/units.module";
 		InistAccountsModule,
 		JanusAccountsModule,
 		UnitsModule,
+		SectionsCNModule,
 	],
 	controllers: [],
 	providers: [],

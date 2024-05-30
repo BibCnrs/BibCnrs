@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, test } from "vitest";
 import { PrismaModule } from "../../prisma/prisma.module";
+import { SecurityModule } from "../../security/security.module";
 import { AdminUsersService } from "./admin-users.service";
 
 describe("AdminUsersService", () => {
@@ -9,7 +10,7 @@ describe("AdminUsersService", () => {
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [AdminUsersService],
-			imports: [PrismaModule],
+			imports: [PrismaModule, SecurityModule],
 			exports: [AdminUsersService],
 		}).compile();
 
