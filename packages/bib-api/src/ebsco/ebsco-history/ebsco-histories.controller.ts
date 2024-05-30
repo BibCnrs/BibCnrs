@@ -1,9 +1,37 @@
-import { Controller, UseGuards } from "@nestjs/common";
+import {
+	Controller,
+	DefaultValuePipe,
+	Delete,
+	Get,
+	ParseBoolPipe,
+	Query,
+	Req,
+	UseGuards,
+} from "@nestjs/common";
+import { Request } from "express";
 import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
 import { EbscoHistoryService } from "./ebsco-history.service";
 
-@Controller("/api/ebsco/histories")
+@Controller("ebsco/histories")
 @UseGuards(EbscoAuthGuard)
 export class EbscoHistoriesController {
 	constructor(private readonly ebscoHistoryService: EbscoHistoryService) {}
+
+	@Delete()
+	public async deleteHistory(@Req() req: Request) {
+		return this.ebscoHistoryService.deleteHistoryNotAlert(
+			req.user.id.toString(),
+		);
+	}
+
+	@Get("count")
+	public async countHistory(
+		@Req() req: Request,
+		@Query("hasAlert", new DefaultValuePipe(false), ParseBoolPipe)
+		hasAlert: boolean,
+	) {
+		return this.ebscoHistoryService
+			.countHistory(req.user.id.toString(), hasAlert)
+			.then((count) => ({ count }));
+	}
 }

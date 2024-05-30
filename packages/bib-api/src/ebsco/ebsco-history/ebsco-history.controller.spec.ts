@@ -144,7 +144,7 @@ describe("EbscoHistoryController", () => {
 			it("should return the created history", async () => {
 				const request = {
 					user: {
-						id: 2,
+						id: 3,
 					},
 				} as unknown as Request;
 
@@ -162,7 +162,7 @@ describe("EbscoHistoryController", () => {
 					}),
 				).toStrictEqual(
 					expect.objectContaining({
-						user_id: "2",
+						user_id: "3",
 						active: true,
 						event: { test: "test 1" },
 						frequence: "01:00:00",
@@ -172,6 +172,21 @@ describe("EbscoHistoryController", () => {
 						nb_results: 0,
 					}),
 				);
+			});
+		});
+
+		describe("deleteHistory", () => {
+			it("should delete history", async () => {
+				const request = {
+					user: {
+						id: 2,
+					},
+				} as unknown as Request;
+
+				await ebscoHistoryController.deleteHistory(request, 3);
+				expect(
+					await ebscoHistoryController.getHistory(request, 5, 0),
+				).toStrictEqual([]);
 			});
 		});
 	});
