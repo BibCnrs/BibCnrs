@@ -16,6 +16,9 @@ const configFunction = () => ({
 		url: process.env.METADORE_URL,
 		apiKey: process.env.METADORE_API_KEY,
 	},
+	renater: {
+		fakeLogin: process.env.RENATER_FAKE_LOGIN === "true",
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;

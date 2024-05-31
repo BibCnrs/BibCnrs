@@ -1,4 +1,4 @@
-import { TokenPayload } from "./ebsco/ebsco-auth/ebsco-auth.type";
+import { TokenPayload } from "./common/common-auth/common-auth.type";
 
 export * from "express";
 

@@ -6,9 +6,9 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common";
 import { Response } from "express";
+import { LOGIN_COOKIE_NAME } from "../../common/common-auth/common-auth.const";
 import { InistAccountService } from "../../inist/inist-account/inist-account.service";
 import { LoginDto } from "./dto/login";
-import { LOGIN_COOKIE_NAME } from "./ebsco-auth.const";
 import { EbscoAuthService } from "./ebsco-auth.service";
 
 @Controller("ebsco")

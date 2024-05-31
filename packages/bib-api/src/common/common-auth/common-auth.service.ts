@@ -1,28 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as jwt from "jsonwebtoken";
-import {
-	JWT_ALG,
-	TOKEN_ORIGIN_INIST,
-} from "../../common/common-auth/common-auth.const";
+import { JWT_ALG } from "../../common/common-auth/common-auth.const";
 import { Config } from "../../config";
 import { InistAccount } from "../../inist/inist-account/inist-account.type";
+import { Origin, TokenPayload } from "./common-auth.type";
 
 @Injectable()
-export class EbscoAuthService {
+export class CommonAuthService {
 	private readonly authConfig: Config["auth"];
 
 	constructor(private readonly configService: ConfigService<Config, true>) {
 		this.authConfig = this.configService.get<Config["auth"]>("auth");
 	}
 
-	signInistTokens({ id, username, domains, groups }: InistAccount) {
-		const tokenData = {
-			id,
-			username,
-			domains,
-			groups,
-			origin: TOKEN_ORIGIN_INIST,
+	signToken<O extends Origin>(origin: O, payload: Omit<TokenPayload, "exp">) {
+		const tokenData: TokenPayload = {
+			origin,
+			...payload,
 			exp: Math.ceil(Date.now() / 1000) + this.authConfig.expiresIn,
 		};
 

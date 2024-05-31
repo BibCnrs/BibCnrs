@@ -2,9 +2,9 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
 import { EbscoLicenseController } from "./ebsco-license.controller";
 import { EbscoLicenseService } from "./ebsco-license.service";
 
@@ -24,7 +24,7 @@ describe("EbscoLicenseController", () => {
 				}),
 			],
 			controllers: [EbscoLicenseController],
-			providers: [EbscoLicenseService, PrismaService, EbscoAuthGuard],
+			providers: [EbscoLicenseService, PrismaService, AuthGuard],
 		}).compile();
 
 		ebscoLicenseController = ebscoLicense.get<EbscoLicenseController>(
@@ -42,7 +42,7 @@ describe("EbscoLicenseController", () => {
 			const guards = Reflect.getMetadata("__guards__", EbscoLicenseController);
 			const guard = new guards[0](new JwtServiceMock(), configService);
 
-			expect(guard).toBeInstanceOf(EbscoAuthGuard);
+			expect(guard).toBeInstanceOf(AuthGuard);
 			expect(configService.get).toHaveBeenCalledWith("auth");
 		});
 

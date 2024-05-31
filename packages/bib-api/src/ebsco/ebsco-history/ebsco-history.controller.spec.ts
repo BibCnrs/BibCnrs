@@ -3,9 +3,9 @@ import { JwtModule, JwtService } from "@nestjs/jwt";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { Request } from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
 import { EbscoHistoryController } from "./ebsco-history.controller";
 import { EbscoHistoryService } from "./ebsco-history.service";
 
@@ -25,7 +25,7 @@ describe("EbscoHistoryController", () => {
 				}),
 			],
 			controllers: [EbscoHistoryController],
-			providers: [EbscoHistoryService, PrismaService, EbscoAuthGuard],
+			providers: [EbscoHistoryService, PrismaService, AuthGuard],
 		}).compile();
 
 		ebscoHistoryController = ebscoHistory.get<EbscoHistoryController>(
@@ -47,7 +47,7 @@ describe("EbscoHistoryController", () => {
 				);
 				const guard = new guards[0](new JwtServiceMock(), configService);
 
-				expect(guard).toBeInstanceOf(EbscoAuthGuard);
+				expect(guard).toBeInstanceOf(AuthGuard);
 				expect(configService.get).toHaveBeenCalledWith("auth");
 			});
 

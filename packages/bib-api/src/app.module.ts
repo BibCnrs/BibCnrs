@@ -5,8 +5,10 @@ import { AdminModule } from "./admin/admin.module";
 import config from "./config";
 import { EbscoModule } from "./ebsco/ebsco.module";
 import { InistModule } from "./inist/inist.module";
+import { JanusModule } from "./janus/janus.module";
 import { MailModule } from "./mail/mail.module";
 import { PrismaModule } from "./prisma/prisma.module";
+import { RenaterModule } from "./renater/renater.module";
 import { SecurityModule } from "./security/security.module";
 
 @Module({
@@ -22,9 +24,11 @@ import { SecurityModule } from "./security/security.module";
 		PrismaModule,
 		SecurityModule,
 		MailModule,
+		RenaterModule,
+		JanusModule,
 		InistModule,
-		AdminModule,
 		EbscoModule,
+		AdminModule,
 	],
 	controllers: [],
 	providers: [],

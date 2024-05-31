@@ -9,11 +9,11 @@ import {
 	UseGuards,
 } from "@nestjs/common";
 import { Request } from "express";
-import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
+import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import { EbscoHistoryService } from "./ebsco-history.service";
 
 @Controller("ebsco/histories")
-@UseGuards(EbscoAuthGuard)
+@UseGuards(AuthGuard)
 export class EbscoHistoriesController {
 	constructor(private readonly ebscoHistoryService: EbscoHistoryService) {}
 
