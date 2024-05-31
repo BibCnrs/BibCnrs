@@ -19,6 +19,10 @@ const configFunction = () => ({
 	renater: {
 		fakeLogin: process.env.RENATER_FAKE_LOGIN === "true",
 	},
+	redis: {
+		host: process.env.REDIS_HOST,
+		port: Number.parseInt(process.env.REDIS_PORT || "6379", 10),
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;

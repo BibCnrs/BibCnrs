@@ -72,7 +72,17 @@ seed-db: 								## Initialize the database with seed data
 		yarn workspace @bibcnrs/bib-api run prisma migrate resolve --applied 0_init
 
 start-dev: env-copy							## Start stack in development mode
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up --build --remove-orphans --watch --no-attach=bib-db --no-attach=bib-mail --no-attach=bib-proxy
+	docker compose \
+		--env-file docker-compose.dev.env \
+		-f docker-compose.dev.yml  \
+		up  \
+		--build  \
+		--remove-orphans  \
+		--watch  \
+		--no-attach=bib-db  \
+		--no-attach=bib-mail  \
+		--no-attach=bib-proxy  \
+		--no-attach=bib-redis
 
 stop-dev: env-copy							## Stop stack
 	docker compose --env-file docker-compose.prod.env -f docker-compose.prod.yml down

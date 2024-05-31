@@ -20,6 +20,8 @@ services:
     depends_on:
       bib-db:
         condition: service_healthy
+      bib-redis:
+        condition: service_started
     environment:
       - RENATER_FAKE_LOGIN=true
       - DATABASE_URL=postgres://postgres:S3cr3t@bib-db/bibcnrs

@@ -7,15 +7,15 @@ import {
 } from "@nestjs/common";
 import { Response } from "express";
 import { LOGIN_COOKIE_NAME } from "../../common/common-auth/common-auth.const";
+import { CommonAuthService } from "../../common/common-auth/common-auth.service";
 import { InistAccountService } from "../../inist/inist-account/inist-account.service";
 import { LoginDto } from "./dto/login";
-import { EbscoAuthService } from "./ebsco-auth.service";
 
 @Controller("ebsco")
-export class EbscoAuthController {
+export class InistAuthController {
 	constructor(
 		private readonly inistAccountService: InistAccountService,
-		private readonly ebscoAuthService: EbscoAuthService,
+		private readonly commonAuthService: CommonAuthService,
 	) {}
 
 	@Post("login")
@@ -31,11 +31,18 @@ export class EbscoAuthController {
 		if (!inistAccount) {
 			throw new UnauthorizedException();
 		}
-		const { id, domains } = inistAccount;
+		const { id, groups, domains } = inistAccount;
 
 		// update last_connexion at today
-		const { cookieToken, headerToken } =
-			this.ebscoAuthService.signInistTokens(inistAccount);
+		const { cookieToken, headerToken } = this.commonAuthService.signToken(
+			"inist",
+			{
+				id,
+				username,
+				groups,
+				domains,
+			},
+		);
 
 		await this.inistAccountService.updateLastConnexion(id);
 

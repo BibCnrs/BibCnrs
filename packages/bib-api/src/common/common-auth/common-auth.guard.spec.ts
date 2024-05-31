@@ -15,7 +15,7 @@ import { CommonAuthService } from "./common-auth.service";
 import { TokenPayload } from "./common-auth.type";
 
 describe("EbscoAuthGuard", () => {
-	const testTokenData: Omit<TokenPayload, "exp"> = {
+	const testTokenData: Omit<TokenPayload<"inist">, "exp"> = {
 		origin: "inist",
 		id: 1,
 		username: "marmelab",

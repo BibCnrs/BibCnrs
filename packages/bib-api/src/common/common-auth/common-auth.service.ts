@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { JWT_ALG } from "../../common/common-auth/common-auth.const";
 import { Config } from "../../config";
 import { InistAccount } from "../../inist/inist-account/inist-account.type";
-import { Origin, TokenPayload } from "./common-auth.type";
+import { Origin, TokenPayload, TokenPayloadData } from "./common-auth.type";
 
 @Injectable()
 export class CommonAuthService {
@@ -14,10 +14,10 @@ export class CommonAuthService {
 		this.authConfig = this.configService.get<Config["auth"]>("auth");
 	}
 
-	signToken<O extends Origin>(origin: O, payload: Omit<TokenPayload, "exp">) {
-		const tokenData: TokenPayload = {
-			origin,
+	signToken<O extends Origin>(origin: O, payload: TokenPayloadData[O]) {
+		const tokenData: TokenPayload<O> = {
 			...payload,
+			origin,
 			exp: Math.ceil(Date.now() / 1000) + this.authConfig.expiresIn,
 		};
 

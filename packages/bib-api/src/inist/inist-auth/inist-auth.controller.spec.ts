@@ -2,17 +2,17 @@ import { ConfigModule } from "@nestjs/config";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { CommonAuthService } from "../../common/common-auth/common-auth.service";
 import configFunction from "../../config";
-import { InistAccountService } from "../../inist/inist-account/inist-account.service";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoAuthController } from "./ebsco-auth.controller";
-import { EbscoAuthService } from "./ebsco-auth.service";
+import { InistAccountService } from "../inist-account/inist-account.service";
+import { InistAuthController } from "./inist-auth.controller";
 
-describe("EbscoAuthController", () => {
-	let ebscoAuthController: EbscoAuthController;
+describe("InistAuthController", () => {
+	let inistAuthController: InistAuthController;
 
 	beforeEach(async () => {
-		const ebscoAuth: TestingModule = await Test.createTestingModule({
+		const inistAuth: TestingModule = await Test.createTestingModule({
 			imports: [
 				ConfigModule.forRoot({
 					ignoreEnvFile: true,
@@ -20,12 +20,12 @@ describe("EbscoAuthController", () => {
 					isGlobal: true,
 				}),
 			],
-			controllers: [EbscoAuthController],
-			providers: [EbscoAuthService, InistAccountService, PrismaService],
+			controllers: [InistAuthController],
+			providers: [PrismaService, CommonAuthService, InistAccountService],
 		}).compile();
 
-		ebscoAuthController =
-			ebscoAuth.get<EbscoAuthController>(EbscoAuthController);
+		inistAuthController =
+			inistAuth.get<InistAuthController>(InistAuthController);
 	});
 
 	describe("login", () => {
@@ -34,7 +34,7 @@ describe("EbscoAuthController", () => {
 				cookie: vi.fn(),
 			} as unknown as Response;
 			expect(
-				await ebscoAuthController.login(res, {
+				await inistAuthController.login(res, {
 					username: "INIST",
 					password: "INIST",
 				}),
@@ -58,7 +58,7 @@ describe("EbscoAuthController", () => {
 				cookie: vi.fn(),
 			} as unknown as Response;
 			expect(
-				ebscoAuthController.login(res, {
+				inistAuthController.login(res, {
 					username: "INIST",
 					password: "wrong",
 				}),
@@ -73,7 +73,7 @@ describe("EbscoAuthController", () => {
 			const res = {
 				clearCookie: vi.fn(),
 			} as unknown as Response;
-			expect(await ebscoAuthController.logout(res)).toStrictEqual({
+			expect(await inistAuthController.logout(res)).toStrictEqual({
 				done: true,
 			});
 

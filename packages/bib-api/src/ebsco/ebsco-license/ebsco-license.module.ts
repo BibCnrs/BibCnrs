@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
+import { CommonAuthModule } from "../../common/common-auth/common-auth.module";
 import { PrismaModule } from "../../prisma/prisma.module";
-import { EbscoAuthModule } from "../ebsco-auth/ebsco-auth.module";
 import { EbscoLicenseController } from "./ebsco-license.controller";
 import { EbscoLicenseService } from "./ebsco-license.service";
 
 @Module({
-	imports: [PrismaModule, EbscoAuthModule],
+	imports: [PrismaModule, CommonAuthModule],
 	controllers: [EbscoLicenseController],
 	providers: [EbscoLicenseService],
 	exports: [EbscoLicenseService],

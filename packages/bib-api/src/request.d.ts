@@ -4,6 +4,6 @@ export * from "express";
 
 declare module "express" {
 	export interface Request {
-		user: TokenPayload;
+		user: TokenPayload<"inist"> | TokenPayload<"janus">;
 	}
 }
