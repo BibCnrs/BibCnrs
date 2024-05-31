@@ -24,13 +24,13 @@ import { MediasService } from "./medias.service";
 
 @Controller("admin/medias")
 export class MediasController {
-	private readonly contentDeliveryConfig: Config["contentDelivery"];
+	private readonly contentDeliveryConfig: Config["services"];
 	constructor(
 		private readonly mediasService: MediasService,
 		private readonly configService: ConfigService<Config, true>,
 	) {
 		this.contentDeliveryConfig =
-			this.configService.get<Config["contentDelivery"]>("contentDelivery");
+			this.configService.get<Config["services"]>("services");
 	}
 
 	@Post()
@@ -55,7 +55,7 @@ export class MediasController {
 			...createMediaDto,
 			file_name: file.filename,
 			file: `${file.path}`,
-			url: `${this.contentDeliveryConfig.host}${file.path.replace(
+			url: `${this.contentDeliveryConfig.contentDelivery}${file.path.replace(
 				"uploads",
 				"",
 			)}`,
