@@ -10,13 +10,16 @@ import {
 	Put,
 	Query,
 	Res,
+	UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 import { FindAllQueryArgs } from "../admin.type";
 import { CommunitiesService } from "./communities.service";
 import { CreateCommunityDto, UpdateCommunityDto } from "./dto/community.dto";
 
 @Controller("admin/communities")
+@UseGuards(AdminAuthenticationGuard)
 export class CommunitiesController {
 	constructor(private readonly communitiesService: CommunitiesService) {}
 

@@ -4,16 +4,30 @@ import { Response } from "express";
 import { CommunitiesController } from "./communities.controller";
 import { CommunitiesService } from "./communities.service";
 
+import { ConfigModule } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 
 describe("CommunitiesController", () => {
 	let communitiesController: CommunitiesController;
 
 	beforeEach(async () => {
 		const testingModule: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					ignoreEnvFile: true,
+					load: [configFunction],
+					isGlobal: false,
+				}),
+				JwtModule.register({
+					global: false,
+				}),
+			],
 			controllers: [CommunitiesController],
-			providers: [CommunitiesService, PrismaService],
+			providers: [CommunitiesService, PrismaService, AdminAuthenticationGuard],
 		}).compile();
 
 		communitiesController = testingModule.get<CommunitiesController>(

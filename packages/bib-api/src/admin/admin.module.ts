@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { AdminAuthenticationModule } from "./admin-authentication/admin-authentication.module";
 import { AdminUsersModule } from "./admin-users/admin-users.module";
 import { CommunitiesModule } from "./communities/communities.module";
 import { ContentsManagementModule } from "./contentsManagement/contents-management.module";
@@ -30,6 +31,7 @@ import { UnitsModule } from "./units/units.module";
 		JanusAccountsModule,
 		UnitsModule,
 		SectionsCNModule,
+		AdminAuthenticationModule,
 	],
 	controllers: [],
 	providers: [],
