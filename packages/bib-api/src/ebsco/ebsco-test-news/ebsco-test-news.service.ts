@@ -10,12 +10,11 @@ export class EbscoTestNewsService {
 		return new Date(now);
 	}
 
-	async getTestNews(page: string, first = false) {
+	async getTestNews(first = false) {
 		return this.prismaService.tests_news.findMany({
 			take: first ? 1 : 100,
 			where: {
 				AND: {
-					page: page,
 					enable: true,
 				},
 				OR: [

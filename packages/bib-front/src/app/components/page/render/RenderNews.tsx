@@ -1,3 +1,13 @@
+import {
+	Card,
+	CardActions,
+	CardContent,
+	CardMedia,
+	Chip,
+	Grid,
+	Typography,
+} from "@mui/material";
+import { Box, Stack } from "@mui/system";
 import { memo, useMemo } from "react";
 import { useLanguageKey } from "../../../shared/locales/I18N";
 import type {
@@ -5,123 +15,84 @@ import type {
 	TestNewUrlDataType,
 } from "../../../shared/types/data.types";
 import type { TestsNewsProps } from "../../../shared/types/props.types";
+import PageDate from "../../element/PageDate";
 import OpenablePaper from "../../element/paper/openable/OpenablePaper";
 import TestsNewsFooter from "../../element/render/TestsNewsFooter";
 import { getInstituteColor } from "../../internal/provider/LocalizedThemeProvider";
-import "./scss/News.scss";
 
 /**
  * Component used to display news and tests article
  * @param data - Array of Articles
  * @param domain
  */
-const RenderNews = ({ data, domain }: TestsNewsProps) => {
+const RenderNews = ({ data }: TestsNewsProps) => {
 	const language = useLanguageKey();
 
 	const filteredData = useMemo(() => {
 		if (!data) {
 			return [];
 		}
-		return data.filter((value) => {
-			if (!Array.isArray(value.domains)) {
-				return true;
-			}
-			if (value.domains.length === 0) {
-				return true;
-			}
-			const domainsSet = new Set(value.domains);
-			return domainsSet.has(domain);
-		});
-	}, [data, domain]);
 
-	/**
-	 * Function used to get paper color
-	 * @param value - Article used to get the color
-	 * @returns - HTML color used by the paper
-	 */
-	const getColor = (value: TestNewDataType) => {
-		if (!Array.isArray(value.domains) || value.domains.length === 0) {
-			return undefined;
-		}
-		return getInstituteColor(value.domains[0]);
-	};
+		return data.filter(
+			(data, index, self) => index === self.findIndex((t) => t.id === data.id),
+		);
+	}, [data]);
 
-	const getUrl = (url: TestNewUrlDataType): string => {
-		return url.proxy
-			? `https://${domain}.bib.cnrs.fr/login?url=${url.url}`
-			: url.url;
-	};
+	console.log(filteredData);
 
 	return (
-		<div id="tests-news-content">
-			{filteredData.map((value) => (
-				<OpenablePaper
-					key={value.id}
-					Title={
-						value.urls.length === 1 ? (
-							<a
-								className="tests-news-title link"
-								href={getUrl(value.urls[0])}
-								rel="noopener noreferrer nofollow"
-							>
-								{language === "en" ? value.name_en : value.name_fr}
-							</a>
-						) : (
-							<div className="tests-news-title">
-								{language === "en" ? value.name_en : value.name_fr}
-							</div>
-						)
-					}
-					SmallBody={
-						<TestsNewsFooter
-							id={value.id}
-							page={value.page}
-							from={value.from}
-							to={value.to}
-							showOpenButton
+		<Box
+			display="grid"
+			gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
+			gap={6}
+		>
+			{filteredData.map((data) => (
+				<Box key={data.id}>
+					<Card
+						sx={{
+							display: "flex",
+							flexDirection: "column",
+							height: "100%",
+							cursor: "pointer",
+							":hover": {
+								boxShadow: 20, // theme.shadows[20]
+							},
+						}}
+					>
+						<CardMedia
+							sx={{ height: 200, objectFit: "contain" }}
+							image={`https://source.unsplash.com/random/cats&${data.id}`}
 						/>
-					}
-					FullBody={
-						<div>
-							<div
-								className="tests-news-content cms-content"
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-								dangerouslySetInnerHTML={{
-									__html:
-										language === "en" ? value.content_en : value.content_fr,
-								}}
-							/>
-							{Array.isArray(value.urls) && value.urls.length > 0 ? (
-								<div key={`${value.id}-urls`}>
-									<ul>
-										{value.urls.map((url) => (
-											<li key={url.name}>
-												<a
-													className="link"
-													href={getUrl(url)}
-													rel="noreferrer noopener nofollow"
-												>
-													{url.name}
-												</a>
-											</li>
-										))}
-									</ul>
-								</div>
-							) : null}
-							<TestsNewsFooter
-								id={value.id}
-								page={value.page}
-								from={value.from}
-								to={value.to}
-								showOpenButton
-							/>
-						</div>
-					}
-					color={getColor(value)}
-					border
-				/>
+						<CardContent
+							sx={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-between",
+								flex: 1,
+								gap: 2,
+							}}
+						>
+							<Stack spacing={1}>
+								<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+									{data.domains?.map((domain) => (
+										<Chip key={domain} label={domain} size="small" />
+									))}
+									{data.page === "tests" && (
+										<Chip label="Test" size="small" variant="outlined" />
+									)}
+								</Stack>
+								<Typography variant="h5" component="h6">
+									{language === "en" ? data.name_en : data.name_fr}
+								</Typography>
+							</Stack>
+							<Typography color="textSecondary">
+								{new Date(data.from).toLocaleDateString()}
+							</Typography>
+						</CardContent>
+					</Card>
+				</Box>
 			))}
-		</div>
+		</Box>
 	);
 };
 

@@ -36,7 +36,6 @@ import {
 	RouteResearchData,
 	RouteResources,
 	RouteRoot,
-	RouteTests,
 } from "./shared/Routes";
 
 const App = () => {
@@ -78,22 +77,7 @@ const App = () => {
 							</ProtectedRoute>
 						}
 					/>
-					<Route
-						path={RouteTests}
-						element={
-							<ProtectedRoute>
-								<News page="tests" />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path={`${RouteTests}/:id`}
-						element={
-							<ProtectedRoute>
-								<IndividualNews />
-							</ProtectedRoute>
-						}
-					/>
+
 					<Route
 						path={RouteNews}
 						element={

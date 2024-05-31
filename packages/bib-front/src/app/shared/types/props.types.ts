@@ -135,7 +135,6 @@ export type ColoredPaperProps = PropsWithChildren<{
 
 export type TestsNewsProps = PropsWithoutRef<{
 	data: TestsNewsDataType | undefined;
-	domain: string;
 }>;
 
 export type FacetRequired = {
