@@ -10,13 +10,16 @@ import {
 	Put,
 	Query,
 	Res,
+	UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateRevueDto, UpdateRevueDto } from "./dto/revue.dto";
 import { RevuesService } from "./revues.service";
 
 @Controller("admin/revues")
+@UseGuards(AdminAuthenticationGuard)
 export class RevuesController {
 	constructor(private readonly revuesService: RevuesService) {}
 

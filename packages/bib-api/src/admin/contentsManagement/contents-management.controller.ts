@@ -10,8 +10,10 @@ import {
 	Put,
 	Query,
 	Res,
+	UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 import { FindAllQueryArgs } from "../admin.type";
 import { ContentsManagementService } from "./contents-management.service";
 import {
@@ -20,6 +22,7 @@ import {
 } from "./dto/contents-management.dto";
 
 @Controller("admin/contentManagement")
+@UseGuards(AdminAuthenticationGuard)
 export class ContentsManagementController {
 	constructor(
 		private readonly contentsManagementService: ContentsManagementService,

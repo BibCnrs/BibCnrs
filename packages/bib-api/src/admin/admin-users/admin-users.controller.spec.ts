@@ -1,9 +1,13 @@
 import { HttpException } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { SecurityService } from "../../security/security.service";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 import { AdminUsersController } from "./admin-users.controller";
 import { AdminUsersService } from "./admin-users.service";
 
@@ -12,8 +16,23 @@ describe("AdminUserController", () => {
 
 	beforeEach(async () => {
 		const testingModule: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					ignoreEnvFile: true,
+					load: [configFunction],
+					isGlobal: false,
+				}),
+				JwtModule.register({
+					global: false,
+				}),
+			],
 			controllers: [AdminUsersController],
-			providers: [AdminUsersService, PrismaService, SecurityService],
+			providers: [
+				AdminUsersService,
+				PrismaService,
+				AdminAuthenticationGuard,
+				SecurityService,
+			],
 		}).compile();
 
 		adminUsersController =

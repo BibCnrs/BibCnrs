@@ -4,16 +4,30 @@ import { Response } from "express";
 import { DatabasesController } from "./databases.controller";
 import { DatabasesService } from "./databases.service";
 
+import { ConfigModule } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 
 describe("DatabasesController", () => {
 	let databasesController: DatabasesController;
 
 	beforeEach(async () => {
 		const testingModule: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					ignoreEnvFile: true,
+					load: [configFunction],
+					isGlobal: false,
+				}),
+				JwtModule.register({
+					global: false,
+				}),
+			],
 			controllers: [DatabasesController],
-			providers: [DatabasesService, PrismaService],
+			providers: [DatabasesService, PrismaService, AdminAuthenticationGuard],
 		}).compile();
 
 		databasesController =

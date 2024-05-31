@@ -10,8 +10,10 @@ import {
 	Put,
 	Query,
 	Res,
+	UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
+import { AdminAuthenticationGuard } from "../admin-authentication/admin-authentication.guard";
 import { FindAllQueryArgs } from "../admin.type";
 import {
 	CreateJanusAccountDto,
@@ -20,6 +22,7 @@ import {
 import { JanusAccountsService } from "./janus-accounts.service";
 
 @Controller("admin/janusAccounts")
+@UseGuards(AdminAuthenticationGuard)
 export class JanusAccountsController {
 	constructor(private readonly janusAccountsService: JanusAccountsService) {}
 

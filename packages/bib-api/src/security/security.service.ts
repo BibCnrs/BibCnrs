@@ -52,6 +52,7 @@ export class SecurityService {
 
 	async isPasswordValid(password: string, salt: string, hash: string) {
 		const passwordHash = await this.pbkdf2(password, salt);
+
 		// We avoid timing attack here
 		return crypto.timingSafeEqual(
 			Buffer.from(passwordHash, "utf8"),
