@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common";
 import { PrismaModule } from "../../prisma/prisma.module";
+import { AdminAuthenticationModule } from "../admin-authentication/admin-authentication.module";
 import { ResourcesController } from "./resources.controller";
 import { ResourcesService } from "./resources.service";
 
 @Module({
 	controllers: [ResourcesController],
 	providers: [ResourcesService],
-	imports: [PrismaModule],
+	imports: [PrismaModule, AdminAuthenticationModule],
 	exports: [ResourcesService],
 })
 export class ResourcesModule {}
