@@ -3,6 +3,7 @@ import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { PrismaService } from "../../prisma/prisma.service";
+import { SecurityService } from "../../security/security.service";
 import { AdminUsersController } from "./admin-users.controller";
 import { AdminUsersService } from "./admin-users.service";
 
@@ -12,7 +13,7 @@ describe("AdminUserController", () => {
 	beforeEach(async () => {
 		const testingModule: TestingModule = await Test.createTestingModule({
 			controllers: [AdminUsersController],
-			providers: [AdminUsersService, PrismaService],
+			providers: [AdminUsersService, PrismaService, SecurityService],
 		}).compile();
 
 		adminUsersController =

@@ -410,6 +410,20 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+
+	// Section CN
+	await prisma.section_cn.createMany({
+		data: [
+			{
+				code: "A",
+				name: "Section A",
+			},
+			{
+				code: "B",
+				name: "Section B",
+			},
+		],
+	});
 })()
 	.then(async () => {
 		await prisma.$disconnect();

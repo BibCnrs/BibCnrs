@@ -1,12 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { admin_user } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
+import { SecurityService } from "../../security/security.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateAdminUserDto, UpdateAdminUserDto } from "./dto/admin-user.dto";
 @Injectable()
 export class AdminUsersService {
-	constructor(private prismaService: PrismaService) {}
+	constructor(
+		private prismaService: PrismaService,
+		private securityService: SecurityService,
+	) {}
 
 	private parseFilters(query: FindAllQueryArgs): FilterQuery {
 		if (!query) return {};
@@ -22,20 +26,6 @@ export class AdminUsersService {
 
 	private calculateOffset(query: FindAllQueryArgs, take: number): number {
 		return query._page ? (Number.parseInt(query._page) - 1) * take : 0;
-	}
-
-	private hashPassword(
-		createAdminUserDto: CreateAdminUserDto | UpdateAdminUserDto,
-	) {
-		let password = createAdminUserDto.password;
-		let salt = "salt";
-
-		// TODO: Hash password after implementing password hashing
-		if (createAdminUserDto.password) {
-			password = "salted and hashed password";
-			salt = "salt";
-		}
-		return { salt, password };
 	}
 
 	async findAll(
@@ -74,40 +64,48 @@ export class AdminUsersService {
 		});
 	}
 
-	create(createAdminUserDto: CreateAdminUserDto) {
-		const { salt, password } = this.hashPassword(createAdminUserDto);
+	async create(createAdminUserDto: CreateAdminUserDto) {
+		const { salt, hash } = await this.securityService.hashPassword(
+			createAdminUserDto.password,
+		);
 
 		return this.prismaService.admin_user.create({
 			data: {
 				...createAdminUserDto,
 				salt,
-				password,
+				password: hash,
 			},
 		});
 	}
 
-	createMany(createAdminUserDtos: CreateAdminUserDto[]) {
-		const data = createAdminUserDtos.map((createAdminUserDto) => {
-			const { salt, password } = this.hashPassword(createAdminUserDto);
-			return {
-				...createAdminUserDto,
-				salt,
-				password,
-			};
-		});
+	async createMany(createAdminUserDtos: CreateAdminUserDto[]) {
+		const data = await Promise.all(
+			createAdminUserDtos.map(async (createAdminUserDto) => {
+				const { salt, hash } = await this.securityService.hashPassword(
+					createAdminUserDto.password,
+				);
+				return {
+					...createAdminUserDto,
+					salt,
+					password: hash,
+				};
+			}),
+		);
 		return this.prismaService.admin_user.createMany({
 			data,
 		});
 	}
 
-	update(id: number, updateAdminUserDto: UpdateAdminUserDto) {
-		const { salt, password } = this.hashPassword(updateAdminUserDto);
+	async update(id: number, updateAdminUserDto: UpdateAdminUserDto) {
+		const { salt, hash } = await this.securityService.hashPassword(
+			updateAdminUserDto.password,
+		);
 
 		return this.prismaService.admin_user.update({
 			data: {
 				...updateAdminUserDto,
 				salt,
-				password,
+				password: hash,
 			},
 			where: { id },
 		});
