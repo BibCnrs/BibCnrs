@@ -9,25 +9,25 @@ import { beforeEach, describe, expect, it } from "vitest";
 import configFunction, { Config } from "../../config";
 import { InistAccountService } from "../../inist/inist-account/inist-account.service";
 import { PrismaService } from "../../prisma/prisma.service";
-import { JWT_ALG, LOGIN_COOKIE_NAME, TOKEN_ORIGIN } from "./ebsco-auth.const";
-import { EbscoAuthGuard } from "./ebsco-auth.guard";
-import { EbscoAuthService } from "./ebsco-auth.service";
-import { TokenPayload } from "./ebsco-auth.type";
+import { JWT_ALG, LOGIN_COOKIE_NAME } from "./common-auth.const";
+import { AuthGuard } from "./common-auth.guard";
+import { CommonAuthService } from "./common-auth.service";
+import { TokenPayload } from "./common-auth.type";
 
 describe("EbscoAuthGuard", () => {
-	const testTokenData: Omit<TokenPayload, "exp"> = {
+	const testTokenData: Omit<TokenPayload<"inist">, "exp"> = {
+		origin: "inist",
 		id: 1,
 		username: "marmelab",
 		domains: [],
 		groups: [],
-		origin: TOKEN_ORIGIN,
 	};
 
 	let authConfig: Config["auth"];
-	let ebscoAuthGuard: EbscoAuthGuard;
+	let authGuard: AuthGuard;
 
 	beforeEach(async () => {
-		const ebscoAuth: TestingModule = await Test.createTestingModule({
+		const commonAuth: TestingModule = await Test.createTestingModule({
 			imports: [
 				ConfigModule.forRoot({
 					ignoreEnvFile: true,
@@ -38,16 +38,11 @@ describe("EbscoAuthGuard", () => {
 					global: true,
 				}),
 			],
-			providers: [
-				EbscoAuthService,
-				InistAccountService,
-				PrismaService,
-				EbscoAuthGuard,
-			],
+			providers: [CommonAuthService, PrismaService, AuthGuard],
 		}).compile();
 
-		ebscoAuthGuard = ebscoAuth.get<EbscoAuthGuard>(EbscoAuthGuard);
-		authConfig = ebscoAuth
+		authGuard = commonAuth.get<AuthGuard>(AuthGuard);
+		authConfig = commonAuth
 			.get<ConfigService<Config, true>>(ConfigService)
 			.get("auth");
 	});
@@ -78,7 +73,7 @@ describe("EbscoAuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(ebscoAuthGuard.canActivate(context)).resolves.toEqual(true);
+			expect(authGuard.canActivate(context)).resolves.toEqual(true);
 		});
 
 		it("should throw an error user if JWT in cookie alg is not HS256", async () => {
@@ -106,7 +101,7 @@ describe("EbscoAuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(() => ebscoAuthGuard.canActivate(context)).rejects.toThrow(
+			expect(() => authGuard.canActivate(context)).rejects.toThrow(
 				UnauthorizedException,
 			);
 		});
@@ -136,7 +131,7 @@ describe("EbscoAuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(() => ebscoAuthGuard.canActivate(context)).rejects.toThrow(
+			expect(() => authGuard.canActivate(context)).rejects.toThrow(
 				UnauthorizedException,
 			);
 		});
@@ -167,7 +162,7 @@ describe("EbscoAuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(() => ebscoAuthGuard.canActivate(context)).rejects.toThrow(
+			expect(() => authGuard.canActivate(context)).rejects.toThrow(
 				UnauthorizedException,
 			);
 		});
@@ -197,7 +192,7 @@ describe("EbscoAuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(() => ebscoAuthGuard.canActivate(context)).rejects.toThrow(
+			expect(() => authGuard.canActivate(context)).rejects.toThrow(
 				UnauthorizedException,
 			);
 		});
@@ -226,7 +221,7 @@ describe("EbscoAuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(() => ebscoAuthGuard.canActivate(context)).rejects.toThrow(
+			expect(() => authGuard.canActivate(context)).rejects.toThrow(
 				UnauthorizedException,
 			);
 		});

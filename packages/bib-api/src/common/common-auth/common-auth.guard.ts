@@ -8,11 +8,11 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { Config } from "../../config";
-import { JWT_ALG, LOGIN_COOKIE_NAME, TOKEN_ORIGIN } from "./ebsco-auth.const";
-import { TokenPayload } from "./ebsco-auth.type";
+import { JWT_ALG, LOGIN_COOKIE_NAME } from "./common-auth.const";
+import { TokenPayload } from "./common-auth.type";
 
 @Injectable()
-export class EbscoAuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
 	private readonly authConfig: Config["auth"];
 
 	constructor(
@@ -31,12 +31,15 @@ export class EbscoAuthGuard implements CanActivate {
 			throw new UnauthorizedException();
 		}
 		try {
-			const payload = await this.jwtService.verifyAsync<TokenPayload>(token, {
-				secret: this.authConfig.cookieSecret,
-				algorithms: [JWT_ALG],
-			});
+			const payload = await this.jwtService.verifyAsync<TokenPayload<"inist">>(
+				token,
+				{
+					secret: this.authConfig.cookieSecret,
+					algorithms: [JWT_ALG],
+				},
+			);
 
-			if (payload.origin !== TOKEN_ORIGIN) {
+			if (payload.origin !== "inist") {
 				throw new UnauthorizedException();
 			}
 

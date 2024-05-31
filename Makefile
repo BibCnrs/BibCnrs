@@ -71,13 +71,32 @@ seed-db: 								## Initialize the database with seed data
 		--rm bib-api \
 		yarn workspace @bibcnrs/bib-api run prisma migrate resolve --applied 0_init
 
-start-dev: env-copy							## Start stack in development mode
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up --build --remove-orphans --watch --no-attach=bib-db --no-attach=bib-mail --no-attach=bib-proxy
+start-dev: env-copy						## Start stack in development mode
+	docker compose \
+		--env-file docker-compose.dev.env \
+		-f docker-compose.dev.yml  \
+		up  \
+		--build  \
+		--remove-orphans  \
+		--watch  \
+		--no-attach=bib-db  \
+		--no-attach=bib-mail  \
+		--no-attach=bib-proxy  \
+		--no-attach=bib-redis
 
-stop-dev: env-copy							## Stop stack
+stop-dev: env-copy						## Stop stack
 	docker compose --env-file docker-compose.prod.env -f docker-compose.prod.yml down
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down
 	docker compose -f docker-compose.test.yml down
+
+dev-copy-uploads:						## Copy files from input directory to uploads, usage: COMMAND_ARGS='./uploads' make dev-copy-uploads
+ifdef COMMAND_ARGS
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up bib-proxy -d 
+	docker cp $(COMMAND_ARGS)/. bibcnrs-bib-proxy-1:/usr/share/nginx/html/files
+else
+	@echo 'Please specify an input directory to copy to uploads'
+endif
+
 
 test: test-api							## Run tests for all packages
 

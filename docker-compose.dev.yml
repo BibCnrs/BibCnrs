@@ -5,7 +5,7 @@ services:
       dockerfile: ./ops/bib-api/Dockerfile
       target: dev
     volumes:
-      - ./data/uploads:/app/packages/bib-api/uploads
+      - bib-uploads:/app/packages/bib-api/uploads
     develop:
       watch:
         - action: sync
@@ -20,7 +20,10 @@ services:
     depends_on:
       bib-db:
         condition: service_healthy
+      bib-redis:
+        condition: service_started
     environment:
+      - RENATER_FAKE_LOGIN=true
       - DATABASE_URL=postgres://postgres:S3cr3t@bib-db/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
       - BIBAPI_HOST= http://localhost:3000/api
@@ -38,6 +41,7 @@ services:
       - METADORE_API_KEY=${METADORE_API_KEY}
       - DOAJ_URL=${DOAJ_URL}
       - OLD_API_URL=${OLD_API_URL:-https://bib-preprod.inist.fr}
+      - REDIS_HOST=bib-redis
     deploy:
       resources:
         limits:
@@ -105,10 +109,10 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./ops/bib-proxy/nginx.conf
+          path: ./ops/bib-proxy/nginx.dev.conf
     volumes:
       - ./ops/bib-proxy/nginx.dev.conf:/etc/nginx/nginx.conf
-      - ./data/uploads:/usr/share/nginx/html/files
+      - bib-uploads:/usr/share/nginx/html/files
 
   bib-db:
     image: postgres:14
@@ -132,9 +136,15 @@ services:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-1G}
 
+  bib-redis:
+    image: redis:7.2.5
+    restart: always
+
   bib-mail:
     image: maildev/maildev:2.1.0
     ports:
       - "1080:1080"
+
 volumes:
   bib-db-data:
+  bib-uploads:

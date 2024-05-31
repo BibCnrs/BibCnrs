@@ -13,12 +13,12 @@ import {
 	UseGuards,
 } from "@nestjs/common";
 import { Request } from "express";
-import { EbscoAuthGuard } from "../ebsco-auth/ebsco-auth.guard";
+import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import { CreateHistoryDto } from "./dto/ebsco-history.dto";
 import { EbscoHistoryService } from "./ebsco-history.service";
 
 @Controller("ebsco/history")
-@UseGuards(EbscoAuthGuard)
+@UseGuards(AuthGuard)
 export class EbscoHistoryController {
 	constructor(private readonly ebscoHistoryService: EbscoHistoryService) {}
 
