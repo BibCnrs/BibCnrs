@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - bib-frontend-network
+      - bib_frontend_network
 
   # Application back office
   bibcnrs-admin:
@@ -18,7 +18,7 @@ services:
       - "8081:8081"
     restart: always
     networks:
-      - bib-frontend-network
+      - bib_frontend_network
 
   # Content delivery
   bibcnrs-content-delivery:
@@ -31,7 +31,7 @@ services:
     ports:
       - "8082:8082"
     networks:
-      - bib-frontend-network
+      - bib_frontend_network
 
   # Application api
   bibcnrs-api:
@@ -73,8 +73,8 @@ services:
       - bibcnrs-api-redis
       - bibcnrs-api-postgres
     networks:
-      - bib-backend-network
-      - bib-frontend-network
+      - bib_backend_network
+      - bib_frontend_network
 
   # Application database
   bibcnrs-api-postgres:
@@ -92,7 +92,7 @@ services:
     ports:
       - "60000:5432"
     networks:
-      - bib-backend-network
+      - bib_backend_network
 
   # Cache database
   bibcnrs-api-redis:
@@ -100,15 +100,15 @@ services:
     image: redis:7.2.5
     restart: always
     networks:
-      - bib-backend-network
+      - bib_backend_network
 
 volumes:
   bibcnrs-api-postgres-data:
 
 networks:
-  bib-backend-network:
+  bib_backend_network:
     driver: bridge
-    name: bib-backend-network
-  bib-frontend-network:
+    name: bib_backend_network
+  bib_frontend_network:
     driver: bridge
-    name: bib-frontend-network
+    name: bib_frontend_network
