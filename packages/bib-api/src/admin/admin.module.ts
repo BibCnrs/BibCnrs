@@ -17,6 +17,7 @@ import { UnitsModule } from "./units/units.module";
 
 @Module({
 	imports: [
+		AdminAuthenticationModule,
 		AdminUsersModule,
 		CommunitiesModule,
 		DatabasesModule,
@@ -31,7 +32,6 @@ import { UnitsModule } from "./units/units.module";
 		JanusAccountsModule,
 		UnitsModule,
 		SectionsCNModule,
-		AdminAuthenticationModule,
 	],
 	controllers: [],
 	providers: [],
