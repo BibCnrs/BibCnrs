@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { unit } from "@prisma/client";
+import { Prisma, unit } from "@prisma/client";
 import {
 	selectCommunities,
 	selectInstitutes,
@@ -145,6 +145,12 @@ export class UnitsService {
 		return unit[0];
 	}
 
+	async findOneByCode(code: string): Promise<unit | null> {
+		return this.prismaService.unit.findUnique({
+			where: { code },
+		});
+	}
+
 	async create(createUnitDto: CreateUnitDto) {
 		const {
 			communities: unitCommunities,
@@ -260,5 +266,13 @@ export class UnitsService {
 
 	remove(id: number) {
 		return this.prismaService.unit.delete({ where: { id } });
+	}
+
+	upsertOneByCode(unit: Prisma.unitCreateInput) {
+		return this.prismaService.unit.upsert({
+			where: { code: unit.code },
+			update: unit,
+			create: unit,
+		});
 	}
 }

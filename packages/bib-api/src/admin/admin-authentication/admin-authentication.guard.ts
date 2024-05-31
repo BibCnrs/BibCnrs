@@ -35,8 +35,6 @@ export class AdminAuthenticationGuard implements CanActivate {
 			}>(token, {
 				secret: this.authConfig.headerSecret,
 			});
-
-			console.log("Payload:", payload);
 		} catch {
 			throw new UnauthorizedException();
 		}

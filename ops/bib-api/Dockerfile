@@ -3,6 +3,7 @@ FROM node:22-alpine as base
 RUN apk upgrade
 RUN mkdir -p /app/.yarn
 RUN mkdir -p /app/packages/bib-api
+RUN mkdir -p /app/packages/bib-api/uploads && chown node:node /app/packages/bib-api/uploads
 
 # Copy all files used by yarn
 COPY package.json                       /app/package.json
