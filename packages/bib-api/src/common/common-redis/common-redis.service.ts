@@ -30,4 +30,16 @@ export class CommonRedisService {
 
 		void this.redis.connect();
 	}
+
+	async getAsync(key: string) {
+		return this.redis.get(key);
+	}
+
+	async setAsync(key: string, value: string) {
+		return this.redis.set(key, value);
+	}
+
+	async delAsync(key: string) {
+		return this.redis.del(key);
+	}
 }

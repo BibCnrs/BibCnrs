@@ -5,5 +5,6 @@ import { CommonMailService } from "./common-mail.service";
 	imports: [],
 	controllers: [],
 	providers: [CommonMailService],
+	exports: [CommonMailService],
 })
 export class CommonMailModule {}

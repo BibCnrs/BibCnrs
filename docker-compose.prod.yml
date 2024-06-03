@@ -45,7 +45,7 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       BIBAPI_HOST: ${BIBAPI_HOST}
-      BIB_CONTENT_DELIVERY_HOST: ${BIB_CONTENT_DELIVERY_HOST}
+      CONTENT_DELIVERY_HOST: ${CONTENT_DELIVERY_HOST}
       ebsco_host: ${ebsco_host}
       header_secret: ${header_secret}
       cookie_secret: ${cookie_secret}
@@ -66,6 +66,8 @@ services:
       POSTGRES_HOST: bibcnrs-api-postgres
       REDIS_HOST: bibcnrs-api-redis
       OLD_API_URL: ${OLD_API_URL:-https://bib-preprod.inist.fr}
+      MAIL_FROM: bibcnrs@bib.cnrs.fr
+      MAIL_TO: assistance-portail@inist.fr
     restart: always
     ports:
       - "3000:3000"

@@ -74,14 +74,14 @@ seed-db: 								## Initialize the database with seed data
 start-dev: env-copy						## Start stack in development mode
 	docker compose \
 		--env-file docker-compose.dev.env \
-		-f docker-compose.dev.yml  \
-		up  \
-		--build  \
-		--remove-orphans  \
-		--watch  \
-		--no-attach=bib-db  \
-		--no-attach=bib-mail  \
-		--no-attach=bib-proxy  \
+		-f docker-compose.dev.yml \
+		up \
+		--watch \
+		--build \
+		--remove-orphans \
+		--no-attach=bib-db \
+		--no-attach=bib-mail \
+		--no-attach=bib-proxy \
 		--no-attach=bib-redis
 
 stop-dev: env-copy						## Stop stack
@@ -187,6 +187,9 @@ start-prod: stop-dev					## Start stack in production mode with local env
 		--env-file docker-compose.prod.env \
 		-f docker-compose.prod.yml \
 		up
+
+deploy-dev:
+	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4  && git pull && make build && make stop-start'
 
 prod-init-db:
 	docker compose -f docker-compose.prod.yml up -d --wait bibcnrs-api-postgres

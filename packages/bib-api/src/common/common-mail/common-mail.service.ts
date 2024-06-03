@@ -15,7 +15,10 @@ export class CommonMailService {
 		});
 	}
 
-	sendMail(mail: nodemailer.SendMailOptions) {
+	sendMail(mail: nodemailer.SendMailOptions | null) {
+		if (!mail) {
+			return;
+		}
 		return this.transport.sendMail(mail);
 	}
 }

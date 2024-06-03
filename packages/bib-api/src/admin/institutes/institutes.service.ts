@@ -69,6 +69,22 @@ export class InstitutesService {
 		return { data, total };
 	}
 
+	async createIfNotExists(code: string | null, name: string) {
+		if (!code) {
+			return null;
+		}
+		const institute = this.prismaService.institute.findFirst({
+			where: {
+				code,
+			},
+		});
+		if (institute) {
+			return institute;
+		}
+
+		return this.create({ code, name });
+	}
+
 	async findOne(id: number): Promise<Partial<institute>> {
 		const institute = await this.prismaService.institute.findUnique({
 			where: {

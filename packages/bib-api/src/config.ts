@@ -2,6 +2,8 @@ const configFunction = () => ({
 	mailer: {
 		host: process.env.MAIL_SERVER_HOST,
 		port: Number.parseInt(process.env.MAIL_SERVER_PORT, 10),
+		from: process.env.MAIL_FROM,
+		to: process.env.MAIL_TO,
 	},
 	auth: {
 		cookieSecret: process.env.cookie_secret,
@@ -9,8 +11,9 @@ const configFunction = () => ({
 		adminSecret: process.env.admin_secret,
 		expiresIn: 10 * 3600, // 10 hours
 	},
-	contentDelivery: {
-		host: process.env.CONTENT_DELIVRY_HOST,
+	services: {
+		bibadmin: process.env.bib_admin_host,
+		contentDelivery: process.env.CONTENT_DELIVRY_HOST,
 	},
 	metadore: {
 		url: process.env.METADORE_URL,
