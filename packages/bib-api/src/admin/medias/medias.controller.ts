@@ -14,9 +14,11 @@ import {
 	UploadedFile,
 	UseInterceptors,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Response } from "express";
 import { diskStorage } from "multer";
+import { Config } from "../../config";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateMediaDto, UpdateMediaDto } from "./dto/media.dto";
 import { UPLOADS_DIR } from "./medias.const";
@@ -24,7 +26,15 @@ import { MediasService } from "./medias.service";
 
 @Controller("admin/medias")
 export class MediasController {
-	constructor(private readonly mediasService: MediasService) {}
+	private readonly servicesConfig: Config["services"];
+
+	constructor(
+		private readonly mediasService: MediasService,
+		private readonly configService: ConfigService<Config, true>,
+	) {
+		this.servicesConfig =
+			this.configService.get<Config["services"]>("services");
+	}
 
 	@Post()
 	@UseInterceptors(
@@ -60,7 +70,6 @@ export class MediasController {
 			url: `${file.path.replace(UPLOADS_DIR, "")}`,
 		};
 
-		console.log(media);
 		return this.mediasService.create(media);
 	}
 
@@ -71,8 +80,8 @@ export class MediasController {
 		res.header("Access-Control-Expose-Headers", "Content-Range");
 		return res.send(
 			data.map(({ url, ...rest }) => ({
-				url: path.join(UPLOADS_DIR, url),
 				...rest,
+				url: `${this.servicesConfig.contentDelivery}${url}`,
 			})),
 		);
 	}
@@ -87,7 +96,9 @@ export class MediasController {
 
 		return {
 			...data,
-			url: data.url ? path.join(UPLOADS_DIR, data.url) : null,
+			url: data.url
+				? `${this.servicesConfig.contentDelivery}${data.url}`
+				: null,
 		};
 	}
 

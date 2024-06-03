@@ -1,7 +1,8 @@
-import { ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { Response } from "express";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { MediasController } from "./medias.controller";
 import { MediasService } from "./medias.service";
@@ -11,6 +12,13 @@ describe("MediaController", () => {
 
 	beforeEach(async () => {
 		const testingModule: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					ignoreEnvFile: true,
+					load: [configFunction],
+					isGlobal: true,
+				}),
+			],
 			controllers: [MediasController],
 			providers: [MediasService, PrismaService, ConfigService],
 		}).compile();
@@ -32,15 +40,15 @@ describe("MediaController", () => {
 						id: 1,
 						name: "media1",
 						file_name: "media1.png",
-						file: "uploads/2024/1/1/media1.png",
-						url: "http://test/files/2024/1/1/media1.png",
+						file: "/app/packages/bib-api/uploads/2024/1/1/media1.png",
+						url: "http://localhost:3000/files/2024/1/1/media1.png",
 					}),
 					expect.objectContaining({
 						id: 2,
 						name: "media2",
 						file_name: "media2.png",
-						file: "uploads/2024/1/1/media2.png",
-						url: "http://test/files/2024/1/1/media2.png",
+						file: "/app/packages/bib-api/uploads/2024/1/1/media2.png",
+						url: "http://localhost:3000/files/2024/1/1/media2.png",
 					}),
 				]),
 			);
@@ -52,8 +60,8 @@ describe("MediaController", () => {
 				id: 2,
 				name: "media2",
 				file_name: "media2.png",
-				file: "uploads/2024/1/1/media2.png",
-				url: "http://test/files/2024/1/1/media2.png",
+				file: "/app/packages/bib-api/uploads/2024/1/1/media2.png",
+				url: "http://localhost:3000/files/2024/1/1/media2.png",
 			});
 		});
 	});
