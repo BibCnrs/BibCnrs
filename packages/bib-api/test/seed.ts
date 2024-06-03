@@ -399,14 +399,14 @@ const prisma = new PrismaClient();
 			{
 				name: "media1",
 				file_name: "media1.png",
-				file: "uploads/2024/1/1/media1.png",
-				url: "http://test/files/2024/1/1/media1.png",
+				file: "/app/packages/bib-api/uploads/2024/1/1/media1.png",
+				url: "/2024/1/1/media1.png",
 			},
 			{
 				name: "media2",
 				file_name: "media2.png",
-				file: "uploads/2024/1/1/media2.png",
-				url: "http://test/files/2024/1/1/media2.png",
+				file: "/app/packages/bib-api/uploads/2024/1/1/media2.png",
+				url: "/2024/1/1/media2.png",
 			},
 		],
 	});

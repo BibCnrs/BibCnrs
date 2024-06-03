@@ -4,25 +4,18 @@ import {
 	Get,
 	Logger,
 	Query,
-	Redirect,
 	Req,
 	Res,
 	UseGuards,
 } from "@nestjs/common";
 import { inist_account, janus_account } from "@prisma/client";
 import { Request, Response } from "express";
-import { a } from "vitest/dist/suite-IbNSsUWN";
 import { InstitutesService } from "../../admin/institutes/institutes.service";
 import { UnitsService } from "../../admin/units/units.service";
 import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import { TokenPayload } from "../../common/common-auth/common-auth.type";
 import { InistAccountService } from "../../inist/inist-account/inist-account.service";
-import {
-	InistAccountWithCommunities,
-	InistAccountWithDomains,
-} from "../../inist/inist-account/inist-account.type";
 import { JanusAccountService } from "../../janus/janus-accounts/janus-accounts.service";
-import { JanusAccount } from "../../janus/janus-accounts/janus-accounts.type";
 
 const logger = new Logger("EbscoOaController");
 

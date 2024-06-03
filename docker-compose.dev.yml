@@ -33,7 +33,7 @@ services:
       - header_secret=${header_secret}
       - admin_secret=${admin_secret}
       - ticket_secret=${ticket_secret}
-      - CONTENT_DELIVRY_HOST=http://localhost:3000/files
+      - BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
       - ebsco_host=${ebsco_host}
       - EZ_UNPAYWALL_URL=${EZ_UNPAYWALL_URL}
       - EZ_UNPAYWALL_KEY=${EZ_UNPAYWALL_KEY}
@@ -45,6 +45,7 @@ services:
       - bib_admin_host=http://localhost:3000/admin
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
+      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
     deploy:
       resources:
         limits:
@@ -60,6 +61,7 @@ services:
       - NODE_ENV=development
       - VITE_ENV=development
       - VITE_BIBAPI_HOST=http://localhost:3000/api
+      - VITE_BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
       - VITE_SOURCE_MAP=true
     develop:
       watch:
@@ -85,6 +87,7 @@ services:
       - NODE_ENV=development
       - VITE_ENV=development
       - VITE_BIBAPI_HOST=http://localhost:3000/api
+      - VITE_BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
       - VITE_SOURCE_MAP=true
     develop:
       watch:

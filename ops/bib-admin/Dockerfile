@@ -31,9 +31,11 @@ CMD ["yarn", "workspace", "@bibcnrs/bib-admin", "run", "dev"]
 FROM sources as prod-builder
 
 ARG BIBAPI_HOST
+ARG CONTENT_DELIVERY_HOST
 ARG SOURCE_MAP=false
 
 ENV VITE_BIBAPI_HOST=$BIBAPI_HOST \
+    VITE_CONTENT_DELIVERY_HOST=$CONTENT_DELIVERY_HOST \  
     VITE_ENV="prod" \
     VITE_SOURCE_MAP=$SOURCE_MAP
 
