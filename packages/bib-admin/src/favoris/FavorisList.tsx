@@ -29,7 +29,7 @@ const FavorisFilter = [
 	<ReferenceInput
 		key="community_id"
 		label="resources.revues.fields.communities"
-		source="community_id"
+		source="revue_community.community_id"
 		reference="communities"
 	>
 		<AutocompleteInput
