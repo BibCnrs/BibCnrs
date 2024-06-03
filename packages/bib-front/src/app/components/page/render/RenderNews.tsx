@@ -20,8 +20,6 @@ import type { TestsNewsProps } from "../../../shared/types/props.types";
 const RenderNews = ({ data }: TestsNewsProps) => {
 	const language = useLanguageKey();
 
-	console.log(data);
-
 	const filteredData = useMemo(() => {
 		if (!data) {
 			return [];

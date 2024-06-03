@@ -45,7 +45,7 @@ describe("TestsNewsController", () => {
 				expect.arrayContaining([
 					expect.objectContaining({
 						id: 1,
-						page: "home",
+						page: "news",
 						enable: true,
 						from: new Date("2022-01-01"),
 						to: null,
@@ -56,7 +56,7 @@ describe("TestsNewsController", () => {
 					}),
 					expect.objectContaining({
 						id: 2,
-						page: "home",
+						page: "tests",
 						enable: true,
 						from: new Date("2021-01-01"),
 						to: null,
@@ -73,7 +73,7 @@ describe("TestsNewsController", () => {
 			const data = await testsNewsController.findOne(2);
 			expect(data).toStrictEqual({
 				id: 2,
-				page: "home",
+				page: "tests",
 				enable: true,
 				from: new Date("2021-01-01"),
 				to: null,
@@ -83,6 +83,8 @@ describe("TestsNewsController", () => {
 				content_fr: "Test News 1",
 				domains: null,
 				urls: null,
+				media: null,
+				media_id: null,
 			});
 		});
 
@@ -90,7 +92,7 @@ describe("TestsNewsController", () => {
 			const randomName = `newAdmin${Math.floor(Math.random() * 1000)}`;
 
 			const createdTestNew = await testsNewsController.create({
-				page: "home",
+				page: "tests",
 				enable: true,
 				from: new Date("2021-01-01"),
 				to: null,
@@ -106,7 +108,7 @@ describe("TestsNewsController", () => {
 
 			expect(createdTestNew).toEqual(
 				expect.objectContaining({
-					page: "home",
+					page: "tests",
 					enable: true,
 					from: new Date("2021-01-01"),
 					to: null,

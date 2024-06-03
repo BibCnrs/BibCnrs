@@ -22,7 +22,7 @@ describe("EbscoTestNewsController", () => {
 		it("should return content for the news page", async () => {
 			expect(await ebscoTestNewsController.getTestNews()).toStrictEqual([
 				expect.objectContaining({
-					page: "news",
+					page: "tests",
 					enable: true,
 					from: new Date("2021-01-01"),
 					to: null,
@@ -30,9 +30,13 @@ describe("EbscoTestNewsController", () => {
 					name_fr: "News 1",
 					content_en: "Test News 1",
 					content_fr: "Test News 1",
+					media_id: null,
+					media: null,
+					domains: null,
+					id: 2,
 				}),
 				expect.objectContaining({
-					page: "tests",
+					page: "news",
 					enable: true,
 					from: new Date("2022-01-01"),
 					to: null,
@@ -40,6 +44,10 @@ describe("EbscoTestNewsController", () => {
 					name_fr: "News 2",
 					content_en: "Test News 2",
 					content_fr: "Test News 2",
+					media_id: null,
+					media: null,
+					domains: null,
+					id: 1,
 				}),
 			]);
 		});
@@ -49,7 +57,7 @@ describe("EbscoTestNewsController", () => {
 		it("should return the last item for news individual page", async () => {
 			expect(await ebscoTestNewsController.findTestNewsById(2)).toStrictEqual(
 				expect.objectContaining({
-					page: "home",
+					page: "tests",
 					enable: true,
 					from: new Date("2021-01-01"),
 					to: null,

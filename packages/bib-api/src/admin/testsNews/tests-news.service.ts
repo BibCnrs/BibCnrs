@@ -85,9 +85,7 @@ export class TestsNewsService {
 								id: media_id,
 							},
 						}
-					: {
-							disconnect: true,
-						},
+					: undefined,
 			},
 		});
 	}
