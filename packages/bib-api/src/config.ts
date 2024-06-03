@@ -13,7 +13,7 @@ const configFunction = () => ({
 	},
 	services: {
 		bibadmin: process.env.bib_admin_host,
-		contentDelivery: process.env.CONTENT_DELIVERY_HOST,
+		contentDelivery: process.env.BIB_CONTENT_DELIVERY_HOST,
 	},
 	metadore: {
 		url: process.env.METADORE_URL,

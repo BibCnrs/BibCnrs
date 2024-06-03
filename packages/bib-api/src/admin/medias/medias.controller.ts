@@ -1,3 +1,4 @@
+import * as path from "node:path";
 import {
 	Body,
 	Controller,
@@ -13,36 +14,37 @@ import {
 	UploadedFile,
 	UseInterceptors,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Response } from "express";
 import { diskStorage } from "multer";
-import { Config } from "../../config";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateMediaDto, UpdateMediaDto } from "./dto/media.dto";
+import { UPLOADS_DIR } from "./medias.const";
 import { MediasService } from "./medias.service";
 
 @Controller("admin/medias")
 export class MediasController {
-	private readonly contentDeliveryConfig: Config["services"];
-	constructor(
-		private readonly mediasService: MediasService,
-		private readonly configService: ConfigService<Config, true>,
-	) {
-		this.contentDeliveryConfig =
-			this.configService.get<Config["services"]>("services");
-	}
+	constructor(private readonly mediasService: MediasService) {}
 
 	@Post()
 	@UseInterceptors(
 		FileInterceptor("file", {
 			storage: diskStorage({
-				destination: `./uploads/${new Date().getUTCFullYear()}/${
-					new Date().getUTCMonth() + 1
-				}/${new Date().getUTCDate()}`,
+				destination: (_req, _file, callback) => {
+					const now = new Date();
+
+					callback(
+						null,
+						path.join(
+							UPLOADS_DIR,
+							now.getUTCFullYear().toString(10),
+							(now.getUTCMonth() + 1).toString(10),
+							now.getUTCDate().toString(10),
+						),
+					);
+				},
 				filename: (_, file, callback) => {
-					const fileName = `${file.originalname}`;
-					callback(null, fileName);
+					callback(null, file.originalname);
 				},
 			}),
 		}),
@@ -55,11 +57,10 @@ export class MediasController {
 			...createMediaDto,
 			file_name: file.filename,
 			file: `${file.path}`,
-			url: `${this.contentDeliveryConfig.contentDelivery}${file.path.replace(
-				"uploads",
-				"",
-			)}`,
+			url: `${file.path.replace(UPLOADS_DIR, "")}`,
 		};
+
+		console.log(media);
 		return this.mediasService.create(media);
 	}
 
@@ -68,7 +69,12 @@ export class MediasController {
 		const { data, total } = await this.mediasService.findAll(query);
 		res.header("Content-Range", `${total}`);
 		res.header("Access-Control-Expose-Headers", "Content-Range");
-		return res.send(data);
+		return res.send(
+			data.map(({ url, ...rest }) => ({
+				url: path.join(UPLOADS_DIR, url),
+				...rest,
+			})),
+		);
 	}
 
 	@Get(":id")
@@ -79,7 +85,10 @@ export class MediasController {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
 		}
 
-		return data;
+		return {
+			...data,
+			url: data.url ? path.join(UPLOADS_DIR, data.url) : null,
+		};
 	}
 
 	@Put(":id")

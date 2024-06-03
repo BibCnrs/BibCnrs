@@ -62,11 +62,12 @@ export class MediasService {
 	}
 
 	update(id: number, updateMediaDto: UpdateMediaDto) {
+		const { id: _id, url: _url, file: _file, ...rest } = updateMediaDto;
 		return this.prismaService.medias.update({
 			where: {
 				id,
 			},
-			data: updateMediaDto,
+			data: rest,
 		});
 	}
 

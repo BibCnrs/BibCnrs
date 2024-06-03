@@ -46,7 +46,7 @@ services:
       https_proxy: ${https_proxy}
       BIBAPI_HOST: ${BIBAPI_HOST}
       bib_admin_host: ${bib_admin_host}
-      CONTENT_DELIVERY_HOST: ${CONTENT_DELIVERY_HOST}
+      BIB_CONTENT_DELIVERY_HOST: ${BIB_CONTENT_DELIVERY_HOST}
       ebsco_host: ${ebsco_host}
       header_secret: ${header_secret}
       cookie_secret: ${cookie_secret}
@@ -69,6 +69,7 @@ services:
       OLD_API_URL: ${OLD_API_URL:-https://bib-preprod.inist.fr}
       MAIL_FROM: bibcnrs@bib.cnrs.fr
       MAIL_TO: assistance-portail@inist.fr
+      BIB_UPLOADS_DIR: /app/packages/bib-api/uploads
     restart: always
     ports:
       - "3000:3000"
