@@ -1,24 +1,16 @@
 import {
 	Card,
-	CardActions,
+	CardActionArea,
 	CardContent,
 	CardMedia,
 	Chip,
-	Grid,
 	Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { memo, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useLanguageKey } from "../../../shared/locales/I18N";
-import type {
-	TestNewDataType,
-	TestNewUrlDataType,
-} from "../../../shared/types/data.types";
 import type { TestsNewsProps } from "../../../shared/types/props.types";
-import PageDate from "../../element/PageDate";
-import OpenablePaper from "../../element/paper/openable/OpenablePaper";
-import TestsNewsFooter from "../../element/render/TestsNewsFooter";
-import { getInstituteColor } from "../../internal/provider/LocalizedThemeProvider";
 
 /**
  * Component used to display news and tests article
@@ -59,36 +51,38 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 							},
 						}}
 					>
-						<CardMedia
-							sx={{ height: 200, objectFit: "contain" }}
-							image={`https://source.unsplash.com/random/cats&${data.id}`}
-						/>
-						<CardContent
-							sx={{
-								display: "flex",
-								flexDirection: "column",
-								justifyContent: "space-between",
-								flex: 1,
-								gap: 2,
-							}}
-						>
-							<Stack spacing={1}>
-								<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-									{data.domains?.map((domain) => (
-										<Chip key={domain} label={domain} size="small" />
-									))}
-									{data.page === "tests" && (
-										<Chip label="Test" size="small" variant="outlined" />
-									)}
+						<CardActionArea component={Link} to={`/news/${data.id}`}>
+							<CardMedia
+								sx={{ height: 200, objectFit: "contain" }}
+								image={`https://source.unsplash.com/random/cats&${data.id}`}
+							/>
+							<CardContent
+								sx={{
+									display: "flex",
+									flexDirection: "column",
+									justifyContent: "space-between",
+									flex: 1,
+									gap: 2,
+								}}
+							>
+								<Stack spacing={1}>
+									<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+										{data.domains?.map((domain) => (
+											<Chip key={domain} label={domain} size="small" />
+										))}
+										{data.page === "tests" && (
+											<Chip label="Test" size="small" variant="outlined" />
+										)}
+									</Stack>
+									<Typography variant="h5" component="h6">
+										{language === "en" ? data.name_en : data.name_fr}
+									</Typography>
 								</Stack>
-								<Typography variant="h5" component="h6">
-									{language === "en" ? data.name_en : data.name_fr}
+								<Typography color="textSecondary">
+									{new Date(data.from).toLocaleDateString()}
 								</Typography>
-							</Stack>
-							<Typography color="textSecondary">
-								{new Date(data.from).toLocaleDateString()}
-							</Typography>
-						</CardContent>
+							</CardContent>
+						</CardActionArea>
 					</Card>
 				</Box>
 			))}
