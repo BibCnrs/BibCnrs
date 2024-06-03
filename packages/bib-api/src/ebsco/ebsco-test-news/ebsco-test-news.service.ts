@@ -22,7 +22,10 @@ export class EbscoTestNewsService {
 		return new Date(now);
 	}
 
-	private mapNewsMedia(news: tests_news & { media?: medias }) {
+	private mapNewsMedia(news: (tests_news & { media?: medias }) | null) {
+		if (!news) {
+			return null;
+		}
 		return {
 			...news,
 			media: news.media
