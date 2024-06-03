@@ -39,6 +39,10 @@ export class AuthGuard implements CanActivate {
 				},
 			);
 
+			if (payload.origin !== "inist" && payload.origin !== "janus") {
+				throw new UnauthorizedException();
+			}
+
 			request.user = payload;
 		} catch {
 			throw new UnauthorizedException();

@@ -15,12 +15,21 @@ import { CommonAuthService } from "./common-auth.service";
 import { TokenPayload } from "./common-auth.type";
 
 describe("EbscoAuthGuard", () => {
-	const testTokenData: Omit<TokenPayload<"inist">, "exp"> = {
+	const testInistToken: Omit<TokenPayload<"inist">, "exp"> = {
 		origin: "inist",
 		id: 1,
 		username: "marmelab",
 		domains: [],
 		groups: [],
+	};
+
+	const testJanusToken: Omit<TokenPayload<"janus">, "exp"> = {
+		origin: "inist",
+		id: 1,
+		username: "marmelab",
+		domains: [],
+		shib: "shib",
+		favorite_domain: "favorite_domain",
 	};
 
 	let authConfig: Config["auth"];
@@ -48,10 +57,38 @@ describe("EbscoAuthGuard", () => {
 	});
 
 	describe("login", () => {
-		it("should authenticate user if JWT in cookie is valid", async () => {
+		it("should authenticate user if inist JWT in cookie is valid", async () => {
 			const cookieValue = jwt.sign(
 				{
-					...testTokenData,
+					...testInistToken,
+					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
+				},
+				authConfig.cookieSecret,
+				{
+					algorithm: JWT_ALG,
+				},
+			);
+
+			const request = {
+				cookies: {
+					[LOGIN_COOKIE_NAME]: cookieValue,
+				},
+			} as unknown as Request;
+
+			const context: Pick<ExecutionContext, "switchToHttp"> = {
+				switchToHttp: () =>
+					({
+						getRequest: () => request,
+					}) as unknown as HttpArgumentsHost,
+			};
+
+			expect(authGuard.canActivate(context)).resolves.toEqual(true);
+		});
+
+		it("should authenticate user if janus JWT in cookie is valid", async () => {
+			const cookieValue = jwt.sign(
+				{
+					...testJanusToken,
 					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
 				},
 				authConfig.cookieSecret,
@@ -79,7 +116,7 @@ describe("EbscoAuthGuard", () => {
 		it("should throw an error user if JWT in cookie alg is not HS256", async () => {
 			const cookieValue = jwt.sign(
 				{
-					...testTokenData,
+					...testInistToken,
 					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
 				},
 				authConfig.cookieSecret,
@@ -109,7 +146,7 @@ describe("EbscoAuthGuard", () => {
 		it("should throw an error user if JWT in cookie signature is not valid", async () => {
 			const cookieValue = jwt.sign(
 				{
-					...testTokenData,
+					...testInistToken,
 					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
 				},
 				"Not the secret you expected",
@@ -139,7 +176,7 @@ describe("EbscoAuthGuard", () => {
 		it("should throw an error user if JWT in cookie origin is not inist", async () => {
 			const cookieValue = jwt.sign(
 				{
-					...testTokenData,
+					...testInistToken,
 					origin: "not-inist",
 					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
 				},
@@ -170,7 +207,7 @@ describe("EbscoAuthGuard", () => {
 		it("should throw an error user if JWT in cookie is expired", async () => {
 			const cookieValue = jwt.sign(
 				{
-					...testTokenData,
+					...testInistToken,
 					exp: Math.ceil(Date.now() / 1000) - 100,
 				},
 				authConfig.cookieSecret,
@@ -200,7 +237,7 @@ describe("EbscoAuthGuard", () => {
 		it("should throw an error user if no cookie is set", async () => {
 			const cookieValue = jwt.sign(
 				{
-					...testTokenData,
+					...testInistToken,
 					origin: "not-inist",
 					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
 				},
