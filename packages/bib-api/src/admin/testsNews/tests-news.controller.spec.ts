@@ -100,6 +100,8 @@ describe("TestsNewsController", () => {
 				content_fr: "Test News random",
 				domains: null,
 				urls: null,
+				media_id: null,
+				media: null,
 			});
 
 			expect(createdTestNew).toEqual(
@@ -123,6 +125,7 @@ describe("TestsNewsController", () => {
 					...createdTestNew,
 					name_fr: "Bonjour Updated",
 					name_en: "Hello Updated",
+					media: null,
 				},
 			);
 

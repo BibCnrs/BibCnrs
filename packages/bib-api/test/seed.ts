@@ -223,7 +223,7 @@ const prisma = new PrismaClient();
 	await prisma.tests_news.createMany({
 		data: [
 			{
-				page: "home",
+				page: "news",
 				enable: true,
 				from: new Date("2022-01-01"),
 				to: null,
@@ -233,7 +233,7 @@ const prisma = new PrismaClient();
 				content_fr: "Test News 2",
 			},
 			{
-				page: "home",
+				page: "tests",
 				enable: true,
 				from: new Date("2021-01-01"),
 				to: null,
