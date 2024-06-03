@@ -94,6 +94,29 @@ const dataProvider: DataProvider = {
 		}));
 	},
 	update: async (resource, params) => {
+		if (resource === "news") {
+			let mediaID = params.data.media_id;
+			if (params.data.file) {
+				const file = await uploadFile(
+					params.data.file.title,
+					params.data.file.rawFile,
+				);
+
+				mediaID = file.id;
+			}
+
+			// biome-ignore lint/performance/noDelete: <explanation>
+			delete params.data.file;
+
+			return jsonServerDataProvider.update(resource, {
+				...params,
+				data: {
+					...params.data,
+					media_id: mediaID,
+				},
+			});
+		}
+
 		if (
 			!params.data.image ||
 			(typeof params.data.image === "string" &&
@@ -130,6 +153,29 @@ const dataProvider: DataProvider = {
 		if (resource === "medias") {
 			const file = await uploadFile(params.data.name, params.data.file.rawFile);
 			return { data: { ...file } };
+		}
+
+		if (resource === "news") {
+			let mediaID = params.data.media_id;
+			if (params.data.file) {
+				const file = await uploadFile(
+					params.data.file.title,
+					params.data.file.rawFile,
+				);
+
+				mediaID = file.id;
+			}
+
+			// biome-ignore lint/performance/noDelete: <explanation>
+			delete params.data.file;
+
+			return jsonServerDataProvider.create(resource, {
+				...params,
+				data: {
+					...params.data,
+					media_id: mediaID,
+				},
+			});
 		}
 
 		if (

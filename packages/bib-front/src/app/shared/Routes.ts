@@ -125,7 +125,6 @@ export const RouteResources = Routes.resources;
 export const RouteAbout = Routes.about;
 export const RouteLegal = Routes.legal;
 export const RouteLicences = Routes.licences;
-export const RouteTests = Routes.tests;
 export const RouteNews = Routes.news;
 export const RouteHistory = Routes.history;
 export const RouteAlert = Routes.alert;

@@ -6,11 +6,8 @@ export class EbscoTestNewsController {
 	constructor(private readonly ebscoTestNewsService: EbscoTestNewsService) {}
 
 	@Get()
-	async getTestNews(
-		@Query("page") page: string | null,
-		@Query("first") first: string | null = null,
-	) {
-		return this.ebscoTestNewsService.getTestNews(page ?? "", first != null);
+	async getTestNews(@Query("first") first: string | null = null) {
+		return this.ebscoTestNewsService.getTestNews(first != null);
 	}
 
 	@Get(":id")

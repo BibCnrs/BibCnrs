@@ -11,6 +11,8 @@ export class CreateTestNewsDto implements Omit<tests_news, "id"> {
 	urls: Prisma.JsonValue | null;
 	domains: Prisma.JsonValue | null;
 	enable: boolean;
+	media_id: number | null;
+	media: Prisma.JsonValue | null;
 }
 
 export class UpdateTestNewsDto extends CreateTestNewsDto {

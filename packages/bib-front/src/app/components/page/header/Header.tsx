@@ -7,7 +7,6 @@ import {
 	RouteNews,
 	RouteResources,
 	RouteRoot,
-	RouteTests,
 } from "../../../shared/Routes";
 import createSxProps from "../../../shared/createSxProps";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -51,7 +50,6 @@ const Header = () => {
 						<>
 							<UserButton />
 							<HeaderButton name="news" route={RouteNews} />
-							<HeaderButton name="tests" route={RouteTests} />
 							<HeaderButton name="licences" route={RouteLicences} />
 						</>
 					) : (
