@@ -188,6 +188,9 @@ start-prod: stop-dev					## Start stack in production mode with local env
 		-f docker-compose.prod.yml \
 		up
 
+deploy-dev:
+	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4  && git pull && make build && make stop-start'
+
 prod-init-db:
 	docker compose -f docker-compose.prod.yml up -d --wait bibcnrs-api-postgres
 	docker exec bibcnrs-api-postgres psql -U $(POSTGRES_USER) $(POSTGRES_DB) -f /backups/seed.sql

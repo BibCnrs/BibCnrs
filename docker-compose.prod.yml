@@ -45,7 +45,7 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       BIBAPI_HOST: ${BIBAPI_HOST}
-      BIB_CONTENT_DELIVERY_HOST: ${BIB_CONTENT_DELIVERY_HOST}
+      CONTENT_DELIVERY_HOST: ${CONTENT_DELIVERY_HOST}
       ebsco_host: ${ebsco_host}
       header_secret: ${header_secret}
       cookie_secret: ${cookie_secret}
