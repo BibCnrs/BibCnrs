@@ -189,7 +189,7 @@ start-prod: stop-dev					## Start stack in production mode with local env
 		up
 
 deploy-dev:
-	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4  && git pull && make build && make stop-start'
+	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4  && git pull && make build && make stop start && docker restart bibrp_rp_1'
 
 prod-init-db:
 	docker compose -f docker-compose.prod.yml up -d --wait bibcnrs-api-postgres

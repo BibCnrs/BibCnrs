@@ -31,6 +31,7 @@ export class MediasController {
 	) {
 		this.contentDeliveryConfig =
 			this.configService.get<Config["services"]>("services");
+		console.log(this.contentDeliveryConfig);
 	}
 
 	@Post()
