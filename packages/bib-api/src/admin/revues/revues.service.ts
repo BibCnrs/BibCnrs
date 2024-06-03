@@ -19,7 +19,14 @@ export class RevuesService {
 			filters.match = undefined;
 		}
 
-		return transformFilters(filters, [{ field: "title", mode: "contains" }]);
+		return transformFilters(filters, [
+			{ field: "title", mode: "contains" },
+			{
+				field: "revue_community.community_id",
+				mode: "equals",
+				excludeBatch: true,
+			},
+		]);
 	}
 
 	private calculateOffset(query: FindAllQueryArgs, take: number): number {
