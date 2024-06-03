@@ -7,7 +7,6 @@ import { Request } from "express";
 import * as jwt from "jsonwebtoken";
 import { beforeEach, describe, expect, it } from "vitest";
 import configFunction, { Config } from "../../config";
-import { InistAccountService } from "../../inist/inist-account/inist-account.service";
 import { PrismaService } from "../../prisma/prisma.service";
 import { JWT_ALG, LOGIN_COOKIE_NAME } from "./common-auth.const";
 import { AuthGuard } from "./common-auth.guard";
@@ -24,9 +23,9 @@ describe("EbscoAuthGuard", () => {
 	};
 
 	const testJanusToken: Omit<TokenPayload<"janus">, "exp"> = {
-		origin: "inist",
+		origin: "janus",
 		id: 1,
-		username: "marmelab",
+		username: "TEST",
 		domains: [],
 		shib: "shib",
 		favorite_domain: "favorite_domain",
