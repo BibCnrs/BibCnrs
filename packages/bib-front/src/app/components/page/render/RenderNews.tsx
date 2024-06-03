@@ -20,6 +20,8 @@ import type { TestsNewsProps } from "../../../shared/types/props.types";
 const RenderNews = ({ data }: TestsNewsProps) => {
 	const language = useLanguageKey();
 
+	console.log(data);
+
 	const filteredData = useMemo(() => {
 		if (!data) {
 			return [];
@@ -29,8 +31,6 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 			(data, index, self) => index === self.findIndex((t) => t.id === data.id),
 		);
 	}, [data]);
-
-	console.log(filteredData);
 
 	return (
 		<Box
@@ -53,8 +53,13 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 					>
 						<CardActionArea component={Link} to={`/news/${data.id}`}>
 							<CardMedia
-								sx={{ height: 200, objectFit: "contain" }}
-								image={`https://source.unsplash.com/random/cats&${data.id}`}
+								component="img"
+								sx={{ height: 200, objectFit: "cover" }}
+								image={
+									data.media
+										? data.media.url
+										: "https://bib.cnrs.fr/wp-content/uploads/2018/04/bibcnrs-logo-visite.png"
+								}
 							/>
 							<CardContent
 								sx={{

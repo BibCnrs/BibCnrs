@@ -28,6 +28,9 @@ export class EbscoTestNewsService {
 					},
 				],
 			},
+			include: {
+				media: true,
+			},
 			orderBy: [
 				{
 					from: "asc",
@@ -53,6 +56,9 @@ export class EbscoTestNewsService {
 						to: null,
 					},
 				],
+			},
+			include: {
+				media: true,
 			},
 		});
 	}

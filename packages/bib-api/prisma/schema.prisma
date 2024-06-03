@@ -360,6 +360,7 @@ model medias {
   file_name String @db.VarChar(255)
   file      String
   url       String
+  tests_news tests_news[]
 }
 
 model resources {
@@ -383,4 +384,7 @@ model tests_news {
   urls       Json?     @db.Json
   domains    Json?     @db.Json
   enable     Boolean   @default(true)
+  media_id   Int?     
+  media      medias?   @relation(fields: [media_id], references: [id])
+
 }

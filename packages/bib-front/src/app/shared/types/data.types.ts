@@ -127,6 +127,14 @@ export type TestNewUrlDataType = Url & {
 	proxy: true;
 };
 
+export type Media = {
+	id: number;
+	file_name: string;
+	file: string;
+	name: string;
+	url: string;
+};
+
 export type TestNewDataType = {
 	id: string;
 	name_fr: string;
@@ -139,6 +147,7 @@ export type TestNewDataType = {
 	urls: TestNewUrlDataType[];
 	domains: string[];
 	enable: boolean;
+	media?: Media;
 };
 
 export type TestsNewsDataType = TestNewDataType[];

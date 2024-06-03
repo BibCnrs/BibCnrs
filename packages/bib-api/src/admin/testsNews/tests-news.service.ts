@@ -28,7 +28,7 @@ export class TestsNewsService {
 		return query._page ? (Number.parseInt(query._page) - 1) * take : 0;
 	}
 
-	private formatData(data: UpdateTestNewsDto | CreateTestNewsDto) {
+	private formatData(data) {
 		const formattedData = {
 			...data,
 			from: new Date(data.from),
@@ -68,21 +68,48 @@ export class TestsNewsService {
 			where: {
 				id,
 			},
+			include: {
+				media: true,
+			},
 		});
 	}
 
 	create(createTestNewsDto: CreateTestNewsDto) {
+		const { media_id, ...data } = createTestNewsDto;
 		return this.prismaService.tests_news.create({
-			data: this.formatData(createTestNewsDto),
+			data: {
+				...this.formatData(data),
+				media: media_id
+					? {
+							connect: {
+								id: media_id,
+							},
+						}
+					: {
+							disconnect: true,
+						},
+			},
 		});
 	}
 
 	update(id: number, updateTestNewsDto: UpdateTestNewsDto) {
+		const { id: _, media_id, media, ...data } = updateTestNewsDto;
 		return this.prismaService.tests_news.update({
 			where: {
 				id,
 			},
-			data: this.formatData(updateTestNewsDto),
+			data: {
+				...this.formatData(data),
+				media: media_id
+					? {
+							connect: {
+								id: media_id,
+							},
+						}
+					: {
+							disconnect: true,
+						},
+			},
 		});
 	}
 

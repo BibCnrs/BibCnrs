@@ -18,7 +18,6 @@ const IndividualNews = () => {
 	const params = useParams();
 	const language = useLanguageKey();
 
-	console.log("params", params);
 	const id = useMemo(() => {
 		if (params.id) {
 			return Number.parseInt(params.id, 10);
@@ -79,18 +78,19 @@ const IndividualNews = () => {
 					{new Date(data.from).toLocaleDateString()}
 				</Typography>
 
-				<img
-					srcSet={`https://source.unsplash.com/random/cats&${data.id}`}
-					src={`https://source.unsplash.com/random/cats&${data.id}`}
-					alt={data.name_en}
-					loading="lazy"
-					style={{
-						maxWidth: "800px",
-						objectFit: "contain",
-						margin: "0 auto",
-						borderRadius: "8px",
-					}}
-				/>
+				{data.media?.url && (
+					<img
+						src={data.media.url}
+						alt={data.name_en}
+						loading="lazy"
+						style={{
+							maxWidth: "800px",
+							objectFit: "contain",
+							margin: "0 auto",
+							borderRadius: "8px",
+						}}
+					/>
+				)}
 
 				<div
 					className="tests-news-content cms-content"
