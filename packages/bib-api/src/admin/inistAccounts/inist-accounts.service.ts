@@ -8,7 +8,7 @@ import {
 	selectMainUnitCommunities,
 	selectUnits,
 } from "../../inist/inist-account/inist-account.queries";
-import { InistAccount } from "../../inist/inist-account/inist-account.type";
+import { InistAccountWithDomains } from "../../inist/inist-account/inist-account.type";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
 import { transformOrderBy } from "../../utils/orderBy";
@@ -191,7 +191,9 @@ export class InistAccountsService {
 	}
 
 	async findOne(id: number) {
-		const inistAccount = await this.prismaService.$queryRaw<InistAccount[]>`
+		const inistAccount = await this.prismaService.$queryRaw<
+			InistAccountWithDomains[]
+		>`
         SELECT 
             *, 
             ARRAY(${selectMainInstituteCommunities}) as main_institute_communities  ,
@@ -202,7 +204,9 @@ export class InistAccountsService {
         FROM inist_account
         WHERE id = ${id}`;
 
-		return this.addAllCommunities(inistAccount.at(0)) as InistAccount;
+		return this.addAllCommunities(
+			inistAccount.at(0),
+		) as InistAccountWithDomains;
 	}
 
 	async create(createInistAccountDto: CreateInistAccountDto) {
