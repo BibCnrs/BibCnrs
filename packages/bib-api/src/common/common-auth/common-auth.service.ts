@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import * as jwt from "jsonwebtoken";
 import { JWT_ALG } from "../../common/common-auth/common-auth.const";
 import { Config } from "../../config";
-import { InistAccount } from "../../inist/inist-account/inist-account.type";
+import { InistAccountWithDomains } from "../../inist/inist-account/inist-account.type";
 import { Origin, TokenPayload, TokenPayloadData } from "./common-auth.type";
 
 @Injectable()

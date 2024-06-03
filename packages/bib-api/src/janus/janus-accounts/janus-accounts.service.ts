@@ -58,6 +58,21 @@ export class JanusAccountService {
 		return this.addDomains(janusAccount.at(0));
 	}
 
+	async findOneById(id: number) {
+		const janusAccount = await this.prismaService.$queryRaw<JanusAccount[]>`SELECT *,
+        ARRAY(${selectPrimaryInstituteDomains}) as primary_institute_domains,
+        ARRAY(${selectPrimaryUnitDomains}) as primary_unit_domains,
+        ARRAY(${selectDomains}) AS domains,
+        ARRAY(${selectPrimaryInstituteGroups}) as primary_institute_groups,
+        ARRAY(${selectPrimaryUnitGroups}) as primary_unit_groups,
+        ARRAY((${selectAdditionalUnits})) AS additional_units,
+        ARRAY((${selectAdditionalInstitutes})) AS additional_institutes,
+        ARRAY(${selectGroups}) AS groups
+        FROM janus_account
+        WHERE id = ${id}`;
+		return this.addDomains(janusAccount.at(0));
+	}
+
 	async update(id: number, janusAccount: JanusAccountUpdateDto) {
 		const {
 			communities: janusAccountCommunities,

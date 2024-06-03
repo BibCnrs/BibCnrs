@@ -1,20 +1,28 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import {
+	selectCommunities,
 	selectDomains,
 	selectGroups,
+	selectInstitutes,
+	selectMainInstituteCommunities,
 	selectMainInstituteDomains,
 	selectMainInstituteGroups,
+	selectMainUnitCommunities,
 	selectMainUnitDomains,
 	selectMainUnitGroups,
+	selectUnits,
 } from "./inist-account.queries";
-import { InistAccount } from "./inist-account.type";
+import {
+	InistAccountWithCommunities,
+	InistAccountWithDomains,
+} from "./inist-account.type";
 
 @Injectable()
 export class InistAccountService {
 	constructor(private prismaService: PrismaService) {}
 
-	private addDomains(inistAccount: InistAccount | null) {
+	private addDomains(inistAccount: InistAccountWithDomains | null) {
 		if (!inistAccount) {
 			return null;
 		}
@@ -37,13 +45,34 @@ export class InistAccountService {
 		};
 	}
 
+	private addAllCommunities(
+		inistAccount: Omit<InistAccountWithCommunities, "all_communities"> | null,
+	): InistAccountWithCommunities | null {
+		if (!inistAccount) {
+			return null;
+		}
+
+		return {
+			...inistAccount,
+			all_communities: [
+				...new Set(
+					inistAccount.main_institute_communities
+						.concat(inistAccount.main_unit_communities)
+						.concat(inistAccount.communities),
+				),
+			],
+		};
+	}
+
 	// WARN: This method is not secure as password MUST BE hashed for security reasons.
 	// NOTE: This is not included in the current sprint, but password hashing MUST be considered.
 	private async selectOneByUsernameAndPassword(
 		username: string,
 		password: string,
 	) {
-		const inistAccounts = await this.prismaService.$queryRaw<InistAccount[]>`
+		const inistAccounts = await this.prismaService.$queryRaw<
+			InistAccountWithDomains[]
+		>`
 SELECT 
     *, 
     ARRAY(${selectMainInstituteDomains}) as main_institute_domains,
@@ -73,6 +102,21 @@ WHERE username = ${username} AND password = ${password}`;
 		}
 
 		return foundInistAccount;
+	}
+
+	async findOneById(id: number) {
+		const inistAccount = await this.prismaService.$queryRaw`
+			SELECT 
+				*, 
+				ARRAY(${selectMainInstituteCommunities}) as main_institute_communities  ,
+				ARRAY(${selectMainUnitCommunities}) as main_unit_communities    ,
+				ARRAY(${selectCommunities}) AS communities,
+				ARRAY(${selectInstitutes}) AS institutes , 
+				ARRAY(${selectUnits}) AS units  
+			FROM inist_account
+			WHERE id = ${id}`;
+
+		return this.addAllCommunities(inistAccount[0]);
 	}
 
 	async updateLastConnexion(id: number) {
