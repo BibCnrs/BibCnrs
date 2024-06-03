@@ -49,7 +49,11 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 							},
 						}}
 					>
-						<CardActionArea component={Link} to={`/news/${data.id}`}>
+						<CardActionArea
+							component={Link}
+							to={`/news/${data.id}`}
+							sx={{ height: "100%" }}
+						>
 							<CardMedia
 								component="img"
 								sx={{ height: 200, objectFit: "cover" }}
