@@ -22,6 +22,10 @@ const configFunction = () => ({
 	renater: {
 		fakeLogin: process.env.RENATER_FAKE_LOGIN === "true",
 	},
+	ebsco: {
+		host: process.env.ebsco_host,
+		proxy: process.env.http_proxy,
+	},
 	redis: {
 		host: process.env.REDIS_HOST,
 		port: Number.parseInt(process.env.REDIS_PORT || "6379", 10),
