@@ -23,7 +23,7 @@ export const transformFilters = (
 
 	let filterQuery: FilterQuery = {};
 	for (const key in filters) {
-		if (filters[key] === undefined || filters[key] === null) {
+		if (filters[key] === null) {
 			continue;
 		}
 		if (key === "match") {
