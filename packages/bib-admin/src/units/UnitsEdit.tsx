@@ -171,6 +171,7 @@ const UnitsEdit = () => (
 				label="resources.units.fields.main_institute"
 				source="main_institute"
 				reference="institutes"
+				perPage={200}
 			>
 				<AutocompleteInput
 					filterToQuery={(searchText) => ({
@@ -184,6 +185,7 @@ const UnitsEdit = () => (
 				label="resources.units.fields.institutes"
 				source="institutes"
 				reference="institutes"
+				perPage={200}
 			>
 				<AutocompleteArrayInput
 					filterToQuery={(searchText) => ({
@@ -204,6 +206,7 @@ const UnitsEdit = () => (
 				label="resources.units.fields.communities"
 				source="communities"
 				reference="communities"
+				perPage={200}
 			>
 				<AutocompleteArrayInput
 					filterToQuery={(searchText) => ({
@@ -217,6 +220,7 @@ const UnitsEdit = () => (
 				label="resources.units.fields.section_cn"
 				source="sections_cn"
 				reference="section_cn"
+				perPage={200}
 			>
 				<AutocompleteArrayInput
 					filterToQuery={(searchText) => ({
