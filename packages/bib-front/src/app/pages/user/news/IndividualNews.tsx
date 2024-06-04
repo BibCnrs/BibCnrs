@@ -66,9 +66,6 @@ const IndividualNews = () => {
 					{language === "en" ? data.name_en : data.name_fr}
 				</Typography>
 				<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-					{data.domains?.map((domain) => (
-						<Chip key={domain} label={domain} size="small" />
-					))}
 					{data.page === "tests" && (
 						<Chip label="Test" size="small" variant="outlined" />
 					)}

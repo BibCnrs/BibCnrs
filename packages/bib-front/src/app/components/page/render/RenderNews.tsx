@@ -74,9 +74,6 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 							>
 								<Stack spacing={1}>
 									<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-										{data.domains?.map((domain) => (
-											<Chip key={domain} label={domain} size="small" />
-										))}
 										{data.page === "tests" && (
 											<Chip label="Test" size="small" variant="outlined" />
 										)}

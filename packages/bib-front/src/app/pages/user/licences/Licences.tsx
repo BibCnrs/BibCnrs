@@ -89,7 +89,7 @@ const Licences = () => {
 									{t("pages.licences.pdf")}{" "}
 									<a
 										className="link"
-										href={activeLicences.pdf.src}
+										href={`files/${activeLicences.pdf.src}`}
 										target="_blank"
 										rel="noopener noreferrer nofollow"
 									>
