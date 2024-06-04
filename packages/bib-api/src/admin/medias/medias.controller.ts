@@ -1,3 +1,4 @@
+import * as fs from "node:fs";
 import * as path from "node:path";
 import {
 	Body,
@@ -42,16 +43,19 @@ export class MediasController {
 			storage: diskStorage({
 				destination: (_req, _file, callback) => {
 					const now = new Date();
-
-					callback(
-						null,
-						path.join(
-							UPLOADS_DIR,
-							now.getUTCFullYear().toString(10),
-							(now.getUTCMonth() + 1).toString(10),
-							now.getUTCDate().toString(10),
-						),
+					const directoryPath = path.join(
+						UPLOADS_DIR,
+						now.getUTCFullYear().toString(10),
+						(now.getUTCMonth() + 1).toString(10),
+						now.getUTCDate().toString(10),
 					);
+
+					fs.mkdir(directoryPath, { recursive: true }, (err) => {
+						if (err) {
+							return callback(new Error(err.message), null);
+						}
+						callback(null, directoryPath);
+					});
 				},
 				filename: (_, file, callback) => {
 					callback(null, file.originalname);
