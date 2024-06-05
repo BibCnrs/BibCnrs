@@ -196,7 +196,6 @@ export type HistoryEntryLimiterDataType = {
 
 export type HistoryEntryDataType = {
 	id: number;
-	totalCount: number;
 	hasAlert: false;
 	frequence: "day" | "month" | "week";
 	active: boolean;
@@ -211,7 +210,10 @@ export type HistoryEntryDataType = {
 	};
 };
 
-export type HistoryDataType = HistoryEntryDataType[];
+export type HistoryDataType = {
+	histories: HistoryEntryDataType[];
+	totalCount: number;
+};
 
 export type ArticleLinksDataType = {
 	fullTextLinks: Url[];

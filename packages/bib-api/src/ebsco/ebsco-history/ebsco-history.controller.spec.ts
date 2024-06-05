@@ -59,24 +59,27 @@ describe("EbscoHistoryController", () => {
 				} as unknown as Request;
 				expect(
 					await ebscoHistoryController.getHistory(request, 5, 0),
-				).toStrictEqual([
-					expect.objectContaining({
-						user_id: "1",
-						event: { test: "test 1" },
-						active: true,
-						has_alert: true,
-						last_results: [],
-						nb_results: 0,
-					}),
-					expect.objectContaining({
-						user_id: "1",
-						event: { test: "test 2" },
-						active: true,
-						has_alert: false,
-						last_results: [],
-						nb_results: 0,
-					}),
-				]);
+				).toStrictEqual({
+					histories: [
+						expect.objectContaining({
+							user_id: "1",
+							event: { test: "test 1" },
+							active: true,
+							hasAlert: true,
+							last_results: [],
+							nb_results: 0,
+						}),
+						expect.objectContaining({
+							user_id: "1",
+							event: { test: "test 2" },
+							active: true,
+							hasAlert: false,
+							last_results: [],
+							nb_results: 0,
+						}),
+					],
+					totalCount: 2,
+				});
 			});
 
 			it("should return apply limit", async () => {
@@ -87,16 +90,19 @@ describe("EbscoHistoryController", () => {
 				} as unknown as Request;
 				expect(
 					await ebscoHistoryController.getHistory(request, 1, 0),
-				).toStrictEqual([
-					expect.objectContaining({
-						user_id: "1",
-						event: { test: "test 1" },
-						active: true,
-						has_alert: true,
-						last_results: [],
-						nb_results: 0,
-					}),
-				]);
+				).toStrictEqual({
+					histories: [
+						expect.objectContaining({
+							user_id: "1",
+							event: { test: "test 1" },
+							active: true,
+							hasAlert: true,
+							last_results: [],
+							nb_results: 0,
+						}),
+					],
+					totalCount: 2,
+				});
 			});
 
 			it("should return apply offset", async () => {
@@ -107,16 +113,19 @@ describe("EbscoHistoryController", () => {
 				} as unknown as Request;
 				expect(
 					await ebscoHistoryController.getHistory(request, 1, 1),
-				).toStrictEqual([
-					expect.objectContaining({
-						user_id: "1",
-						event: { test: "test 2" },
-						active: true,
-						has_alert: false,
-						last_results: [],
-						nb_results: 0,
-					}),
-				]);
+				).toStrictEqual({
+					histories: [
+						expect.objectContaining({
+							user_id: "1",
+							event: { test: "test 2" },
+							active: true,
+							hasAlert: false,
+							last_results: [],
+							nb_results: 0,
+						}),
+					],
+					totalCount: 2,
+				});
 			});
 
 			it("should return the history with alert for user", async () => {
@@ -127,16 +136,19 @@ describe("EbscoHistoryController", () => {
 				} as unknown as Request;
 				expect(
 					await ebscoHistoryController.getHistory(request, 5, 0, "true"),
-				).toStrictEqual([
-					expect.objectContaining({
-						user_id: "1",
-						event: { test: "test 1" },
-						active: true,
-						has_alert: true,
-						last_results: [],
-						nb_results: 0,
-					}),
-				]);
+				).toStrictEqual({
+					histories: [
+						expect.objectContaining({
+							user_id: "1",
+							event: { test: "test 1" },
+							active: true,
+							hasAlert: true,
+							last_results: [],
+							nb_results: 0,
+						}),
+					],
+					totalCount: 1,
+				});
 			});
 		});
 
@@ -186,7 +198,10 @@ describe("EbscoHistoryController", () => {
 				await ebscoHistoryController.deleteHistory(request, 3);
 				expect(
 					await ebscoHistoryController.getHistory(request, 5, 0),
-				).toStrictEqual([]);
+				).toStrictEqual({
+					histories: [],
+					totalCount: 0,
+				});
 			});
 		});
 	});

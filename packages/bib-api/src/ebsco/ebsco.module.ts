@@ -9,6 +9,7 @@ import { EbscoMetadoreModule } from "./ebsco-metadore/ebsco-metadore.module";
 import { EbscoOaModule } from "./ebsco-oa/ebsco-oa.module";
 import { EbscoResourceModule } from "./ebsco-resource/ebsco-resource.module";
 import { EbscoRisModule } from "./ebsco-ris/ebsco-ris.module";
+import { EbscoSearchAlertModule } from "./ebsco-search-alert/ebsco-search-alert.module";
 import { EbscoTestNewsModule } from "./ebsco-test-news/ebsco-test-news.module";
 
 @Module({
@@ -24,6 +25,7 @@ import { EbscoTestNewsModule } from "./ebsco-test-news/ebsco-test-news.module";
 		EbscoMetadoreModule,
 		EbscoFavoriteResourcesModule,
 		EbscoOaModule,
+		EbscoSearchAlertModule,
 	],
 })
 export class EbscoModule {}

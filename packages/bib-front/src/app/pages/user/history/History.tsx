@@ -91,10 +91,10 @@ const History = ({
 			>
 				<Table
 					DisplayElement={TableHistory}
-					results={data}
+					results={data?.histories}
 					args={args}
 					onArgsChange={setArgs}
-					total={data?.[0] ? data[0].totalCount : 0}
+					total={data ? data.totalCount : 0}
 					header={
 						<div className="history-header">
 							{displayOnlyAlert ? (

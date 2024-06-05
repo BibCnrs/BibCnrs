@@ -1,4 +1,5 @@
 import "./App.scss";
+import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/internal/ProtectedRoute";
@@ -40,11 +41,14 @@ import {
 
 const App = () => {
 	const { setLogin } = useContext(BibContext);
+	const { data: login } = useQuery({
+		queryKey: ["session"],
+		queryFn: initSession,
+	});
+
 	useEffect(() => {
-		initSession().then((login) => {
-			setLogin(login);
-		});
-	}, [setLogin]);
+		setLogin(login);
+	}, [setLogin, login]);
 	return (
 		<>
 			<div className="header-footer">
