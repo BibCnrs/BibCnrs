@@ -108,7 +108,7 @@ export class AbstractEbscoSearchService {
 			this.handleEbscoError({ error: body as EbscoError });
 		}
 
-		return null;
+		return body as T;
 	}
 
 	private async ebscoAuthenticate(userId: string, password: string) {
@@ -229,6 +229,7 @@ export class AbstractEbscoSearchService {
 				term: "LO system.a2731812 OR LO system.a01000000280100001094 OR LO system.a6255937OR OR LN edsdoj OR LN edsdob OR LN edsgso OR LN edsper OR LN edsgal OR LN edseur OR IS edsairFT OR LN edshal",
 			});
 		}
+
 		return {
 			SearchCriteria: {
 				Queries: query.queries

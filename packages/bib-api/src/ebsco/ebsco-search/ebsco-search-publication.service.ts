@@ -39,7 +39,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		term,
 		...rest
 	}: { field: string; term: string }) {
-		field === "TI"
+		return field === "TI"
 			? { field, term: this.addTruncature(term), ...rest }
 			: { field, term, ...rest };
 	}
@@ -113,6 +113,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 
 	async searchPublications(communityName: string) {
 		const query = this.parsePublicationSearch();
+
 		const searchResult = await this.ebscoSearch(
 			async (authToken, sessionToken) => {
 				return this.ebscoRequest(
