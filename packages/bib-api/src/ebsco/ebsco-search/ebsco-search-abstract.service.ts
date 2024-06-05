@@ -63,6 +63,23 @@ export class AbstractEbscoSearchService {
 		);
 	}
 
+	private addTruncature(term: string) {
+		return term
+			.split(" ")
+			.map((t) => (t.match(/^[a-zA-Z]+$/) ? `${t}*` : t))
+			.join(" ");
+	}
+
+	protected addTruncatureToQuery({
+		field,
+		term,
+		...rest
+	}: { field: string; term: string }) {
+		return field === "TI"
+			? { field, term: this.addTruncature(term), ...rest }
+			: { field, term, ...rest };
+	}
+
 	protected async ebscoRequest<T>(
 		url: string,
 		json: JsonValue,
@@ -185,7 +202,8 @@ export class AbstractEbscoSearchService {
 	protected async ebscoSearch<
 		F extends (authToken: string, sessionToken: string) => Promise<R>,
 		R,
-	>(ebscoCall: F, communityName: string) {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	>(ebscoCall: F, communityName: string): Promise<any> {
 		try {
 			const community = await this.prismaService.community.findUnique({
 				where: {

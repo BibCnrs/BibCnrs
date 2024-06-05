@@ -28,6 +28,10 @@ const configFunction = () => ({
 		proxy: process.env.http_proxy,
 		allowedLimiters: ["FT", "DT1", "RV", "RV3", "AU", "SO", "TI", "LA99"],
 		doajUrl: process.env.DOAJ_URL,
+		crossref: process.env.crossref || "http://api.crossref.org/works/",
+		apiEndpoint: process.env.BIBAPI_HOST,
+		ezUnpaywallKey: process.env.EZ_UNPAYWALL_KEY,
+		ezUnpaywallUrl: process.env.EZ_UNPAYWALL_URL,
 	},
 	redis: {
 		host: process.env.REDIS_HOST,

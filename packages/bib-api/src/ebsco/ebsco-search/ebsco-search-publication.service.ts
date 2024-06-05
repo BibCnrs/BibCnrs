@@ -27,23 +27,6 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		super(configService.get("ebsco"), request, prismaService, redisService);
 	}
 
-	private addTruncature(term: string) {
-		return term
-			.split(" ")
-			.map((t) => (t.match(/^[a-zA-Z]+$/) ? `${t}*` : t))
-			.join(" ");
-	}
-
-	private addTruncatureToQuery({
-		field,
-		term,
-		...rest
-	}: { field: string; term: string }) {
-		return field === "TI"
-			? { field, term: this.addTruncature(term), ...rest }
-			: { field, term, ...rest };
-	}
-
 	private parsePublicationQueries() {
 		const { queries } = this.request.query;
 		if (!queries || typeof queries !== "string") {
