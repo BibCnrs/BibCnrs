@@ -32,6 +32,13 @@ model community {
   unit_community          unit_community[]
 }
 
+enum TypeDatabaseEnum {
+  news
+  book
+  database
+  data
+}
+
 model database {
   id          Int                  @id @default(autoincrement())
   name_fr     String               @unique(map: "unique_database_name") @db.VarChar(40)
@@ -39,12 +46,16 @@ model database {
   text_en     String               @db.VarChar(65535)
   url_fr      String               @db.VarChar(65535)
   url_en      String               @db.VarChar(65535)
-  image       String?
   name_en     String?              @db.VarChar(40)
   active      Boolean              @default(true)
   oa          Boolean              @default(false)
   use_proxy   Boolean              @default(true)
   communities database_community[]
+  is_text_integral Boolean           @default(false)
+  without_embargo Boolean         @default(false)
+  is_completed Boolean           @default(false)
+  is_archived Boolean           @default(false)
+  type       TypeDatabaseEnum[]            
 }
 
 model database_community {
