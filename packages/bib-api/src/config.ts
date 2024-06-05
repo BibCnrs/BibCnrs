@@ -24,7 +24,10 @@ const configFunction = () => ({
 	},
 	ebsco: {
 		host: process.env.ebsco_host,
+		port: process.env.ebsco_port,
 		proxy: process.env.http_proxy,
+		allowedLimiters: ["FT", "DT1", "RV", "RV3", "AU", "SO", "TI", "LA99"],
+		doajUrl: process.env.DOAJ_URL,
 	},
 	redis: {
 		host: process.env.REDIS_HOST,

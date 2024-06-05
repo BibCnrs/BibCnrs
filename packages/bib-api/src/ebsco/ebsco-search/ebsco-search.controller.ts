@@ -1,19 +1,21 @@
-import { Controller, Get, Scope, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Scope, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import { EbscoTokenGuard } from "../ebsco-token/ebsco-token.guard";
-import { EbscoSearchService } from "./ebsco-search.service";
+import { EbscoSearchPublicationService } from "./ebsco-search-publication.service";
 
-@Controller({ path: "ebsco/:domainName", scope: Scope.REQUEST })
+@Controller({ path: "ebsco/:communityName", scope: Scope.REQUEST })
 export class EbscoSearchController {
-	constructor(private readonly ebscoSearchService: EbscoSearchService) {}
+	constructor(
+		private readonly ebscoSearchService: EbscoSearchPublicationService,
+	) {}
 
 	@Get("publication/search")
 	@UseGuards(EbscoTokenGuard)
-	async searchPublications() {
-		return [];
+	async searchPublications(@Param("communityName") communityName: string) {
+		return this.ebscoSearchService.searchPublications(communityName);
 	}
 
-	@Get("article/search")
+	/*@Get("article/search")
 	@UseGuards(AuthGuard, EbscoTokenGuard)
 	async searchArticle() {
 		return [];
@@ -29,5 +31,5 @@ export class EbscoSearchController {
 	@UseGuards(AuthGuard, EbscoTokenGuard)
 	async retrieveArticleById() {
 		return {};
-	}
+	}*/
 }
