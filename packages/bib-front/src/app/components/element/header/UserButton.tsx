@@ -149,7 +149,7 @@ const UserButton = () => {
 						color: colors.text.light,
 					}}
 				>
-					{username[0]}
+					{username?.[0] || "U"}
 				</Avatar>
 			</button>
 			<Menu

@@ -39,7 +39,7 @@ export const environment = {
 	put: {
 		account: {
 			favourite: "/ebsco/favourite_resources",
-			searchAlert: "/ebsco/search_alert",
+			searchAlert: "/ebsco/search-alert",
 		},
 	},
 	delete: {

@@ -14,18 +14,15 @@ export const history = async (
 	const query = createQuery(environment.get.account.history, {
 		limit,
 		offset,
+		has_alert: displayOnlyAlert,
 	});
 	const response: Response = await fetch(query, {
 		credentials: "include",
 	});
 	throwIfNotOk(response);
-	const results = await json<HistoryDataType>(response);
+	const result = await json<HistoryDataType>(response);
 
-	if (displayOnlyAlert) {
-		return results.filter((value) => value.hasAlert);
-	}
-
-	return results;
+	return result;
 };
 
 export const addHistory = async (

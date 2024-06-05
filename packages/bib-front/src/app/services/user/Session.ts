@@ -185,7 +185,7 @@ export const initSession = async (): Promise<boolean> => {
 	const status = session.getUser();
 
 	if (status === null) {
-		return false;
+		return null;
 	}
 
 	if (!session.needFetch()) {
@@ -203,11 +203,13 @@ export const initSession = async (): Promise<boolean> => {
 			},
 		});
 	} catch (e) {
-		return false;
+		return null;
 	}
 
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	let user: any;
 	try {
-		const user = {
+		user = {
 			...(await response.json()),
 			fetch: false,
 			legacy: false,
@@ -217,11 +219,10 @@ export const initSession = async (): Promise<boolean> => {
 		if (user.error) {
 			return false;
 		}
-
 		session.update(user);
 	} catch (e) {
-		return false;
+		return null;
 	}
 
-	return true;
+	return user;
 };
