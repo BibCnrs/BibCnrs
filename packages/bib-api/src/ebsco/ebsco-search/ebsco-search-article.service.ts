@@ -23,6 +23,7 @@ import {
 	extractSubjects,
 	extractText,
 	extractTitle,
+	parseItems,
 } from "./ebsco-search-article.utils";
 import { parseXML } from "./ebsco-search.utils";
 
@@ -324,5 +325,37 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			searchResult,
 			communityName,
 		);
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	async retrieveArticleParser(result: any, domain?: string) {
+		return {
+			items: await parseItems(result.Items),
+			dbLabel: result.Header ? result.Header.DbLabel : undefined,
+			dbId: result.Header ? result.Header.DbId : undefined,
+			articleLinks: await this.articleLinkParser(result, domain, true),
+		};
+	}
+
+	async retrieveArticle(communityName: string, dbId: string, an: string) {
+		const searchResult = await this.ebscoSearch(
+			async (authToken, sessionToken) => {
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				return this.ebscoRequest<any>(
+					"/edsapi/rest/Retrieve",
+					{
+						EbookPreferredFormat: "ebook-pdf",
+						HighlightTerms: null,
+						An: an,
+						DbId: dbId,
+					},
+					authToken,
+					sessionToken,
+				).then((result) => result.Record);
+			},
+			communityName,
+		);
+
+		return this.retrieveArticleParser(searchResult, communityName);
 	}
 }

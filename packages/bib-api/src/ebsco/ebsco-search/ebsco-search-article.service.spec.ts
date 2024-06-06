@@ -9,6 +9,8 @@ import { EbscoSearchArticleService } from "./ebsco-search-article.service";
 
 import { AIDS_RESULTS_EXPECTED } from "./mock/aidsResult.expected";
 import { AIDS_RESULTS_INPUT } from "./mock/aidsResult.input";
+import { RETRIEVE_ARTICLE_PARSER_EXPECTED } from "./mock/retrieveArticleParser.expected";
+import { RETRIEVE_ARTICLE_PARSER_INPUT } from "./mock/retrieveArticleParser.input";
 
 describe("EbscoSearchArticleService", () => {
 	let service: EbscoSearchArticleService;
@@ -308,6 +310,50 @@ describe("EbscoSearchArticleService", () => {
 
 		it("should return emptyArray if no Items", async () => {
 			expect(service.extractUrls({})).resolves.toMatchObject([]);
+		});
+
+		describe("retrieveArticleParser", () => {
+			it("should extract DbId from ebsco record", async () => {
+				const data = {
+					Header: {
+						DbId: "databaseId",
+						DbLabel: "database name",
+					},
+				};
+				expect(await service.retrieveArticleParser(data)).toEqual({
+					dbId: "databaseId",
+					dbLabel: "database name",
+					articleLinks: {
+						fullTextLinks: [],
+						pdfLinks: [],
+						html: null,
+						urls: [],
+					},
+					items: [],
+				});
+			});
+
+			it("should default db to undefined", async () => {
+				expect(await service.retrieveArticleParser({}, "SHS")).toEqual({
+					dbId: undefined,
+					dbLabel: undefined,
+					articleLinks: {
+						fullTextLinks: [],
+						pdfLinks: [],
+						html: null,
+						urls: [],
+					},
+					items: [],
+				});
+			});
+
+			it("should parse raw result", async () => {
+				expect(
+					await service.retrieveArticleParser(
+						RETRIEVE_ARTICLE_PARSER_INPUT.Record,
+					),
+				).toEqual(RETRIEVE_ARTICLE_PARSER_EXPECTED);
+			});
 		});
 	});
 });

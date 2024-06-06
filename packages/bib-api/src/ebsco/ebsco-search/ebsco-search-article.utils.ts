@@ -177,3 +177,17 @@ export function extractHtml(result) {
 
 	return parseXMLArticle(result.FullText.Text.Value, extractTitle(result));
 }
+
+export async function parseItems(items = []) {
+	return await Promise.all(
+		items
+			.filter((item) => item.Name && item.Data)
+			.map(async (item) => {
+				return {
+					name: item.Name,
+					label: item.Label,
+					value: await parseXML(item.Data).catch(() => null),
+				};
+			}),
+	);
+}
