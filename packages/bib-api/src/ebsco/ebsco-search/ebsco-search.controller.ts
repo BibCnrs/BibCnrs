@@ -24,11 +24,17 @@ export class EbscoSearchController {
 		return this.ebscoSearchPublicationService.searchPublications(communityName);
 	}
 
-	/*@Get("publication/retrieve/:id")
+	@Get("publication/retrieve/:id")
 	@UseGuards(AuthGuard, EbscoTokenGuard)
-	async retrievePublicationById() {
-		return {};
-	}*/
+	async retrievePublicationById(
+		@Param("communityName") communityName: string,
+		@Param("id") id: string,
+	) {
+		return this.ebscoSearchPublicationService.retrievePublicationById(
+			communityName,
+			id,
+		);
+	}
 
 	@Get("article/search")
 	@UseGuards(AuthGuard, EbscoTokenGuard)

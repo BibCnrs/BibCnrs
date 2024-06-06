@@ -6,6 +6,7 @@ import { CommonRedisService } from "../../common/common-redis/common-redis.servi
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { AbstractEbscoSearchService } from "./ebsco-search-abstract.service";
+import { parseItems } from "./ebsco-search-article.utils";
 import {
 	extractFullTextHoldings,
 	extractISBNOnline,
@@ -140,5 +141,32 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			}
 		}
 		return parsedResult;
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	async retrievePublicationParser(result: any) {
+		return {
+			items: [...(await parseItems(result.Items))],
+		};
+	}
+
+	async retrievePublicationById(communityName: string, publicationId: string) {
+		const searchResult = await this.ebscoSearch(
+			async (authToken, sessionToken) => {
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				return this.ebscoRequest<any>(
+					"/edsapi/publication/Retrieve",
+					{
+						HighlightTerms: null,
+						Id: publicationId,
+					},
+					authToken,
+					sessionToken,
+				).then((result) => result.Record);
+			},
+			communityName,
+		);
+
+		return this.publicationParser(searchResult);
 	}
 }
