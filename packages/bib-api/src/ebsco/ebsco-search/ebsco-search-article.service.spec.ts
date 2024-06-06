@@ -48,4 +48,266 @@ describe("EbscoSearchArticleService", () => {
 			...AIDS_RESULTS_EXPECTED,
 		});
 	});
+	describe("service.getDOIFromQuery", () => {
+		it("should extract DOI from query", () => {
+			expect(
+				service.getDOIFromQuery({
+					queries: [
+						{
+							term: "10.1088/1748-0221/13/01/C01029",
+							field: null,
+						},
+					],
+				}),
+			).toBe("10.1088/1748-0221/13/01/C01029");
+		});
+
+		it("should return null if no DOI", () => {
+			expect(
+				service.getDOIFromQuery({
+					queries: [{ term: "not a DOI", field: null }],
+				}),
+			).toBeNull();
+		});
+
+		it("should return null if complex query", () => {
+			expect(
+				service.getDOIFromQuery({
+					queries: [
+						{
+							term: "10.1088/1748-0221/13/01/C01029",
+							field: null,
+						},
+						{ term: "Isaac Newton", field: "AU" },
+					],
+				}),
+			).toBeNull();
+		});
+
+		it("should return null if field is not null", () => {
+			expect(
+				service.getDOIFromQuery({
+					queries: [
+						{
+							term: "10.1088/1748-0221/13/01/C01029",
+							field: "TI",
+						},
+						null,
+					],
+				}),
+			).toBeNull();
+		});
+
+		describe("service.isDOI", () => {
+			it("should return true if string is a valid doi", () => {
+				expect(
+					service.isDOI("10.1016.12.31/nature.S0735-1097(98)2000/12/31/34:7-7"),
+				).toBe(true);
+				expect(service.isDOI("10.1088/1748-0221/13/01/C01029")).toBe(true);
+			});
+
+			it("should return false if string is not a valid doi", () => {
+				expect(service.isDOI("not a DOI")).toBe(false);
+			});
+
+			it("should return false if given no string", () => {
+				expect(service.isDOI()).toBe(false);
+			});
+		});
+	});
+
+	describe("articleLinkParser", () => {
+		it("should return directLinks, fullTextLinks, hasPdfLink and PLink", async () => {
+			const result = {
+				RecordInfo: {
+					BibRecord: {
+						BibEntity: {
+							Titles: [
+								{
+									TitleFull: "title",
+									Type: "main",
+								},
+							],
+						},
+					},
+				},
+				FullText: {
+					Text: {
+						Availability: "1",
+						Value: `&lt;anid&gt;anid&lt;/anid&gt;
+&lt;title&gt;title&lt;/title&gt;
+&lt;hd&gt;subtitle&lt;/hd&gt;
+&lt;p&gt;text&lt;/p&gt;
+&lt;ulist&gt;
+    &lt;item&gt;list item&lt;/item&gt;
+&lt;/ulist&gt;`,
+					},
+					Links: [
+						{
+							Type: "pdflink",
+							Url: "https://en.wikipedia.org/wiki/Fermi_paradox",
+						},
+					],
+					CustomLinks: [
+						{
+							Url: "http://resolver.ebscohost.com/openurl",
+							Category: "fullText",
+							Text: "Full Text Finder",
+						},
+					],
+				},
+				Items: [
+					{
+						Name: "URL",
+						Label: "Access url",
+						Data: "&lt;link linkTarget=&quot;URL&quot; linkTerm=&quot;https://clinicaltrials.gov/show/NCT01482923&quot; linkWindow=&quot;_blank&quot;&gt;https://clinicaltrials.gov/show/NCT01482923&lt;/link&gt;",
+					},
+					{
+						Name: "URL",
+						Label: "Availability",
+						Data: "http://hdl.handle.net/10520/EJC189235",
+					},
+					{
+						Name: "not URL",
+						Label: "A label",
+						Data: "Some other data",
+					},
+				],
+			};
+
+			expect(service.articleLinkParser(result, "INSB")).resolves.toMatchObject({
+				fullTextLinks: [
+					{
+						name: "Full Text Finder",
+						url: "http://resolver.ebscohost.com/openurl",
+					},
+				],
+				pdfLinks: [
+					{
+						url: "https://en.wikipedia.org/wiki/Fermi_paradox",
+					},
+				],
+				html: `<html>
+    <head>
+        <title>title</title>
+    </head>
+    <body>
+        <anid>anid</anid>
+<h1>title</h1>
+<h2>subtitle</h2>
+<p>text</p>
+<ul>
+    <li>list item</li>
+</ul>
+    </body>
+</html>`,
+				urls: [
+					{
+						name: "Access url",
+						url: "https://clinicaltrials.gov/show/NCT01482923",
+					},
+					{
+						name: "Availability",
+						url: "http://hdl.handle.net/10520/EJC189235",
+					},
+				],
+			});
+		});
+	});
+
+	describe("extractAccessUrls", () => {
+		it("should extract URL", async () => {
+			expect(
+				service.extractUrls({
+					Items: [
+						{
+							Name: "URL",
+							Label: "Availability",
+							Data: "http://hdl.handle.net/10520/EJC189235",
+						},
+					],
+				}),
+			).resolves.toMatchObject([
+				{
+					name: "Availability",
+					url: "http://hdl.handle.net/10520/EJC189235",
+				},
+			]);
+		});
+
+		it("should extract Avail", async () => {
+			expect(
+				service.extractUrls({
+					Items: [
+						{
+							Name: "Avail",
+							Label: "Availability",
+							Data: "http://hdl.handle.net/10520/EJC189235",
+						},
+					],
+				}),
+			).resolves.toMatchObject([
+				{
+					name: "Availability",
+					url: "http://hdl.handle.net/10520/EJC189235",
+				},
+			]);
+		});
+
+		it("should ignore Items with Name other than URL or Avail", async () => {
+			expect(
+				service.extractUrls({
+					Items: [
+						{
+							Name: "not URL",
+							Label: "A label",
+							Data: "Some other data",
+						},
+					],
+				}),
+			).resolves.toMatchObject([]);
+		});
+
+		it("should parse extracted url if necessary", async () => {
+			expect(
+				service.extractUrls({
+					Items: [
+						{
+							Name: "URL",
+							Label: "Access url",
+							Data: "&lt;link linkTarget=&quot;URL&quot; linkTerm=&quot;https://clinicaltrials.gov/show/NCT01482923&quot; linkWindow=&quot;_blank&quot;&gt;https://clinicaltrials.gov/show/NCT01482923&lt;/link&gt;",
+						},
+					],
+				}),
+			).resolves.toMatchObject([
+				{
+					name: "Access url",
+					url: "https://clinicaltrials.gov/show/NCT01482923",
+				},
+			]);
+		});
+
+		it("should extract url from text if necessary", async () => {
+			expect(
+				service.extractUrls({
+					Items: [
+						{
+							Name: "URL",
+							Label: "Access url",
+							Data: "Full Text from ERIC Available online : &lt;link linkTarget=&quot;URL&quot; linkTerm=&quot;https://clinicaltrials.gov/show/NCT01482923&quot; linkWindow=&quot;_blank&quot;&gt;https://clinicaltrials.gov/show/NCT01482923&lt;/link&gt; Bla bla bla",
+						},
+					],
+				}),
+			).resolves.toMatchObject([
+				{
+					name: "Access url",
+					url: "https://clinicaltrials.gov/show/NCT01482923",
+				},
+			]);
+		});
+
+		it("should return emptyArray if no Items", async () => {
+			expect(service.extractUrls({})).resolves.toMatchObject([]);
+		});
+	});
 });

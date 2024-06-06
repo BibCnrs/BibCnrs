@@ -1,7 +1,6 @@
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { REQUEST } from "@nestjs/core";
-import { community } from "@prisma/client";
 import { Request } from "express";
 import { CommonRedisService } from "../../common/common-redis/common-redis.service";
 import { Config } from "../../config";
@@ -27,8 +26,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		super(configService.get("ebsco"), request, prismaService, redisService);
 	}
 
-	private parsePublicationQueries() {
-		const { queries } = this.request.query;
+	parsePublicationQueries(queries: Request["query"]["queries"]) {
 		if (!queries || typeof queries !== "string") {
 			return {};
 		}
@@ -75,7 +73,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 				rawQuery.activeFacets && typeof rawQuery.activeFacets === "string"
 					? JSON.parse(decodeURIComponent(rawQuery.activeFacets))
 					: null,
-			...this.parsePublicationQueries(),
+			...this.parsePublicationQueries(rawQuery.queries),
 		};
 	}
 

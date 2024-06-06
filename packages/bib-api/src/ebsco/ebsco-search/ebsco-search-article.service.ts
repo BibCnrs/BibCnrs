@@ -63,7 +63,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		};
 	}
 
-	isDOI(term: string | null) {
+	isDOI(term?: string | null) {
 		return term ? !!term.match(DOI_REGEX) : false;
 	}
 
@@ -156,8 +156,8 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	async extractUrls(
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		result: any,
-		domain: string,
-		isRetrieve: boolean,
+		domain?: string,
+		isRetrieve = false,
 	) {
 		const items =
 			result.Items?.filter(

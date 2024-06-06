@@ -63,18 +63,18 @@ export class AbstractEbscoSearchService {
 		);
 	}
 
-	private addTruncature(term: string) {
+	addTruncature(term: string) {
 		return term
 			.split(" ")
 			.map((t) => (t.match(/^[a-zA-Z]+$/) ? `${t}*` : t))
 			.join(" ");
 	}
 
-	protected addTruncatureToQuery({
+	addTruncatureToQuery({
 		field,
 		term,
 		...rest
-	}: { field: string; term: string }) {
+	}: { boolean: string; field: string; term: string }) {
 		return field === "TI"
 			? { field, term: this.addTruncature(term), ...rest }
 			: { field, term, ...rest };
@@ -288,7 +288,7 @@ export class AbstractEbscoSearchService {
 		};
 	}
 
-	protected parseDateRange(
+	parseDateRange(
 		results:
 			| {
 					AvailableCriteria?: {
@@ -336,7 +336,7 @@ export class AbstractEbscoSearchService {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private parseActiveFacets(rawActiveFacets: any) {
+	parseActiveFacets(rawActiveFacets?: any) {
 		if (!rawActiveFacets) {
 			return {};
 		}
@@ -362,7 +362,7 @@ export class AbstractEbscoSearchService {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private unparseActiveFacet(activeFacets: any) {
+	unparseActiveFacet(activeFacets: any) {
 		return Object.keys(activeFacets).map((key, index) => {
 			return {
 				FilterId: index + 1,
