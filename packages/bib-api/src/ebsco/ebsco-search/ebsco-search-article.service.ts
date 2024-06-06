@@ -185,7 +185,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			return [];
 		}
 
-		const urls = items.map(
+		const urls: (() => Promise<{ name: string; url: string }>)[] = items.map(
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			(item: any) => async () => {
 				try {
@@ -209,17 +209,23 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 		if (!isRetrieve) {
 			urls.push(
-				...unpaywalls.map(async (link) => {
-					const unpaywallUrl = await this.getUrlFromUnpaywall(link.Url, domain);
-					return {
-						name: link.Name,
-						url: unpaywallUrl ? unpaywallUrl.replace("&amp;", "&") : null,
-					};
-				}, {}),
+				...unpaywalls.map(
+					async (link) => async () => {
+						const unpaywallUrl = await this.getUrlFromUnpaywall(
+							link.Url,
+							domain,
+						);
+						return {
+							name: link.Name,
+							url: unpaywallUrl ? unpaywallUrl.replace("&amp;", "&") : null,
+						};
+					},
+					{},
+				),
 			);
 		}
 
-		return await Promise.all(urls).then((items) =>
+		return Promise.all(urls.map((fn) => fn())).then((items) =>
 			items.filter((item) => !!item && !!item.url),
 		);
 	}
@@ -234,7 +240,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			fullTextLinks: extractFullTextLinks(result),
 			pdfLinks: extractPdfLinks(result),
 			html: extractHtml(result),
-			urls: this.extractUrls(result, domain, isRetrieve),
+			urls: await this.extractUrls(result, domain, isRetrieve),
 		};
 	}
 
@@ -313,8 +319,8 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			}
 		}
 
-		this.parsePublicationResults(
-			this.searchArticleParser,
+		return this.parsePublicationResults(
+			this.searchArticleParser.bind(this),
 			searchResult,
 			communityName,
 		);

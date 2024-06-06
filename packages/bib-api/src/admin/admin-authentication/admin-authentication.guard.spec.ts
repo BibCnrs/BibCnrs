@@ -50,7 +50,7 @@ describe("AdminAuthenticationGuard", () => {
 					...testTokenData,
 					exp: Math.ceil(Date.now() / 1000) + authConfig.expiresIn,
 				},
-				authConfig.headerSecret,
+				authConfig.adminSecret,
 			);
 
 			const request = {

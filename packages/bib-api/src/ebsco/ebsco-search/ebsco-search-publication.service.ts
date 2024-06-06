@@ -109,7 +109,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			communityName,
 		);
 
-		const parsedResult = this.parsePublicationResults(
+		const parsedResult = await this.parsePublicationResults(
 			this.publicationParser,
 			searchResult,
 			communityName,

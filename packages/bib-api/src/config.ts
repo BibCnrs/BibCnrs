@@ -27,7 +27,7 @@ const configFunction = () => ({
 		port: process.env.ebsco_port,
 		proxy: process.env.http_proxy,
 		allowedLimiters: ["FT", "DT1", "RV", "RV3", "AU", "SO", "TI", "LA99"],
-		doajUrl: process.env.DOAJ_URL,
+		doajUrl: process.env.DOAJ_URL || "https://doaj.org/api/",
 		crossref: process.env.crossref || "http://api.crossref.org/works/",
 		apiEndpoint: process.env.BIBAPI_HOST,
 		ezUnpaywallKey: process.env.EZ_UNPAYWALL_KEY,

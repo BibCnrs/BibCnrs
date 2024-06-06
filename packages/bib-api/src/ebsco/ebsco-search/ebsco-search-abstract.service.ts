@@ -377,13 +377,13 @@ export class AbstractEbscoSearchService {
 		});
 	}
 
-	protected parsePublicationResults(
+	async parsePublicationResults(
 		// biome-ignore lint/complexity/noBannedTypes: <explanation>
 		parser: Function,
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		searchResults: any,
 		domain: string,
-	): {
+	): Promise<{
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		results: any[];
 		totalHits: number;
@@ -396,7 +396,7 @@ export class AbstractEbscoSearchService {
 		dateRange: { min: number; max: number };
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		noFullText?: any;
-	} {
+	}> {
 		if (searchResults.SearchResult.Statistics.TotalHits === 0) {
 			return {
 				results: [],
@@ -410,9 +410,11 @@ export class AbstractEbscoSearchService {
 		}
 
 		return {
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			results: searchResults.SearchResult.Data.Records.map((record: any) =>
-				parser(record, domain),
+			results: await Promise.all(
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				searchResults.SearchResult.Data.Records.map((record: any) =>
+					parser(record, domain),
+				),
 			),
 			totalHits: searchResults.SearchResult.Statistics.TotalHits,
 			currentPage: searchResults.SearchRequest.RetrievalCriteria.PageNumber,
