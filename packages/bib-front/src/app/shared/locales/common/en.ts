@@ -72,7 +72,7 @@ const en: Common = {
 		},
 		nav: {
 			article: "Article",
-			database: "Database",
+			database: "Platforms",
 			publication: "Journal, book",
 			researchData: "Research data",
 		},
@@ -141,6 +141,7 @@ const en: Common = {
 			openAccess: "Free access to the journal's content",
 			diamond:
 				"Open Access publication, free of charge for authors and readers",
+			notComplete: "Partial access to the platform",
 		},
 		button: {
 			favourite: {
@@ -202,10 +203,10 @@ Sincerely`,
 			title: "Contact",
 		},
 		database: {
-			title: "Database",
+			title: "Platforms",
 			oa: "Open Access",
-			anonymousMessage: "Sign in to access all databases",
-			searchDatabase: "Search database",
+			anonymousMessage: "Sign in to access all platforms",
+			searchDatabase: "Search platforms",
 		},
 		publication: {
 			title: "Journal, book",

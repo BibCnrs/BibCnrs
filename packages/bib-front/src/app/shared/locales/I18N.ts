@@ -151,6 +151,7 @@ export type Common = {
 		};
 		icon: {
 			openAccess: string;
+			notComplete: string;
 			diamond: string;
 		};
 		button: {

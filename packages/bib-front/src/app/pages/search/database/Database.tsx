@@ -13,7 +13,6 @@ import PageTitle from "../../../components/internal/PageTitle";
 import { BibContext } from "../../../components/internal/provider/ContextProvider";
 import { getHeaderBackgroundColor } from "../../../components/internal/provider/LocalizedThemeProvider";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
-import DatabaseDisplayGroup from "../../../components/page/render/DatabaseDisplayGroup";
 import { database } from "../../../services/search/Database";
 import {
 	useDomain,
@@ -21,10 +20,14 @@ import {
 	useServicesCatch,
 } from "../../../shared/hook";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
-import type { DatabaseDataType } from "../../../shared/types/data.types";
+import type {
+	DatabaseDataType,
+	DatabaseItemProps,
+} from "../../../shared/types/data.types";
 import "./Database.scss";
-import { CircularProgress, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
+import { DatabaseItem } from "./DatabaseItem";
 
 const Database = () => {
 	const { login, theme, search } = useContext(BibContext);
@@ -53,13 +56,15 @@ const Database = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	const databases = useMemo(
+	const databases: DatabaseItemProps[] = useMemo(
 		() =>
 			data
 				?.map((value) => {
 					const name = language === "en" ? value.name_en : value.name_fr;
 					return {
 						...value,
+						url: language === "en" ? value.url_en : value.url_fr,
+						text: language === "en" ? value.text_en : value.text_fr,
 						name,
 						upperName: name.toLocaleUpperCase(),
 					};
@@ -68,11 +73,6 @@ const Database = () => {
 					nameFilter ? value.upperName?.includes(nameFilter) : value.upperName,
 				) ?? [],
 		[data, language, nameFilter],
-	);
-
-	const letters = useMemo(
-		() => [...new Set(databases.map<string>((value) => value.upperName.at(0)))],
-		[databases],
 	);
 
 	useEffect(() => {
@@ -142,18 +142,20 @@ const Database = () => {
 						<CircularProgress />
 					</Stack>
 				) : (
-					<ul id="database">
-						{letters.map((letter) => (
-							<li key={letter} className="database-letter">
-								<span className="database-letter-header">{letter}</span>
-								<DatabaseDisplayGroup
-									letter={letter}
-									data={databases}
-									language={language}
-								/>
-							</li>
+					<Box
+						display="grid"
+						gridTemplateColumns={{
+							xs: "repeat(1, 1fr)",
+							sm: "repeat(2, 1fr)",
+							md: "repeat(3, 1fr)",
+							lg: "repeat(4, 1fr)",
+						}}
+						gap={2}
+					>
+						{databases.map((item) => (
+							<DatabaseItem key={item.id} {...item} />
 						))}
-					</ul>
+					</Box>
 				)}
 			</Stack>
 		</div>

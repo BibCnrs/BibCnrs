@@ -73,7 +73,7 @@ const fr: Common = {
 		},
 		nav: {
 			article: "Article",
-			database: "Base de données",
+			database: "Plateformes",
 			publication: "Revue, ouvrage",
 			researchData: "Données de recherche",
 		},
@@ -140,6 +140,7 @@ const fr: Common = {
 		},
 		icon: {
 			openAccess: "Accès gratuit au contenu de la revue",
+			notComplete: "Accès à la platforme partiel",
 			diamond:
 				"Publication en Accès Ouvert gratuit pour les auteurs et les lecteurs",
 		},
@@ -203,10 +204,10 @@ Cordialement`,
 			title: "Contact",
 		},
 		database: {
-			title: "Base de données",
+			title: "Plateformes",
 			oa: "Accès Ouvert",
-			anonymousMessage: "Connectez-vous pour accéder à toutes les bases",
-			searchDatabase: "Filtrer les base de données",
+			anonymousMessage: "Connectez-vous pour accéder à toutes les platformes.",
+			searchDatabase: "Filtrer les plateformes",
 		},
 		publication: {
 			title: "Revue, ouvrage",

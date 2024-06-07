@@ -136,7 +136,7 @@ const i18n = {
 			},
 		},
 		databases: {
-			name: "Base de données",
+			name: "Plateformes",
 			fields: {
 				name_fr: "Nom (fr)",
 				name_en: "Nom (en)",

@@ -68,12 +68,19 @@ export type DatabaseEntryDataType = {
 	text_en: string;
 	url_fr: string;
 	url_en: string;
-	image: string; // Make a type for Base64 images
 	active: boolean;
+	complete: boolean;
 	oa: boolean;
 	use_proxy: boolean;
 	communities: number[]; // Make a type
 	domains: Institute[]; // Make a type
+};
+
+export type DatabaseItemProps = DatabaseEntryDataType & {
+	// Pre computed language specific text
+	name: string;
+	url: string;
+	text: string;
 };
 
 export type DatabaseDataType = DatabaseEntryDataType[];
