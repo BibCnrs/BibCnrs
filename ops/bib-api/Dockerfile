@@ -27,8 +27,8 @@ RUN yarn workspaces focus @bibcnrs/bib-api
 RUN yarn workspace @bibcnrs/bib-api prisma generate
 
 
-RUN mkdir -p /app/packages/bib-api/dist/ezproxy && chown node:node /app/packages/bib-api/dist/ezproxy
-RUN cp /app/packages/bib-api/src/ezproxy/bibcnrs.png /app/packages/bib-api/dist/ezproxy/bibcnrs.png
+RUN mkdir -p /app/packages/bib-api/dist/ezticket && chown node:node /app/packages/bib-api/dist/ezticket
+RUN cp /app/packages/bib-api/src/ezticket/bibcnrs.png /app/packages/bib-api/dist/ezticket/bibcnrs.png
 
 
 FROM sources as dev

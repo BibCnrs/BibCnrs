@@ -3,13 +3,13 @@ import { CommonAuthModule } from "../common/common-auth/common-auth.module";
 import { InistAccountModule } from "../inist/inist-account/inist-account.module";
 import { PrismaModule } from "../prisma/prisma.module";
 import { SecurityModule } from "../security/security.module";
-import { EzProxyService } from "./ez-proxy.service";
-import { EzProxyController } from "./ezproxy.controller";
+import { EzTicketController } from "./ezticket.controller";
+import { EzTicketService } from "./ezticket.service";
 
 @Module({
 	imports: [PrismaModule, InistAccountModule, CommonAuthModule, SecurityModule],
-	controllers: [EzProxyController],
-	exports: [EzProxyService],
-	providers: [EzProxyService],
+	controllers: [EzTicketController],
+	exports: [EzTicketService],
+	providers: [EzTicketService],
 })
-export class EzProxyModule {}
+export class EzTicketModule {}

@@ -20,14 +20,14 @@ import { AuthGuard } from "../common/common-auth/common-auth.guard";
 import { CommonAuthService } from "../common/common-auth/common-auth.service";
 import { InistAccountService } from "../inist/inist-account/inist-account.service";
 import { LoginDto } from "../inist/inist-auth/dto/login";
-import { EzProxyService } from "./ez-proxy.service";
-import { errorTemplate } from "./ezproxy.template.error";
-import { loginTemplate } from "./ezproxy.template.login";
+import { EzTicketService } from "./ezticket.service";
+import { errorTemplate } from "./ezticket.template.error";
+import { loginTemplate } from "./ezticket.template.login";
 
 @Controller("ezticket")
-export class EzProxyController {
+export class EzTicketController {
 	constructor(
-		private readonly ezProxyService: EzProxyService,
+		private readonly ezProxyService: EzTicketService,
 		private readonly inistAccountService: InistAccountService,
 		private readonly commonAuthService: CommonAuthService,
 	) {}
