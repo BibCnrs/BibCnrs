@@ -185,12 +185,11 @@ export class JanusAuthController {
 			throw new UnauthorizedException();
 		}
 
-		let favouriteResources = this.janusAccountService.getFavouriteResources(
-			user.id,
-		);
+		let favouriteResources =
+			await this.janusAccountService.getFavouriteResources(user.id);
 
 		if (!favouriteResources) {
-			favouriteResources = this.janusAccountService.getRevuesByDomains([
+			favouriteResources = await this.janusAccountService.getRevuesByDomains([
 				user.favorite_domain,
 				...user.domains,
 			]);
@@ -202,7 +201,7 @@ export class JanusAuthController {
 			username: user.username,
 			domains: user.domains,
 			favorite_domain: user.favorite_domain,
-			favouriteResources: await favouriteResources,
+			favouriteResources,
 			origin: user.origin,
 			token,
 		};
