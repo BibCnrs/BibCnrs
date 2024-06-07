@@ -26,6 +26,9 @@ const configFunction = () => ({
 		host: process.env.REDIS_HOST,
 		port: Number.parseInt(process.env.REDIS_PORT || "6379", 10),
 	},
+	ezProxy: {
+		ticketSecret: process.env.ticket_secret,
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;
