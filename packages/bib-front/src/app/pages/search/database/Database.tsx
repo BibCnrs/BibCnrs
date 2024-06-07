@@ -1,7 +1,13 @@
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useContext, useEffect, useState } from "react";
+import {
+	type ChangeEvent,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
 import { BibContext } from "../../../components/internal/provider/ContextProvider";
@@ -17,6 +23,8 @@ import {
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type { DatabaseDataType } from "../../../shared/types/data.types";
 import "./Database.scss";
+import { CircularProgress, TextField } from "@mui/material";
+import { Stack } from "@mui/system";
 
 const Database = () => {
 	const { login, theme, search } = useContext(BibContext);
@@ -28,7 +36,9 @@ const Database = () => {
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
 
-	const { data, isError, error } = useQuery<
+	const [nameFilter, setNameFilter] = useState<string>("");
+
+	const { data, isLoading, isError, error } = useQuery<
 		DatabaseDataType,
 		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 		any,
@@ -43,6 +53,28 @@ const Database = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
+	const databases = useMemo(
+		() =>
+			data
+				?.map((value) => {
+					const name = language === "en" ? value.name_en : value.name_fr;
+					return {
+						...value,
+						name,
+						upperName: name.toLocaleUpperCase(),
+					};
+				})
+				?.filter((value) =>
+					nameFilter ? value.upperName?.includes(nameFilter) : value.upperName,
+				) ?? [],
+		[data, language, nameFilter],
+	);
+
+	const letters = useMemo(
+		() => [...new Set(databases.map<string>((value) => value.upperName.at(0)))],
+		[databases],
+	);
+
 	useEffect(() => {
 		if (isError) {
 			serviceCatch(error);
@@ -53,22 +85,9 @@ const Database = () => {
 		setOa(!login);
 	}, [login]);
 
-	if (data === undefined) {
-		return null;
-	}
-
-	const letters = [
-		...new Set(
-			data
-				.map<string | undefined>((value) => {
-					if (language === "en") {
-						return value.name_en.toUpperCase().at(0);
-					}
-					return value.name_fr.toUpperCase().at(0);
-				})
-				.filter((value) => value !== undefined) as string[],
-		),
-	];
+	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setNameFilter(e.target.value.toLocaleUpperCase());
+	};
 
 	return (
 		<div>
@@ -82,7 +101,7 @@ const Database = () => {
 					/>
 				</div>
 			</div>
-			<div id="app">
+			<Stack id="app" gap={2}>
 				{login ? (
 					<FormControlLabel
 						id="database-oa"
@@ -109,19 +128,34 @@ const Database = () => {
 						{t("pages.database.anonymousMessage")}
 					</ColoredPaper>
 				)}
-				<ul id="database">
-					{letters.map((letter) => (
-						<li key={letter} className="database-letter">
-							<span className="database-letter-header">{letter}</span>
-							<DatabaseDisplayGroup
-								letter={letter}
-								data={data}
-								language={language}
-							/>
-						</li>
-					))}
-				</ul>
-			</div>
+
+				<TextField
+					fullWidth
+					label={t("pages.database.searchDatabase")}
+					value={nameFilter}
+					onChange={handleSearchChange}
+					autoComplete="off"
+				/>
+
+				{isLoading ? (
+					<Stack alignItems="center" spacing={5}>
+						<CircularProgress />
+					</Stack>
+				) : (
+					<ul id="database">
+						{letters.map((letter) => (
+							<li key={letter} className="database-letter">
+								<span className="database-letter-header">{letter}</span>
+								<DatabaseDisplayGroup
+									letter={letter}
+									data={databases}
+									language={language}
+								/>
+							</li>
+						))}
+					</ul>
+				)}
+			</Stack>
 		</div>
 	);
 };

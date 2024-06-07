@@ -206,6 +206,7 @@ Cordialement`,
 			title: "Base de données",
 			oa: "Accès Ouvert",
 			anonymousMessage: "Connectez-vous pour accéder à toutes les bases",
+			searchDatabase: "Filtrer les base de données",
 		},
 		publication: {
 			title: "Revue, ouvrage",

@@ -203,6 +203,7 @@ export type Common = {
 			title: string;
 			oa: string;
 			anonymousMessage: string;
+			searchDatabase: string;
 		};
 		researchData: {
 			title: string;
