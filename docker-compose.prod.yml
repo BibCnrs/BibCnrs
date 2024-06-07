@@ -92,7 +92,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./../storage/backups:/backups
-      - bibcnrs-api-postgres-data:/var/lib/postgresql/data/pgdata
+      - ./../storage/postgresql:/var/lib/postgresql/data/pgdata
     ports:
       - "60000:5432"
     networks:

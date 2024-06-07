@@ -5,7 +5,7 @@ services:
       dockerfile: ./ops/bib-api/Dockerfile
       target: dev
     volumes:
-      - bib-uploads:/app/packages/bib-api/uploads
+      - ./../storage/backups:/app/packages/bib-api/uploads
     develop:
       watch:
         - action: sync
@@ -119,7 +119,7 @@ services:
           target: /etc/nginx/nginx.conf
     volumes:
       - ./ops/bib-proxy/nginx.dev.conf:/etc/nginx/nginx.conf
-      - bib-uploads:/usr/share/nginx/html/files
+      - ./../storage/uploads:/usr/share/nginx/html/files
 
   bib-db:
     image: postgres:14
@@ -130,8 +130,8 @@ services:
       - POSTGRES_PASSWORD=S3cr3t
       - POSTGRES_DB=bibcnrs
     volumes:
-      - bib-db-data:/var/lib/postgresql/data
-      - ./data:/data
+      - ./../storage/postgresql:/var/lib/postgresql/data
+      -  ./../storage/backups:/backups
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -151,7 +151,3 @@ services:
     image: maildev/maildev:2.1.0
     ports:
       - "1080:1080"
-
-volumes:
-  bib-db-data:
-  bib-uploads:
