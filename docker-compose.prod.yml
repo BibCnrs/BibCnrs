@@ -83,7 +83,7 @@ services:
   # Application database
   bibcnrs-api-postgres:
     container_name: bibcnrs-api-postgres
-    image: postgres:13
+    image: postgres:16.3
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

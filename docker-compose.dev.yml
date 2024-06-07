@@ -122,7 +122,7 @@ services:
       - ./../storage/uploads:/usr/share/nginx/html/files
 
   bib-db:
-    image: postgres:14
+    image: postgres:16.3
     ports:
       - "5432:5432"
     environment:
