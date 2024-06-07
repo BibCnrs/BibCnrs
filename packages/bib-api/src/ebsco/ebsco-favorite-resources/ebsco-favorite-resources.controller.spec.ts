@@ -88,15 +88,15 @@ describe("EbscoFavoriteResourcesController", () => {
 				user: testJanusToken,
 			} as unknown as Request;
 
-			await ebscoFavoriteResourcesController.putFavoriteResources(request, {
-				a: "b",
-			});
+			await ebscoFavoriteResourcesController.putFavoriteResources(request, [
+				{ a: "b" },
+			]);
 
 			expect(
 				prismaService.janus_account.findFirst({ where: { id: 1 } }),
 			).resolves.toEqual(
 				expect.objectContaining({
-					favourite_resources: { a: "b" },
+					favourite_resources: [{ a: "b" }],
 				}),
 			);
 		});

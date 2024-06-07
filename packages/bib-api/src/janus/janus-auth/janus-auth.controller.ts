@@ -188,6 +188,7 @@ export class JanusAuthController {
 		let favouriteResources = this.janusAccountService.getFavouriteResources(
 			user.id,
 		);
+
 		if (!favouriteResources) {
 			favouriteResources = this.janusAccountService.getRevuesByDomains([
 				user.favorite_domain,
@@ -201,7 +202,7 @@ export class JanusAuthController {
 			username: user.username,
 			domains: user.domains,
 			favorite_domain: user.favorite_domain,
-			favouriteResources,
+			favouriteResources: await favouriteResources,
 			origin: user.origin,
 			token,
 		};
