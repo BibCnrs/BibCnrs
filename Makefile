@@ -187,7 +187,6 @@ build-front:
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}' \
 		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
-		--build-arg BIB_CONTENT_DELIVERY_HOST=${BIB_CONTENT_DELIVERY_HOST} \
 		.
 
 build-admin:
@@ -197,7 +196,6 @@ build-admin:
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}' \
 		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
-		--build-arg BIB_CONTENT_DELIVERY_HOST=${BIB_CONTENT_DELIVERY_HOST} \
 		.
 # Production
 start: env-mkdirs						## Start stack in production mode
