@@ -71,6 +71,7 @@ export type DatabaseEntryDataType = {
 	url_fr: string;
 	url_en: string;
 	active: boolean;
+	complete: boolean;
 	oa: boolean;
 	use_proxy: boolean;
 	communities: number[]; // Make a type
