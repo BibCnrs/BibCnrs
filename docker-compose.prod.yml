@@ -106,9 +106,6 @@ services:
     networks:
       - bib_backend_network
 
-volumes:
-  bibcnrs-api-postgres-data:
-
 networks:
   bib_backend_network:
     driver: bridge

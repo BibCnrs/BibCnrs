@@ -39,7 +39,7 @@ type JanusUser = {
 };
 
 @Injectable()
-export class EzProxyService {
+export class EzTicketService {
 	private readonly ezProxyConfig: Config["ezProxy"];
 
 	constructor(
@@ -145,10 +145,10 @@ export class EzProxyService {
 		const hash = this.securityService.sha512(
 			`${this.ezProxyConfig.ticketSecret}${username}${packet}`,
 		);
-		const EzProxyTicket = encodeURIComponent(`${hash}${packet}`);
+		const EzTicketTicket = encodeURIComponent(`${hash}${packet}`);
 
 		return `http://${gate}/login?user=${encodeURIComponent(
 			username,
-		)}&ticket=${EzProxyTicket}&url=${encodeURIComponent(url)}`;
+		)}&ticket=${EzTicketTicket}&url=${encodeURIComponent(url)}`;
 	}
 }
