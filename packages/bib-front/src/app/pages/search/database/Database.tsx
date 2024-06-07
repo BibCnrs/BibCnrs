@@ -25,7 +25,14 @@ import type {
 	DatabaseItemProps,
 } from "../../../shared/types/data.types";
 import "./Database.scss";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import {
+	Box,
+	CircularProgress,
+	MenuItem,
+	Pagination,
+	Select,
+	TextField,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import { DatabaseItem } from "./DatabaseItem";
 
@@ -38,6 +45,9 @@ const Database = () => {
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
+
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [databasePerPage, setDatabasePerPage] = useState<number>(10);
 
 	const [nameFilter, setNameFilter] = useState<string>("");
 
@@ -74,6 +84,24 @@ const Database = () => {
 				) ?? [],
 		[data, language, nameFilter],
 	);
+
+	const pageCount = useMemo(
+		() => Math.ceil(databases.length / databasePerPage),
+		[databases, databasePerPage],
+	);
+
+	const pagedDatabases = useMemo(
+		() =>
+			databases.slice(
+				(currentPage - 1) * databasePerPage,
+				currentPage * databasePerPage,
+			),
+		[currentPage, databasePerPage, databases],
+	);
+
+	useEffect(() => {
+		setCurrentPage(Math.max(1, Math.min(currentPage, pageCount)));
+	}, [currentPage, pageCount]);
 
 	useEffect(() => {
 		if (isError) {
@@ -129,37 +157,82 @@ const Database = () => {
 					</ColoredPaper>
 				)}
 
-				<TextField
-					fullWidth
-					label={t("pages.database.searchDatabase")}
-					value={nameFilter}
-					onChange={handleSearchChange}
-					autoComplete="off"
-				/>
+				<Stack direction="row" spacing={2}>
+					<TextField
+						fullWidth
+						label={t("pages.database.searchDatabase")}
+						value={nameFilter}
+						onChange={handleSearchChange}
+						autoComplete="off"
+					/>
+					<Select
+						value={databasePerPage}
+						onChange={(event) =>
+							setDatabasePerPage(event.target.value as number)
+						}
+					>
+						<MenuItem value={10}>10</MenuItem>
+						<MenuItem value={25}>25</MenuItem>
+						<MenuItem value={50}>50</MenuItem>
+					</Select>
+				</Stack>
 
 				{isLoading ? (
 					<Stack alignItems="center" spacing={5}>
 						<CircularProgress />
 					</Stack>
 				) : (
-					<Box
-						display="grid"
-						gridTemplateColumns={{
-							xs: "repeat(1, 1fr)",
-							sm: "repeat(2, 1fr)",
-							md: "repeat(3, 1fr)",
-							lg: "repeat(4, 1fr)",
-						}}
-						gap={2}
-					>
-						{databases.map((item) => (
-							<DatabaseItem key={item.id} {...item} />
-						))}
-					</Box>
+					<>
+						<DatabasePagination
+							pageCount={pageCount}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+						/>
+						<Box
+							display="grid"
+							gridTemplateColumns={{
+								xs: "repeat(1, 1fr)",
+								sm: "repeat(2, 1fr)",
+								md: "repeat(3, 1fr)",
+								lg: "repeat(4, 1fr)",
+							}}
+							gap={2}
+						>
+							{pagedDatabases.map((item) => (
+								<DatabaseItem key={item.id} {...item} />
+							))}
+						</Box>
+						<DatabasePagination
+							pageCount={pageCount}
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+						/>
+					</>
 				)}
 			</Stack>
 		</div>
 	);
 };
+
+function DatabasePagination({
+	pageCount,
+	currentPage,
+	setCurrentPage,
+}: {
+	pageCount: number;
+	currentPage: number;
+	setCurrentPage: (value: number) => void;
+}) {
+	return (
+		<Stack spacing={2} alignItems="flex-end">
+			<Pagination
+				count={pageCount}
+				color="primary"
+				page={currentPage}
+				onChange={(_, value) => setCurrentPage(value)}
+			/>
+		</Stack>
+	);
+}
 
 export default Database;
