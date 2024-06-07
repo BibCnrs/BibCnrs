@@ -213,7 +213,7 @@ start-prod: stop-dev					## Start stack in production mode with local env
 deploy-dev:
 	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4  && git pull && make build && make stop start && docker restart bibrp_rp_1'
 
-prod-init-db:
+prod-init-db: env-mkdirs				## Initialize the database with seed data in production
 	docker compose -f docker-compose.prod.yml up -d --wait bibcnrs-api-postgres
 	docker exec bibcnrs-api-postgres psql -U $(POSTGRES_USER) $(POSTGRES_DB) -f /backups/seed.sql
 	docker compose -f docker-compose.prod.yml run --rm bibcnrs-api yarn workspace @bibcnrs/bib-api run prisma migrate resolve --applied 0_init

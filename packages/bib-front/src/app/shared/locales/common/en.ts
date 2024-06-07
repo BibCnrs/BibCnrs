@@ -205,6 +205,7 @@ Sincerely`,
 			title: "Database",
 			oa: "Open Access",
 			anonymousMessage: "Sign in to access all databases",
+			searchDatabase: "Search database",
 		},
 		publication: {
 			title: "Journal, book",
