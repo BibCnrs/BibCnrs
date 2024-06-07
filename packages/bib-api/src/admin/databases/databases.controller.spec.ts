@@ -120,6 +120,7 @@ describe("DatabasesController", () => {
 					oa: true,
 					use_proxy: true,
 					communities: [1, 2],
+					complete: true,
 				}),
 			);
 
