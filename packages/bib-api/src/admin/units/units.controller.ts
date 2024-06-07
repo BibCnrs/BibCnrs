@@ -21,11 +21,11 @@ import { UnitsService } from "./units.service";
 @Controller("admin/units")
 @UseGuards(AdminAuthenticationGuard)
 export class UnitsController {
-	constructor(private readonly revuesService: UnitsService) {}
+	constructor(private readonly unitsService: UnitsService) {}
 
 	@Get()
 	async findAll(@Query() query: FindAllQueryArgs, @Res() res: Response) {
-		const { data, total } = await this.revuesService.findAll(query);
+		const { data, total } = await this.unitsService.findAll(query);
 		res.header("Content-Range", `${total}`);
 		res.header("Access-Control-Expose-Headers", "Content-Range");
 		return res.send(data);
@@ -33,7 +33,7 @@ export class UnitsController {
 
 	@Get(":id")
 	async findOne(@Param("id") id: number) {
-		const data = await this.revuesService.findOne(id);
+		const data = await this.unitsService.findOne(id);
 
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -44,7 +44,7 @@ export class UnitsController {
 
 	@Post()
 	async create(@Body() createUnitDto: CreateUnitDto) {
-		const data = await this.revuesService.create(createUnitDto);
+		const data = await this.unitsService.create(createUnitDto);
 		if (!data) {
 			throw new HttpException(
 				"INTERNAL SERVER ERROR",
@@ -57,7 +57,7 @@ export class UnitsController {
 
 	@Put(":id")
 	async update(@Param("id") id: number, @Body() updateUnitDto: UpdateUnitDto) {
-		const data = await this.revuesService.update(id, updateUnitDto);
+		const data = await this.unitsService.update(id, updateUnitDto);
 
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
@@ -68,7 +68,7 @@ export class UnitsController {
 
 	@Delete(":id")
 	async remove(@Param("id") id: number) {
-		const data = await this.revuesService.remove(id);
+		const data = await this.unitsService.remove(id);
 
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
