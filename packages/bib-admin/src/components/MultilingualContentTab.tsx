@@ -11,6 +11,10 @@ import TabPanel from "./TabPanel";
 export const validateMultilingualContentCreation = (values: any) => {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const errors: any = {};
+	if (!values.page) {
+		errors.page = "ra.validation.required";
+	}
+
 	if (!values.content_en) {
 		errors.content_en = "ra.validation.required";
 	}

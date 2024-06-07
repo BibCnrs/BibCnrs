@@ -76,6 +76,12 @@ export class UnitsService {
 		const offset = this.calculateOffset(query, take);
 		const order = transformOrderBy(query._sortField, query._sortDir);
 
+		if ("id" in query) {
+			filters.id = {
+				in: [].concat(query.id).map((id) => Number.parseInt(id, 10)),
+			};
+		}
+
 		const data = await this.prismaService.unit.findMany({
 			skip: offset || 0,
 			take: take || 100,
