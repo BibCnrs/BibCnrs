@@ -42,4 +42,16 @@ export class CommonRedisService {
 	async delAsync(key: string) {
 		return this.redis.del(key);
 	}
+
+	async hmgetAsync(key: string, fields: string | string[]) {
+		return this.redis.hmGet(key, fields);
+	}
+
+	async hsetAsync(key: string, field: string, value: string) {
+		return this.redis.hSet(key, field, value);
+	}
+
+	async expireAsync(key: string, exp: number) {
+		return this.redis.expire(key, exp);
+	}
 }

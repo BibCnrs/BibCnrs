@@ -40,7 +40,6 @@ services:
       - METADORE_URL=${METADORE_URL}
       - METADORE_API_KEY=${METADORE_API_KEY}
       - DOAJ_URL=${DOAJ_URL}
-      - OLD_API_URL=${OLD_API_URL:-https://bib-preprod.inist.fr}
       - REDIS_HOST=bib-redis
       - bib_admin_host=http://localhost:3000/admin
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
