@@ -99,10 +99,7 @@ export class EbscoHistoryService {
 			.then((results) => results.at(0) ?? null);
 	}
 
-	async createHistory(
-		history: CreateHistoryDto &
-			Pick<history, "user_id"> & { activeFacets: JsonValue },
-	) {
+	async createHistory(history: CreateHistoryDto & Pick<history, "user_id">) {
 		const { id } = await this.prismaService.$transaction(async (prisma) => {
 			const { frequence, user_id, ...rest } = history;
 			const createdHistory = await prisma.history.create({
