@@ -1,6 +1,7 @@
 import jsonExport from "jsonexport/dist";
 import {
 	BooleanField,
+	BooleanInput,
 	Datagrid,
 	DeleteWithConfirmButton,
 	EditButton,
@@ -66,6 +67,10 @@ const DatabasesList = () => (
 			<BooleanField
 				source="use_proxy"
 				label="resources.databases.fields.has_proxy"
+			/>{" "}
+			<BooleanField
+				source="complete"
+				label="resources.databases.fields.complete"
 			/>
 			<EditButton />
 			<DeleteWithConfirmButton />

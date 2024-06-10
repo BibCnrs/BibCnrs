@@ -406,10 +406,11 @@ export class ArticleContentGetter {
 			path = "oa_database";
 		}
 
-		url = encodeURI(url);
+		url = encodeURIComponent(url);
 		if (url.includes("ebsco/oa")) {
 			return url;
 		}
+
 		return `${
 			environment.host
 		}/ebsco/${path}?url=${url}&sid=${sid}&domaine=${domain}&doi=${this.getDOI()}`;
