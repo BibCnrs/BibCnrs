@@ -42,6 +42,6 @@ export class AdminAuthenticationService {
 			exp: Math.ceil(Date.now() / 1000) + this.authConfig.expiresIn,
 		};
 
-		return jwt.sign(tokenData, this.authConfig.headerSecret);
+		return jwt.sign(tokenData, this.authConfig.adminSecret);
 	}
 }

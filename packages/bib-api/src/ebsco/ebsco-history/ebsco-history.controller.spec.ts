@@ -160,17 +160,11 @@ describe("EbscoHistoryController", () => {
 					},
 				} as unknown as Request;
 
-				const time = new Date(2021, 5, 10);
-
 				expect(
 					await ebscoHistoryController.postHistory(request, {
-						active: true,
-						event: { test: "test 1" },
-						frequence: "1 hour",
-						has_alert: true,
-						last_execution: time,
-						last_results: [],
-						nb_results: 0,
+						test: "test 1",
+						totalHits: 20,
+						frequence: "01:00:00",
 					}),
 				).toStrictEqual(
 					expect.objectContaining({
@@ -178,10 +172,8 @@ describe("EbscoHistoryController", () => {
 						active: true,
 						event: { test: "test 1" },
 						frequence: "01:00:00",
-						has_alert: true,
-						last_execution: time,
-						last_results: [],
-						nb_results: 0,
+						has_alert: false,
+						nb_results: 20,
 					}),
 				);
 			});
