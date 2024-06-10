@@ -100,12 +100,6 @@ export type OpenablePaperProps = PropsWithoutRef<{
 	onOpen?: (isOpen: boolean) => void;
 }>;
 
-export type DatabaseDisplayGroupProps = PropsWithoutRef<{
-	letter: string;
-	data: DatabaseDataType;
-	language: string;
-}>;
-
 export type AnimatedPaperProps = PropsWithChildren<{
 	className?: string;
 	onClick?: () => void;

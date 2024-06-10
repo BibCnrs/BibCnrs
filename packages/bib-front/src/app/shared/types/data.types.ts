@@ -60,6 +60,8 @@ export type CMSDataType = {
 
 export type CMSResultDataType = CMSDataType[];
 
+export type TypeDatabaseEnum = "news" | "book" | "database" | "data";
+
 export type DatabaseEntryDataType = {
 	id: number;
 	name_fr: string;
@@ -68,12 +70,23 @@ export type DatabaseEntryDataType = {
 	text_en: string;
 	url_fr: string;
 	url_en: string;
-	image: string; // Make a type for Base64 images
 	active: boolean;
 	oa: boolean;
 	use_proxy: boolean;
 	communities: number[]; // Make a type
 	domains: Institute[]; // Make a type
+	is_text_integral: boolean;
+	without_embargo: boolean;
+	is_completed: boolean;
+	is_archived: boolean;
+	type: TypeDatabaseEnum[];
+};
+
+export type DatabaseItemProps = DatabaseEntryDataType & {
+	// Pre computed language specific text
+	name: string;
+	url: string;
+	text: string;
 };
 
 export type DatabaseDataType = DatabaseEntryDataType[];

@@ -6,13 +6,17 @@ export class CreateDatabaseDto implements Omit<database, "id"> {
 	text_en: string;
 	url_fr: string;
 	url_en: string;
-	image: string | null;
 	name_en: string | null;
 	active: boolean;
 	oa: boolean;
 	use_proxy: boolean;
 	communities?: number[];
 	domains?: string[];
+	is_text_integral: boolean;
+	without_embargo: boolean;
+	is_completed: boolean;
+	is_archived: boolean;
+	type: ("database" | "data" | "news" | "book")[];
 }
 
 export class UpdateDatabaseDto extends CreateDatabaseDto {

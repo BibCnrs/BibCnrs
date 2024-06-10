@@ -58,6 +58,9 @@ class Session {
 	getFavouriteResources = (): FavouriteResourceDataType[] => {
 		const user = this.getUser();
 		if (user) {
+			if (!Array.isArray(user.favouriteResources)) {
+				return [];
+			}
 			return user.favouriteResources ?? [];
 		}
 		return [];

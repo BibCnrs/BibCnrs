@@ -136,7 +136,7 @@ const i18n = {
 			},
 		},
 		databases: {
-			name: "Base de données",
+			name: "Plateformes",
 			fields: {
 				name_fr: "Nom (fr)",
 				name_en: "Nom (en)",
@@ -150,6 +150,11 @@ const i18n = {
 				open_access: "Open source",
 				use_proxy: "proxifier l'url",
 				has_proxy: "url proxifié",
+				is_text_integral: "Texte intégral",
+				is_completed: "Complétude: 100%",
+				is_archived: "Archive",
+				without_embargo: "Sans embargo",
+				type: "Type de contenu",
 			},
 		},
 		section_cn: {

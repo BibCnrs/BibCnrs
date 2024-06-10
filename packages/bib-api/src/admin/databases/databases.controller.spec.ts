@@ -75,11 +75,15 @@ describe("DatabasesController", () => {
 				url_en: "https://link.springer.com/",
 				name_en: "Springer",
 				active: true,
-				image: null,
 				oa: false,
 				use_proxy: false,
 				communities: [1, 2],
 				domains: ["INSHS", "INSB"],
+				is_text_integral: false,
+				is_completed: false,
+				is_archived: false,
+				type: [],
+				without_embargo: false,
 			});
 		});
 
@@ -92,12 +96,16 @@ describe("DatabasesController", () => {
 				text_en: "text_en",
 				url_fr: "url_fr",
 				url_en: "url_en",
-				image: "image",
 				name_en: "name_en",
 				active: true,
 				oa: true,
 				use_proxy: true,
 				communities: [1, 2],
+				is_text_integral: false,
+				without_embargo: true,
+				is_completed: true,
+				is_archived: false,
+				type: ["database"],
 			});
 
 			expect(createdDatabase).toEqual(
@@ -107,12 +115,16 @@ describe("DatabasesController", () => {
 					text_en: "text_en",
 					url_fr: "url_fr",
 					url_en: "url_en",
-					image: "image",
 					name_en: "name_en",
 					active: true,
 					oa: true,
 					use_proxy: true,
 					communities: [1, 2],
+					is_text_integral: false,
+					without_embargo: true,
+					is_completed: true,
+					is_archived: false,
+					type: ["database"],
 				}),
 			);
 
