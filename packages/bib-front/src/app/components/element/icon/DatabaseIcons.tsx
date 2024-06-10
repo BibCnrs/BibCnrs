@@ -6,7 +6,7 @@ import BookmarkButton from "../button/BookmarkButton";
 import { NotCompleteIcon } from "./NotCompleteIcon";
 import OpenAccess from "./OpenAccess";
 
-const DatabaseIcons = ({ name, url, oa, complete }: DatabaseItemProps) => {
+const DatabaseIcons = ({ name, url, oa, is_completed }: DatabaseItemProps) => {
 	const { login } = useContext(BibContext);
 
 	return (
@@ -30,7 +30,7 @@ const DatabaseIcons = ({ name, url, oa, complete }: DatabaseItemProps) => {
 					url={url}
 				/>
 			)}
-			{!complete && <NotCompleteIcon />}
+			{!is_completed && <NotCompleteIcon />}
 		</Stack>
 	);
 };
