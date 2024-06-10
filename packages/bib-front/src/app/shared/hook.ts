@@ -115,6 +115,9 @@ export const useFavouriteResources = (): UseFavouriteResourcesType => {
 
 	const favouritesWithId = useMemo(() => {
 		let index = 1;
+		if (!Array.isArray(favourites)) {
+			return [];
+		}
 		return favourites.map((value) => {
 			return {
 				id: index++,
