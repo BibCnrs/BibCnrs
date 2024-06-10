@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma, history } from "@prisma/client";
+import { JsonValue } from "@prisma/client/runtime/library";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateHistoryDto } from "./dto/ebsco-history.dto";
 
@@ -98,16 +99,24 @@ export class EbscoHistoryService {
 			.then((results) => results.at(0) ?? null);
 	}
 
-	async createHistory(history: CreateHistoryDto & Pick<history, "user_id">) {
+	async createHistory(
+		history: CreateHistoryDto &
+			Pick<history, "user_id"> & { activeFacets: JsonValue },
+	) {
 		const { id } = await this.prismaService.$transaction(async (prisma) => {
-			const { frequence, ...rest } = history;
+			const { frequence, user_id, ...rest } = history;
 			const createdHistory = await prisma.history.create({
-				data: rest,
+				data: {
+					user_id,
+					event: rest,
+				},
 			});
 
-			await prisma.$executeRaw(
-				Prisma.sql`UPDATE history SET frequence = ${frequence}::interval WHERE id = ${createdHistory.id}`,
-			);
+			if (frequence) {
+				await prisma.$executeRaw(
+					Prisma.sql`UPDATE history SET frequence = ${frequence}::interval WHERE id = ${createdHistory.id}`,
+				);
+			}
 
 			return createdHistory;
 		});

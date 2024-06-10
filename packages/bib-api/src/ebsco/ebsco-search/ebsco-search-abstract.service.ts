@@ -117,10 +117,6 @@ export class AbstractEbscoSearchService {
 			})}`,
 		);
 
-		logger.warn(
-			`[POST] ${url} ${response.statusCode}: ${JSON.stringify(body)}`,
-		);
-
 		if (response.statusCode !== 200) {
 			this.handleEbscoError({ error: body as EbscoError });
 		}

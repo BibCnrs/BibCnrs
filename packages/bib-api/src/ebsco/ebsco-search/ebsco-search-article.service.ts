@@ -160,7 +160,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		domain?: string,
 		isRetrieve = false,
 	) {
-		const items =
+		const items: { Url: string; Name: string }[] =
 			result.Items?.filter(
 				(item) => item.Name === "URL" || item.Name === "Avail",
 			) || [];
@@ -173,7 +173,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 					/accès en ligne en open access/i.test(link.Text),
 			);
 
-		const unpaywalls =
+		const unpaywalls: { Url: string; Name: string }[] =
 			(!hasOpenAccessLink &&
 				result.CustomLinks &&
 				result.CustomLinks.filter(
@@ -186,9 +186,9 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			return [];
 		}
 
-		const urls: (() => Promise<{ name: string; url: string }>)[] = items.map(
+		const urls: Promise<{ name: string; url: string }>[] = items.map(
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			(item: any) => async () => {
+			async (item: any) => {
 				try {
 					let parsedItem = await parseXML(item.Data);
 					if (Array.isArray(parsedItem)) {
@@ -209,24 +209,18 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		);
 
 		if (!isRetrieve) {
-			urls.push(
-				...unpaywalls.map(
-					async (link) => async () => {
-						const unpaywallUrl = await this.getUrlFromUnpaywall(
-							link.Url,
-							domain,
-						);
-						return {
-							name: link.Name,
-							url: unpaywallUrl ? unpaywallUrl.replace("&amp;", "&") : null,
-						};
-					},
-					{},
-				),
+			urls.concat(
+				unpaywalls.map(async (link) => {
+					const unpaywallUrl = await this.getUrlFromUnpaywall(link.Url, domain);
+					return {
+						name: link.Name,
+						url: unpaywallUrl ? unpaywallUrl.replace("&amp;", "&") : null,
+					};
+				}, {}),
 			);
 		}
 
-		return Promise.all(urls.map((fn) => fn())).then((items) =>
+		return Promise.all(urls).then((items) =>
 			items.filter((item) => !!item && !!item.url),
 		);
 	}
