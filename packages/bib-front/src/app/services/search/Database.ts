@@ -9,6 +9,7 @@ export const database = async (
 	const response: Response = await fetch(
 		createQuery(environment.get.search.database),
 	);
+
 	throwIfNotOk(response);
 	const data: DatabaseDataType = await response.json();
 	return data

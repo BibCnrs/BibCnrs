@@ -1,6 +1,6 @@
 FROM node:22-alpine as base
 
-RUN apk upgrade
+RUN apk update && apk upgrade
 RUN mkdir -p /app/.yarn
 RUN mkdir -p /app/packages/bib-admin
 

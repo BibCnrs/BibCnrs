@@ -15,7 +15,7 @@ export function DatabaseItem(props: DatabaseItemProps) {
 			enterNextDelay={1000}
 			leaveDelay={200}
 		>
-			<Card>
+			<Card role="listitem" aria-label={props.name}>
 				<CardContent
 					sx={{
 						"&:last-child": {

@@ -5,7 +5,7 @@ services:
       dockerfile: ./ops/bib-api/Dockerfile
       target: dev
     volumes:
-      - ./../storage/backups:/app/packages/bib-api/uploads
+      - ./../storage/uploads:/app/packages/bib-api/uploads
     develop:
       watch:
         - action: sync

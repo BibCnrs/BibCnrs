@@ -111,6 +111,7 @@ start-dev: env-copy						## Start stack in development mode
 stop-dev: env-copy						## Stop stack
 	docker compose --env-file docker-compose.prod.env -f docker-compose.prod.yml down
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml down
+	docker compose -f docker-compose.test-e2e.yml down --volumes
 	docker compose -f docker-compose.test.yml down
 
 dev-copy-uploads:						## Copy files from input directory to uploads, usage: COMMAND_ARGS='./uploads' make dev-copy-uploads
@@ -177,7 +178,7 @@ build-api:								## Build docker image for api args: <BIBAPI_VERSION> build bib
 		--no-cache \
 		--build-arg http_proxy \
 		--build-arg https_proxy \
-		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:${BIBAPI_VERSION}' \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:$(BIBAPI_VERSION)' \
 		.
 
 build-front:
@@ -185,8 +186,8 @@ build-front:
 		-f ./ops/bib-front/Dockerfile \
 		--progress=plain \
 		--no-cache \
-		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}' \
-		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:$(BIBFRONT_VERSION)' \
+		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
 		.
 
 build-admin:
@@ -194,8 +195,8 @@ build-admin:
 		-f ./ops/bib-admin/Dockerfile \
 		--progress=plain \
 		--no-cache \
-		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}' \
-		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:$(BIBADMIN_VERSION)' \
+		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
 		.
 # Production
 start: env-mkdirs						## Start stack in production mode
@@ -242,3 +243,33 @@ else
 	echo 'please specify backup to restore':
 	@ls -h ./backups
 endif
+
+test-e2e-start: stop-dev						## Start stack in test 2e2 mode
+	docker compose \
+		--env-file docker-compose.dev.env \
+		-f docker-compose.test-e2e.yml \
+		down \
+		--volumes
+	
+	docker compose \
+		--env-file docker-compose.dev.env \
+		-f docker-compose.test-e2e.yml \
+		up \
+		--build \
+		--detach \
+		--wait
+
+test-e2e-stop: stop-dev							## Stop stack in test 2e2 mode
+
+test-e2e:										## Run e2e tests
+	docker build --file ./packages/e2e/Dockerfile --tag bib-e2e .
+	docker run --network host --rm bib-e2e
+
+test-e2e-ci: 									## Run e2e tests in CI mode
+	CI=1 yarn workspace @bibcnrs/e2e run test
+
+test-e2e-install: install						## Install e2e dependencies
+	yarn workspace @bibcnrs/e2e run playwright install --with-deps
+
+test-e2e-ui: 									## Run e2e tests in UI mode locally
+	yarn workspace @bibcnrs/e2e run test:ui

@@ -1,6 +1,6 @@
 FROM node:22-alpine as base
 
-RUN apk upgrade
+RUN apk update && apk upgrade && apk add --no-cache curl
 RUN mkdir -p /app/.yarn
 RUN mkdir -p /app/packages/bib-api
 RUN mkdir -p /app/packages/bib-api/uploads && chown node:node /app/packages/bib-api/uploads
@@ -19,7 +19,6 @@ FROM base as sources
 
 ENV NODE_ENV=production
 
-
 COPY --chown=node:node  tsconfig.json           ./tsconfig.json
 COPY --chown=node:node  packages/bib-api/       ./packages/bib-api/
 
@@ -36,6 +35,12 @@ FROM sources as dev
 ENV NODE_ENV=development
 
 CMD ["yarn", "workspace", "@bibcnrs/bib-api", "run", "start:dev"]
+
+FROM sources as e2e
+
+ENV NODE_ENV=production
+
+CMD ["yarn", "workspace", "@bibcnrs/bib-api", "run", "start:e2e"]
 
 # Build production app
 FROM sources as prod-builder

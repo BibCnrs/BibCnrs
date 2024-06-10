@@ -76,6 +76,7 @@ jobs:
 
   test:
     name: 🔎 Test
+    environment: dev
     timeout-minutes: 10
     runs-on: ubuntu-latest
     if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
@@ -87,3 +88,58 @@ jobs:
 
       - name: 🔎 Test API
         run: make test-api
+
+  test-e2e:
+    name: 🌳 E2E Test
+    environment: dev
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: 📥 Download deps
+        run: make install-immutable
+
+      - name: 🗃️ Cache Playwright Browsers for Playwright's Version
+        uses: actions/cache@v3
+        id: cache-playwright-browsers
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: 📥 Install Playwright Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: make test-e2e-install
+
+      - name: 📡 Start E2E server
+        run: make test-e2e-start
+
+      - name: 🌳 Test E2E
+        run: make test-e2e-ci
+
+      - name: 📡 Stop E2E server
+        run: make test-e2e-stop
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: packages/e2e/playwright-report/
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-test-results
+          path: packages/e2e/test-results/
+          retention-days: 30

@@ -1,0 +1,129 @@
+services:
+  bib-api:
+    build:
+      context: .
+      dockerfile: ./ops/bib-api/Dockerfile
+      target: e2e
+    volumes:
+      - bib-api-uploads:/app/packages/bib-api/uploads
+    depends_on:
+      bib-db:
+        condition: service_healthy
+      bib-redis:
+        condition: service_started
+    environment:
+      - RENATER_FAKE_LOGIN=true
+      - DATABASE_URL=postgres://postgres:S3cr3t@bib-db/bibcnrs
+      - BIBAPI_HOST= http://localhost:3000/api
+      - cookie_secret=${cookie_secret}
+      - header_secret=${header_secret}
+      - admin_secret=${admin_secret}
+      - ticket_secret=${ticket_secret}
+      - BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
+      - ebsco_host=${ebsco_host}
+      - EZ_UNPAYWALL_URL=${EZ_UNPAYWALL_URL}
+      - EZ_UNPAYWALL_KEY=${EZ_UNPAYWALL_KEY}
+      - METADORE_URL=${METADORE_URL}
+      - METADORE_API_KEY=${METADORE_API_KEY}
+      - DOAJ_URL=${DOAJ_URL}
+      - REDIS_HOST=bib-redis
+      - bib_admin_host=http://localhost:3000/admin
+      - MAIL_FROM=bibcnrs@bib.cnrs.fr
+      - MAIL_TO=assistance-portail@inist.fr
+      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: ${API_MAX_MEMORY:-2G}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/ebsco/databases"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  bib-front:
+    build:
+      context: .
+      dockerfile: ./ops/bib-front/Dockerfile
+      args:
+        - BIBAPI_HOST=http://localhost:3000/api
+        - SOURCE_MAP=true
+    depends_on:
+      bib-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  bib-admin:
+    build:
+      context: .
+      dockerfile: ./ops/bib-admin/Dockerfile
+      args:
+        - BIBAPI_HOST=http://localhost:3000/api
+        - SOURCE_MAP=true
+    depends_on:
+      bib-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  bib-proxy:
+    image: nginx:1.25-alpine
+    ports:
+      - "3000:80"
+    depends_on:
+      bib-api:
+        condition: service_healthy
+      bib-front:
+        condition: service_healthy
+      bib-admin:
+        condition: service_healthy
+    volumes:
+      - ./ops/bib-proxy/nginx.e2e.conf:/etc/nginx/nginx.conf
+      - bib-api-uploads:/usr/share/nginx/html/files
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  bib-db:
+    image: postgres:16.3
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=S3cr3t
+      - POSTGRES_DB=bibcnrs
+    volumes:
+      - bib-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: ${API_MAX_MEMORY:-1G}
+
+  bib-redis:
+    image: redis:7.2.5
+    restart: always
+
+volumes:
+  bib-db-data:
+  bib-api-uploads:
