@@ -5,7 +5,7 @@ import { Config } from "../../config";
 type RawQuery = {
 	queries: string;
 	resultsPerPage: number;
-	currentPage: number;
+	currentPage?: number;
 };
 
 @Injectable()
@@ -17,7 +17,7 @@ export class EbscoMetadoreService {
 			this.configService.get<Config["metadore"]>("metadore");
 	}
 
-	private parseMetadoreSearch(rawQuery: RawQuery) {
+	parseMetadoreSearch(rawQuery: RawQuery) {
 		const parsedQueries = JSON.parse(rawQuery.queries);
 		const term = parsedQueries[0].term;
 		const field = parsedQueries[0].field || "*";
@@ -41,7 +41,7 @@ export class EbscoMetadoreService {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private metadoreResultsParser(searchResults: any) {
+	metadoreResultsParser(searchResults: any) {
 		const size = searchResults.meta.size;
 		const currentPage = searchResults.meta.currentPage;
 		if (searchResults.meta.total === 0) {

@@ -66,7 +66,6 @@ services:
       # Database host is the name of the database services
       POSTGRES_HOST: bibcnrs-api-postgres
       REDIS_HOST: bibcnrs-api-redis
-      OLD_API_URL: ${OLD_API_URL:-https://bib-preprod.inist.fr}
       MAIL_FROM: bibcnrs@bib.cnrs.fr
       MAIL_TO: assistance-portail@inist.fr
       BIB_UPLOADS_DIR: /app/packages/bib-api/uploads
@@ -83,7 +82,7 @@ services:
   # Application database
   bibcnrs-api-postgres:
     container_name: bibcnrs-api-postgres
-    image: postgres:13
+    image: postgres:16.3
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -92,7 +91,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./../storage/backups:/backups
-      - bibcnrs-api-postgres-data:/var/lib/postgresql/data/pgdata
+      - ./../storage/postgresql:/var/lib/postgresql/data/pgdata
     ports:
       - "60000:5432"
     networks:
@@ -105,9 +104,6 @@ services:
     restart: always
     networks:
       - bib_backend_network
-
-volumes:
-  bibcnrs-api-postgres-data:
 
 networks:
   bib_backend_network:

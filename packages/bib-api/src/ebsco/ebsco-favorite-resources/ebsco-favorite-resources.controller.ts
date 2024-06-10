@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	Body,
 	Controller,
 	ForbiddenException,
@@ -30,6 +31,10 @@ export class EbscoFavoriteResourcesController {
 	) {
 		if (request.user.origin !== "janus") {
 			throw new ForbiddenException();
+		}
+
+		if (!Array.isArray(favoriteResources)) {
+			throw new BadRequestException("favouriteResources must be an array");
 		}
 
 		await this.ebscoFavoriteResourcesService.putFavoriteResources(

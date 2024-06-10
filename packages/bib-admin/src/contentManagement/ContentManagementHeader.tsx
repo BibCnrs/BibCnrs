@@ -1,7 +1,8 @@
 import Chip from "@mui/material/Chip";
+import FormHelperText from "@mui/material/FormHelperText";
 import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
-import { Labeled, useRecordContext } from "react-admin";
+import { Labeled, ValidationError, useRecordContext } from "react-admin";
 import { useFormContext } from "react-hook-form";
 
 export const pages = [
@@ -14,7 +15,7 @@ export const pages = [
 
 const ContentManagementHeader = () => {
 	const record = useRecordContext();
-	const { setValue } = useFormContext();
+	const { formState, setValue } = useFormContext();
 	const [selectedPage, setSelectedPage] = useState(record?.page || "");
 	useEffect(() => setSelectedPage(record?.page || ""), [record]);
 
@@ -28,17 +29,30 @@ const ContentManagementHeader = () => {
 		});
 	};
 
+	const errorMessage = formState.errors?.page?.message;
+
 	return (
-		<Labeled label="Page">
-			<Stack direction="row" spacing={1}>
-				{pages.map((page) => (
-					<Chip
-						key={page.id}
-						label={page.name}
-						onClick={() => handleClick(page.id)}
-						color={selectedPage === page.id ? "primary" : "default"}
-					/>
-				))}
+		<Labeled label="Page" isRequired>
+			<Stack direction="column" spacing={1}>
+				<Stack direction="row" spacing={1}>
+					{pages.map((page) => (
+						<Chip
+							key={page.id}
+							label={page.name}
+							onClick={() => handleClick(page.id)}
+							color={selectedPage === page.id ? "primary" : "default"}
+						/>
+					))}
+				</Stack>
+				{errorMessage && (
+					<FormHelperText error>
+						{typeof errorMessage === "string" ? (
+							<ValidationError error={errorMessage} />
+						) : (
+							<ValidationError error={errorMessage.message.toString()} />
+						)}
+					</FormHelperText>
+				)}
 			</Stack>
 		</Labeled>
 	);

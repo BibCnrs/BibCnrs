@@ -24,7 +24,14 @@ install-immutable: 						## Install all dependencies for all packages
 	yarn install --immutable
 	yarn workspace @bibcnrs/bib-api prisma generate
 
-env-copy:
+env-mkdirs:								## Create storage directories
+	@mkdir -p \
+		../storage/backups \
+		../storage/logs \
+		../storage/postgresql \
+		../storage/uploads
+
+env-copy: env-mkdirs					## Copy env files if they don't exist
 	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env
 	@cp -n docker-compose.prod.env.sample 	docker-compose.prod.env
 
@@ -48,7 +55,7 @@ migrate-dev-create-only: env-copy 		## Create migration file in development envi
 		--rm bib-api \
 		yarn workspace @bibcnrs/bib-api run prisma migrate dev --create-only
 
-reset-db: env-copy 						## Reset the database and apply all migration
+dev-reset-db: env-copy 						## Reset the database and apply all migration
 	docker compose \
 		--env-file docker-compose.dev.env \
 		-f docker-compose.dev.yml \
@@ -58,10 +65,27 @@ reset-db: env-copy 						## Reset the database and apply all migration
 		--rm bib-api \
 		yarn workspace @bibcnrs/bib-api run prisma migrate reset
 
-seed-db: 								## Initialize the database with seed data
-	docker compose -f docker-compose.dev.yml down --volumes
-	docker compose -f docker-compose.dev.yml up --renew-anon-volumes -d --wait bib-db
-	docker exec bibcnrs-bib-db-1 psql -U postgres bibcnrs -f /data/seed.sql
+dev-seed-db: env-copy						## Initialize the database with seed data
+	docker compose \
+		--env-file docker-compose.dev.env \
+		-f docker-compose.dev.yml \
+		down \
+		--volumes
+
+	sudo rm -rf ../storage/postgresql
+
+	$(MAKE)	env-mkdirs
+	
+	docker compose \
+		--env-file docker-compose.dev.env \
+		-f docker-compose.dev.yml \
+		up \
+		--renew-anon-volumes \
+		-d \
+		--wait bib-db
+
+	docker exec bibcnrs-bib-db-1 psql -U postgres bibcnrs -f /backups/seed.sql
+
 	docker compose \
 		--env-file docker-compose.dev.env \
 		-f docker-compose.dev.yml \
@@ -163,7 +187,6 @@ build-front:
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}' \
 		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
-		--build-arg BIB_CONTENT_DELIVERY_HOST=${BIB_CONTENT_DELIVERY_HOST} \
 		.
 
 build-admin:
@@ -173,18 +196,15 @@ build-admin:
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}' \
 		--build-arg BIBAPI_HOST=${BIBAPI_HOST} \
-		--build-arg BIB_CONTENT_DELIVERY_HOST=${BIB_CONTENT_DELIVERY_HOST} \
 		.
 # Production
-start:									## Start stack in production mode
-	@mkdir -p ../storage/backups ../storage/logs ../storage/postgresql ../storage/uploads
+start: env-mkdirs						## Start stack in production mode
 	docker compose -f docker-compose.prod.yml up -d
 
 stop:									## Stop stack in production mode
 	docker compose -f docker-compose.prod.yml down
 
 start-prod: stop-dev					## Start stack in production mode with local env
-	@mkdir -p ../storage/backups ../storage/logs ../storage/postgresql ../storage/uploads
 	docker compose \
 		--env-file docker-compose.prod.env \
 		-f docker-compose.prod.yml \

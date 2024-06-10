@@ -5,6 +5,7 @@ import { AdminModule } from "./admin/admin.module";
 import { CommonModule } from "./common/common.module";
 import config from "./config";
 import { EbscoModule } from "./ebsco/ebsco.module";
+import { EzTicketModule } from "./ezticket/ezticket.module";
 import { InistModule } from "./inist/inist.module";
 import { JanusModule } from "./janus/janus.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -26,6 +27,7 @@ import { SecurityModule } from "./security/security.module";
 		JanusModule,
 		InistModule,
 		EbscoModule,
+		EzTicketModule,
 		AdminModule,
 	],
 	controllers: [],

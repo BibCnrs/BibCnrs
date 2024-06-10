@@ -34,7 +34,6 @@ services:
       - header_secret=S3cr3t!H34d3r
       - admin_secret=S3cr3t!4dm1n
       - BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
-      - OLD_API_URL=https://bib-preprod.inist.fr
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
       - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
@@ -58,7 +57,7 @@ services:
       - bib-api-test
 
   bib-db-test:
-    image: postgres:14
+    image: postgres:16.3
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=S3cr3t

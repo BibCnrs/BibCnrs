@@ -33,7 +33,7 @@ export class AdminAuthenticationGuard implements CanActivate {
 				username: string;
 				exp: number;
 			}>(token, {
-				secret: this.authConfig.headerSecret,
+				secret: this.authConfig.adminSecret,
 			});
 		} catch {
 			throw new UnauthorizedException();

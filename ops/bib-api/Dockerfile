@@ -19,11 +19,17 @@ FROM base as sources
 
 ENV NODE_ENV=production
 
+
 COPY --chown=node:node  tsconfig.json           ./tsconfig.json
 COPY --chown=node:node  packages/bib-api/       ./packages/bib-api/
 
 RUN yarn workspaces focus @bibcnrs/bib-api
 RUN yarn workspace @bibcnrs/bib-api prisma generate
+
+
+RUN mkdir -p /app/packages/bib-api/dist/ezticket && chown node:node /app/packages/bib-api/dist/ezticket
+RUN cp /app/packages/bib-api/src/ezticket/bibcnrs.png /app/packages/bib-api/dist/ezticket/bibcnrs.png
+
 
 FROM sources as dev
 
