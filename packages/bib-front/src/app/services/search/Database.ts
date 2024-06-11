@@ -4,7 +4,6 @@ import { createQuery, environment, throwIfNotOk } from "../Environment";
 
 export const database = async (
 	language: string,
-	oa: boolean,
 	domain: Institute | undefined,
 ): Promise<DatabaseDataType> => {
 	const response: Response = await fetch(
@@ -21,10 +20,7 @@ export const database = async (
 			return nameA.localeCompare(nameB, language);
 		})
 		.filter((value) => {
-			if (!oa) {
-				return value.domains.includes(domain ?? "") || value.oa;
-			}
-			return value.oa;
+			return value.domains.includes(domain ?? "") || value.oa;
 		})
 		.map((value) => {
 			if (value.use_proxy) {
