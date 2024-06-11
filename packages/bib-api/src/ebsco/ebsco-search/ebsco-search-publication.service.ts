@@ -167,6 +167,6 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			communityName,
 		);
 
-		return this.publicationParser(searchResult);
+		return this.retrievePublicationParser(searchResult);
 	}
 }

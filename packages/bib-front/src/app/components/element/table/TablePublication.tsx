@@ -186,7 +186,7 @@ const TablePublication = ({
 						<SkeletonEntry animation="pulse" height={450} />
 					) : (
 						<dl className="table-list-body">
-							{dataRetrieve.items.map((item) => {
+							{dataRetrieve.items?.map((item) => {
 								if (item.name.toLowerCase() === "title") {
 									return null;
 								}
