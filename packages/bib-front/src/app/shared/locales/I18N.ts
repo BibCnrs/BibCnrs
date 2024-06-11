@@ -205,6 +205,24 @@ export type Common = {
 			oa: string;
 			anonymousMessage: string;
 			searchDatabase: string;
+			platform_one: string;
+			platform_other: string;
+			filters: {
+				title: string;
+				default: string;
+				document: string;
+				content: string;
+				oa: string;
+				is_text_integral: string;
+				is_completed: string;
+				without_embargo: string;
+				is_archived: string;
+				is_current: string;
+				type_news: string;
+				type_book: string;
+				type_database: string;
+				type_data: string;
+			};
 		};
 		researchData: {
 			title: string;

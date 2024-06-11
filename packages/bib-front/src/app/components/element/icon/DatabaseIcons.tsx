@@ -6,9 +6,7 @@ import BookmarkButton from "../button/BookmarkButton";
 import { NotCompleteIcon } from "./NotCompleteIcon";
 import OpenAccess from "./OpenAccess";
 
-const DatabaseIcons = ({ name, url, oa, is_completed }: DatabaseItemProps) => {
-	const { login } = useContext(BibContext);
-
+const DatabaseIcons = ({ oa, is_completed }: DatabaseItemProps) => {
 	return (
 		<Stack
 			gap={1}
@@ -23,13 +21,7 @@ const DatabaseIcons = ({ name, url, oa, is_completed }: DatabaseItemProps) => {
 			) : (
 				<div className="database-icon-oa" />
 			)}
-			{login && (
-				<BookmarkButton
-					className="database-icon-favourite"
-					title={name}
-					url={url}
-				/>
-			)}
+
 			{!is_completed && <NotCompleteIcon />}
 		</Stack>
 	);

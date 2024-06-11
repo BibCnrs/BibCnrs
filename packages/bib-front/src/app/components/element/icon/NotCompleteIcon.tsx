@@ -6,20 +6,11 @@ export function NotCompleteIcon() {
 	const t = useTranslator();
 	return (
 		<Tooltip title={t("components.icon.notComplete")} placement="top" arrow>
-			<Box
-				sx={{
-					height: "32px",
-					width: "64px",
-					textDecoration: "line-through",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					color: grey[700],
-					fontWeight: 700,
-				}}
-			>
-				100%
-			</Box>
+			<img
+				style={{ width: "34px", height: "32.4px" }}
+				src="/icons/not_completed.svg"
+				alt="Open access icon"
+			/>
 		</Tooltip>
 	);
 }
