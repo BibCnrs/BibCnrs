@@ -199,7 +199,13 @@ export class AbstractEbscoSearchService {
 		F extends (authToken: string, sessionToken: string) => Promise<R>,
 		R,
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	>(ebscoCall: F, communityName: string): Promise<any> {
+	>(ebscoCall: F, communityName: string, retries = 5): Promise<any> {
+		if (retries <= 0) {
+			throw new UnauthorizedException(
+				"Could not connect to ebsco api. Please try again. If the problem persist contact us.",
+			);
+		}
+
 		try {
 			const community = await this.prismaService.community.findUnique({
 				where: {
@@ -218,11 +224,16 @@ export class AbstractEbscoSearchService {
 		} catch (error) {
 			await this.ebscoInvalidateAuth(communityName);
 
+			if (error === "retry" || error.message === "retry") {
+				return this.ebscoSearch(ebscoCall, communityName, retries - 1);
+			}
+
 			if (error.message === "Max retry reached. Giving up.") {
 				throw new UnauthorizedException(
 					"Could not connect to ebsco api. Please try again. If the problem persist contact us.",
 				);
 			}
+
 			throw error;
 		}
 	}
