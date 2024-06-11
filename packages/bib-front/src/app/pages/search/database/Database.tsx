@@ -1,9 +1,6 @@
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
 	type ChangeEvent,
-	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
@@ -27,81 +24,12 @@ import type {
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import "./Database.scss";
-import {
-	Box,
-	Checkbox,
-	CircularProgress,
-	FormGroup,
-	FormLabel,
-	MenuItem,
-	Pagination,
-	Select,
-	TextField,
-} from "@mui/material";
+import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { DatabaseItem } from "./DatabaseItem";
-
-const INITIAL_FILTER = [
-	{ props: "oa", value: false, type: "boolean", section: "default" },
-	{
-		props: "is_text_integral",
-		value: false,
-		type: "boolean",
-		section: "default",
-	},
-	{
-		props: "is_completed",
-		value: false,
-		type: "boolean",
-		section: "default",
-	},
-	{
-		props: "without_embargo",
-		value: false,
-		type: "boolean",
-		section: "default",
-	},
-	{
-		props: "active",
-		value: false,
-		type: "boolean",
-		section: "document",
-	},
-	{
-		props: "is_archived",
-		value: false,
-		type: "boolean",
-		section: "document",
-	},
-	{
-		props: "type",
-		target: "news",
-		value: false,
-		type: "boolean",
-		section: "content",
-	},
-	{
-		props: "type",
-		target: "book",
-		value: false,
-		type: "boolean",
-		section: "content",
-	},
-	{
-		props: "type",
-		target: "database",
-		value: false,
-		type: "boolean",
-		section: "content",
-	},
-	{
-		props: "type",
-		target: "data",
-		value: false,
-		type: "boolean",
-		section: "content",
-	},
-];
+import { DatabasePagination } from "./DatabasePagination";
+import FilterTab from "./FilterTab";
+import { INITIAL_FILTER } from "./filters";
 
 const Database = () => {
 	const { login, theme, search } = useContext(BibContext);
@@ -114,7 +42,7 @@ const Database = () => {
 	const domains = useDomain();
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [databasePerPage, setDatabasePerPage] = useState<number>(10);
+	const [databasePerPage, setDatabasePerPage] = useState<number>(50);
 
 	const [nameFilter, setNameFilter] = useState<string>("");
 
@@ -152,15 +80,14 @@ const Database = () => {
 		[data, language, nameFilter],
 	);
 
-	const pageCount = useMemo(
-		() => Math.ceil(databases.length / databasePerPage),
-		[databases, databasePerPage],
-	);
-
 	const filteredDatabases = useMemo(() => {
 		return databases.filter((result) => {
 			return filters.every((filter) => {
 				if (!filter.value) return true;
+				if (filter.invert) {
+					return result[filter.invert] !== filter.value;
+				}
+
 				if (filter.props === "type") {
 					return result[filter.props].includes(
 						filter.target as TypeDatabaseEnum,
@@ -177,6 +104,11 @@ const Database = () => {
 			currentPage * databasePerPage,
 		);
 	}, [currentPage, databasePerPage, filteredDatabases]);
+
+	const pageCount = useMemo(
+		() => Math.ceil(filteredDatabases.length / databasePerPage),
+		[filteredDatabases, databasePerPage],
+	);
 
 	useEffect(() => {
 		setCurrentPage(Math.max(1, Math.min(currentPage, pageCount)));
@@ -219,7 +151,8 @@ const Database = () => {
 				<Box
 					display="grid"
 					gridTemplateColumns={{
-						xs: "1fr 4fr",
+						xs: "1fr",
+						sm: "1fr 4fr",
 					}}
 					gap={3}
 				>
@@ -236,8 +169,20 @@ const Database = () => {
 							value={nameFilter}
 							onChange={handleSearchChange}
 							autoComplete="off"
-							sx={{ width: "40%" }}
+							sx={{
+								width: {
+									xs: "100%",
+									sm: "50%",
+								},
+							}}
 						/>
+						<Typography>
+							{filteredDatabases.length}{" "}
+							{t("pages.database.platform", {
+								count: filteredDatabases.length,
+							})}
+						</Typography>
+
 						{isLoading ? (
 							<Stack alignItems="center" spacing={5}>
 								<CircularProgress />
@@ -273,134 +218,5 @@ const Database = () => {
 		</div>
 	);
 };
-
-function DatabasePagination({
-	pageCount,
-	currentPage,
-	setCurrentPage,
-	databasePerPage,
-	setDatabasePerPage,
-}: {
-	pageCount: number;
-	currentPage: number;
-	setCurrentPage: (value: number) => void;
-	databasePerPage: number;
-	setDatabasePerPage: (value: number) => void;
-}) {
-	return (
-		<Stack
-			spacing={2}
-			gap={2}
-			alignItems="flex-end"
-			justifyContent="flex-end"
-			flexDirection="row"
-		>
-			<Select
-				value={databasePerPage}
-				onChange={(event) => setDatabasePerPage(event.target.value as number)}
-				size="small"
-				label="Database per page"
-				variant="standard"
-			>
-				<MenuItem value={10}>10</MenuItem>
-				<MenuItem value={25}>25</MenuItem>
-				<MenuItem value={50}>50</MenuItem>
-			</Select>
-			<Pagination
-				count={pageCount}
-				color="primary"
-				page={currentPage}
-				onChange={(_, value) => setCurrentPage(value)}
-				size="small"
-			/>
-		</Stack>
-	);
-}
-
-function FilterTab({
-	setFilters,
-	filters,
-	databases,
-}: {
-	setFilters: (value) => void;
-	filters: typeof INITIAL_FILTER;
-	databases: DatabaseItemProps[];
-}) {
-	const handleChange = (filter) => {
-		setFilters((prev) => {
-			const newFilters = prev.map((item) => {
-				if (item.props === filter.props) {
-					if (item.target && filter.target && item.target === filter.target) {
-						return {
-							...item,
-							value: !item.value,
-						};
-					}
-					if (!item.target && !filter.target) {
-						return {
-							...item,
-							value: !item.value,
-						};
-					}
-				}
-				return item;
-			});
-
-			return newFilters;
-		});
-	};
-
-	const sections = [...new Set(filters.map((item) => item.section))];
-
-	// for each filter, count the number of databases that have this filter and set in key for each filter
-	const countsByFilter = [];
-	for (let i = 0; i < filters.length; i++) {
-		const filter = filters[i];
-		const count = databases.filter((value) => {
-			if (filter.props === "type") {
-				return value[filter.props].includes(filter.target as TypeDatabaseEnum);
-			}
-			return value[filter.props] === true;
-		}).length;
-
-		const key =
-			filter.props === "type"
-				? `${filter.props}_${filter.target}`
-				: filter.props;
-		countsByFilter[key] = count;
-	}
-
-	console.log("countsByFilter", countsByFilter);
-
-	return (
-		<FormGroup>
-			{sections.map((section) => (
-				<Stack key={section}>
-					<FormLabel component="legend">{section}</FormLabel>
-					{filters
-						.filter((item) => item.section === section)
-						.map((filter, index) => (
-							<FormControlLabel
-								key={`${filter.props}-${index}`}
-								control={
-									<Checkbox
-										checked={filter.value}
-										onChange={() => handleChange(filter)}
-									/>
-								}
-								label={`${filter.props} (${
-									countsByFilter[
-										filter.props === "type"
-											? `${filter.props}_${filter.target}`
-											: filter.props
-									]
-								})`}
-							/>
-						))}
-				</Stack>
-			))}
-		</FormGroup>
-	);
-}
 
 export default Database;

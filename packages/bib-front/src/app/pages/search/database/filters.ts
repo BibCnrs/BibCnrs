@@ -1,0 +1,62 @@
+export const INITIAL_FILTER = [
+	{ props: "oa", value: false, type: "boolean", section: "default" },
+	{
+		props: "is_text_integral",
+		value: false,
+		type: "boolean",
+		section: "default",
+	},
+	{
+		props: "is_completed",
+		value: false,
+		type: "boolean",
+		section: "default",
+	},
+	{
+		props: "without_embargo",
+		value: false,
+		type: "boolean",
+		section: "default",
+	},
+	{
+		props: "is_current",
+		value: false,
+		type: "boolean",
+		invert: "is_archived",
+		section: "document",
+	},
+	{
+		props: "is_archived",
+		value: false,
+		type: "boolean",
+		section: "document",
+	},
+	{
+		props: "type",
+		target: "news",
+		value: false,
+		type: "boolean",
+		section: "content",
+	},
+	{
+		props: "type",
+		target: "book",
+		value: false,
+		type: "boolean",
+		section: "content",
+	},
+	{
+		props: "type",
+		target: "database",
+		value: false,
+		type: "boolean",
+		section: "content",
+	},
+	{
+		props: "type",
+		target: "data",
+		value: false,
+		type: "boolean",
+		section: "content",
+	},
+];
