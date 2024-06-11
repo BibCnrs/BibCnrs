@@ -198,6 +198,8 @@ const Database = () => {
 										lg: "repeat(4, 1fr)",
 									}}
 									gap={2}
+									aria-role="list"
+									aria-label={t("pages.database.title")}
 								>
 									{pagedDatabases.map((item) => (
 										<DatabaseItem key={item.id} {...item} />

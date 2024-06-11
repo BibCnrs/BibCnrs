@@ -4,6 +4,7 @@ import { UnitsModule } from "../../admin/units/units.module";
 import { InistAccountModule } from "../../inist/inist-account/inist-account.module";
 import { JanusAccountModule } from "../../janus/janus-accounts/janus-accounts.module";
 import { PrismaModule } from "../../prisma/prisma.module";
+import { EbscoOaController } from "./ebsco-oa.controller";
 
 @Module({
 	imports: [
@@ -13,7 +14,7 @@ import { PrismaModule } from "../../prisma/prisma.module";
 		InstitutesModule,
 		UnitsModule,
 	],
-	controllers: [],
+	controllers: [EbscoOaController],
 	providers: [],
 	exports: [],
 })

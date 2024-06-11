@@ -9,6 +9,7 @@
 		"build": "nest build",
 		"start:dev": "prisma migrate deploy && nest start --watch",
 		"start:prod": "prisma migrate deploy && node dist/main",
+		"start:e2e": "prisma migrate reset --force && tsx ./test/seed-e2e.ts && yarn run build && node dist/main",
 		"test": "prisma migrate reset --force && tsx ./test/seed.ts && vitest --no-cache --watch=false",
 		"test:watch": "prisma migrate reset --force && tsx ./test/seed.ts && vitest --no-cache --watch",
 		"typecheck": "tsc --noEmit"

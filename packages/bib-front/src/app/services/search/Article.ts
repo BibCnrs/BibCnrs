@@ -583,10 +583,16 @@ export const retrieve = async (
 	an: string,
 ): Promise<ArticleRetrieveDataType> => {
 	const response: Response = await fetch(
-		createQuery(environment.get.retrieve.article.replace("{domain}", domain), {
-			dbid,
-			an,
-		}),
+		createQuery(
+			`${environment.host}${environment.get.retrieve.article.replace(
+				"{domain}",
+				domain,
+			)}`,
+			{
+				dbid,
+				an,
+			},
+		),
 		{
 			credentials: "include",
 			headers: {
@@ -600,7 +606,9 @@ export const retrieve = async (
 
 export const retrieveExport = async (links: string[]): Promise<string[]> => {
 	const response: Response = await fetch(
-		createQuery(environment.post.retrieve.articleExport),
+		createQuery(
+			`${environment.host}${environment.post.retrieve.articleExport}`,
+		),
 		{
 			method: "POST",
 			headers: {

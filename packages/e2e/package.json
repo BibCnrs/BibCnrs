@@ -1,0 +1,11 @@
+{
+	"name": "@bibcnrs/e2e",
+	"dependencies": {
+		"@playwright/test": "^1.44.1",
+		"@types/node": "^20.14.2"
+	},
+	"scripts": {
+		"test": "playwright test",
+		"test:ui": "playwright test --ui"
+	}
+}
