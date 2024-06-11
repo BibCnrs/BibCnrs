@@ -206,7 +206,7 @@ Cordialement`,
 		database: {
 			title: "Plateformes",
 			oa: "Accès Ouvert",
-			anonymousMessage: "Connectez-vous pour accéder à toutes les platformes.",
+			anonymousMessage: "Connectez-vous pour accéder à toutes les plateformes.",
 			searchDatabase: "Filtrer les plateformes",
 		},
 		publication: {
