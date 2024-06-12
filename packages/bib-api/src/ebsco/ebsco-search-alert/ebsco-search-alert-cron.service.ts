@@ -1,0 +1,536 @@
+import { Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Cron } from "@nestjs/schedule";
+import { Prisma, community, history } from "@prisma/client";
+import { Request } from "express";
+import remove from "lodash.remove";
+import { SendMailOptions } from "nodemailer";
+import { CommonMailService } from "../../common/common-mail/common-mail.service";
+import { Config } from "../../config";
+import { JanusAccountService } from "../../janus/janus-accounts/janus-accounts.service";
+import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoDomainService } from "../ebsco-domain/ebsco-domain.service";
+import { EbscoSearchArticleService } from "../ebsco-search/ebsco-search-article.service";
+import {
+	OALink,
+	fieldLabel,
+	getFacetsHtml,
+	getFacetsText,
+	getLimitersHtml,
+	getLimitersText,
+	getRecordText,
+	parseArticleLinks,
+} from "./ebsco-search-alert-cron.utils";
+
+const logger = new Logger("EbscoSearchAlertCronService");
+
+@Injectable()
+export class EbscoSearchAlertCronService {
+	private readonly services: Config["services"];
+
+	constructor(
+		private readonly configService: ConfigService,
+		private readonly prismaService: PrismaService,
+		private readonly janusAccountService: JanusAccountService,
+		private readonly ebscoDomainService: EbscoDomainService,
+		private readonly ebscoSearchArticleService: EbscoSearchArticleService,
+		private readonly mailService: CommonMailService,
+	) {
+		this.services = this.configService.get("services");
+	}
+
+	private async countAlertToExecute(date: string) {
+		const results = await this.prismaService.$queryRaw<
+			{
+				count: string;
+			}[]
+		>`SELECT count(*) FROM history WHERE last_execution + frequence <= ${date}::date AND has_alert IS true AND active IS true`;
+
+		return Number.parseInt(results.at(0).count ?? "0", 10);
+	}
+
+	@Cron(process.env.SEARCH_ALERT_CRON || "0 30 7 * * 1-5")
+	async handleSearchAlertCron() {
+		const communities = await this.ebscoDomainService.getCommunities();
+		const domains = communities.map((community) => community.name);
+		const communitiesByName: Record<string, community> = communities.reduce(
+			// biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+			(acc, c) => ({ ...acc, [c.name]: c }),
+			{},
+		);
+
+		const dateIso = new Date().toISOString().slice(0, 19).replace("T", " ");
+		const alertToExecute = await this.countAlertToExecute(dateIso);
+		if (alertToExecute === 0) {
+			return;
+		}
+
+		const LIMIT = 10;
+		const pages = Math.ceil(alertToExecute / LIMIT);
+		let mailsSent = 0;
+		let updatedAlerts = 0;
+		let testedAlerts = 0;
+		for (let i = 0; i <= pages; i++) {
+			logger.log(
+				`Sending alert from ${10 * i} to ${10 * (i + 1)} on ${alertToExecute}`,
+			);
+
+			const histories = await this.selectAlertToExecute(dateIso, LIMIT);
+			try {
+				await Promise.all(
+					(histories ?? []).map(
+						async ({
+							event,
+							id,
+							nb_results,
+							last_results,
+							user_id,
+						}: history) => {
+							if (
+								event == null ||
+								typeof event !== "object" ||
+								Array.isArray(event) ||
+								typeof event.domain !== "string"
+							) {
+								logger.warn(
+									`Alert event not valid for history(id=${id}, event=${JSON.stringify(event)})`,
+								);
+								return;
+							}
+
+							const { queries, limiters, activeFacets, domain } = event;
+
+							try {
+								if (typeof last_results === "string") {
+									last_results = JSON.parse(last_results);
+								}
+								testedAlerts++;
+
+								if (!Array.isArray(last_results)) {
+									throw new Error("last_results is not an array");
+								}
+
+								logger.log(
+									`Alert for history(id=${id}, event=${JSON.stringify({
+										queries,
+										limiters,
+										activeFacets,
+										domain,
+									})}`,
+								);
+
+								const token = { username: "guest", domains };
+								const community = communitiesByName[domain];
+								const result =
+									await this.ebscoSearchArticleService.searchArticleRaw(
+										token,
+										{
+											queries,
+											limiters,
+											activeFacets,
+											resultsPerPage: "1",
+										} as Request["query"],
+										domain,
+									);
+
+								const newTotalHits =
+									result?.SearchResult?.Statistics?.TotalHits ?? 0;
+
+								if (nb_results === newTotalHits) {
+									logger.log(`No new results for history(id=${id})`);
+
+									await this.updateHistory(id, {
+										last_execution: new Date(),
+									});
+
+									updatedAlerts++;
+									return;
+								}
+
+								const fullResult =
+									await this.ebscoSearchArticleService.searchArticleRaw(
+										token,
+										{
+											queries,
+											limiters,
+											activeFacets,
+											resultsPerPage: "100",
+										} as Request["query"],
+										"brief",
+									);
+
+								const newRawRecords = this.getMissingResults(
+									fullResult,
+									last_results,
+								);
+
+								if (!newRawRecords.length) {
+									logger.log(`No new records for history(id=${id})`);
+
+									await this.updateHistory(id, {
+										last_execution: new Date(),
+									});
+
+									updatedAlerts++;
+									return;
+								}
+
+								logger.log(
+									`${newRawRecords.length} new results found for history(id=${id})`,
+								);
+
+								const newRecords = await Promise.all(
+									newRawRecords.map((record) =>
+										this.ebscoSearchArticleService.searchArticleParser(
+											record,
+											domain,
+										),
+									),
+								);
+
+								const notices = await Promise.all(
+									newRecords.map(({ an, dbId }) =>
+										this.ebscoSearchArticleService.retrieveArticle(
+											token,
+											domain,
+											dbId,
+											an,
+										),
+									),
+								);
+
+								const records = newRecords.map((record, index) => ({
+									...record,
+									articleLinks: notices[index].articleLinks,
+								}));
+
+								const { mail } = await this.janusAccountService.findOneById(
+									Number.parseInt(user_id, 10),
+								);
+
+								const mailData = await this.getSearchAlertMail(
+									records,
+									community.gate,
+									// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+									queries as any[],
+									community.name,
+									limiters,
+									activeFacets,
+									mail,
+									user_id,
+								);
+
+								await this.mailService.sendMail(mailData);
+								mailsSent++;
+
+								await this.updateHistory(id, {
+									last_results: this.getResultsIdentifiers(fullResult),
+									nb_results: fullResult.SearchResult.Statistics.TotalHits,
+									last_execution: new Date(),
+								});
+								updatedAlerts++;
+							} catch (e) {
+								await this.updateHistory(id, {
+									last_execution: new Date(),
+								});
+
+								updatedAlerts++;
+
+								logger.error(
+									`Alert failed for history(id=${id}, event=${JSON.stringify({
+										queries,
+										limiters,
+										activeFacets,
+										domain,
+									})}, error="${e}"`,
+								);
+							}
+						},
+					),
+				);
+			} catch (e) {
+				logger.error(`Error while executing batch error="${e}"`);
+			}
+
+			logger.log(
+				`Batch done nbAlerteTested=${testedAlerts}, nbLastExeDateUpdated=${updatedAlerts}, nbSenMail=${mailsSent}`,
+			);
+		}
+	}
+
+	async updateHistory(id: number, data: Partial<history>) {
+		await this.prismaService.history.update({
+			where: { id },
+			data,
+		});
+	}
+
+	selectAlertToExecute(date: string, limit: number) {
+		return this.prismaService.$queryRawUnsafe<
+			(history & { frequence: string })[]
+		>(
+			`SELECT
+			id,
+			user_id,     
+			event,          
+			created_at,      
+			has_alert,      
+			frequence::text,      
+			last_execution,  
+			last_results,   
+			nb_results,
+			active          
+			FROM history
+			WHERE last_execution + frequence <= $1::date 
+			AND has_alert IS true 
+			AND active IS true 
+			LIMIT $2
+		`,
+			date,
+			limit,
+		);
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	private getMissingResults(result1: any, ids2: any[]) {
+		const ids1 = this.getResultsIdentifiers(result1).map((id, index) => ({
+			...id,
+			index,
+		}));
+
+		const ids = ids1.filter(
+			({ dbId: dbId1, an: an1 }) =>
+				!ids2.find(
+					({ dbId: dbId2, an: an2 }) => dbId1 === dbId2 && an1 === an2,
+				),
+		);
+
+		return ids.map(
+			({ index }) => result1?.SearchResult?.Data?.Records?.[index],
+		);
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	private getResultsIdentifiers(result: any) {
+		return result?.SearchResult?.Data?.Records?.map(
+			({ Header: { DbId, An } }) => ({
+				dbId: DbId,
+				an: An,
+			}),
+		);
+	}
+
+	async getSearchAlertMail(
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		records: any[],
+		gate: string,
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		queries: any[],
+		domain: string,
+		limiters: Prisma.JsonValue,
+		activeFacets: Prisma.JsonValue,
+		mail: string,
+		user_id: string,
+	): Promise<SendMailOptions> {
+		return {
+			from: this.mailService.from,
+			to: mail,
+			subject: `Alerte : ${records.length} nouveau(x) résultat(s) pour votre recherche BibCnrs`,
+			html: await this.getSearchAlertMailHtml(
+				records,
+				gate,
+				queries,
+				domain,
+				limiters,
+				activeFacets,
+				user_id,
+			),
+			text: this.getSearchAlertMailText(
+				records,
+				gate,
+				queries,
+				domain,
+				limiters,
+				activeFacets,
+			),
+		};
+	}
+	getSearchAlertMailText(
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		records: any[],
+		gate: string,
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		queries: any[],
+		domain: string,
+		limiters: Prisma.JsonValue,
+		activeFacets: Prisma.JsonValue,
+	) {
+		return `${records.length} nouveau(x) résultat(s) est(sont) disponible(s) concernant votre recherche :
+	
+	Termes recherchés :
+		${queries
+			.map((q) => `${fieldLabel[q.field] || q.field}: ${q.term}`)
+			.join(", ")}
+	
+	Domaine :
+		${domain}
+	
+	${getLimitersText(limiters)}
+	
+	${getFacetsText(activeFacets)}
+	
+	${records.map((record) => getRecordText(record, gate)).join("\n\n")}`;
+	}
+
+	async getSearchAlertMailHtml(
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		records: any[],
+		gate: string,
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		queries: any[],
+		domain: string,
+		limiters: Prisma.JsonValue,
+		activeFacets: Prisma.JsonValue,
+		user_id: string,
+	) {
+		const elements = [];
+		for (const record of records) {
+			elements.push(await this.getRecordHtml(record, gate, user_id));
+		}
+		return `<div  style="box-sizing: border-box;">
+        <p>${records.length} nouveau(x) résultat(s) est(sont) disponible(s) concernant votre recherche : </p>
+        <dl style="display: flex; flex-direction: column; margin: 0px 20px 20px; padding: 5px 20px 5px 20px;">
+            <dt style="font-weight: bold;">Termes recherchés :</dt>
+            <dd style="flex: 9;">${queries
+							.map((q) => `${fieldLabel[q.field] || q.field}: ${q.term}`)
+							.join(", ")}</dd>
+            <dt style="font-weight: bold;">Domaine</dt>
+            <dd style="flex: 9;">${domain}</dd>
+            ${getLimitersHtml(limiters)}
+            ${getFacetsHtml(activeFacets)}
+        </dl>
+        <table class="record_list" style="box-sizing: border-box; margin-top: 0; border-collapse: collapse;">
+            <tbody>
+                ${elements.join("")}
+            </tbody>
+        </table>
+    </div>`;
+	}
+
+	async getRecordHtml(record, gate, user_id) {
+		const { id, doi, title, publicationType, authors, source, articleLinks } =
+			record;
+		const type = publicationType ? `[${publicationType}]` : "";
+		const links = parseArticleLinks(articleLinks, gate);
+
+		let oaLink = null;
+		// get url for title
+		let [accessUrl] = remove(links, (link) => /open access/i.test(link.name));
+		if (!accessUrl) {
+			[accessUrl] = remove(links, (link) => /unpaywalleds/i.test(link.name));
+		}
+		if (!oaLink) {
+			if (!accessUrl) {
+				[accessUrl] = remove(links, (link) =>
+					/texte intégral/i.test(link.name),
+				);
+			}
+			if (!accessUrl) {
+				[accessUrl] = remove(links, (link) =>
+					/url d'accès|access url|online access/i.test(link.name),
+				);
+			}
+			if (!accessUrl) {
+				[accessUrl] = remove(links, (link) =>
+					/disponibilite|availability/i.test(link.name),
+				);
+			}
+			if (!accessUrl) {
+				[accessUrl] = remove(links, { name: "Accès au pdf" });
+			}
+
+			if (accessUrl) {
+				oaLink = OALink({
+					apiUrl: `${this.services.apiEndpoint}/ebsco`,
+					url: accessUrl.url,
+					doi,
+					domain: gate,
+					name: accessUrl.name,
+					user_id,
+				});
+			} else if (links && links.length > 0) {
+				oaLink = {
+					url: links[0].url,
+				};
+			}
+		}
+
+		// format oa link already formatted
+		if (
+			oaLink?.url?.includes("ebsco/oa?") &&
+			oaLink.url.includes("sid=unpaywall")
+		) {
+			oaLink = {
+				url: `${oaLink.url.replace(
+					"ebsco/oa?",
+					"ebsco/oa_database?",
+				)}&user_id=${user_id}`,
+				OA: true,
+			};
+		}
+
+		return `<tr style="box-sizing: border-box; font-size: 13px; line-height: 1em;">
+				<td class="record" style="box-sizing: border-box; margin: 0px 20px 20px; padding: 5px 20px 5px 20px;">
+					<div style="background-color: #f8f8f8; padding: 5px 20px 20px;">
+						<h4 class="title">
+							${
+								oaLink
+									? `<a href="${oaLink.url}" style="
+									text-decoration: none;
+									background-color: #f8f8f8;
+									box-sizing: border-box;
+									font-family: inherit;
+									font-weight: 500;
+									line-height: 1.1;
+									margin-top: 10px;
+									margin-bottom: 10px;
+									font-size: 18px;
+									color: #337ab7;">
+									${id}. ${title} ${type}</a>`
+									: `${id}. ${title} ${type} - Pas d'accès pour cet article`
+							}
+							${
+								oaLink && oaLink.OA === true
+									? `<span style="background-color: #FB9A83; color: #337ab7; padding: 2.5px;">
+										OA
+									</span>`
+									: ""
+							}
+						</h4>
+						<span style="background-color: #f8f8f8; box-sizing: border-box;">
+							<div style="background-color: #f8f8f8; box-sizing: border-box;">
+								<div style="background-color: #f8f8f8; box-sizing: border-box;">
+									<p style="background-color: #f8f8f8; box-sizing: border-box;orphans: 3;widows: 3;margin: 0 0 10px;">
+										<span style="background-color: #f8f8f8; box-sizing: border-box;">
+											${
+												authors
+													? authors.length > 5
+														? authors.slice(0, 5).join("; ").concat("...")
+														: authors.join("; ")
+													: ""
+											}
+										</span>
+									</p>
+									<p style="background-color: #f8f8f8; box-sizing: border-box;orphans: 3;widows: 3;margin: 0 0 10px;">
+										<span style="background-color: #f8f8f8; box-sizing: border-box;">${
+											source || ""
+										}</span> ${doi ? `DOI : ${doi}` : ""}
+									</p>
+								</div>
+							</div>
+						</span>
+					</div>
+				</td>
+			</tr>`;
+	}
+}

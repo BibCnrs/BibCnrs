@@ -123,8 +123,12 @@ export class EbscoOaController {
 			throw new BadRequestException();
 		}
 
+		const decodedUrl = decodeURIComponent(url);
+
+		logger.log(`Redirecting to: ${decodedUrl}`);
+
 		try {
-			new URL(url);
+			new URL(decodedUrl);
 		} catch (error) {
 			throw new BadRequestException("Invalid URL");
 		}

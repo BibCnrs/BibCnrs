@@ -2,7 +2,7 @@ export UID = $(shell id -u)
 export GID = $(shell id -g)
 
 # If the first argument is one of the supported commands...
-SUPPORTED_COMMANDS := restore-db _restore_db restore-db-dev _restore_db_dev
+SUPPORTED_COMMANDS := restore-db search-alert-dev
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     # use the rest as arguments for the command
@@ -273,3 +273,7 @@ test-e2e-install: install						## Install e2e dependencies
 
 test-e2e-ui: 									## Run e2e tests in UI mode locally
 	yarn workspace @bibcnrs/e2e run test:ui
+
+search-alert-dev: 								## Run search alert in dev mode
+	docker exec bibcnrs-bib-api-1 \
+		yarn workspace @bibcnrs/bib-api run command:searchAlert:dev

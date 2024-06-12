@@ -1,10 +1,10 @@
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { REQUEST } from "@nestjs/core";
 import { Request } from "express";
 import { CommonRedisService } from "../../common/common-redis/common-redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoToken } from "../ebsco-token/ebsco-token.type";
 import { AbstractEbscoSearchService } from "./ebsco-search-abstract.service";
 import { parseItems } from "./ebsco-search-article.utils";
 import {
@@ -16,15 +16,14 @@ import {
 	extractTitle,
 } from "./ebsco-search-publication.utils";
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 	constructor(
 		configService: ConfigService<Config, true>,
-		@Inject(REQUEST) request: Request,
 		prismaService: PrismaService,
 		redisService: CommonRedisService,
 	) {
-		super(configService.get("ebsco"), request, prismaService, redisService);
+		super(configService.get("ebsco"), prismaService, redisService);
 	}
 
 	parsePublicationQueries(queries: Request["query"]["queries"]) {
@@ -65,9 +64,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		};
 	}
 
-	private parsePublicationSearch() {
-		const rawQuery = this.request.query;
-
+	private parsePublicationSearch(rawQuery: Request["query"]) {
 		return {
 			...rawQuery,
 			activeFacets:
@@ -93,8 +90,12 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async searchPublications(communityName: string) {
-		const query = this.parsePublicationSearch();
+	async searchPublications(
+		token: EbscoToken,
+		rawQuery: Request["query"],
+		communityName: string,
+	) {
+		const query = this.parsePublicationSearch(rawQuery);
 
 		const searchResult = await this.ebscoSearch(
 			async (authToken, sessionToken) => {
@@ -105,6 +106,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 					sessionToken,
 				);
 			},
+			token,
 			communityName,
 		);
 
@@ -150,7 +152,11 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async retrievePublicationById(communityName: string, publicationId: string) {
+	async retrievePublicationById(
+		token: EbscoToken,
+		communityName: string,
+		publicationId: string,
+	) {
 		const searchResult = await this.ebscoSearch(
 			async (authToken, sessionToken) => {
 				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -164,6 +170,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 					sessionToken,
 				).then((result) => result.Record);
 			},
+			token,
 			communityName,
 		);
 

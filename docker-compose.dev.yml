@@ -11,6 +11,9 @@ services:
         - action: sync
           path: ./packages/bib-api/src
           target: /app/packages/bib-api/src
+        - action: sync
+          path: ./packages/bib-api/bin
+          target: /app/packages/bib-api/bin
         - action: rebuild
           path: ./packages/bib-api/prisma/schema.prisma
         - action: rebuild

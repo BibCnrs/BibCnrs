@@ -106,8 +106,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=S3cr3t
       - POSTGRES_DB=bibcnrs
-    volumes:
-      - bib-db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -125,5 +123,4 @@ services:
     restart: always
 
 volumes:
-  bib-db-data:
   bib-api-uploads:
