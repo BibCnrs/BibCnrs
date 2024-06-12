@@ -121,6 +121,7 @@ const fr: Common = {
 			fullText: "Texte intégral",
 			openAccess: "Accès ouvert",
 			date: "Date de publication",
+			to: "à",
 			source: "Type de ressource",
 			subject: "Mot clé",
 			journal: "Titre de publication",

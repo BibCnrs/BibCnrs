@@ -120,6 +120,7 @@ const en: Common = {
 			fullText: "Full Text",
 			openAccess: "Open Access",
 			date: "Publication Date",
+			to: "to",
 			source: "Source Type",
 			subject: "Subject",
 			journal: "Publication",

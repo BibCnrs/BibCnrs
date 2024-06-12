@@ -149,6 +149,9 @@ export type FacetLimiterProps<T extends FacetRequired> = PropsWithoutRef<{
 	available: FacetProps<T>["available"]["limiters"];
 	active?: FacetProps<T>["active"]["limiters"];
 	onChange: (value: FacetProps<T>["active"]["limiters"]) => void;
+	HALFacet?: FacetEntry;
+	HALIsChecked?: boolean;
+	onHALFacetChange: ({ provider }: { provider: FacetEntry[] }) => void;
 }>;
 
 export type FacetFacetsProps<T extends FacetRequired> = PropsWithoutRef<{

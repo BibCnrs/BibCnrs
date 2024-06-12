@@ -88,7 +88,7 @@ export default function FilterTab({
 	};
 
 	return (
-		<FormGroup>
+		<FormGroup sx={{ position: "sticky", top: 0 }}>
 			<Typography variant="h6" fontWeight="bold">
 				{t("pages.database.filters.title")}
 			</Typography>
