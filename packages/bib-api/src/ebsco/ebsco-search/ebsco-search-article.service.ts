@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { JsonValue } from "@prisma/client/runtime/library";
 import { Request } from "express";
 import flatten from "lodash.flatten";
 import { CommonRedisService } from "../../common/common-redis/common-redis.service";
@@ -40,23 +41,27 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		super(configService.get("ebsco"), prismaService, redisService);
 	}
 
-	parseArticleQueries({ queries }: Request["query"]) {
-		if (!queries || typeof queries !== "string") {
+	parseArticleQueries({ queries }) {
+		if (!queries) {
 			return null;
 		}
 
-		return JSON.parse(decodeURIComponent(queries)).map(
-			this.addTruncatureToQuery,
-		);
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		const parsedQueries: any[] =
+			typeof queries === "string"
+				? JSON.parse(decodeURIComponent(queries))
+				: queries;
+
+		return parsedQueries.map(this.addTruncatureToQuery);
 	}
 
-	parseArticleSearch(rawQuery: Request["query"]) {
+	parseArticleSearch(rawQuery) {
 		return {
 			...rawQuery,
 			activeFacets:
 				rawQuery.activeFacets && typeof rawQuery.activeFacets === "string"
 					? JSON.parse(decodeURIComponent(rawQuery.activeFacets))
-					: null,
+					: rawQuery.activeFacets,
 			queries: this.parseArticleQueries(rawQuery),
 		};
 	}
@@ -258,11 +263,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async searchArticleRaw(
-		token: EbscoToken,
-		rawQuery: Request["query"],
-		communityName: string,
-	) {
+	async searchArticleRaw(token: EbscoToken, rawQuery, communityName: string) {
 		const query = this.parseArticleSearch(rawQuery);
 
 		return await this.ebscoSearch(

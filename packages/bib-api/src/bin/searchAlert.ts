@@ -7,6 +7,8 @@ import { EbscoSearchAlertService } from "../ebsco/ebsco-search-alert/ebsco-searc
 (async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+	await app.init();
+
 	const service = app.get(EbscoSearchAlertCronService);
 
 	await service.handleSearchAlertCron();

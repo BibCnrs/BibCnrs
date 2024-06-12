@@ -2,7 +2,7 @@ export UID = $(shell id -u)
 export GID = $(shell id -g)
 
 # If the first argument is one of the supported commands...
-SUPPORTED_COMMANDS := restore-db search-alert-dev
+SUPPORTED_COMMANDS := restore-db _restore_db search-alert-dev
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     # use the rest as arguments for the command

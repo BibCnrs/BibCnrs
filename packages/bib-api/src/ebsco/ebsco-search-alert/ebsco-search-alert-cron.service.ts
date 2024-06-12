@@ -62,11 +62,12 @@ export class EbscoSearchAlertCronService {
 		const dateIso = new Date().toISOString().slice(0, 19).replace("T", " ");
 		const alertToExecute = await this.countAlertToExecute(dateIso);
 		if (alertToExecute === 0) {
+			logger.log(`No alert to execute after ${dateIso}`);
 			return;
 		}
 
 		const LIMIT = 10;
-		const pages = Math.ceil(alertToExecute / LIMIT);
+		const pages = Math.floor(alertToExecute / LIMIT);
 		let mailsSent = 0;
 		let updatedAlerts = 0;
 		let testedAlerts = 0;
@@ -128,8 +129,8 @@ export class EbscoSearchAlertCronService {
 											queries,
 											limiters,
 											activeFacets,
-											resultsPerPage: "1",
-										} as Request["query"],
+											resultsPerPage: 1,
+										},
 										domain,
 									);
 
@@ -154,9 +155,9 @@ export class EbscoSearchAlertCronService {
 											queries,
 											limiters,
 											activeFacets,
-											resultsPerPage: "100",
-										} as Request["query"],
-										"brief",
+											resultsPerPage: 100,
+										},
+										domain,
 									);
 
 								const newRawRecords = this.getMissingResults(
@@ -253,7 +254,7 @@ export class EbscoSearchAlertCronService {
 			}
 
 			logger.log(
-				`Batch done nbAlerteTested=${testedAlerts}, nbLastExeDateUpdated=${updatedAlerts}, nbSenMail=${mailsSent}`,
+				`Batch done testedAlerts=${testedAlerts}, updatedAlerts=${updatedAlerts}, mailsSent=${mailsSent}`,
 			);
 		}
 	}
