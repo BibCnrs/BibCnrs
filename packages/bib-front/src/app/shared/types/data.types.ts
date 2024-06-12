@@ -212,6 +212,7 @@ export type HistoryEntryDataType = {
 	hasAlert: false;
 	frequence: "day" | "month" | "week";
 	active: boolean;
+	nb_results: number;
 	event: {
 		queries: HistoryQueriesDataType[];
 		limiters: HistoryEntryLimiterDataType;

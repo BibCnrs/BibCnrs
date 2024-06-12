@@ -259,7 +259,7 @@ const TableHistory = ({
 					<ul>
 						<li>
 							<b>{t("components.table.content.nbResult")}</b>
-							{` ${data.event.totalHits}`}
+							{` ${data.event.totalHits ?? data.nb_results}`}
 						</li>
 					</ul>
 					<div className="table-history-box-actions-buttons">

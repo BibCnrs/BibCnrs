@@ -44,10 +44,12 @@ export class EbscoHistoryController {
 		@Body("history") history: CreateHistoryDto,
 	) {
 		const user = req.user;
-		return this.ebscoHistoryService.createHistory({
-			...history,
-			user_id: user.id.toString(),
-		});
+		const { frequence, ...rest } = history;
+		return this.ebscoHistoryService.createHistory(
+			user.id.toString(),
+			rest,
+			frequence,
+		);
 	}
 
 	@Delete()
