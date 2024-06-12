@@ -1,17 +1,29 @@
+import {
+	Checkbox,
+	FormControlLabel,
+	FormLabel,
+	TextField,
+	Typography,
+} from "@mui/material";
 import Divider from "@mui/material/Divider";
+import { Stack } from "@mui/system";
 import { memo } from "react";
+import { useTranslator } from "../../../shared/locales/I18N";
 import type {
 	FacetLimiterProps,
 	FacetRequired,
 } from "../../../shared/types/props.types";
-import DateRange from "./DateRange";
 import TextType from "./TextType";
 
 const FacetLimiter = ({
 	available,
 	active,
 	onChange,
+	HALFacet,
+	HALIsChecked,
+	onHALFacetChange,
 }: FacetLimiterProps<FacetRequired>) => {
+	const t = useTranslator();
 	if (!available) {
 		return null;
 	}
@@ -69,49 +81,101 @@ const FacetLimiter = ({
 		divider = true;
 	}
 
-	let dateRage = null;
+	let dateRange = null;
 	if (available.dateRange) {
-		let initial: number[] | undefined = undefined;
+		let initialRange: { from: number; to: number } | undefined;
 		if (active?.dateRange) {
-			initial = [active.dateRange.from, active.dateRange.to];
+			initialRange = { from: active.dateRange.from, to: active.dateRange.to };
+		} else {
+			initialRange = {
+				from: available.dateRange.from,
+				to: available.dateRange.to,
+			};
 		}
 
-		const handleDateRange = (value: number[]) => {
-			if (active) {
-				onChange({
-					...active,
-					dateRange: {
-						from: value[0],
-						to: value[1],
-					},
-				});
+		const handleDateRange = (key: "from" | "to", value: number) => {
+			// if value.length < 4, it means the user is typing the year
+			// so we don't update the state
+			if (value.toString().length < 4) {
 				return;
 			}
+			const currentYear = new Date().getFullYear();
+			if (value < 1000 || value > currentYear + 1) {
+				return;
+			}
+
 			onChange({
 				dateRange: {
-					from: value[0],
-					to: value[1],
+					...initialRange,
+					...active.dateRange,
+					[key]: value,
 				},
 			});
 		};
 
-		dateRage = (
+		const labelDateRange = `${t("components.facet.date")} (${
+			available.dateRange.from
+		} - ${available.dateRange.to})`;
+
+		dateRange = (
 			<>
 				{divider ? <Divider className="facet-divider" /> : null}
-				<DateRange
-					min={1000}
-					max={new Date().getFullYear() + 1}
-					initial={initial}
-					onChange={handleDateRange}
-				/>
+				<FormLabel component="legend">{labelDateRange}</FormLabel>
+				<Stack gap={1} direction="row" alignItems="center">
+					<TextField
+						type="number"
+						inputProps={{ min: 1000, max: new Date().getFullYear() + 1 }}
+						size="small"
+						defaultValue={initialRange.from}
+						onChange={(event) =>
+							handleDateRange("from", Number.parseInt(event.target.value))
+						}
+					/>
+					<Typography>{t("components.facet.to")}</Typography>
+					<TextField
+						type="number"
+						inputProps={{ min: 1000, max: new Date().getFullYear() + 1 }}
+						size="small"
+						defaultValue={initialRange.to}
+						onChange={(event) =>
+							handleDateRange("to", Number.parseInt(event.target.value))
+						}
+					/>
+				</Stack>
 			</>
 		);
 	}
 
+	const handleHALChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.checked) {
+			return onHALFacetChange({
+				provider: [HALFacet],
+			});
+		}
+
+		return onHALFacetChange({
+			provider: [],
+		});
+	};
+
 	return (
 		<div>
 			{textType}
-			{dateRage}
+			{HALFacet && (
+				<FormControlLabel
+					key={"HAL"}
+					control={
+						<Checkbox
+							checked={HALIsChecked}
+							onChange={handleHALChange}
+							inputProps={{ "aria-label": "controlled" }}
+							size="small"
+						/>
+					}
+					label="HAL"
+				/>
+			)}
+			{dateRange}
 		</div>
 	);
 };

@@ -132,6 +132,7 @@ export type Common = {
 			fullText: string;
 			openAccess: string;
 			date: string;
+			to: string;
 			source: string;
 			subject: string;
 			journal: string;

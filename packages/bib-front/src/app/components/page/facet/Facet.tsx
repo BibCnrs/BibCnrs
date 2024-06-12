@@ -1,7 +1,8 @@
 import "./Facet.scss";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
 	FacetProps,
@@ -37,6 +38,17 @@ const Facet = ({
 		});
 	};
 
+	const HALFacet = useMemo(
+		() => available.facets?.provider?.find((facet) => facet.name === "HAL"),
+		[available.facets],
+	);
+
+	const HALIsChecked = useMemo(
+		() =>
+			active.facets?.provider?.some((facet) => facet?.name === HALFacet?.name),
+		[active.facets, HALFacet],
+	);
+
 	return (
 		<Paper id="facet">
 			<h3 id="facet-title" className="title">
@@ -52,9 +64,14 @@ const Facet = ({
 				available={available.limiters}
 				active={active.limiters}
 				onChange={handleLimiter}
+				HALFacet={HALFacet}
+				HALIsChecked={HALIsChecked}
+				onHALFacetChange={handleFacet}
 			/>
+
 			<Divider className="facet-divider" />
 			{/* Facet */}
+
 			<FacetFacets
 				available={available.facets}
 				active={active.facets}

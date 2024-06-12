@@ -18,6 +18,7 @@ const FacetFacets = ({
 	}
 
 	const keys = new Set<string>(Object.keys(available));
+
 	if (active) {
 		Object.keys(active).forEach((key) => {
 			keys.add(key);
