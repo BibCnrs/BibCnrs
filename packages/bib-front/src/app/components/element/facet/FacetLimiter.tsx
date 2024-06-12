@@ -83,9 +83,14 @@ const FacetLimiter = ({
 
 	let dateRange = null;
 	if (available.dateRange) {
-		let initial: number[] | undefined = undefined;
+		let initialRange: { from: number; to: number } | undefined;
 		if (active?.dateRange) {
-			initial = [active.dateRange.from, active.dateRange.to];
+			initialRange = { from: active.dateRange.from, to: active.dateRange.to };
+		} else {
+			initialRange = {
+				from: available.dateRange.from,
+				to: available.dateRange.to,
+			};
 		}
 
 		const handleDateRange = (key: "from" | "to", value: number) => {
@@ -99,18 +104,10 @@ const FacetLimiter = ({
 				return;
 			}
 
-			if (active) {
-				onChange({
-					...active,
-					dateRange: {
-						...active.dateRange,
-						[key]: value,
-					},
-				});
-				return;
-			}
 			onChange({
 				dateRange: {
+					...initialRange,
+					...active.dateRange,
 					[key]: value,
 				},
 			});
@@ -129,7 +126,7 @@ const FacetLimiter = ({
 						type="number"
 						inputProps={{ min: 1000, max: new Date().getFullYear() + 1 }}
 						size="small"
-						defaultValue={initial[0]}
+						defaultValue={initialRange.from}
 						onChange={(event) =>
 							handleDateRange("from", Number.parseInt(event.target.value))
 						}
@@ -139,7 +136,7 @@ const FacetLimiter = ({
 						type="number"
 						inputProps={{ min: 1000, max: new Date().getFullYear() + 1 }}
 						size="small"
-						defaultValue={initial[1]}
+						defaultValue={initialRange.to}
 						onChange={(event) =>
 							handleDateRange("to", Number.parseInt(event.target.value))
 						}
