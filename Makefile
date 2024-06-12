@@ -277,3 +277,7 @@ test-e2e-ui: 									## Run e2e tests in UI mode locally
 search-alert-dev: 								## Run search alert in dev mode
 	docker exec bibcnrs-bib-api-1 \
 		yarn workspace @bibcnrs/bib-api run command:searchAlert:dev
+
+search-alert: 									## Run search alert in dev mode
+	docker exec bibcnrs-api \
+		yarn workspace @bibcnrs/bib-api run command:searchAlert
