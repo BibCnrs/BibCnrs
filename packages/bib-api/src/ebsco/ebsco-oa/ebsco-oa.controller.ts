@@ -114,7 +114,6 @@ export class EbscoOaController {
 		const { sid, url, domaine, doi, user_id } = query;
 
 		if (
-			typeof user_id !== "string" ||
 			typeof sid !== "string" ||
 			typeof url !== "string" ||
 			typeof domaine !== "string" ||
@@ -125,15 +124,13 @@ export class EbscoOaController {
 
 		const decodedUrl = decodeURIComponent(url);
 
-		logger.log(`Redirecting to: ${decodedUrl}`);
-
 		try {
 			new URL(decodedUrl);
 		} catch (error) {
 			throw new BadRequestException("Invalid URL");
 		}
 
-		if (user_id) {
+		if (user_id && typeof user_id === "string") {
 			const janusUser = await this.janusAccountService.findOneByUid(user_id);
 			if (janusUser) {
 				await this.logJanusUser(janusUser, url, sid, domaine, doi);
@@ -146,10 +143,10 @@ export class EbscoOaController {
 			if (inistUser) {
 				await this.logInistUser(inistUser, url, sid, domaine, doi);
 			}
-		} else if (user.origin === "janus") {
+		} else if (user?.origin === "janus") {
 			const janusUser = await this.janusAccountService.findOneById(user.id);
 			await this.logJanusUser(janusUser, url, sid, domaine, doi);
-		} else if (user.origin === "inist") {
+		} else if (user?.origin === "inist") {
 			const inistUser = await this.inistAccountService.findOneById(user.id);
 			await this.logInistUser(inistUser, url, sid, domaine, doi);
 		}

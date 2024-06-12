@@ -170,7 +170,7 @@ describe("EbscoHistoryController", () => {
 					expect.objectContaining({
 						user_id: "3",
 						active: true,
-						event: { test: "test 1" },
+						event: { test: "test 1", totalHits: 20 },
 						frequence: "01:00:00",
 						has_alert: false,
 						nb_results: 20,
