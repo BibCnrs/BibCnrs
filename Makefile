@@ -2,7 +2,7 @@ export UID = $(shell id -u)
 export GID = $(shell id -g)
 
 # If the first argument is one of the supported commands...
-SUPPORTED_COMMANDS := restore-db _restore_db search-alert-dev
+SUPPORTED_COMMANDS := restore-db _restore_db create-test-alert-dev create-test-alert
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     # use the rest as arguments for the command
@@ -278,6 +278,14 @@ search-alert-dev: 								## Run search alert in dev mode
 	docker exec bibcnrs-bib-api-1 \
 		yarn workspace @bibcnrs/bib-api run command:searchAlert:dev
 
-search-alert: 									## Run search alert in dev mode
+search-alert: 									## Run search alert in production mode
 	docker exec bibcnrs-api \
 		yarn workspace @bibcnrs/bib-api run command:searchAlert
+
+create-test-alert-dev: 								## Run create test alert in dev mode
+	docker exec bibcnrs-bib-api-1 \
+		yarn workspace @bibcnrs/bib-api run command:createAlertForTest:dev $(COMMAND_ARGS)
+
+create-test-alert: 									## Run create test alert in production mode
+	docker exec bibcnrs-api \
+		yarn workspace @bibcnrs/bib-api run command:createAlertForTest $(COMMAND_ARGS)

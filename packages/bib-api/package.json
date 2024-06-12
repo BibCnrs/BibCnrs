@@ -15,7 +15,9 @@
 		"test:watch": "prisma migrate reset --force && tsx ./test/seed.ts && vitest --no-cache --watch",
 		"typecheck": "tsc --noEmit",
 		"command:searchAlert": "node dist/bin/searchAlert.js",
-		"command:searchAlert:dev": "yarn build:bin && yarn run command:searchAlert"
+		"command:searchAlert:dev": "yarn build:bin && yarn run command:searchAlert",
+		"command:createAlertForTest": "node dist/bin/createAlertForTest.js",
+		"command:createAlertForTest:dev": "yarn build:bin && node dist/bin/createAlertForTest.js"
 	},
 	"dependencies": {
 		"@nestjs/common": "^10.3.9",

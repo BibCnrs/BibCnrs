@@ -4,13 +4,17 @@ import { AppModule } from "../app.module";
 import { EbscoSearchAlertCronService } from "../ebsco/ebsco-search-alert/ebsco-search-alert-cron.service";
 
 (async () => {
+	if (process.argv.length < 3) {
+		throw new Error("You must provide janus user uid");
+	}
+
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
 	await app.init();
 
 	const service = app.get(EbscoSearchAlertCronService);
 
-	await service.handleSearchAlertCron();
+	await service.createTestAlert(process.argv[2]);
 
 	await app.close();
 })()

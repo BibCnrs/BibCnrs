@@ -2,7 +2,6 @@ import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
 import { Prisma, community, history } from "@prisma/client";
-import { Request } from "express";
 import remove from "lodash.remove";
 import { SendMailOptions } from "nodemailer";
 import { CommonMailService } from "../../common/common-mail/common-mail.service";
@@ -37,6 +36,72 @@ export class EbscoSearchAlertCronService {
 		private readonly mailService: CommonMailService,
 	) {
 		this.services = this.configService.get("services");
+	}
+
+	private getQueryFromHistory(history: history | null) {
+		if (!history) {
+			return null;
+		}
+
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		const { queries, activeFacets, limiters } = history.event as any;
+
+		return history
+			? {
+					queries,
+					activeFacets,
+					...limiters,
+					resultsPerPage: 100,
+				}
+			: null;
+	}
+
+	async createTestAlert(janusUserUid: string) {
+		const communities = await this.ebscoDomainService.getCommunities();
+		const domains = communities.map((community) => community.name);
+
+		const janusUser = await this.janusAccountService.findOneByUid(janusUserUid);
+		if (!janusUser) {
+			throw new Error(`User not found for uid=${janusUserUid}`);
+		}
+
+		const histories = await this.prismaService.history.findMany({
+			where: { user_id: janusUser.id.toString() },
+		});
+
+		return Promise.all(
+			histories.map(async (history) => {
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				const event = history.event as any;
+
+				const query = this.getQueryFromHistory(history);
+				const searchResult =
+					await this.ebscoSearchArticleService.searchArticleRaw(
+						{
+							username: "guest",
+							domains,
+						},
+						query,
+						event.domain,
+					);
+
+				return this.prismaService.$queryRaw`
+            UPDATE history SET 
+            has_alert = true, 
+            frequence = '1 day',
+            last_results = CAST(${JSON.stringify(
+							this.getResultsIdentifiers(searchResult).slice(3),
+						)} AS json),
+            last_execution = ${new Date(0)},
+            nb_results = ${
+							searchResult.SearchResult.Statistics.TotalHits - 3 > 0
+								? searchResult.SearchResult.Statistics.TotalHits - 3
+								: 0
+						},
+            active = true
+            WHERE id = ${history.id}`;
+			}),
+		);
 	}
 
 	private async countAlertToExecute(date: string) {
