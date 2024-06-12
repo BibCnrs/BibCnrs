@@ -1,4 +1,10 @@
-import { Injectable, Logger } from "@nestjs/common";
+import {
+	Injectable,
+	Logger,
+	OnApplicationShutdown,
+	OnModuleDestroy,
+	OnModuleInit,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {
 	RedisClientType,
@@ -12,7 +18,7 @@ import { Config } from "../../config";
 const logger = new Logger("CommonRedisService");
 
 @Injectable()
-export class CommonRedisService {
+export class CommonRedisService implements OnModuleInit, OnModuleDestroy {
 	private readonly redis: RedisClientType<
 		RedisModules,
 		RedisFunctions,
@@ -26,9 +32,17 @@ export class CommonRedisService {
 			url: `redis://${config.host}:${config.port}`,
 		})
 			.on("connect", () => logger.log("Connected to Redis"))
+			.on("reconnecting", () => logger.log("Reconnecting to Redis"))
+			.on("end", () => logger.log("Disconnected from Redis"))
 			.on("error", (err) => logger.error(err));
+	}
 
-		void this.redis.connect();
+	async onModuleInit() {
+		return this.redis.connect();
+	}
+
+	async onModuleDestroy() {
+		return this.redis.disconnect();
 	}
 
 	async getAsync(key: string) {

@@ -15,6 +15,10 @@ export class CommonMailService {
 		});
 	}
 
+	get from() {
+		return this.configService.get<Config["mailer"]>("mailer").from;
+	}
+
 	sendMail(mail: nodemailer.SendMailOptions | null) {
 		if (!mail) {
 			return;

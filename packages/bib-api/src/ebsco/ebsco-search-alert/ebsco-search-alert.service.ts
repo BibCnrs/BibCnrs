@@ -30,6 +30,7 @@ export class EbscoSearchAlertService {
 		nb_results = ${history.nb_results ? history.nb_results : 0}
 		WHERE id = ${historyId}`;
 	}
+
 	async deleteSearchAlert(id: number) {
 		await this.prismaService.$queryRaw`
 		UPDATE history

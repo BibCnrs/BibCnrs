@@ -1,11 +1,14 @@
 import {
 	Controller,
 	Get,
+	Inject,
 	Param,
 	Query,
 	Scope,
 	UseGuards,
 } from "@nestjs/common";
+import { REQUEST } from "@nestjs/core";
+import { Request } from "express";
 import { AuthGuard } from "../../common/common-auth/common-auth.guard";
 import { EbscoTokenGuard } from "../ebsco-token/ebsco-token.guard";
 import { EbscoSearchArticleService } from "./ebsco-search-article.service";
@@ -16,12 +19,17 @@ export class EbscoSearchController {
 	constructor(
 		private readonly ebscoSearchArticleService: EbscoSearchArticleService,
 		private readonly ebscoSearchPublicationService: EbscoSearchPublicationService,
+		@Inject(REQUEST) private readonly request: Request,
 	) {}
 
 	@Get("publication/search")
 	@UseGuards(EbscoTokenGuard)
 	async searchPublications(@Param("communityName") communityName: string) {
-		return this.ebscoSearchPublicationService.searchPublications(communityName);
+		return this.ebscoSearchPublicationService.searchPublications(
+			this.request.ebscoToken,
+			this.request.query,
+			communityName,
+		);
 	}
 
 	@Get("publication/retrieve/:id")
@@ -31,6 +39,7 @@ export class EbscoSearchController {
 		@Param("id") id: string,
 	) {
 		return this.ebscoSearchPublicationService.retrievePublicationById(
+			this.request.ebscoToken,
 			communityName,
 			id,
 		);
@@ -39,7 +48,11 @@ export class EbscoSearchController {
 	@Get("article/search")
 	@UseGuards(AuthGuard, EbscoTokenGuard)
 	async searchArticle(@Param("communityName") communityName: string) {
-		return this.ebscoSearchArticleService.searchArticle(communityName);
+		return this.ebscoSearchArticleService.searchArticle(
+			this.request.ebscoToken,
+			this.request.query,
+			communityName,
+		);
 	}
 
 	@Get("article/retrieve")
@@ -50,6 +63,7 @@ export class EbscoSearchController {
 		@Query("an") an: string,
 	) {
 		return this.ebscoSearchArticleService.retrieveArticle(
+			this.request.ebscoToken,
 			communityName,
 			dbId,
 			an,

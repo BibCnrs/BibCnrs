@@ -6,11 +6,11 @@ import {
 } from "@nestjs/common";
 import { community } from "@prisma/client";
 import { JsonValue } from "@prisma/client/runtime/library";
-import { Request } from "express";
 import { ProxyAgent, request as httpRequest } from "undici";
 import { CommonRedisService } from "../../common/common-redis/common-redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoToken } from "../ebsco-token/ebsco-token.type";
 
 const logger = new Logger("EbscoSearchAbstractService");
 
@@ -26,7 +26,6 @@ type EbscoError = {
 export class AbstractEbscoSearchService {
 	constructor(
 		protected readonly ebsco: Config["ebsco"],
-		protected readonly request: Request,
 		protected readonly prismaService: PrismaService,
 		protected readonly redisService: CommonRedisService,
 	) {}
@@ -145,13 +144,10 @@ export class AbstractEbscoSearchService {
 		);
 	}
 
-	protected async getEbscoToken({
-		name: communityName,
-		user_id,
-		password,
-		profile,
-	}: community) {
-		const { username, domains } = this.request.ebscoToken;
+	protected async getEbscoAuthToken(
+		{ username, domains }: EbscoToken,
+		{ name: communityName, user_id, password, profile }: community,
+	) {
 		if (!domains.includes(communityName)) {
 			throw new UnauthorizedException(
 				`You are not authorized to access domain ${communityName}`,
@@ -193,14 +189,24 @@ export class AbstractEbscoSearchService {
 		};
 	}
 
-	private async ebscoInvalidateAuth(communityName: string) {}
+	private async ebscoInvalidateAuth(communityName: string) {
+		await this.redisService.delAsync(communityName);
+	}
 
 	protected async ebscoSearch<
 		F extends (authToken: string, sessionToken: string) => Promise<R>,
 		R,
+	>(
+		ebscoCall: F,
+		token: EbscoToken,
+		communityName: string,
+		retries = 2,
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	>(ebscoCall: F, communityName: string, retries = 5): Promise<any> {
+	): Promise<any> {
 		if (retries <= 0) {
+			logger.log(
+				`[ebscoSearch/${token.username}] Max retry reached. Giving up.`,
+			);
 			throw new UnauthorizedException(
 				"Could not connect to ebsco api. Please try again. If the problem persist contact us.",
 			);
@@ -216,7 +222,10 @@ export class AbstractEbscoSearchService {
 				throw new NotFoundException();
 			}
 
-			const { authToken, sessionToken } = await this.getEbscoToken(community);
+			const { authToken, sessionToken } = await this.getEbscoAuthToken(
+				token,
+				community,
+			);
 
 			const result = await ebscoCall(authToken, sessionToken);
 
@@ -225,7 +234,10 @@ export class AbstractEbscoSearchService {
 			await this.ebscoInvalidateAuth(communityName);
 
 			if (error === "retry" || error.message === "retry") {
-				return this.ebscoSearch(ebscoCall, communityName, retries - 1);
+				logger.log(
+					`[ebscoSearch/${token.username}] Retry, remaining retries: ${retries}`,
+				);
+				return this.ebscoSearch(ebscoCall, token, communityName, retries - 1);
 			}
 
 			if (error.message === "Max retry reached. Giving up.") {

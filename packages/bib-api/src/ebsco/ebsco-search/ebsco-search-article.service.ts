@@ -1,11 +1,12 @@
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { REQUEST } from "@nestjs/core";
+import { JsonValue } from "@prisma/client/runtime/library";
 import { Request } from "express";
 import flatten from "lodash.flatten";
 import { CommonRedisService } from "../../common/common-redis/common-redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoToken } from "../ebsco-token/ebsco-token.type";
 import { AbstractEbscoSearchService } from "./ebsco-search-abstract.service";
 import {
 	extractAbstract,
@@ -30,37 +31,38 @@ import { parseXML } from "./ebsco-search.utils";
 const DOI_REGEX = /(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?![%"#? ])\S)+)/;
 const ARTICLE_URL = "/edsapi/rest/Search";
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	constructor(
 		configService: ConfigService<Config, true>,
-		@Inject(REQUEST) request: Request,
 		prismaService: PrismaService,
 		redisService: CommonRedisService,
 	) {
-		super(configService.get("ebsco"), request, prismaService, redisService);
+		super(configService.get("ebsco"), prismaService, redisService);
 	}
 
-	parseArticleQueries() {
-		const { queries } = this.request.query;
-		if (!queries || typeof queries !== "string") {
+	parseArticleQueries({ queries }) {
+		if (!queries) {
 			return null;
 		}
 
-		return JSON.parse(decodeURIComponent(queries)).map(
-			this.addTruncatureToQuery,
-		);
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		const parsedQueries: any[] =
+			typeof queries === "string"
+				? JSON.parse(decodeURIComponent(queries))
+				: queries;
+
+		return parsedQueries.map(this.addTruncatureToQuery);
 	}
 
-	parseArticleSearch() {
-		const rawQuery = this.request.query;
+	parseArticleSearch(rawQuery) {
 		return {
 			...rawQuery,
 			activeFacets:
 				rawQuery.activeFacets && typeof rawQuery.activeFacets === "string"
 					? JSON.parse(decodeURIComponent(rawQuery.activeFacets))
-					: null,
-			queries: this.parseArticleQueries(),
+					: rawQuery.activeFacets,
+			queries: this.parseArticleQueries(rawQuery),
 		};
 	}
 
@@ -261,10 +263,10 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async searchArticle(communityName: string) {
-		const query = this.parseArticleSearch();
+	async searchArticleRaw(token: EbscoToken, rawQuery, communityName: string) {
+		const query = this.parseArticleSearch(rawQuery);
 
-		let searchResult = await this.ebscoSearch(
+		return await this.ebscoSearch(
 			async (authToken, sessionToken) => {
 				return this.ebscoRequest(
 					ARTICLE_URL,
@@ -273,6 +275,21 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 					sessionToken,
 				);
 			},
+			token,
+			communityName,
+		);
+	}
+
+	async searchArticle(
+		token: EbscoToken,
+		rawQuery: Request["query"],
+		communityName: string,
+	) {
+		const query = this.parseArticleSearch(rawQuery);
+
+		let searchResult = await this.searchArticleRaw(
+			token,
+			rawQuery,
 			communityName,
 		);
 
@@ -288,6 +305,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 							sessionToken,
 						);
 					},
+					token,
 					communityName,
 				);
 				searchResult.doiRetry = true;
@@ -308,6 +326,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 							sessionToken,
 						);
 					},
+					token,
 					communityName,
 				);
 				searchResult.noFullText = true;
@@ -331,7 +350,12 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async retrieveArticle(communityName: string, dbId: string, an: string) {
+	async retrieveArticle(
+		token: EbscoToken,
+		communityName: string,
+		dbId: string,
+		an: string,
+	) {
 		const searchResult = await this.ebscoSearch(
 			async (authToken, sessionToken) => {
 				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -347,6 +371,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 					sessionToken,
 				).then((result) => result.Record);
 			},
+			token,
 			communityName,
 		);
 
