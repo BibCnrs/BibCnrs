@@ -114,7 +114,7 @@ export class EbscoSearchAlertCronService {
 		return Number.parseInt(results.at(0).count ?? "0", 10);
 	}
 
-	@Cron(process.env.SEARCH_ALERT_CRON || "0 30 7 * * 1-5")
+	@Cron(process.env.SEARCH_ALERT_CRON || "0 3 * * *")
 	async handleSearchAlertCron() {
 		const communities = await this.ebscoDomainService.getCommunities();
 		const domains = communities.map((community) => community.name);
