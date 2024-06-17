@@ -59,22 +59,6 @@ const DisplayResources = ({
 				</Card>
 			))}
 		</Box>
-		// {data.map((resource) => (
-		// 	<ColoredPaper
-		// 		elevation={2}
-		// 		key={resource.id}
-		// 		className="resource"
-		// 		border
-		// 	>
-		// 		<a
-		// 			className="link"
-		// 			href={resource.href}
-		// 			rel="nofollow noreferrer noopener"
-		// 		>
-		// 			{language === "en" ? resource.name_en : resource.name_fr}
-		// 		</a>
-		// 	</ColoredPaper>
-		// ))}
 	);
 };
 
