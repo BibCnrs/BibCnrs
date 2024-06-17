@@ -82,9 +82,9 @@ dev-seed-db: env-copy						## Initialize the database with seed data
 		up \
 		--renew-anon-volumes \
 		-d \
-		--wait bib-db
+		--wait db
 
-	docker exec bibcnrs-bib-db-1 psql -U postgres bibcnrs -f /backups/seed.sql
+	docker exec bibcnrs-db-1 psql -U postgres bibcnrs -f /backups/seed.sql
 
 	docker compose \
 		--env-file docker-compose.dev.env \
@@ -103,10 +103,10 @@ start-dev: env-copy						## Start stack in development mode
 		--watch \
 		--build \
 		--remove-orphans \
-		--no-attach=bib-db \
-		--no-attach=bib-mail \
-		--no-attach=bib-proxy \
-		--no-attach=bib-redis
+		--no-attach=db \
+		--no-attach=mail \
+		--no-attach=proxy \
+		--no-attach=redis
 
 stop-dev: env-copy						## Stop stack
 	docker compose --env-file docker-compose.prod.env -f docker-compose.prod.yml down
@@ -116,8 +116,8 @@ stop-dev: env-copy						## Stop stack
 
 dev-copy-uploads:						## Copy files from input directory to uploads, usage: COMMAND_ARGS='./uploads' make dev-copy-uploads
 ifdef COMMAND_ARGS
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up bib-proxy -d 
-	docker cp $(COMMAND_ARGS)/. bibcnrs-bib-proxy-1:/usr/share/nginx/html/files
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml up proxy -d 
+	docker cp $(COMMAND_ARGS)/. bibcnrs-proxy-1:/usr/share/nginx/html/files
 else
 	@echo 'Please specify an input directory to copy to uploads'
 endif
@@ -140,9 +140,9 @@ test-api-watch:							## Run tests for api in watch mode
 		--build \
 		--remove-orphans \
 		--watch \
-		bib-db-test \
+		db-test \
 		api-test \
-		--no-attach=bib-db-test \
+		--no-attach=db-test \
 		--no-log-prefix
 
 logs: env-copy							## Show logs
@@ -173,7 +173,7 @@ build:									## Build all docker images
 
 build-api:								## Build docker image for api args: <BIBAPI_VERSION> build bibcnrs/api:<BIBAPI_VERSION> docker image default <BIBAPI_VERSION> to latest
 	docker build \
-		-f ./ops/api/Dockerfile \
+		-f ./packages/api/Dockerfile \
 		--progress=plain \
 		--no-cache \
 		--build-arg http_proxy \
@@ -183,7 +183,7 @@ build-api:								## Build docker image for api args: <BIBAPI_VERSION> build bib
 
 build-front:
 	docker build \
-		-f ./ops/front/Dockerfile \
+		-f ./packages/front/Dockerfile \
 		--progress=plain \
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:$(BIBFRONT_VERSION)' \
@@ -192,7 +192,7 @@ build-front:
 
 build-admin:
 	docker build \
-		-f ./ops/bib-admin/Dockerfile \
+		-f ./packages/bib-admin/Dockerfile \
 		--progress=plain \
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:$(BIBADMIN_VERSION)' \
