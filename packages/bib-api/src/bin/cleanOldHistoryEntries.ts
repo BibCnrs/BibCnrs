@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from "../app.module";
+import { EbscoHistoryCronService } from "../ebsco/ebsco-history/ebsco-history-cron.service";
 import { EbscoSearchAlertCronService } from "../ebsco/ebsco-search-alert/ebsco-search-alert-cron.service";
 
 (async () => {
@@ -8,9 +9,9 @@ import { EbscoSearchAlertCronService } from "../ebsco/ebsco-search-alert/ebsco-s
 
 	await app.init();
 
-	const service = app.get(EbscoSearchAlertCronService);
+	const service = app.get(EbscoHistoryCronService);
 
-	await service.handleSearchAlertCron();
+	await service.cleanOldHistory();
 
 	await app.close();
 })()
