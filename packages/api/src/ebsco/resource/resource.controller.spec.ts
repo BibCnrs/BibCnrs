@@ -22,14 +22,12 @@ describe("EbscoResourcesController", () => {
 		it("should return resources", async () => {
 			expect(await ebscoResourcesController.getResources()).toStrictEqual([
 				expect.objectContaining({
-					community: "INSHS",
 					name_en: "Bib Preprod",
 					name_fr: "Bib Preprod",
 					href: "https://bib-preprod.inist.fr/",
 					enable: true,
 				}),
 				expect.objectContaining({
-					community: "INSHS",
 					name_en: "Bib",
 					name_fr: "Bib",
 					href: "https://bib.cnrs.fr/",
