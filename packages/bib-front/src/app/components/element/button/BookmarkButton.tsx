@@ -32,7 +32,9 @@ const BookmarkButton = ({
 		}
 	}, [favouriteResources, login, title, url]);
 
-	const handleClick = () => {
+	const handleClick = (event) => {
+		event.preventDefault();
+		event.stopPropagation();
 		setAnimated(true);
 		if (!inBookmark) {
 			addFavourite({
