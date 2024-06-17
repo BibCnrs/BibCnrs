@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { memo, useContext, useEffect, useState } from "react";
+import { Fragment, memo, useContext, useEffect, useState } from "react";
 import { retrieve as retrieveFn } from "../../../services/search/Publication";
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -18,16 +18,155 @@ import OpenAccess from "../icon/OpenAccess";
 import OpenablePaper from "../paper/openable/OpenablePaper";
 import SkeletonEntry from "../skeleton/SkeletonEntry";
 import "./scss/TableList.scss";
+import { Button, Popover, Tooltip, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/system";
+
+const PublicationTitle = ({
+	reconciledFullTextHoldings,
+	titleCoverage,
+	publication,
+	getCoverage,
+}: {
+	reconciledFullTextHoldings: PublicationHolding[];
+	titleCoverage: string;
+	publication: PublicationResultDataType;
+	getCoverage: (coverage: PublicationCoverageDataType) => string;
+}) => {
+	const { login } = useContext(BibContext);
+
+	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+	const handlePopoverClick = (event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = (event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		setAnchorEl(null);
+	};
+
+	const openPoper = Boolean(anchorEl);
+
+	const href = reconciledFullTextHoldings[0].url;
+	const isOpenAccess = reconciledFullTextHoldings[0].name
+		.toLowerCase()
+		.includes("open access");
+
+	if (reconciledFullTextHoldings.length > 1) {
+		const idPopover = open ? `simple-popover-${publication.id}` : undefined;
+		return (
+			<>
+				<Stack
+					component="div" // Add the component prop with the value of "div"
+					direction="row"
+					aria-describedby={idPopover}
+					onClick={(event) => handlePopoverClick(event)}
+					sx={{ cursor: "pointer" }}
+				>
+					<span className="table-list-title link">
+						{publication.id}. {publication.title} [{publication.type}]{" "}
+					</span>
+					&nbsp;&nbsp;{titleCoverage}
+					{isOpenAccess ? (
+						<OpenAccess className="table-icon table-icon-oa" />
+					) : null}
+					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+				</Stack>
+				<Popover
+					id={idPopover}
+					open={openPoper}
+					anchorEl={anchorEl}
+					onClose={handleClose}
+					anchorOrigin={{
+						vertical: "bottom",
+						horizontal: "left",
+					}}
+				>
+					<Stack spacing={2} p={2}>
+						{reconciledFullTextHoldings.map((value) => (
+							<Stack direction="row" key={value.name} gap={2}>
+								<a
+									className="table-list-title link"
+									href={value.url}
+									target="_blank"
+									rel="noreferrer noopener nofollow"
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+								>
+									{value.name} - {getCoverage(value.coverage)}
+								</a>
+								{login ? (
+									<BookmarkButton
+										className="table-bookmark-button"
+										title={`${value.name} - ${getCoverage(value.coverage)}`}
+										url={value.url}
+									/>
+								) : null}
+							</Stack>
+						))}
+					</Stack>
+				</Popover>
+			</>
+		);
+	}
+
+	if (!isOpenAccess && !login) {
+		return (
+			<Tooltip title="Veuillez vous connecter">
+				<Box display="flex" alignItems="center">
+					<a
+						className="table-list-title link"
+						href={href}
+						target="_blank"
+						rel="noreferrer noopener nofollow"
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
+					>
+						{publication.id}. {publication.title} [{publication.type}]
+					</a>
+					&nbsp;&nbsp;{titleCoverage}
+					{isOpenAccess ? (
+						<OpenAccess className="table-icon table-icon-oa" />
+					) : null}
+					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+				</Box>
+			</Tooltip>
+		);
+	}
+
+	return (
+		<>
+			<a
+				className="table-list-title link"
+				href={href}
+				target="_blank"
+				rel="noreferrer noopener nofollow"
+				onClick={(e) => {
+					e.stopPropagation();
+				}}
+			>
+				{publication.id}. {publication.title} [{publication.type}]
+			</a>
+			&nbsp;&nbsp;{titleCoverage}
+			{isOpenAccess ? (
+				<OpenAccess className="table-icon table-icon-oa" />
+			) : null}
+			{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+		</>
+	);
+};
 
 const TablePublication = ({
 	data: dataIn,
 }: TableDisplayElementProps<PublicationResultDataType>) => {
 	const {
 		fullTextHoldings,
-		id,
 		title,
-		type,
-		isDiamond,
 		issnOnline,
 		issnPrint,
 		isbnOnline,
@@ -119,9 +258,7 @@ const TablePublication = ({
 
 	const href = reconciledFullTextHoldings[0].url;
 	const bookmarkTitle = `${title} - ${reconciledFullTextHoldings[0].name}`;
-	const isOpenAccess = reconciledFullTextHoldings[0].name
-		.toLowerCase()
-		.includes("open access");
+
 	const getTitleCoverage = () => {
 		let reconciledFullTextHoldingString = getCoverage(
 			reconciledFullTextHoldings[0].coverage,
@@ -131,26 +268,18 @@ const TablePublication = ({
 			: "";
 		return ` ${reconciledFullTextHoldingString}`;
 	};
+
 	return (
 		<div className={login ? "table-bookmark-size" : undefined}>
 			<OpenablePaper
 				onOpen={handleChange}
 				Title={
-					<>
-						<a
-							className="table-list-title link"
-							href={href}
-							target="_blank"
-							rel="noreferrer noopener nofollow"
-						>
-							{id}. {title} [{type}]
-						</a>
-						&nbsp;&nbsp;{getTitleCoverage()}
-						{isOpenAccess ? (
-							<OpenAccess className="table-icon table-icon-oa" />
-						) : null}
-						{isDiamond ? <Diamond className="table-icon" /> : null}
-					</>
+					<PublicationTitle
+						reconciledFullTextHoldings={reconciledFullTextHoldings}
+						titleCoverage={getTitleCoverage()}
+						publication={dataIn}
+						getCoverage={getCoverage}
+					/>
 				}
 				SmallBody={
 					<div className="table-list-body">
