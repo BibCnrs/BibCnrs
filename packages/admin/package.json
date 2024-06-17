@@ -1,0 +1,31 @@
+{
+	"name": "@bibcnrs/admin",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite --host 0.0.0.0",
+		"build": "tsc && vite build",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"blueimp-load-image": "^5.16.0",
+		"ra-data-json-server": "^4.16.17",
+		"ra-i18n-polyglot": "^4.16.17",
+		"ra-input-rich-text": "^4.16.18",
+		"ra-language-french": "^4.16.17",
+		"react": "^18.3.1",
+		"react-admin": "^4.16.18",
+		"react-dom": "^18.3.1"
+	},
+	"devDependencies": {
+		"@types/blueimp-load-image": "^5.16.6",
+		"@types/jsonexport": "^3.0.5",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"@vitejs/plugin-react": "^4.3.1",
+		"typescript": "^5.4.5",
+		"vite": "^5.2.13"
+	}
+}

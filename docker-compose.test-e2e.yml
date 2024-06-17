@@ -1,19 +1,19 @@
 services:
-  bib-api:
+  api:
     build:
       context: .
-      dockerfile: ./ops/bib-api/Dockerfile
+      dockerfile: ./packages/api/Dockerfile
       target: e2e
     volumes:
-      - bib-api-uploads:/app/packages/bib-api/uploads
+      - api-uploads:/app/packages/api/uploads
     depends_on:
-      bib-db:
+      db:
         condition: service_healthy
-      bib-redis:
+      redis:
         condition: service_started
     environment:
       - RENATER_FAKE_LOGIN=true
-      - DATABASE_URL=postgres://postgres:S3cr3t@bib-db/bibcnrs
+      - DATABASE_URL=postgres://postgres:S3cr3t@db/bibcnrs
       - BIBAPI_HOST= http://localhost:3000/api
       - cookie_secret=${cookie_secret}
       - header_secret=${header_secret}
@@ -26,11 +26,11 @@ services:
       - METADORE_URL=${METADORE_URL}
       - METADORE_API_KEY=${METADORE_API_KEY}
       - DOAJ_URL=${DOAJ_URL}
-      - REDIS_HOST=bib-redis
+      - REDIS_HOST=redis
       - bib_admin_host=http://localhost:3000/admin
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
-      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
+      - BIB_UPLOADS_DIR=/app/packages/api/uploads
     deploy:
       resources:
         limits:
@@ -46,12 +46,12 @@ services:
   front:
     build:
       context: .
-      dockerfile: ./ops/front/Dockerfile
+      dockerfile: ./packages/front/Dockerfile
       args:
         - BIBAPI_HOST=http://localhost:3000/api
         - SOURCE_MAP=true
     depends_on:
-      bib-api:
+      api:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
@@ -60,15 +60,15 @@ services:
       retries: 5
       start_period: 10s
 
-  bib-admin:
+  admin:
     build:
       context: .
-      dockerfile: ./ops/bib-admin/Dockerfile
+      dockerfile: ./packages/admin/Dockerfile
       args:
         - BIBAPI_HOST=http://localhost:3000/api
         - SOURCE_MAP=true
     depends_on:
-      bib-api:
+      api:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081"]
@@ -77,20 +77,20 @@ services:
       retries: 5
       start_period: 10s
 
-  bib-proxy:
+  proxy:
     image: nginx:1.25-alpine
     ports:
       - "3000:80"
     depends_on:
-      bib-api:
+      api:
         condition: service_healthy
       front:
         condition: service_healthy
-      bib-admin:
+      admin:
         condition: service_healthy
     volumes:
-      - ./ops/bib-proxy/nginx.e2e.conf:/etc/nginx/nginx.conf
-      - bib-api-uploads:/usr/share/nginx/html/files
+      - ./packages/proxy/nginx.e2e.conf:/etc/nginx/nginx.conf
+      - api-uploads:/usr/share/nginx/html/files
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 10s
@@ -98,7 +98,7 @@ services:
       retries: 5
       start_period: 10s
 
-  bib-db:
+  db:
     image: postgres:16.3
     ports:
       - "5432:5432"
@@ -118,9 +118,9 @@ services:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-1G}
 
-  bib-redis:
+  redis:
     image: redis:7.2.5
     restart: always
 
 volumes:
-  bib-api-uploads:
+  api-uploads:

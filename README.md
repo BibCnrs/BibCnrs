@@ -14,17 +14,17 @@ This is a monorepo containing several packages for the BibCnrs project. Each pac
 
 ## Packages
 
-### bib-admin
+### admin
 
 This is the admin package for our project. It uses the tool [react-admin](https://github.com/marmelab/react-admin) and allows managing access rights by institute, unit, individual to documentary resources exposed through [BibEzProxy](https://github.com/BibCnrs/BibEzProxy).
 
-### bib-api
+### api
 
 This is the API package for our project. It provides the backend services and data management for the other packages.
 
 ### front
 
-This is the frontend package for our project. It provides the user interface and interacts with the `bib-api` package to fetch and display data.
+This is the frontend package for our project. It provides the user interface and interacts with the `api` package to fetch and display data.
 
 ## Installation
 
