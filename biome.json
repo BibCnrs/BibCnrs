@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"include": ["packages/bib-front/**"],
+			"include": ["packages/front/**"],
 			"linter": {
 				"rules": {
 					"complexity": {

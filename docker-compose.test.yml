@@ -43,10 +43,10 @@ services:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-2G}
 
-  bib-front-test:
+  front-test:
     build:
       context: .
-      dockerfile: ./ops/bib-front/Dockerfile
+      dockerfile: ./ops/front/Dockerfile
       target: dev
     environment:
       - NODE_ENV=development

@@ -22,7 +22,7 @@ This is the admin package for our project. It uses the tool [react-admin](https:
 
 This is the API package for our project. It provides the backend services and data management for the other packages.
 
-### bib-front
+### front
 
 This is the frontend package for our project. It provides the user interface and interacts with the `bib-api` package to fetch and display data.
 

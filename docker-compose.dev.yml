@@ -51,10 +51,10 @@ services:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-2G}
 
-  bib-front:
+  front:
     build:
       context: .
-      dockerfile: ./ops/bib-front/Dockerfile
+      dockerfile: ./ops/front/Dockerfile
       target: dev
     environment:
       - NODE_ENV=development
@@ -64,15 +64,15 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./packages/bib-front/src
-          target: /app/packages/bib-front/src
+          path: ./packages/front/src
+          target: /app/packages/front/src
         - action: sync
-          path: ./packages/bib-front/public
-          target: /app/packages/bib-front/public
+          path: ./packages/front/public
+          target: /app/packages/front/public
         - action: rebuild
           path: ./package.json
         - action: rebuild
-          path: ./packages/bib-front/package.json
+          path: ./packages/front/package.json
     depends_on:
       - bib-api
 
@@ -107,7 +107,7 @@ services:
       - "3000:80"
     depends_on:
       - bib-api
-      - bib-front
+      - front
       - bib-admin
     develop:
       watch:
@@ -128,7 +128,7 @@ services:
       - POSTGRES_DB=bibcnrs
     volumes:
       - ./../storage/postgresql:/var/lib/postgresql/data
-      -  ./../storage/backups:/backups
+      - ./../storage/backups:/backups
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
