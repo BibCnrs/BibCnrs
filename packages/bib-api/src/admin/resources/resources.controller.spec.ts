@@ -45,7 +45,6 @@ describe("ResourcesController", () => {
 				expect.arrayContaining([
 					expect.objectContaining({
 						id: 1,
-						community: "INSHS",
 						name_en: "Bib Preprod",
 						name_fr: "Bib Preprod",
 						href: "https://bib-preprod.inist.fr/",
@@ -53,7 +52,6 @@ describe("ResourcesController", () => {
 					}),
 					expect.objectContaining({
 						id: 2,
-						community: "INSHS",
 						name_en: "Bib",
 						name_fr: "Bib",
 						href: "https://bib.cnrs.fr/",
@@ -67,7 +65,6 @@ describe("ResourcesController", () => {
 			const data = await resourcesController.findOne(2);
 			expect(data).toStrictEqual({
 				id: 2,
-				community: "INSHS",
 				name_en: "Bib",
 				name_fr: "Bib",
 				href: "https://bib.cnrs.fr/",
@@ -82,7 +79,6 @@ describe("ResourcesController", () => {
 				name_fr: randomResource,
 				name_en: randomResource,
 				href: "http://random-create",
-				community: "INSHS",
 				enable: true,
 			});
 
@@ -91,7 +87,6 @@ describe("ResourcesController", () => {
 					name_fr: randomResource,
 					name_en: randomResource,
 					href: "http://random-create",
-					community: "INSHS",
 					enable: true,
 				}),
 			);

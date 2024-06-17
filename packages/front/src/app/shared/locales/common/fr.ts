@@ -79,7 +79,7 @@ const fr: Common = {
 		},
 		table: {
 			noData: "Aucun résultat trouvé.",
-			anonymousMessage: "Veuillez vous connecter et relancer la recherche.",
+			anonymousMessage: "Veuillez vous connecter et relancer la.",
 			content: {
 				doi: "DOI",
 				doiColon: "DOI : ",
@@ -190,7 +190,7 @@ Cordialement`,
 			INP: "Physique",
 			INSHS: "Sciences Humaines & Sociales",
 			INS2I: "Sciences Informatiques",
-			INSU: "Terre & Univers ",
+			INSU: "Terre & Univers",
 			REAXYS: "REAXYS",
 		},
 	},

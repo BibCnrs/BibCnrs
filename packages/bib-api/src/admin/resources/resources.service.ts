@@ -45,9 +45,6 @@ export class ResourcesService {
 		return this.prismaService.resources.create({
 			data: {
 				...createResourceDto,
-				community: createResourceDto.community
-					? createResourceDto.community.toString()
-					: "other",
 			},
 		});
 	}
@@ -56,9 +53,6 @@ export class ResourcesService {
 		return this.prismaService.resources.update({
 			data: {
 				...updateResourceDto,
-				community: updateResourceDto.community
-					? updateResourceDto.community.toString()
-					: "other",
 			},
 			where: { id },
 		});

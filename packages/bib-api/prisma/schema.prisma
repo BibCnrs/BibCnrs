@@ -379,7 +379,6 @@ model resources {
   name_fr   String  @db.VarChar(255)
   name_en   String  @db.VarChar(255)
   href      String
-  community String  @db.VarChar(255)
   enable    Boolean @default(true)
 }
 
