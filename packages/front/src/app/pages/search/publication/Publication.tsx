@@ -36,6 +36,7 @@ import type {
 } from "../../../shared/types/props.types";
 import type { FacetEntry } from "../../../shared/types/types";
 import "./Publication.scss";
+import { Stack } from "@mui/system";
 
 const ALPHABET = [
 	"A",
@@ -289,13 +290,11 @@ const Publication = () => {
 		<div>
 			<PageTitle page="publication" />
 			<div className="header-footer">
-				<div id="publication-chips" className="publication-center">
-					<ChipFacet
-						value={search.domain}
-						values={domains}
-						onChange={handleDomain}
-					/>
-				</div>
+				<ChipFacet
+					value={search.domain}
+					values={domains}
+					onChange={handleDomain}
+				/>
 				<SearchBar
 					placeholder={t("pages.publication.searchBar")}
 					value={query.get("q") || search.query}

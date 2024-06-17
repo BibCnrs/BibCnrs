@@ -90,6 +90,7 @@ export type Common = {
 		};
 		table: {
 			noData: string;
+			anonymousMessage: string;
 			content: {
 				doi: string;
 				doiColon: string;
@@ -181,6 +182,19 @@ export type Common = {
 				subject: string;
 				body: string;
 			};
+		};
+		domains: {
+			INSB: string;
+			INC: string;
+			INEE: string;
+			INSIS: string;
+			IN2P3: string;
+			INSMI: string;
+			INP: string;
+			INSHS: string;
+			INS2I: string;
+			INSU: string;
+			REAXYS: string;
 		};
 	};
 	pages: {

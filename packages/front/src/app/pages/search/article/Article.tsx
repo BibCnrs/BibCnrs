@@ -342,13 +342,11 @@ const Article = () => {
 		<div>
 			<PageTitle page="article" />
 			<div className="header-footer">
-				<div id="article-chips">
-					<ChipFacet
-						value={search.domain}
-						values={domains}
-						onChange={handleDomain}
-					/>
-				</div>
+				<ChipFacet
+					value={search.domain}
+					values={domains}
+					onChange={handleDomain}
+				/>
 				<SearchBar
 					placeholder={t("pages.article.searchBar")}
 					value={query.get("q") || search.query}
