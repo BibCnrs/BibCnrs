@@ -11,7 +11,7 @@ class Session {
 	private session: Storage;
 	private readonly key: string;
 	constructor() {
-		this.session = window.sessionStorage;
+		this.session = window.localStorage;
 		this.key = "user";
 	}
 
