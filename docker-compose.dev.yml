@@ -1,33 +1,33 @@
 services:
-  bib-api:
+  api:
     build:
       context: .
-      dockerfile: ./ops/bib-api/Dockerfile
+      dockerfile: ./packages/api/Dockerfile
       target: dev
     volumes:
-      - ./../storage/uploads:/app/packages/bib-api/uploads
+      - ./../storage/uploads:/app/packages/api/uploads
     develop:
       watch:
         - action: sync
-          path: ./packages/bib-api/src
-          target: /app/packages/bib-api/src
+          path: ./packages/api/src
+          target: /app/packages/api/src
         - action: rebuild
-          path: ./packages/bib-api/prisma/schema.prisma
+          path: ./packages/api/prisma/schema.prisma
         - action: rebuild
           path: ./package.json
         - action: rebuild
-          path: ./packages/bib-api/package.json
+          path: ./packages/api/package.json
     depends_on:
-      bib-db:
+      db:
         condition: service_healthy
-      bib-redis:
+      redis:
         condition: service_started
     environment:
       - RENATER_FAKE_LOGIN=true
-      - DATABASE_URL=postgres://postgres:S3cr3t@bib-db/bibcnrs
+      - DATABASE_URL=postgres://postgres:S3cr3t@db/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
       - BIBAPI_HOST= http://localhost:3000/api
-      - MAIL_SERVER_HOST=bib-mail
+      - MAIL_SERVER_HOST=mail
       - MAIL_SERVER_PORT=1025
       - cookie_secret=${cookie_secret}
       - header_secret=${header_secret}
@@ -40,11 +40,11 @@ services:
       - METADORE_URL=${METADORE_URL}
       - METADORE_API_KEY=${METADORE_API_KEY}
       - DOAJ_URL=${DOAJ_URL}
-      - REDIS_HOST=bib-redis
+      - REDIS_HOST=redis
       - bib_admin_host=http://localhost:3000/admin
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
-      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
+      - BIB_UPLOADS_DIR=/app/packages/api/uploads
     deploy:
       resources:
         limits:
@@ -54,7 +54,7 @@ services:
   front:
     build:
       context: .
-      dockerfile: ./ops/front/Dockerfile
+      dockerfile: ./packages/front/Dockerfile
       target: dev
     environment:
       - NODE_ENV=development
@@ -74,12 +74,12 @@ services:
         - action: rebuild
           path: ./packages/front/package.json
     depends_on:
-      - bib-api
+      - api
 
-  bib-admin:
+  admin:
     build:
       context: .
-      dockerfile: ./ops/bib-admin/Dockerfile
+      dockerfile: ./packages/bib-admin/Dockerfile
       target: dev
     environment:
       - NODE_ENV=development
@@ -99,26 +99,26 @@ services:
         - action: rebuild
           path: ./packages/bib-admin/package.json
     depends_on:
-      - bib-api
+      - api
 
-  bib-proxy:
+  proxy:
     image: nginx:1.25-alpine
     ports:
       - "3000:80"
     depends_on:
-      - bib-api
+      - api
       - front
-      - bib-admin
+      - admin
     develop:
       watch:
         - action: sync+restart
-          path: ./ops/bib-proxy/nginx.dev.conf
+          path: ./packages/proxy/nginx.dev.conf
           target: /etc/nginx/nginx.conf
     volumes:
-      - ./ops/bib-proxy/nginx.dev.conf:/etc/nginx/nginx.conf
+      - ./packages/proxy/nginx.dev.conf:/etc/nginx/nginx.conf
       - ./../storage/uploads:/usr/share/nginx/html/files
 
-  bib-db:
+  db:
     image: postgres:16.3
     ports:
       - "5432:5432"
@@ -140,11 +140,11 @@ services:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-1G}
 
-  bib-redis:
+  redis:
     image: redis:7.2.5
     restart: always
 
-  bib-mail:
+  mail:
     image: maildev/maildev:2.1.0
     ports:
       - "1080:1080"

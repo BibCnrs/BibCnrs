@@ -38,8 +38,8 @@ services:
     image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:${BIBAPI_VERSION}
     container_name: bibcnrs-api
     volumes:
-      - ./../storage/uploads:/app/packages/bib-api/uploads
-      - ./../storage/logs:/app/packages/bib-api/logs
+      - ./../storage/uploads:/app/packages/api/uploads
+      - ./../storage/logs:/app/packages/api/logs
     environment:
       NODE_ENV: ${NODE_ENV}
       http_proxy: ${http_proxy}
@@ -68,7 +68,7 @@ services:
       REDIS_HOST: bibcnrs-api-redis
       MAIL_FROM: bibcnrs@bib.cnrs.fr
       MAIL_TO: assistance-portail@inist.fr
-      BIB_UPLOADS_DIR: /app/packages/bib-api/uploads
+      BIB_UPLOADS_DIR: /app/packages/api/uploads
     restart: always
     ports:
       - "3000:3000"
