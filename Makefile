@@ -155,7 +155,7 @@ logs-api: env-copy						## Show logs for api
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f api
 
 logs-admin: env-copy					## Show logs for admin
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-admin
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f admin
 	
 typecheck:								## Run typecheck for all packages
 	yarn workspaces foreach --all --parallel --verbose run typecheck
@@ -192,7 +192,7 @@ build-front:
 
 build-admin:
 	docker build \
-		-f ./packages/bib-admin/Dockerfile \
+		-f ./packages/admin/Dockerfile \
 		--progress=plain \
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:$(BIBADMIN_VERSION)' \
