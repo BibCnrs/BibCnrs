@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Fragment, memo, useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { retrieve as retrieveFn } from "../../../services/search/Publication";
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -18,8 +18,15 @@ import OpenAccess from "../icon/OpenAccess";
 import OpenablePaper from "../paper/openable/OpenablePaper";
 import SkeletonEntry from "../skeleton/SkeletonEntry";
 import "./scss/TableList.scss";
-import { Button, Popover, Tooltip, Typography } from "@mui/material";
+import { Popover, Tooltip } from "@mui/material";
 import { Box, Stack } from "@mui/system";
+import { environment } from "../../../services/Environment";
+
+function proxifyOAPublication(url: string, domain: string) {
+	return `${
+		environment.host
+	}/ebsco/oa?url=${encodeURIComponent(url)}&sid=ao&domaine=${domain}&doi=null`;
+}
 
 const PublicationTitle = ({
 	reconciledFullTextHoldings,
@@ -32,7 +39,7 @@ const PublicationTitle = ({
 	publication: PublicationResultDataType;
 	getCoverage: (coverage: PublicationCoverageDataType) => string;
 }) => {
-	const { login } = useContext(BibContext);
+	const { search, login } = useContext(BibContext);
 
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -90,7 +97,11 @@ const PublicationTitle = ({
 							<Stack direction="row" key={value.name} gap={2}>
 								<a
 									className="table-list-title link"
-									href={value.url}
+									href={
+										isOpenAccess
+											? proxifyOAPublication(value.url, search.domain)
+											: value.url
+									}
 									target="_blank"
 									rel="noreferrer noopener nofollow"
 									onClick={(e) => {
@@ -130,9 +141,6 @@ const PublicationTitle = ({
 						{publication.id}. {publication.title} [{publication.type}]
 					</a>
 					&nbsp;&nbsp;{titleCoverage}
-					{isOpenAccess ? (
-						<OpenAccess className="table-icon table-icon-oa" />
-					) : null}
 					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
 				</Box>
 			</Tooltip>
@@ -143,7 +151,7 @@ const PublicationTitle = ({
 		<>
 			<a
 				className="table-list-title link"
-				href={href}
+				href={isOpenAccess ? proxifyOAPublication(href, search.domain) : href}
 				target="_blank"
 				rel="noreferrer noopener nofollow"
 				onClick={(e) => {
