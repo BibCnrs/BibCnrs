@@ -149,7 +149,7 @@ logs: env-copy							## Show logs
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f
 
 logs-front: env-copy					## Show logs for front
-	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-front
+	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f front
 
 logs-api: env-copy						## Show logs for api
 	docker compose --env-file docker-compose.dev.env -f docker-compose.dev.yml logs -f bib-api
@@ -183,7 +183,7 @@ build-api:								## Build docker image for api args: <BIBAPI_VERSION> build bib
 
 build-front:
 	docker build \
-		-f ./ops/bib-front/Dockerfile \
+		-f ./ops/front/Dockerfile \
 		--progress=plain \
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:$(BIBFRONT_VERSION)' \

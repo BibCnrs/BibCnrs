@@ -418,9 +418,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bibcnrs/bib-front@workspace:packages/bib-front":
+"@bibcnrs/e2e@workspace:packages/e2e":
   version: 0.0.0-use.local
-  resolution: "@bibcnrs/bib-front@workspace:packages/bib-front"
+  resolution: "@bibcnrs/e2e@workspace:packages/e2e"
+  dependencies:
+    "@playwright/test": "npm:^1.44.1"
+    "@types/node": "npm:^20.14.2"
+  languageName: unknown
+  linkType: soft
+
+"@bibcnrs/front@workspace:packages/front":
+  version: 0.0.0-use.local
+  resolution: "@bibcnrs/front@workspace:packages/front"
   dependencies:
     "@dnd-kit/core": "npm:^6.1.0"
     "@dnd-kit/modifiers": "npm:^7.0.0"
@@ -448,15 +457,6 @@ __metadata:
     sass: "npm:^1.77.4"
     typescript: "npm:^5.4.5"
     vite: "npm:^5.2.13"
-  languageName: unknown
-  linkType: soft
-
-"@bibcnrs/e2e@workspace:packages/e2e":
-  version: 0.0.0-use.local
-  resolution: "@bibcnrs/e2e@workspace:packages/e2e"
-  dependencies:
-    "@playwright/test": "npm:^1.44.1"
-    "@types/node": "npm:^20.14.2"
   languageName: unknown
   linkType: soft
 
