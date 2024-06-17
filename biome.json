@@ -29,7 +29,7 @@
 	},
 	"overrides": [
 		{
-			"include": ["packages/bib-api/**"],
+			"include": ["packages/api/**"],
 			"javascript": {
 				"parser": {
 					"unsafeParameterDecoratorsEnabled": true

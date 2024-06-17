@@ -1,27 +1,27 @@
 services:
-  bib-api-test:
+  api-test:
     build:
       context: .
-      dockerfile: ./ops/bib-api/Dockerfile
+      dockerfile: ./ops/api/Dockerfile
       target: dev
-    command: ["yarn", "workspace", "@bibcnrs/bib-api", "run", "test:watch"]
+    command: ["yarn", "workspace", "@bibcnrs/api", "run", "test:watch"]
     tty: true
     develop:
       watch:
         - action: sync
-          path: ./packages/bib-api/src
-          target: /app/packages/bib-api/src
+          path: ./packages/api/src
+          target: /app/packages/api/src
         - action: sync
-          path: ./packages/bib-api/vitest.config.mts
-          target: /app/packages/bib-api/vitest.config.mts
+          path: ./packages/api/vitest.config.mts
+          target: /app/packages/api/vitest.config.mts
         - action: rebuild
-          path: ./packages/bib-api/test/seed.ts
+          path: ./packages/api/test/seed.ts
         - action: rebuild
-          path: ./packages/bib-api/prisma/schema.prisma
+          path: ./packages/api/prisma/schema.prisma
         - action: rebuild
           path: ./package.json
         - action: rebuild
-          path: ./packages/bib-api/package.json
+          path: ./packages/api/package.json
     depends_on:
       bib-db-test:
         condition: service_healthy
@@ -36,7 +36,7 @@ services:
       - BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
-      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
+      - BIB_UPLOADS_DIR=/app/packages/api/uploads
     deploy:
       resources:
         limits:
@@ -54,7 +54,7 @@ services:
       - VITE_BIBAPI_HOST=http://localhost:3000/api
       - VITE_SOURCE_MAP=true
     depends_on:
-      - bib-api-test
+      - api-test
 
   bib-db-test:
     image: postgres:16.3

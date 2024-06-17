@@ -1,22 +1,22 @@
 services:
-  bib-api:
+  api:
     build:
       context: .
-      dockerfile: ./ops/bib-api/Dockerfile
+      dockerfile: ./packages/api/Dockerfile
       target: dev
     volumes:
-      - ./../storage/uploads:/app/packages/bib-api/uploads
+      - ./../storage/uploads:/app/packages/api/uploads
     develop:
       watch:
         - action: sync
-          path: ./packages/bib-api/src
-          target: /app/packages/bib-api/src
+          path: ./packages/api/src
+          target: /app/packages/api/src
         - action: rebuild
-          path: ./packages/bib-api/prisma/schema.prisma
+          path: ./packages/api/prisma/schema.prisma
         - action: rebuild
           path: ./package.json
         - action: rebuild
-          path: ./packages/bib-api/package.json
+          path: ./packages/api/package.json
     depends_on:
       bib-db:
         condition: service_healthy
@@ -44,7 +44,7 @@ services:
       - bib_admin_host=http://localhost:3000/admin
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
-      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
+      - BIB_UPLOADS_DIR=/app/packages/api/uploads
     deploy:
       resources:
         limits:
@@ -74,7 +74,7 @@ services:
         - action: rebuild
           path: ./packages/front/package.json
     depends_on:
-      - bib-api
+      - api
 
   bib-admin:
     build:
@@ -99,14 +99,14 @@ services:
         - action: rebuild
           path: ./packages/bib-admin/package.json
     depends_on:
-      - bib-api
+      - api
 
   bib-proxy:
     image: nginx:1.25-alpine
     ports:
       - "3000:80"
     depends_on:
-      - bib-api
+      - api
       - front
       - bib-admin
     develop:

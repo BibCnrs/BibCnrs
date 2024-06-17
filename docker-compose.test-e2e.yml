@@ -1,11 +1,11 @@
 services:
-  bib-api:
+  api:
     build:
       context: .
-      dockerfile: ./ops/bib-api/Dockerfile
+      dockerfile: ./ops/api/Dockerfile
       target: e2e
     volumes:
-      - bib-api-uploads:/app/packages/bib-api/uploads
+      - api-uploads:/app/packages/api/uploads
     depends_on:
       bib-db:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
       - bib_admin_host=http://localhost:3000/admin
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
-      - BIB_UPLOADS_DIR=/app/packages/bib-api/uploads
+      - BIB_UPLOADS_DIR=/app/packages/api/uploads
     deploy:
       resources:
         limits:
@@ -51,7 +51,7 @@ services:
         - BIBAPI_HOST=http://localhost:3000/api
         - SOURCE_MAP=true
     depends_on:
-      bib-api:
+      api:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
@@ -68,7 +68,7 @@ services:
         - BIBAPI_HOST=http://localhost:3000/api
         - SOURCE_MAP=true
     depends_on:
-      bib-api:
+      api:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081"]
@@ -82,7 +82,7 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      bib-api:
+      api:
         condition: service_healthy
       front:
         condition: service_healthy
@@ -90,7 +90,7 @@ services:
         condition: service_healthy
     volumes:
       - ./ops/bib-proxy/nginx.e2e.conf:/etc/nginx/nginx.conf
-      - bib-api-uploads:/usr/share/nginx/html/files
+      - api-uploads:/usr/share/nginx/html/files
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 10s
@@ -123,4 +123,4 @@ services:
     restart: always
 
 volumes:
-  bib-api-uploads:
+  api-uploads:
