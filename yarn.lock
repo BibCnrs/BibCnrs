@@ -337,6 +337,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bibcnrs/admin@workspace:packages/admin":
+  version: 0.0.0-use.local
+  resolution: "@bibcnrs/admin@workspace:packages/admin"
+  dependencies:
+    "@types/blueimp-load-image": "npm:^5.16.6"
+    "@types/jsonexport": "npm:^3.0.5"
+    "@types/react": "npm:^18.3.3"
+    "@types/react-dom": "npm:^18.3.0"
+    "@vitejs/plugin-react": "npm:^4.3.1"
+    blueimp-load-image: "npm:^5.16.0"
+    ra-data-json-server: "npm:^4.16.17"
+    ra-i18n-polyglot: "npm:^4.16.17"
+    ra-input-rich-text: "npm:^4.16.18"
+    ra-language-french: "npm:^4.16.17"
+    react: "npm:^18.3.1"
+    react-admin: "npm:^4.16.18"
+    react-dom: "npm:^18.3.1"
+    typescript: "npm:^5.4.5"
+    vite: "npm:^5.2.13"
+  languageName: unknown
+  linkType: soft
+
 "@bibcnrs/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@bibcnrs/api@workspace:packages/api"
@@ -393,28 +415,6 @@ __metadata:
     unplugin-swc: "npm:^1.4.5"
     vitest: "npm:^1.6.0"
     xml-flow: "npm:^1.0.4"
-  languageName: unknown
-  linkType: soft
-
-"@bibcnrs/bib-admin@workspace:packages/bib-admin":
-  version: 0.0.0-use.local
-  resolution: "@bibcnrs/bib-admin@workspace:packages/bib-admin"
-  dependencies:
-    "@types/blueimp-load-image": "npm:^5.16.6"
-    "@types/jsonexport": "npm:^3.0.5"
-    "@types/react": "npm:^18.3.3"
-    "@types/react-dom": "npm:^18.3.0"
-    "@vitejs/plugin-react": "npm:^4.3.1"
-    blueimp-load-image: "npm:^5.16.0"
-    ra-data-json-server: "npm:^4.16.17"
-    ra-i18n-polyglot: "npm:^4.16.17"
-    ra-input-rich-text: "npm:^4.16.18"
-    ra-language-french: "npm:^4.16.17"
-    react: "npm:^18.3.1"
-    react-admin: "npm:^4.16.18"
-    react-dom: "npm:^18.3.1"
-    typescript: "npm:^5.4.5"
-    vite: "npm:^5.2.13"
   languageName: unknown
   linkType: soft
 

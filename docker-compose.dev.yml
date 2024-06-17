@@ -79,7 +79,7 @@ services:
   admin:
     build:
       context: .
-      dockerfile: ./packages/bib-admin/Dockerfile
+      dockerfile: ./packages/admin/Dockerfile
       target: dev
     environment:
       - NODE_ENV=development
@@ -89,15 +89,15 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./packages/bib-admin/src
-          target: /app/packages/bib-admin/src
+          path: ./packages/admin/src
+          target: /app/packages/admin/src
         - action: sync
-          path: ./packages/bib-admin/public
-          target: /app/packages/bib-admin/public
+          path: ./packages/admin/public
+          target: /app/packages/admin/public
         - action: rebuild
           path: ./package.json
         - action: rebuild
-          path: ./packages/bib-admin/package.json
+          path: ./packages/admin/package.json
     depends_on:
       - api
 
