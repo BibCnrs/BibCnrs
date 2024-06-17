@@ -20,10 +20,17 @@ export function DatabaseItem(props: DatabaseItemProps) {
 					sx={{
 						"&:last-child": {
 							paddingBottom: 2,
+							height: "100%",
 						},
 					}}
 				>
-					<Stack gap={1}>
+					<Stack
+						gap={1}
+						sx={{
+							height: "100%",
+							justifyContent: "space-between",
+						}}
+					>
 						<Stack
 							direction="row"
 							alignItems="center"

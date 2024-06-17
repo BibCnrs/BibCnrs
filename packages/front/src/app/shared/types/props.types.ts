@@ -11,7 +11,6 @@ import type {
 } from "react";
 import type {
 	CMSResultDataType,
-	DatabaseDataType,
 	HistoryEntryDataType,
 	TestsNewsDataType,
 } from "./data.types";
@@ -195,7 +194,7 @@ export type ChipFacetProps = PropsWithoutRef<{
 				label: string;
 		  }
 	>;
-	needTranslation?: boolean;
+	isDomain?: boolean;
 	onChange: (event: MouseEvent<HTMLElement>, field: string | null) => void;
 }>;
 

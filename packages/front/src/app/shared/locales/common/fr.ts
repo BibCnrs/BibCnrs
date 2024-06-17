@@ -79,6 +79,7 @@ const fr: Common = {
 		},
 		table: {
 			noData: "Aucun résultat trouvé.",
+			anonymousMessage: "Veuillez vous connecter et relancer la recherche.",
 			content: {
 				doi: "DOI",
 				doiColon: "DOI : ",
@@ -178,6 +179,19 @@ Afin de répondre au mieux à votre demande, nous vous remercions de bien vouloi
 
 Cordialement`,
 			},
+		},
+		domains: {
+			INSB: "Biologie",
+			INC: "Chimie",
+			INEE: "Ecologie & Environnement",
+			INSIS: "Ingénierie",
+			IN2P3: "Nucléaire & Particules",
+			INSMI: "Mathématiques",
+			INP: "Physique",
+			INSHS: "Sciences Humaines & Sociales",
+			INS2I: "Sciences Informatiques",
+			INSU: "Terre & Univers ",
+			REAXYS: "REAXYS",
 		},
 	},
 	pages: {

@@ -78,6 +78,7 @@ const en: Common = {
 		},
 		table: {
 			noData: "No result found.",
+			anonymousMessage: "Sign in and reload the search",
 			content: {
 				doi: "DOI",
 				doiColon: "DOI: ",
@@ -177,6 +178,19 @@ In order to best answer your request, we would be grateful if you could specify 
 
 Sincerely`,
 			},
+		},
+		domains: {
+			INSB: "Biology",
+			INC: "Chemistry",
+			INEE: "Ecology & Environment",
+			INSIS: "Engineering",
+			IN2P3: "Nuclei & Particles",
+			INSMI: "Mathematics",
+			INP: "Physics",
+			INSHS: "Humanities & Social Sciences",
+			INS2I: "Informatics",
+			INSU: "Earth & Space",
+			REAXYS: "REAXYS",
 		},
 	},
 	pages: {

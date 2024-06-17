@@ -247,7 +247,7 @@ const TableHistory = ({
 					<b>{data.event.queries[0].term}</b>
 				</div>
 				<div className="table-history-box">
-					<b>{data.event.domain}</b>
+					<b>{t(`components.domains.${data.event.domain}`)}</b>
 				</div>
 				<div className="table-history-box">
 					<Limiters data={data.event.limiters} />

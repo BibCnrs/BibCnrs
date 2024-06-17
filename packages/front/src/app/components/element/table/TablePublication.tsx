@@ -23,9 +23,9 @@ import { Box, Stack } from "@mui/system";
 import { environment } from "../../../services/Environment";
 
 function proxifyOAPublication(url: string, domain: string) {
-	return `${
-		environment.host
-	}/ebsco/oa?url=${encodeURIComponent(url)}&sid=ao&domaine=${domain}&doi=null`;
+	return `${environment.host}/ebsco/oa?url=${encodeURIComponent(
+		url,
+	)}&sid=ao&domaine=${domain}&doi=null`;
 }
 
 const PublicationTitle = ({
@@ -39,6 +39,7 @@ const PublicationTitle = ({
 	publication: PublicationResultDataType;
 	getCoverage: (coverage: PublicationCoverageDataType) => string;
 }) => {
+	const t = useTranslator();
 	const { search, login } = useContext(BibContext);
 
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -61,6 +62,28 @@ const PublicationTitle = ({
 	const isOpenAccess = reconciledFullTextHoldings[0].name
 		.toLowerCase()
 		.includes("open access");
+
+	if (!isOpenAccess && !login) {
+		return (
+			<Tooltip title={t("components.table.anonymousMessage")}>
+				<Box display="flex" alignItems="center">
+					<a
+						className="table-list-title link"
+						href={href}
+						target="_blank"
+						rel="noreferrer noopener nofollow"
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
+					>
+						{publication.id}. {publication.title} [{publication.type}]
+					</a>
+					&nbsp;&nbsp;{titleCoverage}
+					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+				</Box>
+			</Tooltip>
+		);
+	}
 
 	if (reconciledFullTextHoldings.length > 1) {
 		const idPopover = open ? `simple-popover-${publication.id}` : undefined;
@@ -122,28 +145,6 @@ const PublicationTitle = ({
 					</Stack>
 				</Popover>
 			</>
-		);
-	}
-
-	if (!isOpenAccess && !login) {
-		return (
-			<Tooltip title="Veuillez vous connecter">
-				<Box display="flex" alignItems="center">
-					<a
-						className="table-list-title link"
-						href={href}
-						target="_blank"
-						rel="noreferrer noopener nofollow"
-						onClick={(e) => {
-							e.stopPropagation();
-						}}
-					>
-						{publication.id}. {publication.title} [{publication.type}]
-					</a>
-					&nbsp;&nbsp;{titleCoverage}
-					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
-				</Box>
-			</Tooltip>
 		);
 	}
 

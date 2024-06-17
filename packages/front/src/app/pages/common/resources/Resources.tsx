@@ -16,6 +16,14 @@ const DisplayResources = ({
 		return null;
 	}
 
+	// sort resources by name in alphabetical order
+	data.sort((a, b) => {
+		if (language === "en") {
+			return a.name_en.localeCompare(b.name_en);
+		}
+		return a.name_fr.localeCompare(b.name_fr);
+	});
+
 	return (
 		<div id="resources">
 			{data.map((resource) => (

@@ -37,7 +37,7 @@ const ChipFacet = ({
 	value,
 	values,
 	onChange,
-	needTranslation = false,
+	isDomain = true,
 }: ChipFacetProps) => {
 	const t = useTranslator();
 
@@ -62,10 +62,19 @@ const ChipFacet = ({
 			value={value}
 			exclusive
 			onChange={onChange}
+			sx={{
+				// backgroundColor: "yellow",
+				display: "flex",
+				flexWrap: "wrap",
+				justifyContent: "center",
+				gap: "10px",
+			}}
 		>
 			{formattedValues.map((v) => (
 				<StyledToggleButton key={v.value} value={v.value}>
-					{needTranslation ? t(`components.facet.chips.${v.label}`) : v.label}
+					{isDomain
+						? t(`components.domains.${v.label}`)
+						: t(`components.facet.chips.${v.label}`)}
 				</StyledToggleButton>
 			))}
 		</StyledToggleButtonGroup>
