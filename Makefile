@@ -282,10 +282,18 @@ search-alert: 									## Run search alert in production mode
 	docker exec bibcnrs-api \
 		yarn workspace @bibcnrs/bib-api run command:searchAlert
 
-create-test-alert-dev: 								## Run create test alert in dev mode
+create-test-alert-dev: 							## Run create test alert in dev mode
 	docker exec bibcnrs-bib-api-1 \
 		yarn workspace @bibcnrs/bib-api run command:createAlertForTest:dev $(COMMAND_ARGS)
 
-create-test-alert: 									## Run create test alert in production mode
+create-test-alert: 								## Run create test alert in production mode
 	docker exec bibcnrs-api \
 		yarn workspace @bibcnrs/bib-api run command:createAlertForTest $(COMMAND_ARGS)
+
+clear-history-dev:								## Clear search history entries older than 2 months in dev mode
+	docker exec bibcnrs-bib-api-1 \
+		yarn workspace @bibcnrs/bib-api run command:cleanOldHistoryEntries:dev
+
+clear_history:									## Clear search history entries older than 2 months in production mode
+	docker exec bibcnrs-api \
+		yarn workspace @bibcnrs/bib-api run command:cleanOldHistoryEntries

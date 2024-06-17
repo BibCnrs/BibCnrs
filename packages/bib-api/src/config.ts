@@ -41,6 +41,12 @@ const configFunction = () => ({
 	ezProxy: {
 		ticketSecret: process.env.ticket_secret,
 	},
+	history: {
+		maxSearchHistoryAgeInMonths: Number.parseInt(
+			process.env.MAX_SEARCH_HISTORY_AGE_IN_MONTHS || "2",
+			10,
+		),
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;
