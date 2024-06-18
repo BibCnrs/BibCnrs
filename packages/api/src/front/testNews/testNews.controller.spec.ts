@@ -41,7 +41,6 @@ describe("FrontTestNewsController", () => {
 					content_fr: "Test News 1",
 					media_id: null,
 					media: null,
-					domains: null,
 					id: 2,
 				}),
 				expect.objectContaining({
@@ -55,7 +54,6 @@ describe("FrontTestNewsController", () => {
 					content_fr: "Test News 2",
 					media_id: null,
 					media: null,
-					domains: null,
 					id: 1,
 				}),
 			]);
@@ -74,7 +72,6 @@ describe("FrontTestNewsController", () => {
 					content_fr: "Test News 1",
 					media_id: null,
 					media: null,
-					domains: null,
 					id: 2,
 				}),
 				expect.objectContaining({
@@ -88,7 +85,6 @@ describe("FrontTestNewsController", () => {
 					content_fr: "Test News 2",
 					media_id: null,
 					media: null,
-					domains: null,
 					id: 1,
 				}),
 			]);
@@ -105,7 +101,6 @@ describe("FrontTestNewsController", () => {
 					content_fr: "Test News 1",
 					media_id: null,
 					media: null,
-					domains: null,
 					id: 2,
 				}),
 			]);
