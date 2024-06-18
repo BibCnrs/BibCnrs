@@ -197,6 +197,7 @@ Sincerely`,
 		root: {
 			title: "Home",
 			seeMore: "See more",
+			emptyFavorites: "Pin your favourite resources to find them easily later.",
 		},
 		resources: {
 			title: "Lists of documentaries resources",

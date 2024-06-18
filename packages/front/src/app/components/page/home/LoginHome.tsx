@@ -91,6 +91,9 @@ export const LoginHome = () => {
 								</CardActionArea>
 							</Card>
 						))}
+						{lastNineFavourites.length === 0 && (
+							<Typography>{t("pages.root.emptyFavorites")}</Typography>
+						)}
 					</Box>
 
 					<Box sx={{ textAlign: "right" }}>

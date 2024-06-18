@@ -201,6 +201,7 @@ export type Common = {
 		root: {
 			title: string;
 			seeMore: string;
+			emptyFavorites: string;
 		};
 		article: {
 			title: string;
