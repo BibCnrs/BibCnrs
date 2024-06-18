@@ -1,47 +1,14 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import AlertPaper from "../components/element/paper/alert/AlertPaper";
-import RenderContent from "../components/page/render/RenderContent";
 import SearchBar from "../components/page/searchbar/SearchBar";
-import { alert, home } from "../services/common/CMS";
 import { RouteArticle, updatePageQueryUrl } from "../shared/Routes";
 import { useTranslator } from "../shared/locales/I18N";
-import type { CMSResultDataType } from "../shared/types/data.types";
 import "./Root.scss";
+import { Container } from "@mui/system";
+import { AnonymousHome } from "../components/page/home/AnonymousHome";
 
 const Root = () => {
 	const navigate = useNavigate();
 	const t = useTranslator();
-
-	const { data: alertData } = useQuery<
-		CMSResultDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-		any,
-		CMSResultDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-		any
-	>({
-		queryKey: ["alert"],
-		queryFn: alert,
-		placeholderData: keepPreviousData,
-		staleTime: 3600000, // 1 hour of cache
-		gcTime: 3600000, // 1000 * 60 * 60
-	});
-
-	const { data: homeData } = useQuery<
-		CMSResultDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-		any,
-		CMSResultDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-		any
-	>({
-		queryKey: ["home"],
-		queryFn: home,
-		placeholderData: keepPreviousData,
-		staleTime: 3600000, // 1 hour of cache
-		gcTime: 3600000, // 1000 * 60 * 60
-	});
 
 	const handleSearch = (q: string | undefined) => {
 		updatePageQueryUrl(RouteArticle, navigate, { q });
@@ -55,15 +22,9 @@ const Root = () => {
 					onSearch={handleSearch}
 				/>
 			</div>
-			<div id="app">
-				<RenderContent
-					data={alertData}
-					page="root"
-					t={t}
-					Container={AlertPaper}
-				/>
-				<RenderContent data={homeData} page="root" t={t} />
-			</div>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<AnonymousHome />
+			</Container>
 		</div>
 	);
 };
