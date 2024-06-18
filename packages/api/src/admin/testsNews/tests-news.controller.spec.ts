@@ -86,7 +86,7 @@ describe("TestsNewsController", () => {
 				urls: null,
 				media: null,
 				media_id: null,
-				communities: [],
+				communities: [1, 2],
 			});
 		});
 
