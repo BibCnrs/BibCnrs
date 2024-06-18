@@ -1,6 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Cron } from "@nestjs/schedule";
 import { subMonths } from "date-fns";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -18,7 +17,6 @@ export class EbscoHistoryCronService {
 		this.historyConfig = configService.get("history");
 	}
 
-	@Cron(process.env.SEARCH_ALERT_CRON || "0 4 * * *")
 	async cleanOldHistory() {
 		logger.log("Cleaning old search history");
 
