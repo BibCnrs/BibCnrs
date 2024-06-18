@@ -1,12 +1,10 @@
+import { Card, CardActionArea, CardContent, Link } from "@mui/material";
+import { Box } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
 import { resources } from "../../../services/common/Resources";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type { ResourcesDataType } from "../../../shared/types/data.types";
-import "./Resources.scss";
-import { Card, CardActionArea, CardContent, Link } from "@mui/material";
-import { Box } from "@mui/system";
 
 const DisplayResources = ({
 	data,
