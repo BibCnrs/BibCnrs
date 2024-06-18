@@ -96,7 +96,6 @@ export type ResourceDataType = {
 	name_fr: string;
 	name_en: string;
 	href: string;
-	community: string;
 	enable: boolean;
 };
 

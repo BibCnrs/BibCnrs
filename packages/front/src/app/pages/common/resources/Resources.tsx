@@ -1,11 +1,10 @@
+import { Card, CardActionArea, CardContent, Link } from "@mui/material";
+import { Box } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
-import { getInstituteColor } from "../../../components/internal/provider/LocalizedThemeProvider";
 import { resources } from "../../../services/common/Resources";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type { ResourcesDataType } from "../../../shared/types/data.types";
-import "./Resources.scss";
 
 const DisplayResources = ({
 	data,
@@ -25,25 +24,39 @@ const DisplayResources = ({
 	});
 
 	return (
-		<div id="resources">
+		<Box
+			display="grid"
+			gridTemplateColumns={{
+				xs: "repeat(1, 1fr)",
+				sm: "repeat(2, 1fr)",
+				md: "repeat(3, 1fr)",
+				lg: "repeat(4, 1fr)",
+			}}
+			gap={2}
+			aria-role="list"
+		>
 			{data.map((resource) => (
-				<ColoredPaper
-					elevation={2}
-					key={resource.id}
-					color={getInstituteColor(resource.community)}
-					className="resource"
-					border
-				>
-					<a
-						className="link"
+				<Card key={resource.id} role="listitem" aria-label={resource.name_fr}>
+					<CardActionArea
+						component={Link}
 						href={resource.href}
+						sx={{ height: "100%" }}
 						rel="nofollow noreferrer noopener"
 					>
-						{language === "en" ? resource.name_en : resource.name_fr}
-					</a>
-				</ColoredPaper>
+						<CardContent
+							sx={{
+								"&:last-child": {
+									paddingBottom: 2,
+									height: "100%",
+								},
+							}}
+						>
+							{language === "en" ? resource.name_en : resource.name_fr}
+						</CardContent>
+					</CardActionArea>
+				</Card>
 			))}
-		</div>
+		</Box>
 	);
 };
 

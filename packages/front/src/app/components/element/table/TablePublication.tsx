@@ -121,7 +121,7 @@ const PublicationTitle = ({
 								<a
 									className="table-list-title link"
 									href={
-										isOpenAccess
+										isOpenAccess && login
 											? proxifyOAPublication(value.url, search.domain)
 											: value.url
 									}
@@ -152,7 +152,11 @@ const PublicationTitle = ({
 		<>
 			<a
 				className="table-list-title link"
-				href={isOpenAccess ? proxifyOAPublication(href, search.domain) : href}
+				href={
+					isOpenAccess && login
+						? proxifyOAPublication(href, search.domain)
+						: href
+				}
 				target="_blank"
 				rel="noreferrer noopener nofollow"
 				onClick={(e) => {
