@@ -66,14 +66,7 @@ export class JanusAuthController {
 		@Query("origin") origin: string,
 	) {
 		const renaterHeader: RenaterHeader = this.renaterConfig.fakeLogin
-			? {
-					cookie: "_shibsession_id=_sessionid",
-					sn: "marmelab",
-					givenname: "developer",
-					mail: "developer@marmelab.com",
-					o: "CNRS",
-					uid: "tester.10",
-				}
+			? FAKE_LOGIN_HEADER
 			: {
 					cookie: request.header("cookie") ?? "",
 					sn: request.header("sn") ?? "",
@@ -136,11 +129,6 @@ export class JanusAuthController {
 			last_connexion: renaterHeader["shib-authentication-instant"],
 			primary_institute: institute?.id,
 			primary_unit: unit?.id,
-			active: true,
-			comment: null,
-			favorite_domain: null,
-			favourite_resources: [],
-			first_connexion: new Date(),
 		});
 
 		const user = await this.janusAccountService.findOneByUid(renaterHeader.uid);
