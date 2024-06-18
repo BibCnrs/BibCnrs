@@ -5,11 +5,14 @@ import { getDomains } from "./Session";
 
 export type Pages = "news" | "tests";
 
-export const news = async <
-	Page extends Pages,
->(): Promise<TestsNewsDataType> => {
+export const news = async ({
+	limit,
+}: {
+	limit?: number;
+} = {}): Promise<TestsNewsDataType> => {
 	const query = createQuery(environment.get.account.testsNews, {
 		domains: getDomains().join(","),
+		limit: limit ? limit.toString() : undefined,
 	});
 
 	const response: Response = await fetch(query, {

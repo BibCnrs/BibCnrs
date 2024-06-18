@@ -7,12 +7,12 @@ export class FrontTestNewsController {
 
 	@Get()
 	async getTestNews(
-		@Param("domains") domains: string | null = null,
-		@Query("first") first: string | null = null,
+		@Query("domains") domains: string | null = null,
+		@Query("limit") limit: string | null = null,
 	) {
 		return this.ebscoTestNewsService.getTestNews(
 			domains?.split(",") ?? [],
-			first != null,
+			Number.parseInt(limit),
 		);
 	}
 

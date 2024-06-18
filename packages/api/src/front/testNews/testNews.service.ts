@@ -38,9 +38,9 @@ export class FrontTestNewsService {
 		};
 	}
 
-	async getTestNews(domains: string[] = [], first = false) {
+	async getTestNews(domains: string[] = [], limit: number | null = null) {
 		const testNews = await this.prismaService.tests_news.findMany({
-			take: first ? 1 : 100,
+			take: limit ? limit : 100,
 			where: {
 				AND: {
 					enable: true,

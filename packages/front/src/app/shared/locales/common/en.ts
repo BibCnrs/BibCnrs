@@ -196,6 +196,7 @@ Sincerely`,
 	pages: {
 		root: {
 			title: "Home",
+			seeMore: "See more",
 		},
 		resources: {
 			title: "Lists of documentaries resources",

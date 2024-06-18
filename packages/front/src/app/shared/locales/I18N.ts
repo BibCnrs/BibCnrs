@@ -200,6 +200,7 @@ export type Common = {
 	pages: {
 		root: {
 			title: string;
+			seeMore: string;
 		};
 		article: {
 			title: string;

@@ -197,6 +197,7 @@ Cordialement`,
 	pages: {
 		root: {
 			title: "Accueil",
+			seeMore: "Voir plus",
 		},
 		resources: {
 			title: "Listes des ressources documentaires",
