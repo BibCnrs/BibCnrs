@@ -13,6 +13,7 @@ export class CreateTestNewsDto implements Omit<tests_news, "id"> {
 	enable: boolean;
 	media_id: number | null;
 	media: Prisma.JsonValue | null;
+	communities?: number[];
 }
 
 export class UpdateTestNewsDto extends CreateTestNewsDto {

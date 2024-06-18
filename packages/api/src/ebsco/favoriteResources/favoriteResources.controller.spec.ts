@@ -92,7 +92,7 @@ describe("EbscoFavoriteResourcesController", () => {
 				{ a: "b" },
 			]);
 
-			expect(
+			await expect(
 				prismaService.janus_account.findFirst({ where: { id: 1 } }),
 			).resolves.toEqual(
 				expect.objectContaining({

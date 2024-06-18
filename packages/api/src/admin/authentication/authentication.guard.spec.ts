@@ -64,9 +64,9 @@ describe("AdminAuthenticationGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(adminAuthenticationGuard.canActivate(context)).resolves.toEqual(
-				true,
-			);
+			await expect(
+				adminAuthenticationGuard.canActivate(context),
+			).resolves.toEqual(true);
 		});
 	});
 });

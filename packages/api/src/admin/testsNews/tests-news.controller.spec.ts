@@ -11,6 +11,7 @@ import { TestsNewsController } from "./tests-news.controller";
 import { TestsNewsService } from "./tests-news.service";
 
 describe("TestsNewsController", () => {
+	let prisma: PrismaService;
 	let testsNewsController: TestsNewsController;
 
 	beforeEach(async () => {
@@ -29,6 +30,7 @@ describe("TestsNewsController", () => {
 			providers: [TestsNewsService, PrismaService, AdminAuthenticationGuard],
 		}).compile();
 
+		prisma = testingModule.get<PrismaService>(PrismaService);
 		testsNewsController =
 			testingModule.get<TestsNewsController>(TestsNewsController);
 	});
@@ -81,10 +83,10 @@ describe("TestsNewsController", () => {
 				name_fr: "News 1",
 				content_en: "Test News 1",
 				content_fr: "Test News 1",
-				domains: null,
 				urls: null,
 				media: null,
 				media_id: null,
+				communities: [1, 2],
 			});
 		});
 
@@ -104,6 +106,7 @@ describe("TestsNewsController", () => {
 				urls: null,
 				media_id: null,
 				media: null,
+				communities: [1],
 			});
 
 			expect(createdTestNew).toEqual(
@@ -116,10 +119,19 @@ describe("TestsNewsController", () => {
 					name_fr: randomName,
 					content_en: "Test News random",
 					content_fr: "Test News random",
-					domains: null,
 					urls: null,
+					communities: [1],
 				}),
 			);
+
+			await expect(
+				prisma.tests_news_community.findMany({
+					where: { tests_news_id: createdTestNew.id },
+					orderBy: { community_id: "asc" },
+				}),
+			).resolves.toEqual([
+				{ tests_news_id: createdTestNew.id, community_id: 1 },
+			]);
 
 			const updatedTestNew = await testsNewsController.update(
 				createdTestNew.id,
@@ -128,6 +140,7 @@ describe("TestsNewsController", () => {
 					name_fr: "Bonjour Updated",
 					name_en: "Hello Updated",
 					media: null,
+					communities: [2],
 				},
 			);
 
@@ -137,6 +150,15 @@ describe("TestsNewsController", () => {
 					name_en: "Hello Updated",
 				}),
 			);
+
+			await expect(
+				prisma.tests_news_community.findMany({
+					where: { tests_news_id: createdTestNew.id },
+					orderBy: { community_id: "asc" },
+				}),
+			).resolves.toEqual([
+				{ tests_news_id: createdTestNew.id, community_id: 2 },
+			]);
 
 			await testsNewsController.remove(updatedTestNew.id);
 
