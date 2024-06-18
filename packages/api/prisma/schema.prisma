@@ -376,11 +376,11 @@ model medias {
 }
 
 model resources {
-  id        Int     @id @default(autoincrement())
-  name_fr   String  @db.VarChar(255)
-  name_en   String  @db.VarChar(255)
-  href      String
-  enable    Boolean @default(true)
+  id      Int     @id @default(autoincrement())
+  name_fr String  @db.VarChar(255)
+  name_en String  @db.VarChar(255)
+  href    String
+  enable  Boolean @default(true)
 }
 
 model tests_news {
@@ -393,7 +393,6 @@ model tests_news {
   from                 DateTime               @db.Date()
   to                   DateTime?              @db.Date()
   urls                 Json?                  @db.Json
-  domains              Json?                  @db.Json /// @deprecated("use tests_news_community instead, otherwise it will break seeding")
   enable               Boolean                @default(true)
   media_id             Int?
   media                medias?                @relation(fields: [media_id], references: [id])

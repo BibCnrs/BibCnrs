@@ -157,7 +157,6 @@ export type TestNewDataType = {
 	from: string;
 	to: string;
 	urls: TestNewUrlDataType[];
-	domains: string[];
 	enable: boolean;
 	media?: Media;
 };
