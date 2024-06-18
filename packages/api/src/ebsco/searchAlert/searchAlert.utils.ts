@@ -4,6 +4,7 @@ const HAL_REGEX = /https?:\/\/(?:www\.)?(hal|tel)(shs)?(-.*)?\.(.*)\.(.*)/;
 const EXTRACT_DOI_REGEX = /https?:\/\/(?:www\.)?(?:.*)?\.doi\.org\/(.*)/;
 
 export const fieldLabel = {
+	ALL: "Tout",
 	AU: "Auteur",
 	AR: "Auteur exact",
 	TI: "Titre",
