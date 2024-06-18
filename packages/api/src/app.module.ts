@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
-import { ScheduleModule } from "@nestjs/schedule";
 import { AdminModule } from "./admin/admin.module";
 import { CommonModule } from "./common/common.module";
 import config from "./config";
@@ -22,7 +21,6 @@ import { PrismaModule } from "./prisma/prisma.module";
 		JwtModule.register({
 			global: true,
 		}),
-		ScheduleModule.forRoot(),
 		PrismaModule,
 		CommonModule,
 		JanusModule,

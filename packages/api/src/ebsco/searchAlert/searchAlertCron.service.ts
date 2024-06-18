@@ -1,6 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Cron } from "@nestjs/schedule";
 import { Prisma, community, history } from "@prisma/client";
 import remove from "lodash.remove";
 import { SendMailOptions } from "nodemailer";
@@ -114,7 +113,6 @@ export class EbscoSearchAlertCronService {
 		return Number.parseInt(results.at(0).count ?? "0", 10);
 	}
 
-	@Cron(process.env.SEARCH_ALERT_CRON || "0 3 * * *")
 	async handleSearchAlertCron() {
 		const communities = await this.ebscoDomainService.getCommunities();
 		const domains = communities.map((community) => community.name);
