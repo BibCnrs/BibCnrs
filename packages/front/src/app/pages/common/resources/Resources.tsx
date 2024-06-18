@@ -6,7 +6,7 @@ import { resources } from "../../../services/common/Resources";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type { ResourcesDataType } from "../../../shared/types/data.types";
 
-const DisplayResources = ({
+export const DisplayResources = ({
 	data,
 }: { data: ResourcesDataType | undefined }) => {
 	const language = useLanguageKey();
