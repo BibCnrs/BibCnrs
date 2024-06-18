@@ -59,6 +59,56 @@ describe("FrontTestNewsController", () => {
 					id: 1,
 				}),
 			]);
+
+			expect(
+				await ebscoTestNewsController.getTestNews("INSHS,INSB"),
+			).toStrictEqual([
+				expect.objectContaining({
+					page: "tests",
+					enable: true,
+					from: new Date("2021-01-01"),
+					to: null,
+					name_en: "News 1",
+					name_fr: "News 1",
+					content_en: "Test News 1",
+					content_fr: "Test News 1",
+					media_id: null,
+					media: null,
+					domains: null,
+					id: 2,
+				}),
+				expect.objectContaining({
+					page: "news",
+					enable: true,
+					from: new Date("2022-01-01"),
+					to: null,
+					name_en: "News 2",
+					name_fr: "News 2",
+					content_en: "Test News 2",
+					content_fr: "Test News 2",
+					media_id: null,
+					media: null,
+					domains: null,
+					id: 1,
+				}),
+			]);
+
+			expect(await ebscoTestNewsController.getTestNews("INSB")).toStrictEqual([
+				expect.objectContaining({
+					page: "tests",
+					enable: true,
+					from: new Date("2021-01-01"),
+					to: null,
+					name_en: "News 1",
+					name_fr: "News 1",
+					content_en: "Test News 1",
+					content_fr: "Test News 1",
+					media_id: null,
+					media: null,
+					domains: null,
+					id: 2,
+				}),
+			]);
 		});
 	});
 

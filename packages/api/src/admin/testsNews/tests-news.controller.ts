@@ -58,7 +58,7 @@ export class TestsNewsController {
 	@Put(":id")
 	async update(
 		@Param("id") id: number,
-		@Body() updateTestNewsDto: UpdateTestNewsDto,
+		@Body() updateTestNewsDto: Partial<UpdateTestNewsDto>,
 	) {
 		const data = await this.contentsManagementService.update(
 			id,

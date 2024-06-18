@@ -243,6 +243,23 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	await prisma.tests_news_community.createMany({
+		data: [
+			{
+				tests_news_id: 1,
+				community_id: 1,
+			},
+			{
+				tests_news_id: 2,
+				community_id: 1,
+			},
+			{
+				tests_news_id: 2,
+				community_id: 2,
+			},
+		],
+	});
+
 	// Revues
 	await prisma.revue.createMany({
 		data: [

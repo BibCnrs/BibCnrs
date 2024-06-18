@@ -6,8 +6,14 @@ export class FrontTestNewsController {
 	constructor(private readonly ebscoTestNewsService: FrontTestNewsService) {}
 
 	@Get()
-	async getTestNews(@Query("first") first: string | null = null) {
-		return this.ebscoTestNewsService.getTestNews(first != null);
+	async getTestNews(
+		@Param("domains") domains: string | null = null,
+		@Query("first") first: string | null = null,
+	) {
+		return this.ebscoTestNewsService.getTestNews(
+			domains?.split(",") ?? [],
+			first != null,
+		);
 	}
 
 	@Get(":id")

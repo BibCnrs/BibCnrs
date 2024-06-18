@@ -1,7 +1,13 @@
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
-import { Labeled, useGetList, useRecordContext } from "react-admin";
+import {
+	AutocompleteArrayInput,
+	Labeled,
+	ReferenceArrayInput,
+	useGetList,
+	useRecordContext,
+} from "react-admin";
 import { useFormContext } from "react-hook-form";
 
 export const pages = [
@@ -14,12 +20,9 @@ const TestsNewsHeader = () => {
 	const { setValue } = useFormContext();
 	const { data: communities } = useGetList("communities");
 	const [selectedPage, setSelectedPage] = useState(record?.page || "");
-	const [selectedDomains, setSelectedDomains] = useState<string[]>(
-		record?.domains || [],
-	);
+
 	useEffect(() => {
 		setSelectedPage(record?.page || "");
-		setSelectedDomains(record?.domains || []);
 	}, [record]);
 
 	const handlePageClick = (pageId: string) => {
@@ -28,30 +31,6 @@ const TestsNewsHeader = () => {
 		}
 		setSelectedPage(pageId);
 		setValue("page", pageId, {
-			shouldDirty: true,
-		});
-	};
-
-	const handleCommunityClick = (communityName: string) => {
-		if (!communityName) {
-			return;
-		}
-		if (selectedDomains.includes(communityName)) {
-			if (selectedDomains.length <= 1) {
-				return;
-			}
-			const domains = selectedDomains.filter(
-				(value) => value !== communityName,
-			);
-			setSelectedDomains(domains);
-			setValue("domains", domains, {
-				shouldDirty: true,
-			});
-			return;
-		}
-		const domains = [...selectedDomains, communityName];
-		setSelectedDomains(domains);
-		setValue("domains", domains, {
 			shouldDirty: true,
 		});
 	};
@@ -74,19 +53,10 @@ const TestsNewsHeader = () => {
 					))}
 				</Stack>
 			</Labeled>
-			<Labeled label="Communautés">
-				<Stack direction="row" spacing={1}>
-					{communities.map((community) => (
-						<Chip
-							key={community.name}
-							label={community.name}
-							onClick={() => handleCommunityClick(community.name)}
-							color={
-								selectedDomains.includes(community.name) ? "primary" : "default"
-							}
-						/>
-					))}
-				</Stack>
+			<Labeled label="Communautés" fullWidth>
+				<ReferenceArrayInput source="communities" reference="communities">
+					<AutocompleteArrayInput optionText="name" fullWidth />
+				</ReferenceArrayInput>
 			</Labeled>
 		</>
 	);

@@ -81,7 +81,7 @@ describe("AuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(authGuard.canActivate(context)).resolves.toEqual(true);
+			await expect(authGuard.canActivate(context)).resolves.toEqual(true);
 		});
 
 		it("should authenticate user if janus JWT in cookie is valid", async () => {
@@ -109,7 +109,7 @@ describe("AuthGuard", () => {
 					}) as unknown as HttpArgumentsHost,
 			};
 
-			expect(authGuard.canActivate(context)).resolves.toEqual(true);
+			await expect(authGuard.canActivate(context)).resolves.toEqual(true);
 		});
 
 		it("should throw an error user if JWT in cookie alg is not HS256", async () => {

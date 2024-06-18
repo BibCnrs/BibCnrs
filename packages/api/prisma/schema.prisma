@@ -30,6 +30,7 @@ model community {
   janus_account_community janus_account_community[]
   revue_community         revue_community[]
   unit_community          unit_community[]
+  tests_news_community    tests_news_community[]
 }
 
 enum TypeDatabaseEnum {
@@ -383,17 +384,27 @@ model resources {
 }
 
 model tests_news {
-  id         Int       @id @default(autoincrement())
-  name_fr    String    @db.VarChar(255)
-  name_en    String    @db.VarChar(255)
-  content_fr String
-  content_en String
-  page       String
-  from       DateTime  @db.Date()
-  to         DateTime? @db.Date()
-  urls       Json?     @db.Json
-  domains    Json?     @db.Json
-  enable     Boolean   @default(true)
-  media_id   Int?
-  media      medias?   @relation(fields: [media_id], references: [id])
+  id                   Int                    @id @default(autoincrement())
+  name_fr              String                 @db.VarChar(255)
+  name_en              String                 @db.VarChar(255)
+  content_fr           String
+  content_en           String
+  page                 String
+  from                 DateTime               @db.Date()
+  to                   DateTime?              @db.Date()
+  urls                 Json?                  @db.Json
+  domains              Json?                  @db.Json /// @deprecated("use tests_news_community instead, otherwise it will break seeding")
+  enable               Boolean                @default(true)
+  media_id             Int?
+  media                medias?                @relation(fields: [media_id], references: [id])
+  tests_news_community tests_news_community[]
+}
+
+model tests_news_community {
+  tests_news_id Int
+  community_id  Int
+  tests_news    tests_news @relation(fields: [tests_news_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  community     community  @relation(fields: [community_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([tests_news_id, community_id], map: "tests_news_community_constraint")
 }

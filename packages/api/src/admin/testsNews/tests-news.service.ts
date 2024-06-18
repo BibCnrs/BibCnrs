@@ -1,5 +1,7 @@
+import { connect } from "node:http2";
+import test from "node:test";
 import { Injectable } from "@nestjs/common";
-import { tests_news } from "@prisma/client";
+import { tests_news, tests_news_community } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
 import { FindAllQueryArgs } from "../admin.type";
@@ -55,28 +57,34 @@ export class TestsNewsService {
 			orderBy: {
 				[query._sortField]: query._sortDir,
 			},
+			include: {
+				tests_news_community: true,
+			},
 		});
 
 		const total = await this.prismaService.tests_news.count({
 			where: filters,
 		});
-		return { data, total };
+		return { data: data.map(this.mapTestNewsCommunities), total };
 	}
 
-	findOne(id: number): Promise<Partial<tests_news>> {
-		return this.prismaService.tests_news.findUnique({
-			where: {
-				id,
-			},
-			include: {
-				media: true,
-			},
-		});
+	async findOne(id: number): Promise<Partial<tests_news>> {
+		return this.prismaService.tests_news
+			.findUnique({
+				where: {
+					id,
+				},
+				include: {
+					media: true,
+					tests_news_community: true,
+				},
+			})
+			.then(this.mapTestNewsCommunities);
 	}
 
-	create(createTestNewsDto: CreateTestNewsDto) {
-		const { media_id, ...data } = createTestNewsDto;
-		return this.prismaService.tests_news.create({
+	async create(createTestNewsDto: CreateTestNewsDto) {
+		const { media_id, communities, ...data } = createTestNewsDto;
+		const testNews = await this.prismaService.tests_news.create({
 			data: {
 				...this.formatData(data),
 				media: media_id
@@ -88,10 +96,23 @@ export class TestsNewsService {
 					: undefined,
 			},
 		});
+
+		const tests_news_community =
+			await this.prismaService.tests_news_community.createManyAndReturn({
+				data: (communities ?? []).map((community_id) => ({
+					community_id,
+					tests_news_id: testNews.id,
+				})),
+			});
+
+		return this.mapTestNewsCommunities({
+			...testNews,
+			tests_news_community,
+		});
 	}
 
-	update(id: number, updateTestNewsDto: UpdateTestNewsDto) {
-		const { id: _, media_id, media, ...data } = updateTestNewsDto;
+	async update(id: number, updateTestNewsDto: Partial<UpdateTestNewsDto>) {
+		const { id: _, media_id, media, communities, ...data } = updateTestNewsDto;
 		return this.prismaService.tests_news.update({
 			where: {
 				id,
@@ -107,11 +128,41 @@ export class TestsNewsService {
 					: {
 							disconnect: true,
 						},
+				tests_news_community: communities
+					? {
+							deleteMany: {},
+							create: communities.map((id) => ({
+								community: {
+									connect: {
+										id,
+									},
+								},
+							})),
+						}
+					: undefined,
 			},
 		});
 	}
 
 	remove(id: number) {
 		return this.prismaService.tests_news.delete({ where: { id } });
+	}
+
+	private mapTestNewsCommunities(
+		testNews:
+			| (tests_news & {
+					tests_news_community: tests_news_community[];
+			  })
+			| null,
+	) {
+		if (!testNews) {
+			return null;
+		}
+
+		const { tests_news_community, domains, ...rest } = testNews;
+		return {
+			...rest,
+			communities: tests_news_community.map(({ community_id }) => community_id),
+		};
 	}
 }

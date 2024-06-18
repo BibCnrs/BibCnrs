@@ -40,7 +40,7 @@ describe("EbscoSearchArticleService", () => {
 	});
 
 	it("should extract relevant information from ebsco raw result", async () => {
-		expect(
+		await expect(
 			service.parsePublicationResults(
 				service.searchArticleParser.bind(service),
 				AIDS_RESULTS_INPUT,
@@ -177,7 +177,9 @@ describe("EbscoSearchArticleService", () => {
 				],
 			};
 
-			expect(service.articleLinkParser(result, "INSB")).resolves.toMatchObject({
+			await expect(
+				service.articleLinkParser(result, "INSB"),
+			).resolves.toMatchObject({
 				fullTextLinks: [
 					{
 						name: "Full Text Finder",
@@ -219,7 +221,7 @@ describe("EbscoSearchArticleService", () => {
 
 	describe("extractAccessUrls", () => {
 		it("should extract URL", async () => {
-			expect(
+			await expect(
 				service.extractUrls({
 					Items: [
 						{
@@ -238,7 +240,7 @@ describe("EbscoSearchArticleService", () => {
 		});
 
 		it("should extract Avail", async () => {
-			expect(
+			await expect(
 				service.extractUrls({
 					Items: [
 						{
@@ -257,7 +259,7 @@ describe("EbscoSearchArticleService", () => {
 		});
 
 		it("should ignore Items with Name other than URL or Avail", async () => {
-			expect(
+			await expect(
 				service.extractUrls({
 					Items: [
 						{
@@ -271,7 +273,7 @@ describe("EbscoSearchArticleService", () => {
 		});
 
 		it("should parse extracted url if necessary", async () => {
-			expect(
+			await expect(
 				service.extractUrls({
 					Items: [
 						{
@@ -290,7 +292,7 @@ describe("EbscoSearchArticleService", () => {
 		});
 
 		it("should extract url from text if necessary", async () => {
-			expect(
+			await expect(
 				service.extractUrls({
 					Items: [
 						{
@@ -309,7 +311,7 @@ describe("EbscoSearchArticleService", () => {
 		});
 
 		it("should return emptyArray if no Items", async () => {
-			expect(service.extractUrls({})).resolves.toMatchObject([]);
+			await expect(service.extractUrls({})).resolves.toMatchObject([]);
 		});
 
 		describe("retrieveArticleParser", () => {

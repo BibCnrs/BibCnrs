@@ -70,8 +70,8 @@ const validate = (values: any) => {
 		}
 	}
 
-	if (!values.domains || values.domains.length < 1) {
-		errors.domains = "ra.validation.required";
+	if (!values.communities || values.communities.length < 1) {
+		errors.communities = "ra.validation.required";
 	}
 
 	return errors;
