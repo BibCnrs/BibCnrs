@@ -73,7 +73,7 @@ export class JanusAccountService {
 		return this.addDomains(janusAccount.at(0));
 	}
 
-	async update(id: number, janusAccount: JanusAccountUpdateDto) {
+	async update(id: number, janusAccount: Partial<JanusAccountUpdateDto>) {
 		const {
 			communities: janusAccountCommunities,
 			additional_institutes: janusAccountInstitutes,
@@ -118,30 +118,36 @@ export class JanusAccountService {
 					...data,
 					janus_account_community: janusAccountCommunities
 						? {
-								set: janusAccountCommunities.map((communityId) => ({
-									janus_account_id_community_id: {
-										janus_account_id: id,
-										community_id: communityId,
+								deleteMany: {},
+								create: janusAccountCommunities.map((id) => ({
+									community: {
+										connect: {
+											id,
+										},
 									},
 								})),
 							}
 						: undefined,
 					janus_account_institute: janusAccountInstitutes
 						? {
-								set: janusAccountInstitutes.map((instituteId) => ({
-									institute_id_janus_account_id: {
-										janus_account_id: id,
-										institute_id: instituteId,
+								deleteMany: {},
+								create: janusAccountInstitutes.map((id) => ({
+									institute: {
+										connect: {
+											id,
+										},
 									},
 								})),
 							}
 						: undefined,
 					janus_account_unit: janusAccountUnits
 						? {
-								set: janusAccountUnits.map((unitId) => ({
-									unit_id_janus_account_id: {
-										janus_account_id: id,
-										unit_id: unitId,
+								deleteMany: {},
+								create: janusAccountUnits.map((id) => ({
+									unit: {
+										connect: {
+											id,
+										},
 									},
 								})),
 							}
@@ -183,7 +189,7 @@ export class JanusAccountService {
 		});
 	}
 
-	async create(janusAccount: JanusAccountUpdateDto) {
+	async create(janusAccount: Partial<JanusAccountUpdateDto>) {
 		const {
 			communities: janusAccountCommunities,
 			additional_institutes: janusAccountInstitutes,
@@ -201,7 +207,7 @@ export class JanusAccountService {
 		return this.update(createdAccount.id, janusAccount);
 	}
 
-	async upsertOneByUid(janusAccount: JanusAccountUpdateDto) {
+	async upsertOneByUid(janusAccount: Partial<JanusAccountUpdateDto>) {
 		const existingJanusAccount = await this.findOneByUid(janusAccount.uid);
 
 		if (existingJanusAccount) {
