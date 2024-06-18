@@ -435,7 +435,7 @@ export class EbscoSearchAlertCronService {
 	
 	Termes recherchés :
 		${queries
-			.map((q) => `${fieldLabel[q.field] || q.field}: ${q.term}`)
+			.map((q) => `${fieldLabel[q.field ?? "ALL"] || q.field}: ${q.term}`)
 			.join(", ")}
 	
 	Domaine :
@@ -468,7 +468,9 @@ export class EbscoSearchAlertCronService {
         <dl style="display: flex; flex-direction: column; margin: 0px 20px 20px; padding: 5px 20px 5px 20px;">
             <dt style="font-weight: bold;">Termes recherchés :</dt>
             <dd style="flex: 9;">${queries
-							.map((q) => `${fieldLabel[q.field] || q.field}: ${q.term}`)
+							.map(
+								(q) => `${fieldLabel[q.field ?? "ALL"] || q.field}: ${q.term}`,
+							)
 							.join(", ")}</dd>
             <dt style="font-weight: bold;">Domaine</dt>
             <dd style="flex: 9;">${domain}</dd>
