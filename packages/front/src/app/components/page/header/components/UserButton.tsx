@@ -12,7 +12,6 @@ import type { MouseEvent, ReactElement } from "react";
 import { useState } from "react";
 import { useBibContext } from "../../../../context/BibContext";
 import { colors } from "../../../../context/LocalizedThemeProvider";
-import { getUsername, isLegacy } from "../../../../services/user/Session";
 import {
 	RouteAlert,
 	RouteFavourite,
@@ -27,7 +26,10 @@ import { useTranslator } from "../../../../shared/locales/I18N";
 const UserButton = () => {
 	const t = useTranslator();
 
-	const { logout } = useBibContext();
+	const {
+		session: { user },
+		logout,
+	} = useBibContext();
 
 	// Anchor used to display or not the drop-down menu
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -35,8 +37,6 @@ const UserButton = () => {
 	const history = useClickHandler(RouteHistory);
 	const alert = useClickHandler(RouteAlert);
 	const favourite = useClickHandler(RouteFavourite);
-
-	let username = getUsername();
 
 	// Handle drop-down menu action, like close or click
 	const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -56,10 +56,6 @@ const UserButton = () => {
 		return open ? " user-button-active-legacy" : " user-button-legacy";
 	};
 
-	if (username === null) {
-		username = "null";
-	}
-
 	// Create menu options
 	const options: ReactElement[] = [];
 	// Add username button
@@ -68,12 +64,12 @@ const UserButton = () => {
 			<ListItemIcon>
 				<Avatar sx={{ width: 24, height: 24 }} />
 			</ListItemIcon>
-			{username}
+			{user?.username ?? "null"}
 		</MenuItem>,
 		<Divider key="divider-1" />,
 	);
 	// Add a warning message when using a legacy account
-	if (isLegacy()) {
+	if (user?.legacy) {
 		options.push(
 			<MenuItem key="legacy">
 				<ListItemIcon>
@@ -134,19 +130,19 @@ const UserButton = () => {
 				aria-expanded={open ? "true" : undefined}
 				onClick={handleClick}
 				className={`header-button-icon${
-					isLegacy() ? getAvatarButtonClass() : ""
+					user?.legacy ? getAvatarButtonClass() : ""
 				}`}
 				type="button"
 			>
 				<Avatar
 					sx={{
-						bgcolor: isLegacy()
+						bgcolor: user?.legacy
 							? colors.other.legacy
 							: colors.cnrs.secondary.lightBlue,
 						color: colors.text.light,
 					}}
 				>
-					{username?.[0] || "U"}
+					{user?.username?.charAt?.(0) || "U"}
 				</Avatar>
 			</button>
 			<Menu

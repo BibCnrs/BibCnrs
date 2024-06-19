@@ -11,15 +11,16 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import useTheme from "@mui/material/styles/useTheme";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useContext, useState } from "react";
+import { useBibContext } from "../../../context/BibContext";
 import { HistoryContext } from "../../../pages/user/history/History";
 import { disableSearchAlert } from "../../../services/user/SearchAlert";
-import { updateSearchAlert } from "../../../services/user/Session";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { AlertModificationProps } from "../../../shared/types/props.types";
 import CustomButton from "../button/CustomButton";
 
 const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 	const t = useTranslator();
+	const { updateSearchAlert } = useBibContext();
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 	const { requestUpdate } = useContext(HistoryContext);

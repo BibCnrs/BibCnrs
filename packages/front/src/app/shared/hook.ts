@@ -1,12 +1,7 @@
 import { arrayMove } from "@dnd-kit/sortable";
 import type { MouseEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useBibContext } from "../context/BibContext";
-import {
-	getDomains,
-	getFavouriteResources,
-	updateFavouriteResources,
-} from "../services/user/Session";
 import type { FavouriteResourceDataType } from "./types/data.types";
 import type { FacetRequired } from "./types/props.types";
 import type { FavouriteResourceWithId } from "./types/types";
@@ -74,25 +69,31 @@ export const useDomain = (): Array<{ value: string; label: string }> => {
 	if (!user) {
 		return [];
 	}
-	return getDomains().map((domain) => {
-		return {
-			value: domain,
-			label: domain,
-		};
-	});
+	return (
+		user?.domains?.map((domain) => {
+			return {
+				value: domain,
+				label: domain,
+			};
+		}) ?? []
+	);
 };
 
 export const useStatelessFavouriteResources = (): FavouriteResourceWithId[] => {
-	const favourites = getFavouriteResources();
+	const {
+		session: { user },
+	} = useBibContext();
 	return useMemo(() => {
 		let index = 1;
-		return favourites.map((value) => {
-			return {
-				id: index++,
-				...value,
-			};
-		});
-	}, [favourites]);
+		return (
+			user?.favouriteResources?.map((value) => {
+				return {
+					id: index++,
+					...value,
+				};
+			}) ?? []
+		);
+	}, [user]);
 };
 
 type UseFavouriteResourcesType = {
@@ -110,70 +111,81 @@ type UseFavouriteResourcesType = {
 		entry: FavouriteResourceDataType | FavouriteResourceWithId,
 	) => void;
 };
+
 export const useFavouriteResources = (): UseFavouriteResourcesType => {
-	const [favourites, setFavourites] = useState<FavouriteResourceDataType[]>(
-		getFavouriteResources(),
-	);
+	const {
+		session: { user },
+		updateFavouriteResources,
+	} = useBibContext();
 
 	const favouritesWithId = useMemo(() => {
 		let index = 1;
-		if (!Array.isArray(favourites)) {
+		if (!Array.isArray(user?.favouriteResources)) {
 			return [];
 		}
-		return favourites.map((value) => {
+		return user.favouriteResources.map((value) => {
 			return {
 				id: index++,
 				...value,
 			};
 		});
-	}, [favourites]);
+	}, [user]);
 
-	const addFavourite = (
-		entry: FavouriteResourceDataType | FavouriteResourceWithId,
-	) => {
-		const favouriteResources = getFavouriteResources();
-		updateFavouriteResources([
-			{
-				title: entry.title,
-				url: entry.url,
-				personal: entry.personal,
-			},
-			...favouriteResources,
-		]).then(() => {
-			setFavourites(getFavouriteResources());
-		});
-	};
-
-	const removeFavourite = (
-		entry: FavouriteResourceDataType | FavouriteResourceWithId,
-	) => {
-		const favouriteResources = getFavouriteResources();
-		const filtered = favouriteResources.filter((value) => {
-			if (value.title === entry.title) {
-				return false;
+	const addFavourite = useCallback(
+		(entry: FavouriteResourceDataType | FavouriteResourceWithId) => {
+			if (!user) {
+				return;
 			}
-			return value.url !== entry.url;
-		});
-		updateFavouriteResources(filtered).then(() => {
-			setFavourites(getFavouriteResources());
-		});
-	};
 
-	const moveFavourite = (
-		entry: FavouriteResourceDataType | FavouriteResourceWithId,
-		oldIndex: number,
-		newIndex: number,
-	) => {
-		const favouriteResources = getFavouriteResources();
-		updateFavouriteResources(
-			arrayMove(favouriteResources, oldIndex, newIndex),
-		).then(() => {
-			setFavourites(getFavouriteResources());
-		});
-	};
+			updateFavouriteResources([
+				{
+					title: entry.title,
+					url: entry.url,
+					personal: entry.personal,
+				},
+				...user.favouriteResources,
+			]);
+		},
+		[user, updateFavouriteResources],
+	);
+
+	const removeFavourite = useCallback(
+		(entry: FavouriteResourceDataType | FavouriteResourceWithId) => {
+			if (!user) {
+				return;
+			}
+
+			updateFavouriteResources(
+				(user?.favouriteResources ?? []).filter((value) => {
+					if (value.title === entry.title) {
+						return false;
+					}
+					return value.url !== entry.url;
+				}),
+			);
+		},
+		[user, updateFavouriteResources],
+	);
+
+	const moveFavourite = useCallback(
+		(
+			entry: FavouriteResourceDataType | FavouriteResourceWithId,
+			oldIndex: number,
+			newIndex: number,
+		) => {
+			if (!user) {
+				return;
+			}
+
+			updateFavouriteResources(
+				arrayMove(user.favouriteResources, oldIndex, newIndex),
+			);
+		},
+		[user, updateFavouriteResources],
+	);
 
 	return {
-		favouriteResources: favourites,
+		favouriteResources: user.favouriteResources ?? [],
 		favouritesWithId,
 		addFavourite,
 		moveFavourite,

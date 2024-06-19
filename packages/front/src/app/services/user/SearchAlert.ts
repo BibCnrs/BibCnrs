@@ -1,5 +1,4 @@
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
-import { getToken } from "./Session";
 
 export const updateAlert = async (
 	userId: number,
@@ -14,7 +13,6 @@ export const updateAlert = async (
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${getToken()}`,
 			},
 			body: JSON.stringify({
 				userId,
@@ -35,7 +33,6 @@ export const disableSearchAlert = async (historyId: number) => {
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${getToken()}`,
 			},
 		},
 	);
@@ -51,7 +48,6 @@ export const disableAllSearchAlert = async () => {
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${getToken()}`,
 			},
 		},
 	);

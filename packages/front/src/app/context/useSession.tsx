@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { createQuery, environment } from "../services/Environment";
-import type { SessionUserDataType } from "../shared/types/data.types";
+import { updateFavourite } from "../services/user/Favourite";
+import { updateAlert } from "../services/user/SearchAlert";
+import type {
+	FavouriteResourceDataType,
+	SessionUserDataType,
+} from "../shared/types/data.types";
 
 export type BibSession =
 	| {
@@ -49,19 +54,28 @@ export function useSession() {
 		})
 			.then((res) => {
 				if (res.status !== 201) {
-					throw new Error("Error fetching user");
+					throw res;
 				}
 				return res.json();
 			})
 			.then((user) => {
 				_loginUser({ ...user, fetch: false, legacy: false });
 			})
-			.catch(() => {
-				setSession(LOGGED_OUT_USER);
+			.catch((res) => {
+				// This fixes the dual request on getLogin in dev mode
+				if (res.status !== 409) {
+					setSession(LOGGED_OUT_USER);
+				}
+			})
+			.finally(() => {
+				persistentStorage?.removeItem(JANUS_STORAGE_KEY);
 			});
 	}, [_loginUser]);
 
 	const _storageLogin = useCallback(() => {
+		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
+			return;
+		}
 		const userJson = persistentStorage?.getItem(STORAGE_KEY);
 		if (userJson) {
 			const user = JSON.parse(userJson);
@@ -88,7 +102,6 @@ export function useSession() {
 
 	useEffect(() => {
 		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
-			persistentStorage?.removeItem(JANUS_STORAGE_KEY);
 			_janusLogin();
 		} else {
 			_storageLogin();
@@ -166,10 +179,38 @@ export function useSession() {
 		});
 	}, []);
 
+	const updateFavouriteResources = useCallback(
+		(favouriteResources: FavouriteResourceDataType[] | null) => {
+			if (session.status !== "loggedIn" || session.user.origin !== "janus") {
+				return;
+			}
+
+			updateFavourite(session.user.id, favouriteResources).then(() => {
+				_loginUser({
+					...session.user,
+					favouriteResources: favouriteResources ?? [],
+				});
+			});
+		},
+		[session.user, session.status, _loginUser],
+	);
+
+	const updateSearchAlert = useCallback(
+		(historyId: number, frequency: string) => {
+			if (!session.user) {
+				return Promise.resolve();
+			}
+			return updateAlert(session.user.id, historyId, frequency);
+		},
+		[session.user],
+	);
+
 	return {
 		session,
 		loginToJanus,
 		loginToLegacy,
 		logout,
+		updateFavouriteResources,
+		updateSearchAlert,
 	};
 }
