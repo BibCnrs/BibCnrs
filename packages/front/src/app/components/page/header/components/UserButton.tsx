@@ -9,8 +9,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import type { MouseEvent, ReactElement } from "react";
-import { memo, useContext, useState } from "react";
+import { useState } from "react";
 import { useBibContext } from "../../../../context/BibContext";
+import { colors } from "../../../../context/LocalizedThemeProvider";
 import { getUsername, isLegacy } from "../../../../services/user/Session";
 import {
 	RouteAlert,
@@ -19,8 +20,6 @@ import {
 	useClickHandler,
 } from "../../../../shared/Routes";
 import { useTranslator } from "../../../../shared/locales/I18N";
-import { BibContext } from "../../../internal/provider/ContextProvider";
-import { colors } from "../../../internal/provider/LocalizedThemeProvider";
 
 /**
  * Button used to display the user menu

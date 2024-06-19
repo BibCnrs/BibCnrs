@@ -1,5 +1,4 @@
-import { Box, Tooltip } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { Tooltip } from "@mui/material";
 import { useTranslator } from "../../../shared/locales/I18N";
 
 export function NotCompleteIcon() {

@@ -1,7 +1,7 @@
 import { arrayMove } from "@dnd-kit/sortable";
 import type { MouseEvent } from "react";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { BibContext } from "../components/internal/provider/ContextProvider";
+import { useEffect, useMemo, useState } from "react";
+import { useBibContext } from "../context/BibContext";
 import {
 	getDomains,
 	getFavouriteResources,
@@ -12,10 +12,10 @@ import type { FacetRequired } from "./types/props.types";
 import type { FavouriteResourceWithId } from "./types/types";
 
 export const useServicesCatch = () => {
-	const { setLogin } = useContext(BibContext);
+	const { logout } = useBibContext();
 	return (error: Error) => {
 		if (error.cause === "401") {
-			setLogin(false);
+			logout();
 		}
 	};
 };
@@ -55,7 +55,7 @@ export const useFacetsCleaner = <T extends FacetRequired>() => {
 };
 
 export const useFacetsDomainHandler = () => {
-	const { search, setSearch } = useContext(BibContext);
+	const { search, setSearch } = useBibContext();
 	return (event: MouseEvent<HTMLElement>, field: string | null) => {
 		if (field === null) {
 			return;
@@ -68,8 +68,10 @@ export const useFacetsDomainHandler = () => {
 };
 
 export const useDomain = (): Array<{ value: string; label: string }> => {
-	const { login } = useContext(BibContext);
-	if (!login) {
+	const {
+		session: { user },
+	} = useBibContext();
+	if (!user) {
 		return [];
 	}
 	return getDomains().map((domain) => {

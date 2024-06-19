@@ -2,24 +2,24 @@ import { useCallback, useEffect, useState } from "react";
 import { createQuery, environment } from "../services/Environment";
 import type { SessionUserDataType } from "../shared/types/data.types";
 
-export type BibUser =
+export type BibSession =
 	| {
-			type: "loading";
+			status: "loading";
 			user: null;
 	  }
 	| {
-			type: "loggedOut";
+			status: "loggedOut";
 			user: null;
 	  }
 	| {
-			type: "loggedIn";
+			status: "loggedIn";
 			user: SessionUserDataType;
 	  };
 
 type LegacyLoginForm = { username: string; password: string };
 
-const LOADING_USER: BibUser = { type: "loading", user: null };
-const LOGGED_OUT_USER: BibUser = { type: "loggedOut", user: null };
+const LOADING_USER: BibSession = { status: "loading", user: null };
+const LOGGED_OUT_USER: BibSession = { status: "loggedOut", user: null };
 
 const persistentStorage = window?.localStorage;
 
@@ -27,18 +27,18 @@ const STORAGE_KEY = "user";
 const JANUS_STORAGE_KEY = "janus_callback";
 
 export function useSession() {
-	const [user, setUser] = useState<BibUser>(LOADING_USER);
+	const [session, setSession] = useState<BibSession>(LOADING_USER);
 
-	const _loginUser = useCallback((user: BibUser["user"]) => {
+	const _loginUser = useCallback((user: BibSession["user"]) => {
 		if (!user) {
 			return;
 		}
 		persistentStorage?.setItem(STORAGE_KEY, JSON.stringify(user));
-		setUser({ type: "loggedIn", user });
+		setSession({ status: "loggedIn", user });
 	}, []);
 
 	const _janusLogin = useCallback(() => {
-		setUser(LOADING_USER);
+		setSession(LOADING_USER);
 		void fetch(createQuery(environment.post.account.user), {
 			method: "POST",
 			credentials: "include",
@@ -54,11 +54,10 @@ export function useSession() {
 				return res.json();
 			})
 			.then((user) => {
-				console.log(user);
 				_loginUser({ ...user, fetch: false, legacy: false });
 			})
 			.catch(() => {
-				setUser(LOGGED_OUT_USER);
+				setSession(LOGGED_OUT_USER);
 			});
 	}, [_loginUser]);
 
@@ -76,14 +75,14 @@ export function useSession() {
 					if (response.status !== 200) {
 						throw new Error("Error fetching licences");
 					}
-					setUser({
-						type: "loggedIn",
+					setSession({
+						status: "loggedIn",
 						user,
 					});
 				})
 				.catch(() => logout());
 		} else {
-			setUser(LOGGED_OUT_USER);
+			setSession(LOGGED_OUT_USER);
 		}
 	}, []);
 
@@ -97,7 +96,7 @@ export function useSession() {
 	}, [_janusLogin, _storageLogin]);
 
 	const loginToJanus = useCallback(() => {
-		if (user.type === "loggedIn") {
+		if (session.status === "loggedIn") {
 			return;
 		}
 		const janusUrl = createQuery(environment.get.account.janus, {
@@ -107,15 +106,15 @@ export function useSession() {
 		persistentStorage?.setItem(JANUS_STORAGE_KEY, "true");
 
 		window.location.assign(janusUrl);
-	}, [user]);
+	}, [session]);
 
 	const loginToLegacy = useCallback(
 		async (form: LegacyLoginForm): Promise<boolean> => {
-			if (user.type === "loggedIn") {
+			if (session.status === "loggedIn") {
 				return false;
 			}
 
-			setUser(LOADING_USER);
+			setSession(LOADING_USER);
 
 			try {
 				const response = await fetch(
@@ -145,15 +144,15 @@ export function useSession() {
 				_loginUser(loggedInUser);
 				return true;
 			} catch (e) {
-				setUser(LOADING_USER);
+				setSession(LOADING_USER);
 				return false;
 			}
 		},
-		[user, _loginUser],
+		[session, _loginUser],
 	);
 
 	const logout = useCallback(() => {
-		setUser(LOADING_USER);
+		setSession(LOADING_USER);
 		void fetch(createQuery(environment.post.account.logout), {
 			method: "POST",
 			credentials: "include",
@@ -163,12 +162,12 @@ export function useSession() {
 			},
 		}).finally(() => {
 			persistentStorage?.removeItem(STORAGE_KEY);
-			setUser(LOGGED_OUT_USER);
+			setSession(LOGGED_OUT_USER);
 		});
 	}, []);
 
 	return {
-		user,
+		session,
 		loginToJanus,
 		loginToLegacy,
 		logout,

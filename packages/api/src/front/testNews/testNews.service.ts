@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { medias, tests_news, tests_news_community } from "@prisma/client";
+import { medias, tests_news } from "@prisma/client";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 

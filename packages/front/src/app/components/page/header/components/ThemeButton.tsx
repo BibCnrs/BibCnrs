@@ -1,8 +1,8 @@
 import Switch from "@mui/material/Switch";
 import styled from "@mui/material/styles/styled";
-import { memo, useContext } from "react";
+import { memo } from "react";
 import type { ChangeEvent } from "react";
-import { BibContext } from "../../internal/provider/ContextProvider";
+import { useBibContext } from "../../../../context/BibContext";
 
 // Style from https://mui.com/material-ui/react-switch/
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -56,7 +56,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
  * Button used to handle theme change
  */
 const ThemeButton = () => {
-	const { theme, setTheme } = useContext(BibContext);
+	const { theme, setTheme } = useBibContext();
 	/**
 	 * Function used to handle switch action
 	 * @param event - Button event used to access the state of the button

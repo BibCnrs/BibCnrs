@@ -11,12 +11,12 @@ import {
 } from "../../../shared/Routes";
 import createSxProps from "../../../shared/createSxProps";
 import { useTranslator } from "../../../shared/locales/I18N";
-import HeaderButton from "../../element/header/HeaderButton";
-import LocalButton from "../../element/header/LocaleButton";
-import ThemeButton from "../../element/header/ThemeButton";
 import CustomLink from "../../element/link/CustomLink";
 import NavBar from "../../element/navbar/NavBar";
+import HeaderButton from "./components/HeaderButton";
+import LocalButton from "./components/LocaleButton";
 import SignInButton from "./components/SignInButton";
+import ThemeButton from "./components/ThemeButton";
 import UserButton from "./components/UserButton";
 import { UserLoading } from "./components/UserLoading";
 
@@ -34,7 +34,7 @@ export const headerButtonStyle = createSxProps({
  */
 const Header = () => {
 	const t = useTranslator();
-	const { user } = useBibContext();
+	const { session: user } = useBibContext();
 
 	return (
 		<>
@@ -48,15 +48,15 @@ const Header = () => {
 					</div>
 				</div>
 				<div id="header-right">
-					{user.type === "loading" && <UserLoading />}
-					{user.type === "loggedIn" && (
+					{user.status === "loading" && <UserLoading />}
+					{user.status === "loggedIn" && (
 						<>
 							<UserButton />
 							<HeaderButton name="news" route={RouteNews} />
 							<HeaderButton name="licences" route={RouteLicences} />
 						</>
 					)}
-					{user.type === "loggedOut" && <SignInButton />}
+					{user.status === "loggedOut" && <SignInButton />}
 
 					<HeaderButton name="resources" route={RouteResources} />
 					<HeaderButton name="questions" route={RouteFaq} />

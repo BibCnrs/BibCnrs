@@ -1,18 +1,20 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Tooltip from "@mui/material/Tooltip";
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { BookmarkButtonProps } from "../../../shared/types/props.types";
-import { BibContext } from "../../internal/provider/ContextProvider";
 import "./scss/BookmarkButton.scss";
+import { useBibContext } from "../../../context/BibContext";
 
 const BookmarkButton = ({
 	title,
 	url,
 	className = "",
 }: BookmarkButtonProps) => {
-	const { login } = useContext(BibContext);
+	const {
+		session: { user },
+	} = useBibContext();
 	const t = useTranslator();
 	const { favouriteResources, addFavourite, removeFavourite } =
 		useFavouriteResources();
@@ -20,7 +22,7 @@ const BookmarkButton = ({
 	const [animated, setAnimated] = useState(false);
 
 	useEffect(() => {
-		if (login) {
+		if (user) {
 			if (
 				favouriteResources.some(
 					(value) => value.title === title || value.url === url,
@@ -30,7 +32,7 @@ const BookmarkButton = ({
 				return;
 			}
 		}
-	}, [favouriteResources, login, title, url]);
+	}, [user, favouriteResources, title, url]);
 
 	const handleClick = (event) => {
 		event.preventDefault();

@@ -1,5 +1,4 @@
 import "./Facet.scss";
-import { Checkbox, FormControlLabel } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import { memo, useMemo } from "react";

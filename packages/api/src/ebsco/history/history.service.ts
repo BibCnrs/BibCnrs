@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma, history } from "@prisma/client";
-import { JsonValue } from "@prisma/client/runtime/library";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateHistoryDto } from "./dto/history.dto";
 

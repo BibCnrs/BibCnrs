@@ -1,7 +1,6 @@
 import {
 	Injectable,
 	Logger,
-	OnApplicationShutdown,
 	OnModuleDestroy,
 	OnModuleInit,
 } from "@nestjs/common";

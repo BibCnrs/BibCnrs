@@ -11,7 +11,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { alert } from "../../../services/common/CMS";
 import { isLegacy } from "../../../services/user/Session";
-import { news, newsHome } from "../../../services/user/TestsNews";
+import { newsHome } from "../../../services/user/TestsNews";
 import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {

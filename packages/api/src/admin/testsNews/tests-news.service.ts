@@ -1,5 +1,3 @@
-import { connect } from "node:http2";
-import test from "node:test";
 import { Injectable } from "@nestjs/common";
 import { tests_news, tests_news_community } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";

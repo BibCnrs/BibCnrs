@@ -1,4 +1,4 @@
-import { Prisma, database } from "@prisma/client";
+import { database } from "@prisma/client";
 
 export type DatabaseWithCommunities = database & {
 	communities: { community: { name: string; id: number } }[];

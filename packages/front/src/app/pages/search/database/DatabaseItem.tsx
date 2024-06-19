@@ -1,12 +1,13 @@
 import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
-import { useContext } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
-import { BibContext } from "../../../components/internal/provider/ContextProvider";
+import { useBibContext } from "../../../context/BibContext";
 import type { DatabaseItemProps } from "../../../shared/types/data.types";
 
 export function DatabaseItem(props: DatabaseItemProps) {
-	const { login } = useContext(BibContext);
+	const {
+		session: { user },
+	} = useBibContext();
 	return (
 		<Tooltip
 			title={props.text}
@@ -40,7 +41,7 @@ export function DatabaseItem(props: DatabaseItemProps) {
 							<Link fontWeight={700} href={props.url}>
 								{props.name}
 							</Link>
-							{login && (
+							{user && (
 								<BookmarkButton
 									className="database-icon-favourite"
 									title={props.name}

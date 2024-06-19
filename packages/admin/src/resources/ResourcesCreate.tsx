@@ -1,4 +1,4 @@
-import { BooleanInput, Create, SimpleForm, TextInput } from "react-admin";
+import { Create, SimpleForm } from "react-admin";
 import { CreateActions } from "../components/Actions";
 import { ResourcesForm } from "./ResourcesForm";
 
