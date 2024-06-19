@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/internal/ProtectedRoute";
 import { BibContext } from "./components/internal/provider/ContextProvider";
 import Footer from "./components/page/footer/Footer";
 import Header from "./components/page/header/Header";
+import { useBibContext } from "./context/BibContext";
 import Root from "./pages/Root";
 import About from "./pages/common/about/About";
 import Faq from "./pages/common/faq/Faq";
@@ -40,15 +41,6 @@ import {
 } from "./shared/Routes";
 
 const App = () => {
-	const { setLogin } = useContext(BibContext);
-	const { data: login } = useQuery({
-		queryKey: ["session"],
-		queryFn: initSession,
-	});
-
-	useEffect(() => {
-		setLogin(login);
-	}, [setLogin, login]);
 	return (
 		<>
 			<div className="header-footer">

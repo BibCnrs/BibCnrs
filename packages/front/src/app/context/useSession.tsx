@@ -21,14 +21,49 @@ type LegacyLoginForm = { username: string; password: string };
 const LOADING_USER: BibUser = { type: "loading", user: null };
 const LOGGED_OUT_USER: BibUser = { type: "loggedOut", user: null };
 
-const storage = window?.localStorage;
+const persistentStorage = window?.localStorage;
+
 const STORAGE_KEY = "user";
+const JANUS_STORAGE_KEY = "janus_callback";
 
 export function useSession() {
 	const [user, setUser] = useState<BibUser>(LOADING_USER);
 
-	useEffect(() => {
-		const userJson = storage?.getItem(STORAGE_KEY);
+	const _loginUser = useCallback((user: BibUser["user"]) => {
+		if (!user) {
+			return;
+		}
+		persistentStorage?.setItem(STORAGE_KEY, JSON.stringify(user));
+		setUser({ type: "loggedIn", user });
+	}, []);
+
+	const _janusLogin = useCallback(() => {
+		setUser(LOADING_USER);
+		void fetch(createQuery(environment.post.account.user), {
+			method: "POST",
+			credentials: "include",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => {
+				if (res.status !== 201) {
+					throw new Error("Error fetching user");
+				}
+				return res.json();
+			})
+			.then((user) => {
+				console.log(user);
+				_loginUser({ ...user, fetch: false, legacy: false });
+			})
+			.catch(() => {
+				setUser(LOGGED_OUT_USER);
+			});
+	}, [_loginUser]);
+
+	const _storageLogin = useCallback(() => {
+		const userJson = persistentStorage?.getItem(STORAGE_KEY);
 		if (userJson) {
 			const user = JSON.parse(userJson);
 			// We ensure that user token is not expired here
@@ -52,13 +87,14 @@ export function useSession() {
 		}
 	}, []);
 
-	const _loginUser = useCallback((user: BibUser["user"]) => {
-		if (!user) {
-			return;
+	useEffect(() => {
+		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
+			persistentStorage?.removeItem(JANUS_STORAGE_KEY);
+			_janusLogin();
+		} else {
+			_storageLogin();
 		}
-		storage?.setItem(STORAGE_KEY, JSON.stringify(user));
-		setUser({ type: "loggedIn", user });
-	}, []);
+	}, [_janusLogin, _storageLogin]);
 
 	const loginToJanus = useCallback(() => {
 		if (user.type === "loggedIn") {
@@ -67,6 +103,9 @@ export function useSession() {
 		const janusUrl = createQuery(environment.get.account.janus, {
 			origin: window.location.href,
 		});
+
+		persistentStorage?.setItem(JANUS_STORAGE_KEY, "true");
+
 		window.location.assign(janusUrl);
 	}, [user]);
 
@@ -123,6 +162,7 @@ export function useSession() {
 				"Content-Type": "application/json",
 			},
 		}).finally(() => {
+			persistentStorage?.removeItem(STORAGE_KEY);
 			setUser(LOGGED_OUT_USER);
 		});
 	}, []);
