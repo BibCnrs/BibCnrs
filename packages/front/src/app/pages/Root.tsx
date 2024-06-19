@@ -6,7 +6,7 @@ import "./Root.scss";
 import { Container } from "@mui/system";
 import { AnonymousHome } from "../components/page/home/AnonymousHome";
 import { LoginHome } from "../components/page/home/LoginHome";
-import { getToken, isLegacy } from "../services/user/Session";
+import { getToken } from "../services/user/Session";
 
 const Root = () => {
 	const navigate = useNavigate();

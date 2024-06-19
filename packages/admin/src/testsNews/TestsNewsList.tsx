@@ -9,7 +9,6 @@ import {
 	EditButton,
 	List,
 	ReferenceArrayField,
-	ReferenceManyField,
 	SelectInput,
 	SingleFieldList,
 	TextInput,

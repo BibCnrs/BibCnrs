@@ -1,8 +1,6 @@
 import Button from "@mui/material/Button";
-import { memo, useContext } from "react";
 import { useBibContext } from "../../../../context/BibContext";
 import { useTranslator } from "../../../../shared/locales/I18N";
-import { BibContext } from "../../../internal/provider/ContextProvider";
 import { headerButtonStyle } from "../Header";
 
 /**

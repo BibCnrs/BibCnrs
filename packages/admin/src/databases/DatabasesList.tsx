@@ -1,7 +1,6 @@
 import jsonExport from "jsonexport/dist";
 import {
 	BooleanField,
-	BooleanInput,
 	Datagrid,
 	DeleteWithConfirmButton,
 	EditButton,

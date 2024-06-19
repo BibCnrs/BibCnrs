@@ -1,8 +1,8 @@
 import Link from "@mui/material/Link";
-import { memo, useContext } from "react";
+import { memo } from "react";
+import { useBibContext } from "../../../context/BibContext";
 import type { ArticleContentGetter } from "../../../services/search/Article";
 import { useTranslator } from "../../../shared/locales/I18N";
-import { BibContext } from "../../internal/provider/ContextProvider";
 import BookmarkButton from "../button/BookmarkButton";
 import ExportArticleCheckbox from "../button/ExportArticleCheckbox";
 import OpenAccess from "../icon/OpenAccess";
@@ -22,7 +22,10 @@ const Article = ({
 	onChange: (isOpen: boolean) => void;
 }) => {
 	const t = useTranslator();
-	const { search, login } = useContext(BibContext);
+	const {
+		search,
+		session: { user },
+	} = useBibContext();
 	const authors = getter.getAuthors();
 	const doi = getter.getDOI();
 	const source = getter.getSource();
@@ -32,7 +35,7 @@ const Article = ({
 	const title = getter.getTitle();
 
 	return (
-		<div className={login ? "table-bookmark-size" : undefined}>
+		<div className={user ? "table-bookmark-size" : undefined}>
 			<OpenablePaper
 				onChange={onChange}
 				defaultOpenState={open}
@@ -142,7 +145,7 @@ const Article = ({
 				}
 			/>
 			<div className="table-bookmark">
-				{login && title && href ? (
+				{user && title && href ? (
 					<BookmarkButton
 						className="table-bookmark-button"
 						title={title}

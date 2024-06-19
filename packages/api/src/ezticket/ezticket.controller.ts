@@ -1,13 +1,10 @@
-import { log } from "node:console";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import {
 	Body,
 	Controller,
-	DefaultValuePipe,
 	Get,
 	Post,
-	Query,
 	Req,
 	Res,
 	UnauthorizedException,

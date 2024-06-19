@@ -1,16 +1,12 @@
+import { Box, CircularProgress, TextField, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import {
-	type ChangeEvent,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from "react";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
-import { BibContext } from "../../../components/internal/provider/ContextProvider";
-import { getHeaderBackgroundColor } from "../../../components/internal/provider/LocalizedThemeProvider";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
+import { useBibContext } from "../../../context/BibContext";
+import { getHeaderBackgroundColor } from "../../../context/LocalizedThemeProvider";
 import { database } from "../../../services/search/Database";
 import {
 	useDomain,
@@ -24,15 +20,17 @@ import type {
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import "./Database.scss";
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
 import { DatabaseItem } from "./DatabaseItem";
 import { DatabasePagination } from "./DatabasePagination";
 import FilterTab from "./FilterTab";
 import { INITIAL_FILTER } from "./filters";
 
 const Database = () => {
-	const { login, theme, search } = useContext(BibContext);
+	const {
+		session: { user },
+		theme,
+		search,
+	} = useBibContext();
 	const serviceCatch = useServicesCatch();
 	const [filters, setFilters] = useState(INITIAL_FILTER);
 	const t = useTranslator();
@@ -137,7 +135,7 @@ const Database = () => {
 				</div>
 			</div>
 			<Stack id="app" gap={2}>
-				{!login && (
+				{!user && (
 					<ColoredPaper
 						id="database-anonymous"
 						elevation={4}

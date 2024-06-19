@@ -4,12 +4,15 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import createPalette from "@mui/material/styles/createPalette";
 import createTheme from "@mui/material/styles/createTheme";
 import type { Property } from "csstype";
-import { memo, useContext, useEffect } from "react";
-import { useLanguageKey } from "../../../shared/locales/I18N";
-import type { LocalizedThemeProviderProps } from "../../../shared/types/props.types";
-import type { InstituteLowerCase } from "../../../shared/types/types";
-import type { Institute, ThemeType } from "../../../shared/types/types";
-import { BibContext } from "./ContextProvider";
+import { memo, useEffect } from "react";
+import { useLanguageKey } from "../shared/locales/I18N";
+import type { LocalizedThemeProviderProps } from "../shared/types/props.types";
+import type {
+	Institute,
+	InstituteLowerCase,
+	ThemeType,
+} from "../shared/types/types";
+import { useBibContext } from "./BibContext";
 
 /**
  * Application colors
@@ -116,7 +119,7 @@ const updateTheme = (theme: ThemeType) => {
 const LocalizedThemeProvider = ({ children }: LocalizedThemeProviderProps) => {
 	// Get the language key and use it to get the material ui language pack
 	const language = useLanguageKey();
-	const { theme } = useContext(BibContext);
+	const { theme } = useBibContext();
 
 	/**
 	 * Function used to return a Material UI language object

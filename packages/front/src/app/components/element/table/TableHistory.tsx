@@ -17,10 +17,10 @@ import type {
 } from "../../../shared/types/data.types";
 import type { TableDisplayElementProps } from "../../../shared/types/props.types";
 import type { FacetEntry } from "../../../shared/types/types";
-import { BibContext } from "../../internal/provider/ContextProvider";
 import CustomButton from "../button/CustomButton";
 import AlertModification from "../dialog/AlertModification";
 import "./scss/TableHistory.scss";
+import { useBibContext } from "../../../context/BibContext";
 
 const Limiters = ({ data }: { data: HistoryEntryLimiterDataType }) => {
 	const t = useTranslator();
@@ -178,7 +178,7 @@ const TableHistory = ({
 }: TableDisplayElementProps<HistoryEntryDataType>) => {
 	const t = useTranslator();
 	const navigate = useNavigate();
-	const { theme } = useContext(BibContext);
+	const { theme } = useBibContext();
 	const { handleDeleteEntry } = useContext(HistoryContext);
 
 	const [open, setOpen] = useState(false);

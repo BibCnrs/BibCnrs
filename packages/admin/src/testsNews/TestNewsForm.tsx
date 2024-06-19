@@ -1,10 +1,8 @@
 import Stack from "@mui/material/Stack";
-import React from "react";
 import {
 	ArrayInput,
 	BooleanInput,
 	DateInput,
-	Edit,
 	FileField,
 	FileInput,
 	ReferenceInput,
@@ -14,7 +12,6 @@ import {
 	TextInput,
 	required,
 } from "react-admin";
-import { EditActions } from "../components/Actions";
 import { MultilingualContentTab } from "../components/MultilingualContentTab";
 import TestsNewsHeader from "./TestsNewsHeader";
 

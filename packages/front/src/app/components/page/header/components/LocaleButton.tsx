@@ -2,15 +2,15 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { memo, useState } from "react";
 import type { MouseEvent } from "react";
+import { memo, useState } from "react";
+import { colors } from "../../../../context/LocalizedThemeProvider";
 import {
 	supportedLanguages,
 	useFullTranslator,
 	useLanguageKey,
-} from "../../../shared/locales/I18N";
-import type { SupportedLanguageKeys } from "../../../shared/types/types";
-import { colors } from "../../internal/provider/LocalizedThemeProvider";
+} from "../../../../shared/locales/I18N";
+import type { SupportedLanguageKeys } from "../../../../shared/types/types";
 
 /**
  * Local Button component used by the header.

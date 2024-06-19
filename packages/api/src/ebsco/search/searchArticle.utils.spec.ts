@@ -1,5 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
-import { AIDS_RESULTS_INPUT } from "./mock/aidsResult.input";
+import { describe, expect, it } from "vitest";
 import {
 	cleanUrl,
 	extractAbstract,

@@ -1,15 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { section_cn, unit } from "@prisma/client";
-import {
-	selectCommunities,
-	selectInstitutes,
-	selectNbInistAccount,
-	selectNbJanusAccount,
-	selectSectionsCN,
-} from "../../ebsco/units/units.queries";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
-import { transformOrderBy } from "../../utils/orderBy";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateSectionCNDto, UpdateSectionCNDto } from "./dto/sectionCN.dto";
 

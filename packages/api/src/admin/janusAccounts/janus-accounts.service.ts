@@ -1,10 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import {
-	Prisma,
-	inist_account,
-	institute,
-	janus_account,
-} from "@prisma/client";
+import { janus_account } from "@prisma/client";
 
 import {
 	selectAdditionalInstitutes,
