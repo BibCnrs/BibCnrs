@@ -33,7 +33,7 @@ export const DisplayResources = ({
 				lg: "repeat(4, 1fr)",
 			}}
 			gap={2}
-			aria-role="list"
+			role="list"
 		>
 			{data.map((resource) => (
 				<Card key={resource.id} role="listitem" aria-label={resource.name_fr}>

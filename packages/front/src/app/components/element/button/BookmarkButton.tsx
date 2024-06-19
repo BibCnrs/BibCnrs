@@ -1,11 +1,11 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Tooltip from "@mui/material/Tooltip";
 import { memo, useEffect, useState } from "react";
-import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { BookmarkButtonProps } from "../../../shared/types/props.types";
 import "./scss/BookmarkButton.scss";
 import { useBibContext } from "../../../context/BibContext";
+import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 
 const BookmarkButton = ({
 	title,
@@ -16,15 +16,14 @@ const BookmarkButton = ({
 		session: { user },
 	} = useBibContext();
 	const t = useTranslator();
-	const { favouriteResources, addFavourite, removeFavourite } =
-		useFavouriteResources();
+	const { allFavourites, addFavourite, removeFavourite } = useFavourites();
 	const [inBookmark, setInBookmark] = useState(false);
 	const [animated, setAnimated] = useState(false);
 
 	useEffect(() => {
 		if (user) {
 			if (
-				favouriteResources.some(
+				allFavourites.some(
 					(value) => value.title === title || value.url === url,
 				)
 			) {
@@ -32,7 +31,7 @@ const BookmarkButton = ({
 				return;
 			}
 		}
-	}, [user, favouriteResources, title, url]);
+	}, [user, allFavourites, title, url]);
 
 	const handleClick = (event) => {
 		event.preventDefault();
