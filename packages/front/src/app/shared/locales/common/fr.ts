@@ -197,6 +197,9 @@ Cordialement`,
 	pages: {
 		root: {
 			title: "Accueil",
+			seeMore: "Voir plus",
+			emptyFavorites:
+				"Epingler des favoris dans la page des favoris (lien) pour les voir apparaitre ici.",
 		},
 		resources: {
 			title: "Listes des ressources documentaires",
