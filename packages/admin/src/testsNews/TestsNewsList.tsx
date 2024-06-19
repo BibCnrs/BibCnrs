@@ -2,12 +2,16 @@ import Chip from "@mui/material/Chip";
 import find from "lodash/find";
 import {
 	BooleanField,
+	ChipField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
+	ReferenceArrayField,
+	ReferenceManyField,
 	SelectInput,
+	SingleFieldList,
 	TextInput,
 	WrapperField,
 	useRecordContext,
@@ -54,9 +58,15 @@ export default function TestsNewsList() {
 				<WrapperField label="Page">
 					<InternalChip />
 				</WrapperField>
-				<WrapperField label="Domains">
-					<DomainsField />
-				</WrapperField>
+				<ReferenceArrayField
+					label="Communautés"
+					source="communities"
+					reference="communities"
+				>
+					<SingleFieldList>
+						<ChipField source="name" />
+					</SingleFieldList>
+				</ReferenceArrayField>
 				<DateField source="from" label="Date début" />
 				<DateField source="to" emptyText="-" label="Date fin" />
 				<EditButton />

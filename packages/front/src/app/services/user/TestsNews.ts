@@ -24,6 +24,20 @@ export const news = async ({
 	return json<TestsNewsDataType>(response);
 };
 
+export const newsHome = async (): Promise<TestsNewsDataType> => {
+	const query = createQuery(environment.get.account.testNewsHome, {
+		domains: getDomains().join(","),
+	});
+
+	const response: Response = await fetch(query, {
+		credentials: "include",
+	});
+
+	throwIfNotOk(response);
+
+	return json<TestsNewsDataType>(response);
+};
+
 export const newsById = async (id: number): Promise<TestNewDataType> => {
 	const query = createQuery(`${environment.get.account.testsNews}/${id}`);
 

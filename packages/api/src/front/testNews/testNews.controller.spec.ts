@@ -1,3 +1,4 @@
+import test from "node:test";
 import { ConfigModule } from "@nestjs/config";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -31,19 +32,6 @@ describe("FrontTestNewsController", () => {
 		it("should return content for the news page", async () => {
 			expect(await ebscoTestNewsController.getTestNews()).toStrictEqual([
 				expect.objectContaining({
-					page: "tests",
-					enable: true,
-					from: new Date("2021-01-01"),
-					to: null,
-					name_en: "News 1",
-					name_fr: "News 1",
-					content_en: "Test News 1",
-					content_fr: "Test News 1",
-					media_id: null,
-					media: null,
-					id: 2,
-				}),
-				expect.objectContaining({
 					page: "news",
 					enable: true,
 					from: new Date("2022-01-01"),
@@ -55,25 +43,44 @@ describe("FrontTestNewsController", () => {
 					media_id: null,
 					media: null,
 					id: 1,
+					urls: null,
+					tests_news_community: [
+						{
+							community: { name: "INSHS" },
+							community_id: 1,
+							tests_news_id: 1,
+						},
+					],
+				}),
+				expect.objectContaining({
+					page: "tests",
+					enable: true,
+					from: new Date("2021-01-01"),
+					to: null,
+					name_en: "News 1",
+					name_fr: "News 1",
+					content_en: "Test News 1",
+					content_fr: "Test News 1",
+					media_id: null,
+					media: null,
+					id: 2,
+					urls: null,
+					tests_news_community: [
+						{
+							community: { name: "INSHS" },
+							community_id: 1,
+							tests_news_id: 2,
+						},
+						{
+							community: { name: "INSB" },
+							community_id: 2,
+							tests_news_id: 2,
+						},
+					],
 				}),
 			]);
 
-			expect(
-				await ebscoTestNewsController.getTestNews("INSHS,INSB"),
-			).toStrictEqual([
-				expect.objectContaining({
-					page: "tests",
-					enable: true,
-					from: new Date("2021-01-01"),
-					to: null,
-					name_en: "News 1",
-					name_fr: "News 1",
-					content_en: "Test News 1",
-					content_fr: "Test News 1",
-					media_id: null,
-					media: null,
-					id: 2,
-				}),
+			expect(await ebscoTestNewsController.getTestNews("INSHS")).toStrictEqual([
 				expect.objectContaining({
 					page: "news",
 					enable: true,
@@ -86,6 +93,38 @@ describe("FrontTestNewsController", () => {
 					media_id: null,
 					media: null,
 					id: 1,
+					tests_news_community: [
+						{
+							community: { name: "INSHS" },
+							community_id: 1,
+							tests_news_id: 1,
+						},
+					],
+				}),
+				expect.objectContaining({
+					page: "tests",
+					enable: true,
+					from: new Date("2021-01-01"),
+					to: null,
+					name_en: "News 1",
+					name_fr: "News 1",
+					content_en: "Test News 1",
+					content_fr: "Test News 1",
+					media_id: null,
+					media: null,
+					id: 2,
+					tests_news_community: [
+						{
+							community: { name: "INSHS" },
+							community_id: 1,
+							tests_news_id: 2,
+						},
+						{
+							community: { name: "INSB" },
+							community_id: 2,
+							tests_news_id: 2,
+						},
+					],
 				}),
 			]);
 
@@ -102,6 +141,18 @@ describe("FrontTestNewsController", () => {
 					media_id: null,
 					media: null,
 					id: 2,
+					tests_news_community: [
+						{
+							community: { name: "INSHS" },
+							community_id: 1,
+							tests_news_id: 2,
+						},
+						{
+							community: { name: "INSB" },
+							community_id: 2,
+							tests_news_id: 2,
+						},
+					],
 				}),
 			]);
 		});

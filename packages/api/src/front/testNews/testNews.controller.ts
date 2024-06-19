@@ -16,6 +16,11 @@ export class FrontTestNewsController {
 		);
 	}
 
+	@Get("home")
+	async getTestNewsHome(@Query("domains") domains: string | null = null) {
+		return this.ebscoTestNewsService.getTestNewsHome(domains?.split(",") ?? []);
+	}
+
 	@Get(":id")
 	async findTestNewsById(@Param("id", ParseIntPipe) id: number) {
 		return this.ebscoTestNewsService.findTestNewsById(id);

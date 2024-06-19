@@ -6,7 +6,7 @@ import {
 	Chip,
 	Typography,
 } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { Box, Stack, height } from "@mui/system";
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useLanguageKey } from "../../../shared/locales/I18N";
@@ -30,65 +30,75 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 		);
 	}, [data]);
 
+	const cardActionAreaDirection = filteredData.length > 1 ? "column" : "row";
+	const imageStyle =
+		filteredData.length > 1
+			? { height: 200, objectFit: "cover" }
+			: { width: 250, height: 200, objectFit: "contain" };
+
 	return (
 		<Box
 			display="grid"
-			gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
+			gridTemplateColumns={{
+				xs: "1fr",
+				md: filteredData.length === 1 ? "1fr" : "1fr 1fr 1fr",
+			}}
 			gap={6}
 		>
 			{filteredData.map((data) => (
-				<Box key={data.id}>
-					<Card
+				<Card
+					sx={{
+						cursor: "pointer",
+						":hover": {
+							boxShadow: 20,
+						},
+					}}
+					key={data.id}
+				>
+					<CardActionArea
+						component={Link}
+						to={`/news/${data.id}`}
 						sx={{
-							display: "flex",
-							flexDirection: "column",
 							height: "100%",
-							cursor: "pointer",
-							":hover": {
-								boxShadow: 20, // theme.shadows[20]
-							},
+							display: "flex",
+							flexDirection: cardActionAreaDirection,
 						}}
 					>
-						<CardActionArea
-							component={Link}
-							to={`/news/${data.id}`}
-							sx={{ height: "100%" }}
+						<CardMedia
+							component="img"
+							sx={imageStyle}
+							image={
+								data.media
+									? data.media.url
+									: "https://bib.cnrs.fr/wp-content/uploads/2018/04/bibcnrs-logo-visite.png"
+							}
+						/>
+						<CardContent
+							sx={{
+								flex: 1,
+								width: "100%",
+								height: "100%",
+								display: "flex",
+								justifyContent: "space-between",
+								flexDirection: "column",
+							}}
 						>
-							<CardMedia
-								component="img"
-								sx={{ height: 200, objectFit: "cover" }}
-								image={
-									data.media
-										? data.media.url
-										: "https://bib.cnrs.fr/wp-content/uploads/2018/04/bibcnrs-logo-visite.png"
-								}
-							/>
-							<CardContent
-								sx={{
-									display: "flex",
-									flexDirection: "column",
-									justifyContent: "space-between",
-									flex: 1,
-									gap: 2,
-								}}
-							>
-								<Stack spacing={1}>
-									<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-										{data.page === "tests" && (
-											<Chip label="Test" size="small" variant="outlined" />
-										)}
-									</Stack>
-									<Typography variant="h5" component="h6">
-										{language === "en" ? data.name_en : data.name_fr}
-									</Typography>
+							<Stack spacing={1}>
+								<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+									{data.page === "tests" && (
+										<Chip label="Test" size="small" variant="outlined" />
+									)}
 								</Stack>
-								<Typography color="textSecondary">
-									{new Date(data.from).toLocaleDateString()}
+								<Typography variant="h5" component="h6">
+									{language === "en" ? data.name_en : data.name_fr}
 								</Typography>
-							</CardContent>
-						</CardActionArea>
-					</Card>
-				</Box>
+							</Stack>
+							<Typography color="textSecondary">
+								{new Date(data.from).toLocaleDateString()}
+							</Typography>
+						</CardContent>
+					</CardActionArea>
+				</Card>
 			))}
 		</Box>
 	);
