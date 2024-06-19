@@ -159,7 +159,7 @@ export class TestsNewsService {
 			return null;
 		}
 
-		const { tests_news_community, domains, ...rest } = testNews;
+		const { tests_news_community, ...rest } = testNews;
 		return {
 			...rest,
 			communities: tests_news_community.map(({ community_id }) => community_id),
