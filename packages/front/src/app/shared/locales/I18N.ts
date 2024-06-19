@@ -302,6 +302,24 @@ export type Common = {
 				displayFavorites: string;
 				displayTestNews: string;
 			};
+			searchSection: {
+				title: string;
+				description: string;
+				article: string;
+				journal: string;
+				platform: string;
+				searchData: string;
+			};
+			generalSection: {
+				title: string;
+				descriptionLanguage: string;
+				auto: string;
+				fr: string;
+				en: string;
+				descriptionTheme: string;
+				light: string;
+				dark: string;
+			};
 		};
 	};
 	error: {
