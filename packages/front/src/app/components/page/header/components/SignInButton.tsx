@@ -1,25 +1,24 @@
 import Button from "@mui/material/Button";
 import { memo, useContext } from "react";
-import { useTranslator } from "../../../shared/locales/I18N";
-import { BibContext } from "../../internal/provider/ContextProvider";
-import { headerButtonStyle } from "../../page/header/Header";
+import { useBibContext } from "../../../../context/BibContext";
+import { useTranslator } from "../../../../shared/locales/I18N";
+import { BibContext } from "../../../internal/provider/ContextProvider";
+import { headerButtonStyle } from "../Header";
 
 /**
  * Button component used to sign-in into the application
  */
 const SignInButton = () => {
-	const { setAskLogin } = useContext(BibContext);
+	const { showLoginModal } = useBibContext();
+
 	const t = useTranslator();
-	const handleClick = () => {
-		setAskLogin(true);
-	};
 
 	return (
 		<div className="header-nav">
 			<Button
 				className="header-button"
 				sx={headerButtonStyle}
-				onClick={handleClick}
+				onClick={showLoginModal}
 			>
 				{t("components.header.login")}
 			</Button>
@@ -27,4 +26,4 @@ const SignInButton = () => {
 	);
 };
 
-export default memo(SignInButton);
+export default SignInButton;

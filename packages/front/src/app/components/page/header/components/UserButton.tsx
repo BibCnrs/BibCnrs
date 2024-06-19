@@ -10,24 +10,26 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import type { MouseEvent, ReactElement } from "react";
 import { memo, useContext, useState } from "react";
-import { getUsername, isLegacy, logout } from "../../../services/user/Session";
+import { useBibContext } from "../../../../context/BibContext";
+import { getUsername, isLegacy } from "../../../../services/user/Session";
 import {
 	RouteAlert,
 	RouteFavourite,
 	RouteHistory,
 	useClickHandler,
-} from "../../../shared/Routes";
-import { useTranslator } from "../../../shared/locales/I18N";
-import { BibContext } from "../../internal/provider/ContextProvider";
-import { colors } from "../../internal/provider/LocalizedThemeProvider";
+} from "../../../../shared/Routes";
+import { useTranslator } from "../../../../shared/locales/I18N";
+import { BibContext } from "../../../internal/provider/ContextProvider";
+import { colors } from "../../../internal/provider/LocalizedThemeProvider";
 
 /**
  * Button used to display the user menu
  */
 const UserButton = () => {
 	const t = useTranslator();
-	// Context used to log off the user when the logout action is finished
-	const { setLogin } = useContext(BibContext);
+
+	const { logout } = useBibContext();
+
 	// Anchor used to display or not the drop-down menu
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 	const open = Boolean(anchorEl);
@@ -114,11 +116,7 @@ const UserButton = () => {
 		<MenuItem
 			key="logout"
 			onClick={() => {
-				handleClose(() => {
-					logout().then(() => {
-						setLogin(false);
-					});
-				});
+				handleClose(() => logout());
 			}}
 		>
 			<ListItemIcon>
@@ -167,4 +165,4 @@ const UserButton = () => {
 	);
 };
 
-export default memo(UserButton);
+export default UserButton;

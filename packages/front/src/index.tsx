@@ -6,9 +6,9 @@ import ReactDOMClient from "react-dom/client";
 import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import App from "./app/App";
-import AuthenticationProvider from "./app/components/internal/provider/AuthenticationProvider";
 import ContextProvider from "./app/components/internal/provider/ContextProvider";
 import LocalizedThemeProvider from "./app/components/internal/provider/LocalizedThemeProvider";
+import { BibContextProvider } from "./app/context/BibContext";
 import ExceptedError from "./app/pages/errors/ExceptedError";
 import I18N from "./app/shared/locales/I18N";
 
@@ -20,17 +20,17 @@ root.render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<I18nextProvider i18n={I18N}>
-				<ContextProvider>
-					<LocalizedThemeProvider>
-						<BrowserRouter>
-							<ExceptedError>
-								<AuthenticationProvider>
+				<BibContextProvider>
+					<ContextProvider>
+						<LocalizedThemeProvider>
+							<BrowserRouter>
+								<ExceptedError>
 									<App />
-								</AuthenticationProvider>
-							</ExceptedError>
-						</BrowserRouter>
-					</LocalizedThemeProvider>
-				</ContextProvider>
+								</ExceptedError>
+							</BrowserRouter>
+						</LocalizedThemeProvider>
+					</ContextProvider>
+				</BibContextProvider>
 			</I18nextProvider>
 			<ReactQueryDevtools />
 		</QueryClientProvider>

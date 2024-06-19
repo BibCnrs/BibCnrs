@@ -1,4 +1,3 @@
-import "./Authentication.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import LoginIcon from "@mui/icons-material/Login";
 import Button from "@mui/material/Button";
@@ -13,13 +12,19 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import type { TooltipProps } from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import styled from "@mui/material/styles/styled";
-import { memo, useContext, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import TransitionGroup from "react-transition-group/TransitionGroup";
-import { loginToJanus, loginToLegacy } from "../../../services/user/Session";
-import { useTranslator } from "../../../shared/locales/I18N";
-import type { AuthenticationProps } from "../../../shared/types/props.types";
-import { BibContext } from "../../internal/provider/ContextProvider";
+import { useTranslator } from "../../shared/locales/I18N";
+import type { useSession } from "../useSession";
+
+type AuthenticationModalProps = {
+	open: boolean;
+	onClose?: () => void;
+
+	loginToJanus: ReturnType<typeof useSession>["loginToJanus"];
+	loginToLegacy: ReturnType<typeof useSession>["loginToLegacy"];
+};
 
 /**
  * Styled tooltips with no max width
@@ -40,15 +45,17 @@ const NoMaxWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
  * @param open    - Boolean used to display the modal
  * @param onClose - Component close callback
  */
-const Authentication = ({ open, onClose }: AuthenticationProps) => {
+function AuthenticationModal({
+	open,
+	onClose,
+	loginToJanus,
+	loginToLegacy,
+}: AuthenticationModalProps) {
 	const t = useTranslator();
 
 	// State use to handle the legacy login form
 	const [legacy, setLegacy] = useState(false);
 	const [legacyError, setLegacyError] = useState(false);
-
-	// setLogin Context function used to update interface
-	const { setLogin, setAskLogin } = useContext(BibContext);
 
 	/**
 	 * Function used to handle close
@@ -56,9 +63,7 @@ const Authentication = ({ open, onClose }: AuthenticationProps) => {
 	const handleClose = () => {
 		setLegacy(false);
 		setLegacyError(false);
-		if (onClose) {
-			onClose();
-		}
+		onClose?.();
 	};
 
 	/**
@@ -76,15 +81,14 @@ const Authentication = ({ open, onClose }: AuthenticationProps) => {
 	const handleLegacy = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const form = new FormData(event.currentTarget);
-		const data: Record<string, FormDataEntryValue> = {};
-		form.forEach((value, key) => {
-			data[key] = value;
-		});
-		loginToLegacy(data).then((login) => {
+
+		setLegacyError(false);
+		void loginToLegacy({
+			username: form.get("username") as string,
+			password: form.get("password") as string,
+		}).then((login) => {
 			if (login) {
-				setLogin(true);
-				setAskLogin(false);
-				setLegacyError(false);
+				onClose?.();
 				return;
 			}
 			setLegacyError(true);
@@ -215,6 +219,6 @@ const Authentication = ({ open, onClose }: AuthenticationProps) => {
 			</Slide>
 		</Modal>
 	);
-};
+}
 
-export default memo(Authentication);
+export default AuthenticationModal;

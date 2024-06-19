@@ -172,18 +172,6 @@ export const loginToLegacy = async (form: any): Promise<boolean> => {
 	return true;
 };
 
-export const logout = async (): Promise<void> => {
-	await fetch(createQuery(environment.post.account.logout), {
-		method: "POST",
-		credentials: "include",
-		headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json",
-		},
-	});
-	session.remove();
-};
-
 export const initSession = async (): Promise<boolean> => {
 	const status = session.getUser();
 
