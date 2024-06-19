@@ -21,6 +21,7 @@ export const environment = {
 			janus: "/ebsco/login_renater/",
 			licences: "/ebsco/licenses",
 			testsNews: "/ebsco/news",
+			testNewsHome: "/ebsco/news/home",
 			history: "/ebsco/history",
 			disableSearchAlert: "/ebsco/history/disable",
 		},

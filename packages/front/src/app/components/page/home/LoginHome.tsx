@@ -11,7 +11,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { alert } from "../../../services/common/CMS";
 import { isLegacy } from "../../../services/user/Session";
-import { news } from "../../../services/user/TestsNews";
+import { news, newsHome } from "../../../services/user/TestsNews";
 import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
@@ -51,7 +51,7 @@ export const LoginHome = () => {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const { data } = useQuery<TestsNewsDataType, any, TestsNewsDataType, any>({
 		queryKey: ["news", "home"],
-		queryFn: () => news({ limit: 3 }),
+		queryFn: () => newsHome(),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60
