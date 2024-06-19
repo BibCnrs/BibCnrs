@@ -24,6 +24,7 @@ export const environment = {
 			testNewsHome: "/ebsco/news/home",
 			history: "/ebsco/history",
 			disableSearchAlert: "/ebsco/history/disable",
+			settings: "/front/user-settings",
 		},
 	},
 	post: {
@@ -39,6 +40,7 @@ export const environment = {
 	},
 	put: {
 		account: {
+			settings: "/front/user-settings",
 			favourite: "/ebsco/favourite_resources",
 			searchAlert: "/ebsco/search-alert",
 		},

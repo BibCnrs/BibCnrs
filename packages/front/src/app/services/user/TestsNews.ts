@@ -12,7 +12,6 @@ export const news = async ({
 } = {}): Promise<TestsNewsDataType> => {
 	const query = createQuery(environment.get.account.testsNews, {
 		domains: getDomains().join(","),
-		limit: limit ? limit.toString() : undefined,
 	});
 
 	const response: Response = await fetch(query, {

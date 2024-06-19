@@ -37,6 +37,7 @@ const en: Common = {
 				bookmark: "My Bookmark",
 				notifications: "My Alerts",
 				legacy: "You are not logged on at the individual level",
+				settings: "Settings",
 			},
 		},
 		authentication: {
@@ -290,6 +291,15 @@ Sincerely`,
 		favourite: {
 			title: "My Favourites",
 			add: "Add a personal resource",
+		},
+		userSettings: {
+			title: "My preferences",
+			homeSection: {
+				title: "Home",
+				description: "Witch resources do you want to see on the home page?",
+				displayFavorites: "Favorites",
+				displayTestNews: "News",
+			},
 		},
 	},
 	error: {

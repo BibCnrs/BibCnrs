@@ -118,6 +118,7 @@ class Session {
 
 const session = new Session();
 
+export const getUser = session.getUser;
 export const getUsername = session.getUsername;
 export const isLegacy = session.isLegacy;
 export const getDomains = session.getDomains;

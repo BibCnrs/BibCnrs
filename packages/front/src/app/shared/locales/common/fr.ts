@@ -1,3 +1,4 @@
+import { d } from "@tanstack/react-query-devtools/build/legacy/devtools-PtxSnd7z";
 import type { Common } from "../I18N";
 
 /**
@@ -37,6 +38,7 @@ const fr: Common = {
 				bookmark: "Mes Favoris",
 				notifications: "Mes Alertes",
 				legacy: "Vous n'êtes pas connecté au niveau individuel",
+				settings: "Paramètres",
 			},
 		},
 		authentication: {
@@ -292,6 +294,15 @@ Cordialement`,
 		favourite: {
 			title: "Mes Favoris",
 			add: "Ajouter une ressource personnelle",
+		},
+		userSettings: {
+			title: "Mes préférences",
+			homeSection: {
+				title: "Accueil",
+				description: "Quelles sections souhaitez-vous voir sur l'accueil ?",
+				displayFavorites: "Favoris",
+				displayTestNews: "Actualités",
+			},
 		},
 	},
 	error: {
