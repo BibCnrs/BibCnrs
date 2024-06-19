@@ -11,7 +11,7 @@ import type { ProtectedRouteProps } from "../../shared/types/props.types";
  */
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	const {
-		session: { user },
+		session: { status, user },
 		displayAuthenticationModal,
 		showLoginModal,
 	} = useBibContext();
@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 	const [first, setFirst] = useState(true);
 
 	useEffect(() => {
-		if (user) {
+		if (status === "loading" || user) {
 			return;
 		}
 
@@ -31,7 +31,14 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
 		setFirst(false);
 		showLoginModal();
-	}, [user, first, displayAuthenticationModal, showLoginModal, navigate]);
+	}, [
+		status,
+		user,
+		first,
+		displayAuthenticationModal,
+		showLoginModal,
+		navigate,
+	]);
 
 	if (!user) {
 		return null;

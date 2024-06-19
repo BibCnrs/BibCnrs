@@ -5,7 +5,6 @@ import type {
 } from "../../shared/types/data.types";
 import type { FacetEntry, Institute } from "../../shared/types/types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
-import { getToken } from "../user/Session";
 
 export type PublicationPayLoad = {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
@@ -84,9 +83,6 @@ export const publication = async (
 		domain
 			? {
 					credentials: "include",
-					headers: {
-						Authorization: `Bearer ${getToken()}`,
-					},
 				}
 			: undefined,
 	);
@@ -107,9 +103,6 @@ export const retrieve = async (
 		),
 		{
 			credentials: "include",
-			headers: {
-				Authorization: `Bearer ${getToken()}`,
-			},
 		},
 	);
 	throwIfNotOk(response);
