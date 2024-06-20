@@ -80,7 +80,6 @@ const fr: Common = {
 		},
 		table: {
 			noData: "Aucun résultat trouvé.",
-			anonymousMessage: "Veuillez vous connecter et relancer la.",
 			content: {
 				doi: "DOI",
 				doiColon: "DOI : ",

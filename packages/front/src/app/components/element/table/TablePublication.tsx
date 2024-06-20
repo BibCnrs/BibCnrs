@@ -1,4 +1,4 @@
-import { Popover, Tooltip } from "@mui/material";
+import { Popover } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { memo, useEffect, useState } from "react";
@@ -43,6 +43,7 @@ const PublicationTitle = ({
 	const {
 		search,
 		session: { user },
+		showLoginModal,
 	} = useBibContext();
 
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -68,23 +69,20 @@ const PublicationTitle = ({
 
 	if (!isOpenAccess && !user) {
 		return (
-			<Tooltip title={t("components.table.anonymousMessage")}>
-				<Box display="flex" alignItems="center">
-					<a
-						className="table-list-title link"
-						href={href}
-						target="_blank"
-						rel="noreferrer noopener nofollow"
-						onClick={(e) => {
-							e.stopPropagation();
-						}}
-					>
-						{publication.id}. {publication.title} [{publication.type}]
-					</a>
-					&nbsp;&nbsp;{titleCoverage}
-					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+			<Box display="flex" alignItems="center">
+				<Box
+					className="table-list-title link"
+					sx={{ cursor: "pointer" }}
+					onClick={(e) => {
+						e.stopPropagation();
+						showLoginModal();
+					}}
+				>
+					{publication.id}. {publication.title} [{publication.type}]
 				</Box>
-			</Tooltip>
+				&nbsp;&nbsp;{titleCoverage}
+				{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+			</Box>
 		);
 	}
 

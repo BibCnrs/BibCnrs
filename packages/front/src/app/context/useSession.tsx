@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { createQuery, environment } from "../services/Environment";
 import { updateFavourite } from "../services/user/Favourite";
 import { updateAlert } from "../services/user/SearchAlert";
+import { useFullTranslator } from "../shared/locales/I18N";
 import type {
 	FavouriteResourceDataType,
 	SessionUserDataType,
 	UserSettingsDataType,
 } from "../shared/types/data.types";
+import type { ThemeType } from "../shared/types/types";
 
 export type BibSession =
 	| {
@@ -32,8 +34,24 @@ const persistentStorage = window?.localStorage;
 const STORAGE_KEY = "user";
 const JANUS_STORAGE_KEY = "janus_callback";
 
+const setStorageTheme = (value: ThemeType) => {
+	window?.localStorage?.setItem("mode", value);
+};
+
+const getStorageTheme = (): ThemeType => {
+	const mode = window?.localStorage?.getItem("mode");
+	if (mode == null) {
+		setStorageTheme("light");
+		return "light";
+	}
+	return mode as ThemeType;
+};
+
 export function useSession() {
 	const [session, setSession] = useState<BibSession>(LOADING_USER);
+	const [theme, setTheme] = useState<ThemeType>(getStorageTheme());
+
+	const { i18n } = useFullTranslator();
 
 	const _loginUser = useCallback((user: BibSession["user"]) => {
 		if (!user) {
@@ -42,6 +60,19 @@ export function useSession() {
 		persistentStorage?.setItem(STORAGE_KEY, JSON.stringify(user));
 		setSession({ status: "loggedIn", user });
 	}, []);
+
+	const _setupLanguageAndTheme = useCallback(
+		(janusUser: SessionUserDataType) => {
+			if (!janusUser.settings) return;
+
+			if (janusUser.settings.defaultLanguage !== "auto")
+				i18n.changeLanguage(janusUser.settings.defaultLanguage);
+
+			if (janusUser.settings.defaultTheme !== "auto")
+				setTheme(janusUser.settings.defaultTheme);
+		},
+		[i18n],
+	);
 
 	const _janusLogin = useCallback(() => {
 		setSession(LOADING_USER);
@@ -61,6 +92,7 @@ export function useSession() {
 			})
 			.then((user) => {
 				_loginUser({ ...user, fetch: false, legacy: false });
+				_setupLanguageAndTheme(user);
 			})
 			.catch((res) => {
 				// This fixes the dual request on getLogin in dev mode
@@ -71,7 +103,7 @@ export function useSession() {
 			.finally(() => {
 				persistentStorage?.removeItem(JANUS_STORAGE_KEY);
 			});
-	}, [_loginUser]);
+	}, [_loginUser, _setupLanguageAndTheme]);
 
 	const _storageLogin = useCallback(() => {
 		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
@@ -230,5 +262,7 @@ export function useSession() {
 		updateFavouriteResources,
 		updateUserSettings,
 		updateSearchAlert,
+		theme,
+		setTheme,
 	};
 }

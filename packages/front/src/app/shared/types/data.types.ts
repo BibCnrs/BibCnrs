@@ -123,7 +123,7 @@ export type SessionUserDataType = {
 	favouriteResources?: FavouriteResourceDataType[];
 	origin?: string;
 	legacy: boolean;
-	settings: UserSettingsDataType;
+	settings?: UserSettingsDataType;
 };
 
 export type LicenceDataType = {

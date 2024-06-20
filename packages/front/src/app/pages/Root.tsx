@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../components/page/searchbar/SearchBar";
-import { RouteArticle, updatePageQueryUrl } from "../shared/Routes";
+import {
+	RouteArticle,
+	RouteDatabase,
+	RoutePublication,
+	RouteResearchData,
+	updatePageQueryUrl,
+} from "../shared/Routes";
 import { useTranslator } from "../shared/locales/I18N";
 import "./Root.scss";
 import { LinearProgress } from "@mui/material";
@@ -9,16 +15,27 @@ import { AnonymousHome } from "../components/page/home/AnonymousHome";
 import { LoginHome } from "../components/page/home/LoginHome";
 import { useBibContext } from "../context/BibContext";
 
+const ROUTE_SEARCH = {
+	article: RouteArticle,
+	journal: RoutePublication,
+	platform: RouteDatabase,
+	searchData: RouteResearchData,
+};
+
 const Root = () => {
 	const { session } = useBibContext();
-
-	console.log("user", session);
 
 	const navigate = useNavigate();
 	const t = useTranslator();
 
 	const handleSearch = (q: string | undefined) => {
-		updatePageQueryUrl(RouteArticle, navigate, { q });
+		if (!session.user?.settings) {
+			return updatePageQueryUrl(RouteArticle, navigate, { q });
+		}
+
+		const { defaultSearchMode } = session.user.settings;
+		const route = ROUTE_SEARCH[defaultSearchMode];
+		return updatePageQueryUrl(route, navigate, { q });
 	};
 
 	if (session.status === "loading") {

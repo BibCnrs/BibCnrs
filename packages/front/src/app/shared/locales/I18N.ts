@@ -91,7 +91,6 @@ export type Common = {
 		};
 		table: {
 			noData: string;
-			anonymousMessage: string;
 			content: {
 				doi: string;
 				doiColon: string;

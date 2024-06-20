@@ -30,25 +30,11 @@ type BibContextProviderProps = {
 	children: ReactNode;
 };
 
-const setStorageTheme = (value: ThemeType) => {
-	window?.localStorage?.setItem("mode", value);
-};
-
-const getStorageTheme = (): ThemeType => {
-	const mode = window?.localStorage?.getItem("mode");
-	if (mode == null) {
-		setStorageTheme("light");
-		return "light";
-	}
-	return mode as ThemeType;
-};
-
 export function BibContextProvider({ children }: BibContextProviderProps) {
 	const session = useSession();
 	const [displayAuthenticationModal, setDisplayAuthenticationModal] =
 		useState(false);
 
-	const [theme, setTheme] = useState<ThemeType>(getStorageTheme());
 	const [search, setSearch] = useState<SearchContextType>({
 		query: undefined,
 		domain: undefined,
@@ -86,8 +72,6 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 			value={{
 				...session,
 				displayAuthenticationModal,
-				theme,
-				setTheme,
 				search,
 				setSearch,
 				showLoginModal,

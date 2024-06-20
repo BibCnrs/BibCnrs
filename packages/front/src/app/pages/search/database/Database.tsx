@@ -20,6 +20,7 @@ import type {
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import "./Database.scss";
+import { getString, useSearchParams } from "../../../shared/Routes";
 import { DatabaseItem } from "./DatabaseItem";
 import { DatabasePagination } from "./DatabasePagination";
 import FilterTab from "./FilterTab";
@@ -43,6 +44,10 @@ const Database = () => {
 	const [databasePerPage, setDatabasePerPage] = useState<number>(50);
 
 	const [nameFilter, setNameFilter] = useState<string>("");
+
+	// For filtrer from the home search
+	const query = useSearchParams();
+	const querySearch = getString(query, "q", "");
 
 	const { data, isLoading, isError, error } = useQuery<
 		DatabaseDataType,
@@ -117,6 +122,12 @@ const Database = () => {
 			serviceCatch(error);
 		}
 	}, [error, isError, serviceCatch]);
+
+	useEffect(() => {
+		if (querySearch) {
+			setNameFilter(querySearch.toLocaleUpperCase());
+		}
+	}, [querySearch]);
 
 	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setNameFilter(e.target.value.toLocaleUpperCase());
