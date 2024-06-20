@@ -1,4 +1,3 @@
-import type { UniqueIdentifier } from "@dnd-kit/core";
 import type { Property } from "csstype";
 import type {
 	ElementType,
@@ -14,7 +13,7 @@ import type {
 	HistoryEntryDataType,
 	TestsNewsDataType,
 } from "./data.types";
-import type { FacetEntry, FavouriteResourceWithId, TFunction } from "./types";
+import type { FacetEntry, TFunction } from "./types";
 
 type HaveReactChildren = PropsWithChildren;
 
@@ -202,11 +201,6 @@ export type BookmarkButtonProps = PropsWithoutRef<{
 	title: string;
 	url: string;
 	className?: string;
-}>;
-
-export type SortableFavouriteProps = PropsWithoutRef<{
-	id: UniqueIdentifier;
-	onDelete: (entry: FavouriteResourceWithId) => void;
 }>;
 
 export type DialogProps = PropsWithoutRef<{
