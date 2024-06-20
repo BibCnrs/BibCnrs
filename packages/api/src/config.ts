@@ -26,7 +26,6 @@ const configFunction = () => ({
 	ebsco: {
 		host: process.env.ebsco_host,
 		port: process.env.ebsco_port,
-		proxy: process.env.http_proxy,
 		allowedLimiters: ["FT", "DT1", "RV", "RV3", "AU", "SO", "TI", "LA99"],
 		doajUrl: process.env.DOAJ_URL || "https://doaj.org/api/",
 		crossref: process.env.crossref || "http://api.crossref.org/works/",
@@ -46,6 +45,10 @@ const configFunction = () => ({
 			process.env.MAX_SEARCH_HISTORY_AGE_IN_MONTHS || "2",
 			10,
 		),
+	},
+	http: {
+		httpProxy: process.env.http_proxy,
+		httpsProxy: process.env.https_proxy,
 	},
 });
 

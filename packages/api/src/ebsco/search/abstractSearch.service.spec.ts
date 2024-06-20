@@ -2,6 +2,7 @@ import { ConfigModule } from "@nestjs/config";
 import { ContextIdFactory } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { HttpService } from "../../common/http/http.service";
 import { RedisService } from "../../common/redis/redis.service";
 import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -21,7 +22,12 @@ describe("EbscoSearchArticleService", () => {
 					isGlobal: false,
 				}),
 			],
-			providers: [EbscoSearchArticleService, PrismaService, RedisService],
+			providers: [
+				EbscoSearchArticleService,
+				PrismaService,
+				RedisService,
+				HttpService,
+			],
 		}).compile();
 
 		service = await module.resolve<EbscoSearchArticleService>(

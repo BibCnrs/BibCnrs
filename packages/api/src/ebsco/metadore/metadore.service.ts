@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { HttpService } from "../../common/http/http.service";
 import { Config } from "../../config";
 
 type RawQuery = {
@@ -12,7 +13,10 @@ type RawQuery = {
 export class EbscoMetadoreService {
 	private readonly metadoreConfig: Config["metadore"];
 
-	constructor(private readonly configService: ConfigService<Config, true>) {
+	constructor(
+		private readonly configService: ConfigService<Config, true>,
+		private readonly http: HttpService,
+	) {
 		this.metadoreConfig =
 			this.configService.get<Config["metadore"]>("metadore");
 	}
@@ -82,13 +86,14 @@ export class EbscoMetadoreService {
 
 	async metadoreRequest(query: RawQuery) {
 		const queryString = this.parseMetadoreSearch(query);
-		return fetch(`${this.metadoreConfig.url}/search?${queryString}`, {
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-				"x-api-key": this.metadoreConfig.apiKey,
-			},
-		})
+		return this.http
+			.request(`${this.metadoreConfig.url}/search?${queryString}`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+					"x-api-key": this.metadoreConfig.apiKey,
+				},
+			})
 			.then(async (response) => {
 				if (response.status === 200) {
 					return response.json();

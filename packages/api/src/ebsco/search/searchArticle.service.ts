@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
 import flatten from "lodash.flatten";
+import { HttpService } from "../../common/http/http.service";
 import { RedisService } from "../../common/redis/redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -34,10 +35,11 @@ const ARTICLE_URL = "/edsapi/rest/Search";
 export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	constructor(
 		configService: ConfigService<Config, true>,
+		httpService: HttpService,
 		prismaService: PrismaService,
 		redisService: RedisService,
 	) {
-		super(configService.get("ebsco"), prismaService, redisService);
+		super(configService.get("ebsco"), httpService, prismaService, redisService);
 	}
 
 	parseArticleQueries({ queries }) {
@@ -81,9 +83,10 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 	private async getInfoFromDOI(term: string) {
 		try {
-			const result = await fetch(`${this.ebsco.crossref}${term}`).then((res) =>
-				res.json(),
-			);
+			const result = await this.http
+				.request(`${this.ebsco.crossref}${term}`)
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				.then((res) => res.json() as Promise<any>);
 			return {
 				title: result?.message?.title?.[0],
 				issn: result?.message?.ISSN?.[0],
@@ -124,7 +127,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				.replace("https://api.unpaywall.org/v2/doi=", "")
 				.replace("?email=jjoly@ebsco.com", "");
 			const query = `{GetByDOI(dois:["${doi}"]){is_oa, best_oa_location{ url_for_pdf }}}`;
-			const response = await fetch(
+			const response = await this.http.request(
 				`${this.ebsco.ezUnpaywallUrl}/api/graphql?sid=bibapi`,
 				{
 					method: "POST",
@@ -140,11 +143,11 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				throw new Error("Unpaywall error");
 			}
 
-			const result = await response.json();
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			const result = (await response.json()) as any;
 
-			const is_oa = JSON.parse(result).data.GetByDOI[0].is_oa;
-			const url =
-				JSON.parse(result).data.GetByDOI[0].best_oa_location.url_for_pdf;
+			const is_oa = result.data.GetByDOI[0].is_oa;
+			const url = result.data.GetByDOI[0].best_oa_location.url_for_pdf;
 			if (is_oa && url) {
 				const urlEncoded = encodeURIComponent(url);
 				return `${this.ebsco.apiEndpoint}/ebsco/oa?sid=unpaywall&doi=${doi}&url=${urlEncoded}&domaine=${domain}`;
