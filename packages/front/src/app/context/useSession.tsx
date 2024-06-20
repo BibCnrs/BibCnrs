@@ -5,6 +5,7 @@ import { updateAlert } from "../services/user/SearchAlert";
 import type {
 	FavouriteResourceDataType,
 	SessionUserDataType,
+	UserSettingsDataType,
 } from "../shared/types/data.types";
 
 export type BibSession =
@@ -195,6 +196,22 @@ export function useSession() {
 		[session.user, session.status, _loginUser],
 	);
 
+	const updateUserSettings = useCallback(
+		(settings: UserSettingsDataType) => {
+			if (session.status !== "loggedIn" || session.user.origin !== "janus") {
+				return;
+			}
+
+			const newSettings = { ...session.user.settings, ...settings };
+
+			_loginUser({
+				...session.user,
+				settings: newSettings,
+			});
+		},
+		[session.user, session.status, _loginUser],
+	);
+
 	const updateSearchAlert = useCallback(
 		(historyId: number, frequency: string) => {
 			if (!session.user) {
@@ -211,6 +228,7 @@ export function useSession() {
 		loginToLegacy,
 		logout,
 		updateFavouriteResources,
+		updateUserSettings,
 		updateSearchAlert,
 	};
 }

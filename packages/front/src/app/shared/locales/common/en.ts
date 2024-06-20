@@ -37,6 +37,7 @@ const en: Common = {
 				bookmark: "My Bookmark",
 				notifications: "My Alerts",
 				legacy: "You are not logged on at the individual level",
+				settings: "Settings",
 			},
 		},
 		authentication: {
@@ -290,6 +291,34 @@ Sincerely`,
 		favourite: {
 			title: "My Favourites",
 			add: "Add a personal resource",
+		},
+		userSettings: {
+			title: "My preferences",
+			homeSection: {
+				title: "Home",
+				description: "Witch resources do you want to see on the home page?",
+				displayFavorites: "Favorites",
+				displayTestNews: "News",
+			},
+			searchSection: {
+				title: "Search",
+				description:
+					"When you start a search, which tab do you want to arrive on?",
+				article: "Article",
+				journal: "Journal",
+				platform: "Platform",
+				searchData: "Research data",
+			},
+			generalSection: {
+				title: "General",
+				descriptionLanguage: "What language do you want?",
+				auto: "Automatic",
+				fr: "French",
+				en: "English",
+				descriptionTheme: "What theme do you want?",
+				light: "Light",
+				dark: "Dark",
+			},
 		},
 	},
 	error: {

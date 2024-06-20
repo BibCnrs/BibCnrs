@@ -13,6 +13,7 @@ import Article from "./pages/search/article/Article";
 import Database from "./pages/search/database/Database";
 import Publication from "./pages/search/publication/Publication";
 import ResearchData from "./pages/search/researchdata/ResearchData";
+import UserSettings from "./pages/user/UserSettings/UserSettings";
 import Favourite from "./pages/user/favourite/Favourite";
 import History from "./pages/user/history/History";
 import Licences from "./pages/user/licences/Licences";
@@ -33,6 +34,7 @@ import {
 	RouteResearchData,
 	RouteResources,
 	RouteRoot,
+	RouteUserSettings,
 } from "./shared/Routes";
 
 const App = () => {
@@ -98,6 +100,14 @@ const App = () => {
 						element={
 							<ProtectedRoute>
 								<History displayOnlyAlert />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path={RouteUserSettings}
+						element={
+							<ProtectedRoute>
+								<UserSettings />
 							</ProtectedRoute>
 						}
 					/>

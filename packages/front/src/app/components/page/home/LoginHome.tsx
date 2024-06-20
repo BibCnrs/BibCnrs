@@ -29,6 +29,8 @@ export const LoginHome = () => {
 		session: { user },
 	} = useBibContext();
 
+	console.log("user", user);
+
 	const { favouritesWithId } = useFavouriteResources();
 
 	const lastNineFavourites = favouritesWithId
@@ -59,6 +61,13 @@ export const LoginHome = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
+	// Display favorite only if the user is not legacy and has the setting enabled
+	const displayFavourites = !user?.legacy && user?.settings.displayFavorites;
+
+	// We always display test news if the user is legacy.
+	// If janus account, we display test news if the setting is enabled
+	const displayTestNews = user?.legacy || user?.settings.displayTestNews;
+
 	return (
 		<Stack gap={4}>
 			<RenderContent
@@ -68,7 +77,7 @@ export const LoginHome = () => {
 				Container={AlertPaper}
 			/>
 
-			{!user?.legacy && (
+			{displayFavourites && (
 				<Stack gap={2}>
 					<Typography variant="h5" aria-label={t("pages.news.title")}>
 						{t("pages.favourite.title")}
@@ -112,23 +121,25 @@ export const LoginHome = () => {
 				</Stack>
 			)}
 
-			<Stack gap={2}>
-				<Typography variant="h5" aria-label={t("pages.news.title")}>
-					{t("pages.news.title")}
-				</Typography>
-				<RenderNews data={data} />
-				<Box sx={{ textAlign: "right" }}>
-					<Button
-						component={Link}
-						to="news"
-						sx={{
-							textTransform: "none",
-						}}
-					>
-						{`${t("pages.root.seeMore")} >`}
-					</Button>
-				</Box>
-			</Stack>
+			{displayTestNews && (
+				<Stack gap={2}>
+					<Typography variant="h5" aria-label={t("pages.news.title")}>
+						{t("pages.news.title")}
+					</Typography>
+					<RenderNews data={data} />
+					<Box sx={{ textAlign: "right" }}>
+						<Button
+							component={Link}
+							to="news"
+							sx={{
+								textTransform: "none",
+							}}
+						>
+							{`${t("pages.root.seeMore")} >`}
+						</Button>
+					</Box>
+				</Stack>
+			)}
 		</Stack>
 	);
 };

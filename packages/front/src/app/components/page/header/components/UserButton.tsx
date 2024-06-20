@@ -3,6 +3,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -10,12 +11,14 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import type { MouseEvent, ReactElement } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useBibContext } from "../../../../context/BibContext";
 import { colors } from "../../../../context/LocalizedThemeProvider";
 import {
 	RouteAlert,
 	RouteFavourite,
 	RouteHistory,
+	RouteUserSettings,
 	useClickHandler,
 } from "../../../../shared/Routes";
 import { useTranslator } from "../../../../shared/locales/I18N";
@@ -102,6 +105,17 @@ const UserButton = () => {
 					<NotificationsIcon fontSize="small" />
 				</ListItemIcon>
 				{t("components.header.user.notifications")}
+			</MenuItem>,
+			<MenuItem
+				key="settings"
+				component={Link}
+				to={RouteUserSettings}
+				aria-label={t("components.header.user.settings")}
+			>
+				<ListItemIcon>
+					<SettingsIcon fontSize="small" />
+				</ListItemIcon>
+				{t("components.header.user.settings")}
 			</MenuItem>,
 		);
 	}

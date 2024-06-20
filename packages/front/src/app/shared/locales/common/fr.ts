@@ -37,6 +37,7 @@ const fr: Common = {
 				bookmark: "Mes Favoris",
 				notifications: "Mes Alertes",
 				legacy: "Vous n'êtes pas connecté au niveau individuel",
+				settings: "Paramètres",
 			},
 		},
 		authentication: {
@@ -292,6 +293,34 @@ Cordialement`,
 		favourite: {
 			title: "Mes Favoris",
 			add: "Ajouter une ressource personnelle",
+		},
+		userSettings: {
+			title: "Mes préférences",
+			homeSection: {
+				title: "Accueil",
+				description: "Quelles sections souhaitez-vous voir sur l'accueil ?",
+				displayFavorites: "Favoris",
+				displayTestNews: "Actualités",
+			},
+			searchSection: {
+				title: "Recherche",
+				description:
+					"Lorsque vous commencez une recherche, sur quel onglet souhaitez-vous arriver ?",
+				article: "Article",
+				journal: "Revue",
+				platform: "Plateforme",
+				searchData: "Données de recherche",
+			},
+			generalSection: {
+				title: "Général",
+				descriptionLanguage: "Quelle langue souhaitez-vous ?",
+				auto: "Automatique",
+				fr: "Français",
+				en: "Anglais",
+				descriptionTheme: "Quel thème souhaitez-vous ?",
+				light: "Clair",
+				dark: "Sombre",
+			},
 		},
 	},
 	error: {

@@ -4,6 +4,7 @@ import { UnitsModule } from "../../admin/units/units.module";
 import { AuthModule } from "../../common/auth/auth.module";
 import { MailModule } from "../../common/mail/mail.module";
 import { RedisModule } from "../../common/redis/redis.module";
+import { UserSettingsModule } from "../../front/user-settings/user-settings.module";
 import { PrismaModule } from "../../prisma/prisma.module";
 import { JanusAccountModule } from "../accounts/accounts.module";
 import { JanusAlertService } from "./alert.service";
@@ -18,6 +19,7 @@ import { JanusAuthController } from "./auth.controller";
 		AuthModule,
 		RedisModule,
 		MailModule,
+		UserSettingsModule,
 	],
 	controllers: [JanusAuthController],
 	providers: [JanusAlertService],

@@ -159,6 +159,25 @@ model institute_community {
   @@unique([institute_id, community_id], map: "institute_community_constraint")
 }
 
+enum SearchMode {
+  article
+  journal
+  platform
+  searchData
+}
+
+enum Language {
+  auto
+  fr
+  en
+}
+
+enum Theme {
+  auto
+  light
+  dark
+}
+
 model janus_account {
   id                      Int                       @id(map: "bib_user_pkey") @default(autoincrement())
   primary_institute       Int?
@@ -176,6 +195,11 @@ model janus_account {
   favourite_resources     Json?                     @db.Json
   institute               institute?                @relation(fields: [primary_institute], references: [id], onUpdate: NoAction, map: "bib_user_primary_institute_fkey")
   unit                    unit?                     @relation(fields: [primary_unit], references: [id], onUpdate: NoAction, map: "bib_user_primary_unit_fkey")
+  displayFavorites        Boolean                   @default(true)
+  displayTestNews         Boolean                   @default(true)
+  defaultSearchMode       SearchMode                @default(article)
+  defaultLanguage         Language                  @default(auto)
+  defaultTheme            Theme                     @default(auto)
   janus_account_community janus_account_community[]
   janus_account_institute janus_account_institute[]
   janus_account_unit      janus_account_unit[]

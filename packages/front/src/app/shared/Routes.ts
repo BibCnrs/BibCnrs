@@ -32,6 +32,7 @@ const Routes = {
 	history: "/account/history",
 	alert: "/account/alert",
 	favourite: "/account/favourite",
+	userSettings: "/account/settings",
 } as const;
 
 type RoutesT = typeof Routes;
@@ -129,3 +130,4 @@ export const RouteNews = Routes.news;
 export const RouteHistory = Routes.history;
 export const RouteAlert = Routes.alert;
 export const RouteFavourite = Routes.favourite;
+export const RouteUserSettings = Routes.userSettings;
