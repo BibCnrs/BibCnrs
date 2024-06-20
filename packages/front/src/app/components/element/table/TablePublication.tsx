@@ -25,7 +25,7 @@ import "./scss/TableList.scss";
 function proxifyOAPublication(url: string, domain: string) {
 	return `${environment.host}/ebsco/oa?url=${encodeURIComponent(
 		url,
-	)}&sid=ao&domaine=${domain}&doi=null`;
+	)}&sid=oa&domaine=${domain}&doi=null`;
 }
 
 const PublicationTitle = ({

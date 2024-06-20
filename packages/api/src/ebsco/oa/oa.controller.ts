@@ -2,7 +2,6 @@ import {
 	BadRequestException,
 	Controller,
 	Get,
-	Logger,
 	Query,
 	Req,
 	Res,
@@ -14,14 +13,14 @@ import { InstitutesService } from "../../admin/institutes/institutes.service";
 import { UnitsService } from "../../admin/units/units.service";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import { TokenPayload } from "../../common/auth/auth.type";
+import { AppLogger } from "../../common/logger/AppLogger";
 import { InistAccountService } from "../../inist/accounts/accounts.service";
 import { JanusAccountService } from "../../janus/accounts/accounts.service";
-
-const logger = new Logger("EbscoOaController");
 
 @Controller("ebsco")
 export class EbscoOaController {
 	constructor(
+		private readonly logger: AppLogger,
 		private readonly janusAccountService: JanusAccountService,
 		private readonly inistAccountService: InistAccountService,
 		private readonly instituteService: InstitutesService,
@@ -38,7 +37,7 @@ export class EbscoOaController {
 		I: string | null,
 		OU: string | null,
 	) {
-		logger.log(
+		this.logger.log(
 			`open access: ${JSON.stringify({
 				sid,
 				domain,

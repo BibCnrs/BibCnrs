@@ -8,6 +8,8 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { EbscoSearchArticleService } from "./searchArticle.service";
 
 import { HttpService } from "../../common/http/http.service";
+import { AppLogger } from "../../common/logger/AppLogger";
+import { logContextFactory } from "../../common/logger/logger.module";
 import { AIDS_RESULTS_EXPECTED } from "./mock/aidsResult.expected";
 import { AIDS_RESULTS_INPUT } from "./mock/aidsResult.input";
 import { RETRIEVE_ARTICLE_PARSER_EXPECTED } from "./mock/retrieveArticleParser.expected";
@@ -28,6 +30,8 @@ describe("EbscoSearchArticleService", () => {
 				}),
 			],
 			providers: [
+				logContextFactory,
+				AppLogger,
 				EbscoSearchArticleService,
 				PrismaService,
 				RedisService,
