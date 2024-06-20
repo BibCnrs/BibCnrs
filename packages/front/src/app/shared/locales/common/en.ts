@@ -79,7 +79,6 @@ const en: Common = {
 		},
 		table: {
 			noData: "No result found.",
-			anonymousMessage: "Sign in and reload the search",
 			content: {
 				doi: "DOI",
 				doiColon: "DOI: ",
