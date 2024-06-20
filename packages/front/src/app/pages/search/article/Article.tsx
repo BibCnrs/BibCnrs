@@ -7,16 +7,12 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import Select from "@mui/material/Select";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../../components/element/button/CustomButton";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import TableArticle from "../../../components/element/table/TableArticle";
 import PageTitle from "../../../components/internal/PageTitle";
-import {
-	BibContext,
-	BibContextArticleDefault,
-} from "../../../components/internal/provider/ContextProvider";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
 import Facet from "../../../components/page/facet/Facet";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
@@ -48,6 +44,8 @@ import type {
 } from "../../../shared/types/props.types";
 import type { FacetEntry } from "../../../shared/types/types";
 import "./Article.scss";
+import { useBibContext } from "../../../context/BibContext";
+import { BibContextArticleDefault } from "../../../context/BibContext.const";
 
 type ContextData = Array<{
 	id: number;
@@ -67,7 +65,7 @@ const Article = () => {
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
 	const facetsCleaner = useFacetsCleaner<Omit<ArticleParam, "orderBy">>();
-	const { search, setSearch } = useContext(BibContext);
+	const { search, setSearch } = useBibContext();
 
 	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);

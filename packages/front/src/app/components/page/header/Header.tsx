@@ -1,6 +1,7 @@
 import "./Header.scss";
-import { memo, useContext } from "react";
+import { memo } from "react";
 import BibCNRSLogo from "/logos/bibcnrs.png";
+import { useBibContext } from "../../../context/BibContext";
 import {
 	RouteFaq,
 	RouteLicences,
@@ -10,14 +11,14 @@ import {
 } from "../../../shared/Routes";
 import createSxProps from "../../../shared/createSxProps";
 import { useTranslator } from "../../../shared/locales/I18N";
-import HeaderButton from "../../element/header/HeaderButton";
-import LocalButton from "../../element/header/LocaleButton";
-import SignInButton from "../../element/header/SignInButton";
-import ThemeButton from "../../element/header/ThemeButton";
-import UserButton from "../../element/header/UserButton";
 import CustomLink from "../../element/link/CustomLink";
 import NavBar from "../../element/navbar/NavBar";
-import { BibContext } from "../../internal/provider/ContextProvider";
+import HeaderButton from "./components/HeaderButton";
+import LocalButton from "./components/LocaleButton";
+import SignInButton from "./components/SignInButton";
+import ThemeButton from "./components/ThemeButton";
+import UserButton from "./components/UserButton";
+import { UserLoading } from "./components/UserLoading";
 
 export const headerButtonStyle = createSxProps({
 	fontFamily: '"Source Sans Pro", sans-serif',
@@ -33,7 +34,8 @@ export const headerButtonStyle = createSxProps({
  */
 const Header = () => {
 	const t = useTranslator();
-	const { login } = useContext(BibContext);
+	const { session: user } = useBibContext();
+
 	return (
 		<>
 			<header>
@@ -46,15 +48,16 @@ const Header = () => {
 					</div>
 				</div>
 				<div id="header-right">
-					{login ? (
+					{user.status === "loading" && <UserLoading />}
+					{user.status === "loggedIn" && (
 						<>
 							<UserButton />
 							<HeaderButton name="news" route={RouteNews} />
 							<HeaderButton name="licences" route={RouteLicences} />
 						</>
-					) : (
-						<SignInButton />
 					)}
+					{user.status === "loggedOut" && <SignInButton />}
+
 					<HeaderButton name="resources" route={RouteResources} />
 					<HeaderButton name="questions" route={RouteFaq} />
 					<LocalButton />

@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
 	ArticleContentGetter,
 	retrieve as retrieveFn,
@@ -11,15 +11,15 @@ import type {
 	ArticleRetrieveDataType,
 } from "../../../shared/types/data.types";
 import type { TableDisplayElementProps } from "../../../shared/types/props.types";
-import { BibContext } from "../../internal/provider/ContextProvider";
 import Article from "../render/Article";
 import SkeletonEntry from "../skeleton/SkeletonEntry";
 import "./scss/TableList.scss";
+import { useBibContext } from "../../../context/BibContext";
 
 const TableArticle = ({
 	data: dataIn,
 }: TableDisplayElementProps<ArticleResultDataType>) => {
-	const { search } = useContext(BibContext);
+	const { search } = useBibContext();
 	const [retrieve, setRetrieve] = useState(false);
 	const [missing, setMissing] = useState(false);
 	const [first, setFirst] = useState(true);

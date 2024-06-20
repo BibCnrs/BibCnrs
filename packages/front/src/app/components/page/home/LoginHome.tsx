@@ -9,9 +9,9 @@ import { Link as MuiLink } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { useBibContext } from "../../../context/BibContext";
 import { alert } from "../../../services/common/CMS";
-import { isLegacy } from "../../../services/user/Session";
-import { news, newsHome } from "../../../services/user/TestsNews";
+import { newsHome } from "../../../services/user/TestsNews";
 import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
@@ -25,7 +25,9 @@ import RenderNews from "../render/RenderNews";
 export const LoginHome = () => {
 	const t = useTranslator();
 
-	const userIsLegacy = isLegacy();
+	const {
+		session: { user },
+	} = useBibContext();
 
 	const { favouritesWithId } = useFavouriteResources();
 
@@ -51,7 +53,7 @@ export const LoginHome = () => {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const { data } = useQuery<TestsNewsDataType, any, TestsNewsDataType, any>({
 		queryKey: ["news", "home"],
-		queryFn: () => newsHome(),
+		queryFn: () => newsHome(user?.domains),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60
@@ -66,7 +68,7 @@ export const LoginHome = () => {
 				Container={AlertPaper}
 			/>
 
-			{!userIsLegacy && (
+			{!user?.legacy && (
 				<Stack gap={2}>
 					<Typography variant="h5" aria-label={t("pages.news.title")}>
 						{t("pages.favourite.title")}

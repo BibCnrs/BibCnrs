@@ -3,12 +3,8 @@ import {
 	Body,
 	Controller,
 	ForbiddenException,
-	Param,
-	ParseIntPipe,
 	Put,
-	Query,
 	Req,
-	UnauthorizedException,
 	UseGuards,
 } from "@nestjs/common";
 import { JsonValue } from "@prisma/client/runtime/library";

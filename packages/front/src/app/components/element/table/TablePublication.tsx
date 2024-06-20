@@ -1,5 +1,9 @@
+import { Popover, Tooltip } from "@mui/material";
+import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
+import { useBibContext } from "../../../context/BibContext";
+import { environment } from "../../../services/Environment";
 import { retrieve as retrieveFn } from "../../../services/search/Publication";
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -11,16 +15,12 @@ import type {
 	PublicationRetrieveDataType,
 } from "../../../shared/types/data.types";
 import type { TableDisplayElementProps } from "../../../shared/types/props.types";
-import { BibContext } from "../../internal/provider/ContextProvider";
 import BookmarkButton from "../button/BookmarkButton";
 import Diamond from "../icon/Diamond";
 import OpenAccess from "../icon/OpenAccess";
 import OpenablePaper from "../paper/openable/OpenablePaper";
 import SkeletonEntry from "../skeleton/SkeletonEntry";
 import "./scss/TableList.scss";
-import { Popover, Tooltip } from "@mui/material";
-import { Box, Stack } from "@mui/system";
-import { environment } from "../../../services/Environment";
 
 function proxifyOAPublication(url: string, domain: string) {
 	return `${environment.host}/ebsco/oa?url=${encodeURIComponent(
@@ -40,7 +40,10 @@ const PublicationTitle = ({
 	getCoverage: (coverage: PublicationCoverageDataType) => string;
 }) => {
 	const t = useTranslator();
-	const { search, login } = useContext(BibContext);
+	const {
+		search,
+		session: { user },
+	} = useBibContext();
 
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -63,7 +66,7 @@ const PublicationTitle = ({
 		.toLowerCase()
 		.includes("open access");
 
-	if (!isOpenAccess && !login) {
+	if (!isOpenAccess && !user) {
 		return (
 			<Tooltip title={t("components.table.anonymousMessage")}>
 				<Box display="flex" alignItems="center">
@@ -121,7 +124,7 @@ const PublicationTitle = ({
 								<a
 									className="table-list-title link"
 									href={
-										isOpenAccess && login
+										isOpenAccess && user
 											? proxifyOAPublication(value.url, search.domain)
 											: value.url
 									}
@@ -133,7 +136,7 @@ const PublicationTitle = ({
 								>
 									{value.name} - {getCoverage(value.coverage)}
 								</a>
-								{login ? (
+								{user ? (
 									<BookmarkButton
 										className="table-bookmark-button"
 										title={`${value.name} - ${getCoverage(value.coverage)}`}
@@ -153,7 +156,7 @@ const PublicationTitle = ({
 			<a
 				className="table-list-title link"
 				href={
-					isOpenAccess && login
+					isOpenAccess && user
 						? proxifyOAPublication(href, search.domain)
 						: href
 				}
@@ -193,8 +196,11 @@ const TablePublication = ({
 
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
-	const { search } = useContext(BibContext);
-	const { login, setAskLogin } = useContext(BibContext);
+	const { search } = useBibContext();
+	const {
+		session: { user },
+		showLoginModal,
+	} = useBibContext();
 	const [open, setOpen] = useState(false);
 
 	const {
@@ -230,8 +236,8 @@ const TablePublication = ({
 	}, [error, isError, serviceCatch]);
 
 	const handleChange = (isOpen: boolean) => {
-		if (isOpen && !login) {
-			setAskLogin(true);
+		if (isOpen && !user) {
+			showLoginModal();
 		}
 		setOpen(isOpen);
 	};
@@ -283,7 +289,7 @@ const TablePublication = ({
 	};
 
 	return (
-		<div className={login ? "table-bookmark-size" : undefined}>
+		<div className={user ? "table-bookmark-size" : undefined}>
 			<OpenablePaper
 				onOpen={handleChange}
 				Title={
@@ -369,7 +375,7 @@ const TablePublication = ({
 				}
 			/>
 			<div className="table-bookmark">
-				{login ? (
+				{user ? (
 					<BookmarkButton
 						className="table-bookmark-button"
 						title={bookmarkTitle}

@@ -114,8 +114,6 @@ export type SessionUserDataType = {
 	favorite_domain?: Institute;
 	favouriteResources?: FavouriteResourceDataType[];
 	origin?: string;
-	token: string;
-	fetch: false;
 	legacy: boolean;
 };
 

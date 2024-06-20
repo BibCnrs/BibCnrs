@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button";
 import { memo } from "react";
-import { useClickHandler, useIsMatching } from "../../../shared/Routes";
-import type { RoutesType } from "../../../shared/Routes";
-import { useTranslator } from "../../../shared/locales/I18N";
-import { headerButtonStyle } from "../../page/header/Header";
+import { useClickHandler, useIsMatching } from "../../../../shared/Routes";
+import type { RoutesType } from "../../../../shared/Routes";
+import { useTranslator } from "../../../../shared/locales/I18N";
+import { headerButtonStyle } from "../Header";
 
 /**
  * Button used to go to Faq page

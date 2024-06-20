@@ -5,7 +5,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import PageTitle from "../../../components/internal/PageTitle";
-import { getDomains, getFavouriteDomain } from "../../../services/user/Session";
+import { useBibContext } from "../../../context/BibContext";
 import { newsById } from "../../../services/user/TestsNews";
 import { useLanguageKey } from "../../../shared/locales/I18N";
 import type {
@@ -25,15 +25,16 @@ const IndividualNews = () => {
 		return -1;
 	}, [params.id]);
 
-	const favouriteDomain = getFavouriteDomain();
-	const userDomains = getDomains();
+	const {
+		session: { user },
+	} = useBibContext();
 
 	const selectedDomain = useMemo(() => {
-		const filteredUserDomain = userDomains.filter(
-			(domain) => domain !== favouriteDomain,
+		const filteredUserDomain = user?.domains?.filter(
+			(domain) => domain !== user?.favorite_domain,
 		);
-		return favouriteDomain || filteredUserDomain[0];
-	}, [favouriteDomain, userDomains]);
+		return user.favorite_domain || filteredUserDomain?.at(0);
+	}, [user]);
 
 	const getUrl = (url: TestNewUrlDataType): string => {
 		return url.proxy

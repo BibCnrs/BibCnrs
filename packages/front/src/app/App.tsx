@@ -1,9 +1,6 @@
 import "./App.scss";
-import { useQuery } from "@tanstack/react-query";
-import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/internal/ProtectedRoute";
-import { BibContext } from "./components/internal/provider/ContextProvider";
 import Footer from "./components/page/footer/Footer";
 import Header from "./components/page/header/Header";
 import Root from "./pages/Root";
@@ -22,7 +19,6 @@ import History from "./pages/user/history/History";
 import Licences from "./pages/user/licences/Licences";
 import IndividualNews from "./pages/user/news/IndividualNews";
 import News from "./pages/user/news/News";
-import { initSession } from "./services/user/Session";
 import {
 	RouteAbout,
 	RouteAlert,
@@ -42,15 +38,6 @@ import {
 } from "./shared/Routes";
 
 const App = () => {
-	const { setLogin } = useContext(BibContext);
-	const { data: login } = useQuery({
-		queryKey: ["session"],
-		queryFn: initSession,
-	});
-
-	useEffect(() => {
-		setLogin(login);
-	}, [setLogin, login]);
 	return (
 		<>
 			<div className="header-footer">

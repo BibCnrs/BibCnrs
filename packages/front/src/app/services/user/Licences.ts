@@ -1,11 +1,12 @@
 import type { LicencesDataType } from "../../shared/types/data.types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
-import { getDomains } from "./Session";
 
-export const licences = async (): Promise<LicencesDataType> => {
+export const licences = async (
+	domains?: string[],
+): Promise<LicencesDataType> => {
 	const response = await fetch(
 		createQuery(environment.get.account.licences, {
-			domains: getDomains().join(","),
+			domains: domains?.join(","),
 		}),
 		{
 			credentials: "include",

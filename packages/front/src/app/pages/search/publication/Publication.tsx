@@ -1,13 +1,9 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import TablePublication from "../../../components/element/table/TablePublication";
 import PageTitle from "../../../components/internal/PageTitle";
-import {
-	BibContext,
-	BibContextPublicationDefault,
-} from "../../../components/internal/provider/ContextProvider";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
 import Facet from "../../../components/page/facet/Facet";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
@@ -36,7 +32,8 @@ import type {
 } from "../../../shared/types/props.types";
 import type { FacetEntry } from "../../../shared/types/types";
 import "./Publication.scss";
-import { Stack } from "@mui/system";
+import { useBibContext } from "../../../context/BibContext";
+import { BibContextPublicationDefault } from "../../../context/BibContext.const";
 
 const ALPHABET = [
 	"A",
@@ -73,7 +70,7 @@ const Publication = () => {
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
 	const facetsCleaner = useFacetsCleaner<PublicationParam>();
-	const { search, setSearch } = useContext(BibContext);
+	const { search, setSearch } = useBibContext();
 
 	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);

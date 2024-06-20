@@ -1,17 +1,19 @@
 import type { TestNewDataType } from "../../shared/types/data.types";
 import type { TestsNewsDataType } from "../../shared/types/data.types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
-import { getDomains } from "./Session";
 
 export type Pages = "news" | "tests";
 
 export const news = async ({
+	domains,
 	limit,
 }: {
+	domains?: string[] | null;
 	limit?: number;
 } = {}): Promise<TestsNewsDataType> => {
 	const query = createQuery(environment.get.account.testsNews, {
-		domains: getDomains().join(","),
+		domains: domains?.join(","),
+		limit: limit ? limit.toString() : undefined,
 	});
 
 	const response: Response = await fetch(query, {
@@ -23,9 +25,11 @@ export const news = async ({
 	return json<TestsNewsDataType>(response);
 };
 
-export const newsHome = async (): Promise<TestsNewsDataType> => {
+export const newsHome = async (
+	domains: string[],
+): Promise<TestsNewsDataType> => {
 	const query = createQuery(environment.get.account.testNewsHome, {
-		domains: getDomains().join(","),
+		domains: domains?.join(","),
 	});
 
 	const response: Response = await fetch(query, {

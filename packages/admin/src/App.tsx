@@ -1,5 +1,4 @@
 import polyglotI18nProvider from "ra-i18n-polyglot";
-import React from "react";
 import { Admin, Resource } from "react-admin";
 import adminUsers from "./adminUsers";
 import authProvider from "./authProvider";

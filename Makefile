@@ -161,7 +161,7 @@ typecheck:								## Run typecheck for all packages
 	yarn workspaces foreach --all --parallel --verbose run typecheck
 
 lint-apply: 							## Apply lint for each projects
-	yarn run biome check --apply * **/* 
+	yarn run biome check --write * **/* 
 
 lint-check: 							## Check lint for each projects
 	yarn run biome check * **/*

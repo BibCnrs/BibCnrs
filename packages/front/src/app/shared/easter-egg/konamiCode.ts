@@ -14,7 +14,7 @@ const konamiCode = [
 let konamiIndex = 0;
 
 document.onkeyup = (event: KeyboardEvent) => {
-	if (konamiCode[konamiIndex].toLowerCase() === event.key.toLowerCase()) {
+	if (konamiCode[konamiIndex]?.toLowerCase() === event.key?.toLowerCase()) {
 		if (konamiIndex < konamiCode.length - 1) {
 			konamiIndex++;
 		} else {

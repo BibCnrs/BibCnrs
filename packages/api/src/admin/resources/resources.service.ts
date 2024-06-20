@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { resources } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
-import { FilterQuery, transformFilters } from "../../utils/filter";
+import { FilterQuery } from "../../utils/filter";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateResourceDto, UpdateResourceDto } from "./dto/resource.dto";
 @Injectable()

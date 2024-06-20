@@ -1,5 +1,5 @@
 import {
-	Body,
+	ConflictException,
 	Controller,
 	Get,
 	Post,
@@ -170,7 +170,7 @@ export class JanusAuthController {
 		const user = request.user as TokenPayload<"janus">;
 		const token = await this.redis.getAsync(user.shib);
 		if (!token) {
-			throw new UnauthorizedException();
+			throw new ConflictException();
 		}
 
 		let favouriteResources =
