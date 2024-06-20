@@ -77,7 +77,11 @@ export const LoginHome = () => {
 
 			{displayFavourites && (
 				<Stack gap={2}>
-					<Typography variant="h5" aria-label={t("pages.news.title")}>
+					<Typography
+						variant="h5"
+						aria-label={t("pages.news.title")}
+						color="primary"
+					>
 						{t("pages.favourite.title")}
 					</Typography>
 					<Box
@@ -101,7 +105,9 @@ export const LoginHome = () => {
 							</Card>
 						))}
 						{lastNineFavourites.length === 0 && (
-							<Typography>{t("pages.root.emptyFavorites")}</Typography>
+							<Typography color="primary">
+								{t("pages.root.emptyFavorites")}
+							</Typography>
 						)}
 					</Box>
 
@@ -121,7 +127,11 @@ export const LoginHome = () => {
 
 			{displayTestNews && (
 				<Stack gap={2}>
-					<Typography variant="h5" aria-label={t("pages.news.title")}>
+					<Typography
+						variant="h5"
+						aria-label={t("pages.news.title")}
+						color="primary"
+					>
 						{t("pages.news.title")}
 					</Typography>
 					<RenderNews data={data} />

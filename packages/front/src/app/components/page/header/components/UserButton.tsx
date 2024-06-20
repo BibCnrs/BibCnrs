@@ -135,20 +135,16 @@ const UserButton = () => {
 	);
 
 	return (
-		<div className="header-nav">
-			<button
-				id={open ? "user-button-active" : "user-button"}
+		<>
+			<Avatar
+				component="button"
+				onClick={handleClick}
 				aria-controls={open ? "basic-menu" : undefined}
 				aria-haspopup="true"
 				aria-expanded={open ? "true" : undefined}
-				onClick={handleClick}
-				className={`header-button-icon${
-					user?.legacy ? getAvatarButtonClass() : ""
-				}`}
-				type="button"
 			>
-				<Avatar>{user?.username?.charAt?.(0) || "U"}</Avatar>
-			</button>
+				{user?.username?.charAt?.(0) || "U"}
+			</Avatar>
 			<Menu
 				id="basic-menu"
 				anchorEl={anchorEl}
@@ -160,7 +156,7 @@ const UserButton = () => {
 			>
 				{options}
 			</Menu>
-		</div>
+		</>
 	);
 };
 

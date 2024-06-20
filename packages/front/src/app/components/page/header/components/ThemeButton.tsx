@@ -70,13 +70,11 @@ const ThemeButton = () => {
 	};
 
 	return (
-		<div className="header-nav header-nav-spacer">
-			<MaterialUISwitch
-				className="header-button-icon"
-				checked={theme === "dark"}
-				onChange={handleChange}
-			/>
-		</div>
+		<MaterialUISwitch
+			className="header-button-icon"
+			checked={theme === "dark"}
+			onChange={handleChange}
+		/>
 	);
 };
 

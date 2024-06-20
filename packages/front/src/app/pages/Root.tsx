@@ -47,18 +47,16 @@ const Root = () => {
 	}
 
 	return (
-		<div>
-			<div className="header-footer">
-				<SearchBar
-					placeholder={t("pages.article.searchBar")}
-					onSearch={handleSearch}
-				/>
-			</div>
+		<>
+			<SearchBar
+				placeholder={t("pages.article.searchBar")}
+				onSearch={handleSearch}
+			/>
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				{!session.user && <AnonymousHome />}
 				{session.user && <LoginHome />}
 			</Container>
-		</div>
+		</>
 	);
 };
 

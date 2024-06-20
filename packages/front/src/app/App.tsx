@@ -40,9 +40,7 @@ import {
 const App = () => {
 	return (
 		<>
-			<div className="header-footer">
-				<Header />
-			</div>
+			<Header />
 			<div id="app-container">
 				<Routes>
 					{/* Header route */}

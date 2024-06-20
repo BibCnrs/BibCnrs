@@ -37,13 +37,16 @@ const LocaleButton = () => {
 	};
 
 	return (
-		<div className="header-nav header-nav-spacer">
+		<>
 			<Button
 				aria-controls={open ? "basic-menu" : undefined}
 				aria-haspopup="true"
 				aria-expanded={open || undefined}
 				onClick={handleClick}
 				className="header-button header-button-icon"
+				sx={{
+					color: (theme) => theme.palette.text.primary,
+				}}
 			>
 				<div
 					style={{
@@ -73,9 +76,10 @@ const LocaleButton = () => {
 						sx={{
 							borderLeftStyle: "solid",
 							borderLeftWidth: "4px",
-							borderLeftColor: i18n.language.includes(lang.key)
-								? "var(--text)"
-								: "#00000000",
+							borderLeftColor: (theme) =>
+								i18n.language.includes(lang.key)
+									? theme.palette.primary.main
+									: "#00000000",
 						}}
 					>
 						{i18n.language.includes(lang.key) ? (
@@ -86,7 +90,7 @@ const LocaleButton = () => {
 					</MenuItem>
 				))}
 			</Menu>
-		</div>
+		</>
 	);
 };
 

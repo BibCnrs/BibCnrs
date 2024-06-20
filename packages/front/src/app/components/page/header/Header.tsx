@@ -1,32 +1,18 @@
-import "./Header.scss";
+import { Typography } from "@mui/material";
+import { Stack, useTheme } from "@mui/system";
 import { memo } from "react";
-import BibCNRSLogo from "/logos/bibcnrs.png";
+import BibCNRSLightLogo from "/logos/BIB_LIGHT.svg";
+import CNRSLightLogo from "/logos/CNRS_LIGHT.svg";
 import { useBibContext } from "../../../context/BibContext";
-import {
-	RouteFaq,
-	RouteLicences,
-	RouteNews,
-	RouteResources,
-	RouteRoot,
-} from "../../../shared/Routes";
-import createSxProps from "../../../shared/createSxProps";
+import { RouteFaq, RouteResources, RouteRoot } from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
 import CustomLink from "../../element/link/CustomLink";
-import NavBar from "../../element/navbar/NavBar";
 import HeaderButton from "./components/HeaderButton";
 import LocalButton from "./components/LocaleButton";
 import SignInButton from "./components/SignInButton";
 import ThemeButton from "./components/ThemeButton";
 import UserButton from "./components/UserButton";
 import { UserLoading } from "./components/UserLoading";
-
-export const headerButtonStyle = createSxProps({
-	fontFamily: '"Source Sans Pro", sans-serif',
-	textTransform: "none",
-	fontSize: "initial",
-	lineHeight: "initial",
-	minWidth: "initial",
-});
 
 /**
  * Header component used in every page.
@@ -35,36 +21,64 @@ export const headerButtonStyle = createSxProps({
 const Header = () => {
 	const t = useTranslator();
 	const { session: user } = useBibContext();
+	const theme = useTheme();
 
 	return (
 		<>
-			<header>
-				<div id="header-left">
+			<Stack
+				direction="row"
+				justifyContent="space-between"
+				alignItems="flex-end"
+				gap={2}
+				component={"header"}
+				m={2}
+			>
+				<Stack direction="row" alignItems="flex-end" gap={2}>
 					<CustomLink to={RouteRoot}>
-						<img src={BibCNRSLogo} alt="BibCNRS Logo" />
+						<img
+							src={CNRSLightLogo}
+							alt="CNRS Logo"
+							style={{
+								maxWidth: "60px",
+								height: "auto",
+								filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+							}}
+						/>
 					</CustomLink>
-					<div>
-						<p>{t("components.header.title")}</p>
-					</div>
-				</div>
-				<div id="header-right">
+					<CustomLink to={RouteRoot}>
+						<img
+							src={BibCNRSLightLogo}
+							alt="BibCNRS Logo"
+							style={{
+								maxWidth: "60px",
+								height: "auto",
+								filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+							}}
+						/>
+					</CustomLink>
+					<Typography
+						variant="h5"
+						component="h1"
+						sx={{ marginLeft: 2, fontWeight: "bold" }}
+					>
+						{t("components.header.title")}
+					</Typography>
+				</Stack>
+				<Stack direction="row" alignItems="flex-end" gap={1}>
+					<LocalButton />
+					<ThemeButton />
+					<HeaderButton name="resources" route={RouteResources} />
+					<HeaderButton name="questions" route={RouteFaq} />
+
 					{user.status === "loading" && <UserLoading />}
 					{user.status === "loggedIn" && (
 						<>
 							<UserButton />
-							<HeaderButton name="news" route={RouteNews} />
-							<HeaderButton name="licences" route={RouteLicences} />
 						</>
 					)}
 					{user.status === "loggedOut" && <SignInButton />}
-
-					<HeaderButton name="resources" route={RouteResources} />
-					<HeaderButton name="questions" route={RouteFaq} />
-					<LocalButton />
-					<ThemeButton />
-				</div>
-			</header>
-			<NavBar />
+				</Stack>
+			</Stack>
 		</>
 	);
 };

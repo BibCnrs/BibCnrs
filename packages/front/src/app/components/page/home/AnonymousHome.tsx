@@ -71,7 +71,11 @@ export const AnonymousHome = () => {
 			<Box display="grid" gridTemplateColumns="1fr 1fr" gap={12}>
 				<RenderContent data={homeData} page="root" t={t} />
 				<Stack gap={2}>
-					<Typography variant="h6" aria-label={t("pages.resources.title")}>
+					<Typography
+						variant="h6"
+						aria-label={t("pages.resources.title")}
+						color="primary"
+					>
 						{t("pages.resources.title")}
 					</Typography>
 					<DisplayResources data={ResourcesData} />
