@@ -1,6 +1,17 @@
 import { Prisma, janus_account } from "@prisma/client";
 
-export class JanusAccountUpdateDto implements Omit<janus_account, "id"> {
+export class JanusAccountUpdateDto
+	implements
+		Omit<
+			janus_account,
+			| "id"
+			| "displayFavorites"
+			| "displayTestNews"
+			| "defaultSearchMode"
+			| "defaultLanguage"
+			| "defaultTheme"
+		>
+{
 	primary_institute: number | null;
 	primary_unit: number | null;
 	uid: string | null;

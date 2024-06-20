@@ -7,12 +7,12 @@ export class UserSettingsController {
 	constructor(private readonly userSettingsService: UserSettingsService) {}
 
 	@Get(":id")
-	async getContent(@Param("id") id: number) {
+	async getUserSettings(@Param("id") id: number) {
 		return this.userSettingsService.getUserSettings(id);
 	}
 
 	@Patch(":id")
-	async updateContent(
+	async updateUserSettings(
 		@Param("id") id: number,
 		@Body() body: UpdateUserSettingsDto,
 	) {

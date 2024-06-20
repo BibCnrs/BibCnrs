@@ -1,4 +1,3 @@
-import { d } from "@tanstack/react-query-devtools/build/legacy/devtools-PtxSnd7z";
 import type { Common } from "../I18N";
 
 /**
