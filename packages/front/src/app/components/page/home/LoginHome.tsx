@@ -56,11 +56,11 @@ export const LoginHome = () => {
 	});
 
 	// Display favorite only if the user is not legacy and has the setting enabled
-	const displayFavourites = !user?.legacy && user?.settings.displayFavorites;
+	const displayFavourites = !user?.legacy && user?.settings?.displayFavorites;
 
 	// We always display test news if the user is legacy.
 	// If janus account, we display test news if the setting is enabled
-	const displayTestNews = user?.legacy || user?.settings.displayTestNews;
+	const displayTestNews = user?.legacy || user?.settings?.displayTestNews;
 
 	return (
 		<Stack gap={4}>
