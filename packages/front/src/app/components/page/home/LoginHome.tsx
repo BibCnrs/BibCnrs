@@ -29,8 +29,6 @@ export const LoginHome = () => {
 		session: { user },
 	} = useBibContext();
 
-	console.log("user", user);
-
 	const { favouritesWithId } = useFavouriteResources();
 
 	const lastNineFavourites = favouritesWithId
