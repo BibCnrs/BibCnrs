@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
+import { HttpService } from "../../common/http/http.service";
 import { RedisService } from "../../common/redis/redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -19,11 +20,12 @@ import {
 @Injectable()
 export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 	constructor(
-		configService: ConfigService<Config, true>,
+		config: ConfigService<Config, true>,
+		httpService: HttpService,
 		prismaService: PrismaService,
 		redisService: RedisService,
 	) {
-		super(configService.get("ebsco"), prismaService, redisService);
+		super(config.get("ebsco"), httpService, prismaService, redisService);
 	}
 
 	parsePublicationQueries(queries: Request["query"]["queries"]) {

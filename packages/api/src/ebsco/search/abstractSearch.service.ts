@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { community } from "@prisma/client";
 import { JsonValue } from "@prisma/client/runtime/library";
-import { ProxyAgent, request as httpRequest } from "undici";
+import { HttpService } from "../../common/http/http.service";
 import { RedisService } from "../../common/redis/redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -26,6 +26,7 @@ type EbscoError = {
 export class AbstractEbscoSearchService {
 	constructor(
 		protected readonly ebsco: Config["ebsco"],
+		protected readonly http: HttpService,
 		protected readonly prismaService: PrismaService,
 		protected readonly redisService: RedisService,
 	) {}
@@ -87,13 +88,9 @@ export class AbstractEbscoSearchService {
 	): Promise<T> {
 		const start = Date.now();
 
-		const dispatcher = this.ebsco.proxy
-			? new ProxyAgent(this.ebsco.proxy)
-			: undefined;
-		const response = await httpRequest(
+		const response = await this.http.request(
 			`${this.ebsco.host}${this.ebsco.port || ""}${url}`,
 			{
-				dispatcher,
 				method: "POST",
 				body: JSON.stringify(json),
 				headers: {
@@ -105,10 +102,10 @@ export class AbstractEbscoSearchService {
 			},
 		);
 
-		const body = await response.body.json();
+		const body = await response.json();
 
 		logger.log(
-			`[POST] ${url} ${response.statusCode}: ${JSON.stringify({
+			`[POST] ${url} ${response.status}: ${JSON.stringify({
 				json,
 				authToken,
 				sessionToken,
@@ -116,7 +113,7 @@ export class AbstractEbscoSearchService {
 			})}`,
 		);
 
-		if (response.statusCode !== 200) {
+		if (response.status !== 200) {
 			this.handleEbscoError({ error: body as EbscoError });
 		}
 
@@ -461,10 +458,11 @@ export class AbstractEbscoSearchService {
 
 	async getInfoFromDOAJ(isn: string) {
 		try {
-			const result = await fetch(
+			const result = await this.http.request(
 				`${this.ebsco.doajUrl}search/journals/issn:${isn}`,
 			);
-			const body = await result.json();
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			const body = (await result.json()) as any;
 			return {
 				has_apc: body?.results?.[0]?.bibjson?.apc?.has_apc ?? null,
 			};

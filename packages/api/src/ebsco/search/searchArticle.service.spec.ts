@@ -7,6 +7,7 @@ import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { EbscoSearchArticleService } from "./searchArticle.service";
 
+import { HttpService } from "../../common/http/http.service";
 import { AIDS_RESULTS_EXPECTED } from "./mock/aidsResult.expected";
 import { AIDS_RESULTS_INPUT } from "./mock/aidsResult.input";
 import { RETRIEVE_ARTICLE_PARSER_EXPECTED } from "./mock/retrieveArticleParser.expected";
@@ -26,7 +27,12 @@ describe("EbscoSearchArticleService", () => {
 					isGlobal: false,
 				}),
 			],
-			providers: [EbscoSearchArticleService, PrismaService, RedisService],
+			providers: [
+				EbscoSearchArticleService,
+				PrismaService,
+				RedisService,
+				HttpService,
+			],
 		}).compile();
 
 		service = await module.resolve<EbscoSearchArticleService>(
