@@ -21,6 +21,7 @@ import { TokenPayload } from "../../common/auth/auth.type";
 import { MailService } from "../../common/mail/mail.service";
 import { RedisService } from "../../common/redis/redis.service";
 import { Config } from "../../config";
+import { UserSettingsService } from "../../front/user-settings/user-settings.service";
 import { JanusAccountService } from "../accounts/accounts.service";
 import { JanusAlertService } from "./alert.service";
 import { RenaterHeader } from "./auth.type";
@@ -47,6 +48,7 @@ export class JanusAuthController {
 		private readonly institutesService: InstitutesService,
 		private readonly unitsService: UnitsService,
 		readonly configService: ConfigService<Config, true>,
+		private readonly userSettingsService: UserSettingsService,
 	) {
 		this.renaterConfig = this.configService.get<Config["renater"]>("renater");
 	}
@@ -183,6 +185,10 @@ export class JanusAuthController {
 			]);
 		}
 
+		const userSettings = await this.userSettingsService.getUserSettings(
+			user.id,
+		);
+
 		await this.redis.delAsync(user.shib);
 		return {
 			id: user.id,
@@ -192,6 +198,7 @@ export class JanusAuthController {
 			favouriteResources,
 			origin: user.origin,
 			token,
+			settings: userSettings,
 		};
 	}
 }

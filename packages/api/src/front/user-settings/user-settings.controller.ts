@@ -16,7 +16,6 @@ export class UserSettingsController {
 		@Param("id") id: number,
 		@Body() body: UpdateUserSettingsDto,
 	) {
-		console.log("BODY", body);
 		return this.userSettingsService.updateUserSettings(id, body);
 	}
 }

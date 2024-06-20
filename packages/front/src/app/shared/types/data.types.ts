@@ -107,6 +107,14 @@ export type FavouriteResourceDataType = {
 	personal?: boolean;
 };
 
+export type UserSettingsDataType = {
+	displayFavorites: boolean;
+	displayTestNews: boolean;
+	defaultSearchMode: "article" | "journal" | "platform" | "searchData";
+	defaultLanguage: "auto" | "fr" | "en";
+	defaultTheme: "auto" | "light" | "dark";
+};
+
 export type SessionUserDataType = {
 	id: number;
 	username: string;
@@ -115,6 +123,7 @@ export type SessionUserDataType = {
 	favouriteResources?: FavouriteResourceDataType[];
 	origin?: string;
 	legacy: boolean;
+	settings: UserSettingsDataType;
 };
 
 export type LicenceDataType = {

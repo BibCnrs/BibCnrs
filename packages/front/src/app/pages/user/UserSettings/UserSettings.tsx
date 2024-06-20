@@ -14,17 +14,20 @@ import {
 	useQuery,
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { getUser } from "../../../services/user/Session";
+import { useBibContext } from "../../../context/BibContext";
 import {
 	type UserSettingsType,
 	getSettings,
 	updateSettings,
 } from "../../../services/user/UserSettings";
 import { useTranslator } from "../../../shared/locales/I18N";
+import type { UserSettingsDataType } from "../../../shared/types/data.types";
 
 const UserSettings = () => {
-	const user = getUser();
-
+	const {
+		session: { user },
+		updateUserSettings,
+	} = useBibContext();
 	const t = useTranslator();
 
 	const { data, isLoading } = useQuery<UserSettingsType>({
@@ -35,6 +38,9 @@ const UserSettings = () => {
 
 	const mutation = useMutation({
 		mutationFn: updateSettings,
+		onSuccess: (data: UserSettingsDataType) => {
+			updateUserSettings(data);
+		},
 		onError: (error) => {
 			console.error(error);
 		},

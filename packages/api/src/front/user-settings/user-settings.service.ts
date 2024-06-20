@@ -23,6 +23,13 @@ export class UserSettingsService {
 
 	async updateUserSettings(id: number, body: UpdateUserSettingsDto) {
 		return await this.prismaService.janus_account.update({
+			select: {
+				displayFavorites: true,
+				displayTestNews: true,
+				defaultSearchMode: true,
+				defaultLanguage: true,
+				defaultTheme: true,
+			},
 			data: body,
 			where: {
 				id: id,
