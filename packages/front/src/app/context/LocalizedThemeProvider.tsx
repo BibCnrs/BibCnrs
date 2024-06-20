@@ -1,10 +1,13 @@
+import { CssBaseline } from "@mui/material";
 import { frFR } from "@mui/material/locale";
 import { enUS } from "@mui/material/locale";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import createPalette from "@mui/material/styles/createPalette";
-import createTheme from "@mui/material/styles/createTheme";
+import createTheme, {
+	type ThemeOptions,
+} from "@mui/material/styles/createTheme";
 import type { Property } from "csstype";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { useLanguageKey } from "../shared/locales/I18N";
 import type { LocalizedThemeProviderProps } from "../shared/types/props.types";
 import type {
@@ -88,28 +91,58 @@ export const getHeaderBackgroundColor = (theme: ThemeType): Property.Color => {
 		: colors.cnrs.primary.dark;
 };
 
-/**
- * Function used to update css variables on startup or when the user changes the application theme
- * @param theme - Name of the theme to load
- */
-const updateTheme = (theme: ThemeType) => {
-	const style = document.documentElement.style;
-	style.setProperty("--text", colors.text[theme]);
-	style.setProperty("--background", colors.background[theme]);
-	style.setProperty("--background-nav", colors.cnrs.primary.dark);
-	/*style.setProperty(
-        '--background-nav',
-        theme === 'light' ? colors.cnrs.secondary.darkBlue : colors.cnrs.primary.dark,
-    );*/
-	style.setProperty(
-		"--link",
-		theme === "light" ? colors.cnrs.secondary.blue : colors.cnrs.primary.light,
-	);
-	style.setProperty("--nav-button-active", colors.button.navActive[theme]);
-	style.setProperty("--nav-button-hover", colors.button.hover[theme]);
-	style.setProperty("--button-background", colors.button[theme]);
-	style.setProperty("--button-background-hover", colors.button.hover[theme]);
-	style.setProperty("--table-border", colors.table[theme]);
+export const lightTheme: ThemeOptions = {
+	palette: {
+		mode: "light",
+		primary: {
+			main: "#6941EB",
+		},
+		secondary: {
+			main: "#FFEB6E",
+		},
+		background: {
+			default: "#FFFFFF",
+			paper: "#FFFFFF",
+		},
+		text: {
+			primary: "#00294B",
+			secondary: "#00294B",
+		},
+		error: {
+			main: "#F35B5B",
+		},
+	},
+	typography: {
+		fontFamily: "Lora",
+		h1: {
+			fontFamily: "Oswald",
+		},
+	},
+};
+
+export const darkTheme: ThemeOptions = {
+	palette: {
+		mode: "dark",
+		primary: {
+			main: "#A6ADBB",
+		},
+		secondary: {
+			main: "#FFEB6E",
+		},
+		background: {
+			default: "#1D232B",
+			paper: "#2A323C",
+		},
+		error: {
+			main: "#F35B5B",
+		},
+	},
+	typography: {
+		fontFamily: "Lora",
+		h1: {
+			fontFamily: "Oswald",
+		},
+	},
 };
 
 /**
@@ -133,14 +166,6 @@ const LocalizedThemeProvider = ({ children }: LocalizedThemeProviderProps) => {
 		return frFR;
 	};
 
-	// Material UI light theme color palette
-	const lightPalette = createPalette({
-		mode: "light",
-		primary: {
-			main: colors.cnrs.secondary.blue,
-		},
-	});
-
 	// Material UI dark theme color palette
 	const darkPalette = createPalette({
 		mode: "dark",
@@ -153,23 +178,22 @@ const LocalizedThemeProvider = ({ children }: LocalizedThemeProviderProps) => {
 		},
 	});
 
+	console.log("theme", theme);
+
 	// Create Material UI theme
 	const muiTheme = createTheme(
-		{
-			typography: {
-				fontFamily: '"DM Sans", sans-serif',
-			},
-			palette: theme === "dark" ? darkPalette : lightPalette,
-		},
+		theme === "light" ? lightTheme : darkTheme,
 		getLocal(),
 	);
 
-	// Add a hook to 'theme' used to update css variable on theme change
-	useEffect(() => {
-		updateTheme(theme);
-	}, [theme]);
+	console.log();
 
-	return <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>;
+	return (
+		<ThemeProvider theme={muiTheme}>
+			<CssBaseline />
+			{children}
+		</ThemeProvider>
+	);
 };
 
 export default memo(LocalizedThemeProvider);
