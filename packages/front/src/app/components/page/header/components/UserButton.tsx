@@ -13,7 +13,6 @@ import type { MouseEvent, ReactElement } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBibContext } from "../../../../context/BibContext";
-import { colors } from "../../../../context/LocalizedThemeProvider";
 import {
 	RouteAlert,
 	RouteFavourite,
@@ -148,16 +147,7 @@ const UserButton = () => {
 				}`}
 				type="button"
 			>
-				<Avatar
-					sx={{
-						bgcolor: user?.legacy
-							? colors.other.legacy
-							: colors.cnrs.secondary.lightBlue,
-						color: colors.text.light,
-					}}
-				>
-					{user?.username?.charAt?.(0) || "U"}
-				</Avatar>
+				<Avatar>{user?.username?.charAt?.(0) || "U"}</Avatar>
 			</button>
 			<Menu
 				id="basic-menu"

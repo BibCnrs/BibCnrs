@@ -6,7 +6,6 @@ import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
 import { useBibContext } from "../../../context/BibContext";
-import { getHeaderBackgroundColor } from "../../../context/LocalizedThemeProvider";
 import { database } from "../../../services/search/Database";
 import {
 	useDomain,
@@ -147,12 +146,7 @@ const Database = () => {
 			</div>
 			<Stack id="app" gap={2}>
 				{!user && (
-					<ColoredPaper
-						id="database-anonymous"
-						elevation={4}
-						color={getHeaderBackgroundColor(theme)}
-						border
-					>
+					<ColoredPaper id="database-anonymous" elevation={4} border>
 						{t("pages.database.anonymousMessage")}
 					</ColoredPaper>
 				)}

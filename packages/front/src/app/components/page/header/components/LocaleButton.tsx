@@ -4,7 +4,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import type { MouseEvent } from "react";
 import { memo, useState } from "react";
-import { colors } from "../../../../context/LocalizedThemeProvider";
 import {
 	supportedLanguages,
 	useFullTranslator,
@@ -54,13 +53,7 @@ const LocaleButton = () => {
 				>
 					<TranslateIcon fontSize="small" />
 				</div>
-				<div
-					style={{
-						color: colors.white,
-					}}
-				>
-					{languageKey.split("-", 2)[0].toUpperCase()}
-				</div>
+				<div>{languageKey.split("-", 2)[0].toUpperCase()}</div>
 			</Button>
 			<Menu
 				id="basic-menu"
