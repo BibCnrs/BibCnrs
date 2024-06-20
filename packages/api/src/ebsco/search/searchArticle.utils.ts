@@ -1,4 +1,3 @@
-import flatten from "lodash.flatten";
 import {
 	decoder,
 	defaultToEmptyArray,

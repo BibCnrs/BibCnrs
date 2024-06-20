@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { JsonValue } from "@prisma/client/runtime/library";
 import { Request } from "express";
 import flatten from "lodash.flatten";
 import { RedisService } from "../../common/redis/redis.service";

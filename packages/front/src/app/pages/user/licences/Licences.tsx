@@ -8,9 +8,13 @@ import type {
 	LicencesDataType,
 } from "../../../shared/types/data.types";
 import "./Licences.scss";
+import { useBibContext } from "../../../context/BibContext";
 
 const Licences = () => {
 	const t = useTranslator();
+	const {
+		session: { user },
+	} = useBibContext();
 	const language = useLanguageKey();
 	const [activeLicences, setActiveLicences] = useState<
 		LicenceDataType | undefined
@@ -25,7 +29,7 @@ const Licences = () => {
 		any
 	>({
 		queryKey: ["licences"],
-		queryFn: licences,
+		queryFn: () => licences(user?.domains),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60

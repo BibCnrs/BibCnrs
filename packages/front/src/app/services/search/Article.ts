@@ -15,7 +15,6 @@ import type {
 } from "../../shared/types/types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
 import { addHistory } from "../user/History";
-import { getToken } from "../user/Session";
 
 export type ArticlePayLoad = {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
@@ -161,9 +160,6 @@ export const article = async (
 		),
 		{
 			credentials: "include",
-			headers: {
-				Authorization: `Bearer ${getToken()}`,
-			},
 		},
 	);
 	throwIfNotOk(response);
@@ -589,9 +585,6 @@ export const retrieve = async (
 		}),
 		{
 			credentials: "include",
-			headers: {
-				Authorization: `Bearer ${getToken()}`,
-			},
 		},
 	);
 	throwIfNotOk(response);

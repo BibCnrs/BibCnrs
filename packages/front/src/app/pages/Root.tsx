@@ -6,12 +6,15 @@ import "./Root.scss";
 import { Container } from "@mui/system";
 import { AnonymousHome } from "../components/page/home/AnonymousHome";
 import { LoginHome } from "../components/page/home/LoginHome";
-import { getToken, isLegacy } from "../services/user/Session";
+import { useBibContext } from "../context/BibContext";
 
 const Root = () => {
+	const {
+		session: { user },
+	} = useBibContext();
+
 	const navigate = useNavigate();
 	const t = useTranslator();
-	const tokenLogin = getToken();
 
 	const handleSearch = (q: string | undefined) => {
 		updatePageQueryUrl(RouteArticle, navigate, { q });
@@ -26,8 +29,8 @@ const Root = () => {
 				/>
 			</div>
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-				{!tokenLogin && <AnonymousHome />}
-				{tokenLogin && <LoginHome />}
+				{!user && <AnonymousHome />}
+				{user && <LoginHome />}
 			</Container>
 		</div>
 	);

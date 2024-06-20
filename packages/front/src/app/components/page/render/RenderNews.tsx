@@ -6,7 +6,7 @@ import {
 	Chip,
 	Typography,
 } from "@mui/material";
-import { Box, Stack, height } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useLanguageKey } from "../../../shared/locales/I18N";

@@ -1,8 +1,6 @@
-import { Stack, Tooltip } from "@mui/material";
-import { memo, useContext } from "react";
+import { Stack } from "@mui/material";
+import { memo } from "react";
 import type { DatabaseItemProps } from "../../../shared/types/data.types";
-import { BibContext } from "../../internal/provider/ContextProvider";
-import BookmarkButton from "../button/BookmarkButton";
 import { NotCompleteIcon } from "./NotCompleteIcon";
 import OpenAccess from "./OpenAccess";
 

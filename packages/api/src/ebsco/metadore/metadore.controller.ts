@@ -3,7 +3,6 @@ import {
 	DefaultValuePipe,
 	Get,
 	HttpException,
-	Param,
 	ParseIntPipe,
 	Query,
 } from "@nestjs/common";

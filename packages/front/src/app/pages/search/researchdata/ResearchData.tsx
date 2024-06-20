@@ -1,11 +1,10 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { MouseEvent } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ResearchDataSkeleton from "../../../components/element/skeleton/ResearchDataSkeleton";
 import TableMetadore from "../../../components/element/table/TableMetadore";
 import PageTitle from "../../../components/internal/PageTitle";
-import { BibContext } from "../../../components/internal/provider/ContextProvider";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
 import Table from "../../../components/page/table/Table";
@@ -22,13 +21,14 @@ import { useTranslator } from "../../../shared/locales/I18N";
 import type { MetadoreDataType } from "../../../shared/types/data.types";
 import type { TableArgsProps } from "../../../shared/types/props.types";
 import "./ResearchData.scss";
+import { useBibContext } from "../../../context/BibContext";
 
 const ResearchData = () => {
 	const navigate = useNavigate();
 	const query = useSearchParams();
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
-	const { search, setSearch } = useContext(BibContext);
+	const { search, setSearch } = useBibContext();
 
 	const [first, setFirst] = useState<boolean>(true);
 

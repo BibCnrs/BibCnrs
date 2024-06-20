@@ -1,6 +1,7 @@
 import "./NavBar.scss";
 import Button from "@mui/material/Button";
-import { memo, useContext } from "react";
+import { memo } from "react";
+import { useBibContext } from "../../../context/BibContext";
 import {
 	RouteArticle,
 	RouteDatabase,
@@ -11,7 +12,6 @@ import {
 	useIsMatching,
 } from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
-import { BibContext } from "../../internal/provider/ContextProvider";
 
 /**
  * Nav bar component used to navigate between: "Article", "Journal, book", "Database" and "Research data"
@@ -19,7 +19,7 @@ import { BibContext } from "../../internal/provider/ContextProvider";
 const NavBar = () => {
 	// Get translation function
 	const t = useTranslator();
-	const { theme } = useContext(BibContext);
+	const { theme } = useBibContext();
 	const getActiveDarkButtonId = () => {
 		if (theme === "dark") {
 			return "active-nav-button-dark";
