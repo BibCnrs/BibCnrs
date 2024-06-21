@@ -1,7 +1,7 @@
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { type ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/facet/ChipFacet";
@@ -19,6 +19,7 @@ import type {
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import "./Database.scss";
+import SearchBar from "../../../components/page/searchbar/SearchBar";
 import { getString, useSearchParams } from "../../../shared/Routes";
 import { DatabaseItem } from "./DatabaseItem";
 import { DatabasePagination } from "./DatabasePagination";
@@ -128,99 +129,91 @@ const Database = () => {
 		}
 	}, [querySearch]);
 
-	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setNameFilter(e.target.value.toLocaleUpperCase());
+	const handleSearchChange = (value) => {
+		setNameFilter(value.toLocaleUpperCase());
 	};
 
 	return (
-		<div>
+		<>
 			<PageTitle page="database" />
-			<div className="header-footer">
-				<div id="database-chips">
-					<ChipFacet
-						value={search.domain}
-						values={domains}
-						onChange={handleDomain}
-					/>
-				</div>
-			</div>
-			<Stack id="app" gap={2}>
-				{!user && (
-					<ColoredPaper id="database-anonymous" elevation={4} border>
-						{t("pages.database.anonymousMessage")}
-					</ColoredPaper>
-				)}
+			<SearchBar
+				placeholder={t("pages.researchData.search.bar")}
+				value={query.get("q") || search.query}
+				onSearch={handleSearchChange}
+			>
+				<ChipFacet
+					value={search.domain}
+					values={domains}
+					onChange={handleDomain}
+				/>
+			</SearchBar>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<Stack gap={2}>
+					{!user && (
+						<ColoredPaper id="database-anonymous" elevation={4} border>
+							{t("pages.database.anonymousMessage")}
+						</ColoredPaper>
+					)}
 
-				<Box
-					display="grid"
-					gridTemplateColumns={{
-						xs: "1fr",
-						sm: "1fr 4fr",
-					}}
-					gap={3}
-				>
-					<Box>
-						<FilterTab
-							setFilters={setFilters}
-							filters={filters}
-							databases={filteredDatabases}
-						/>
+					<Box
+						display="grid"
+						gridTemplateColumns={{
+							xs: "1fr",
+							sm: "1fr 4fr",
+						}}
+						gap={3}
+					>
+						<Box>
+							<FilterTab
+								setFilters={setFilters}
+								filters={filters}
+								databases={filteredDatabases}
+							/>
+						</Box>
+						<Stack gap={2}>
+							<Typography>
+								{filteredDatabases.length}{" "}
+								{t("pages.database.platform", {
+									count: filteredDatabases.length,
+								})}
+							</Typography>
+
+							{isLoading ? (
+								<Stack alignItems="center" spacing={5}>
+									<CircularProgress />
+								</Stack>
+							) : (
+								<>
+									<Box
+										display="grid"
+										gridTemplateColumns={{
+											xs: "repeat(1, 1fr)",
+											sm: "repeat(2, 1fr)",
+											md: "repeat(3, 1fr)",
+											lg: "repeat(4, 1fr)",
+										}}
+										gap={2}
+										aria-role="list"
+										aria-label={t("pages.database.title")}
+									>
+										{pagedDatabases.map((item) => (
+											<DatabaseItem key={item.id} {...item} />
+										))}
+									</Box>
+									<DatabasePagination
+										pageCount={pageCount}
+										currentPage={currentPage}
+										setCurrentPage={setCurrentPage}
+										databasePerPage={databasePerPage}
+										setDatabasePerPage={setDatabasePerPage}
+									/>
+								</>
+							)}
+						</Stack>
 					</Box>
-					<Stack gap={2}>
-						<TextField
-							label={t("pages.database.searchDatabase")}
-							value={nameFilter}
-							onChange={handleSearchChange}
-							autoComplete="off"
-							sx={{
-								width: {
-									xs: "100%",
-									sm: "50%",
-								},
-							}}
-						/>
-						<Typography>
-							{filteredDatabases.length}{" "}
-							{t("pages.database.platform", {
-								count: filteredDatabases.length,
-							})}
-						</Typography>
-
-						{isLoading ? (
-							<Stack alignItems="center" spacing={5}>
-								<CircularProgress />
-							</Stack>
-						) : (
-							<>
-								<Box
-									display="grid"
-									gridTemplateColumns={{
-										xs: "repeat(1, 1fr)",
-										sm: "repeat(2, 1fr)",
-										md: "repeat(3, 1fr)",
-										lg: "repeat(4, 1fr)",
-									}}
-									gap={2}
-									aria-role="list"
-									aria-label={t("pages.database.title")}
-								>
-									{pagedDatabases.map((item) => (
-										<DatabaseItem key={item.id} {...item} />
-									))}
-								</Box>
-								<DatabasePagination
-									pageCount={pageCount}
-									currentPage={currentPage}
-									setCurrentPage={setCurrentPage}
-									databasePerPage={databasePerPage}
-									setDatabasePerPage={setDatabasePerPage}
-								/>
-							</>
-						)}
-					</Stack>
-				</Box>
-			</Stack>
-		</div>
+				</Stack>
+			</Container>
+		</>
 	);
 };
 

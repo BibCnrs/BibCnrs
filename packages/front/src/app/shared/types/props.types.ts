@@ -22,6 +22,7 @@ export type SearchBarProps = PropsWithoutRef<{
 	placeholder: string;
 	value?: string | null;
 	onSearch: (value: string | undefined) => void;
+	children?: ReactNode;
 }>;
 
 export type PageTitleProps = PropsWithoutRef<{

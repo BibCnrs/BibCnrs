@@ -32,6 +32,8 @@ import type {
 } from "../../../shared/types/props.types";
 import type { FacetEntry } from "../../../shared/types/types";
 import "./Publication.scss";
+import { Button } from "@mui/material";
+import { Box } from "@mui/system";
 import { useBibContext } from "../../../context/BibContext";
 import { BibContextPublicationDefault } from "../../../context/BibContext.const";
 
@@ -286,69 +288,82 @@ const Publication = () => {
 	return (
 		<div>
 			<PageTitle page="publication" />
-			<div className="header-footer">
+			<SearchBar
+				placeholder={t("pages.publication.searchBar")}
+				value={query.get("q") || search.query}
+				onSearch={handleSearch}
+			>
 				<ChipFacet
 					value={search.domain}
 					values={domains}
 					onChange={handleDomain}
 				/>
-				<SearchBar
-					placeholder={t("pages.publication.searchBar")}
-					value={query.get("q") || search.query}
-					onSearch={handleSearch}
-				/>
-				<div id="publication-letter-l1" className="publication-center">
+				<Box>
 					{ALPHABET.map((letter) => (
-						<button
-							type="button"
-							className={`mono publication-letter ${
-								searchByLetter === letter ? "publication-letter-active" : ""
-							}`}
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								padding: 0,
+								minWidth: "30px",
+								margin: "0 2px",
+								backgroundColor:
+									searchByLetter === letter ? "secondary.main" : "primary.main",
+							}}
 							key={letter}
 							onClick={() => {
 								handleSearchByLetterL1(letter);
 							}}
 						>
 							{letter}
-						</button>
+						</Button>
 					))}
-					<button
-						type="button"
-						className={`mono publication-letter ${
-							search.query ===
-							"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
-								? "publication-letter-active"
-								: ""
-						}`}
+					<Button
+						variant="contained"
+						size="small"
+						sx={{
+							padding: 0,
+							minWidth: "30px",
+							margin: "0 2px",
+							backgroundColor:
+								search.query ===
+								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+									? "secondary.main"
+									: "primary.main",
+						}}
 						onClick={handleSearchByNumber}
 					>
 						0-9
-					</button>
-				</div>
-				{searchByLetter !== "" ? (
-					<div className="publication-center">
-						<div id="publication-letter-l2">
-							{ALPHABET.map((letter) => (
-								<button
-									type="button"
-									className={`mono publication-letter ${
+					</Button>
+				</Box>
+				{searchByLetter && (
+					<Box>
+						{ALPHABET.map((letter) => (
+							<Button
+								variant="contained"
+								size="small"
+								sx={{
+									padding: 0,
+									minWidth: "30px",
+									margin: "0 2px",
+									backgroundColor:
 										search.query === `${searchByLetter}${letter}*`
-											? "publication-letter-active"
-											: ""
-									}`}
-									key={`${searchByLetter}${letter}`}
-									onClick={() => {
-										handleSearchByLetterL2(`${searchByLetter}${letter}`);
-									}}
-								>
-									{searchByLetter}
-									{letter}
-								</button>
-							))}
-						</div>
-					</div>
-				) : null}
-			</div>
+											? "secondary.main"
+											: "primary.main",
+									fontFamily: "monospace",
+								}}
+								key={`${searchByLetter}${letter}`}
+								onClick={() =>
+									handleSearchByLetterL2(`${searchByLetter}${letter}`)
+								}
+							>
+								{searchByLetter}
+								{letter}
+							</Button>
+						))}
+					</Box>
+				)}
+			</SearchBar>
 			<div id="search-container">
 				<div id="search-facet">
 					<Facet

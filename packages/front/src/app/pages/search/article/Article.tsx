@@ -13,7 +13,6 @@ import CustomButton from "../../../components/element/button/CustomButton";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import TableArticle from "../../../components/element/table/TableArticle";
 import PageTitle from "../../../components/internal/PageTitle";
-import ChipFacet from "../../../components/page/facet/ChipFacet";
 import Facet from "../../../components/page/facet/Facet";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
 import Table from "../../../components/page/table/Table";
@@ -44,6 +43,7 @@ import type {
 } from "../../../shared/types/props.types";
 import type { FacetEntry } from "../../../shared/types/types";
 import "./Article.scss";
+import ChipFacet from "../../../components/page/facet/ChipFacet";
 import { useBibContext } from "../../../context/BibContext";
 import { BibContextArticleDefault } from "../../../context/BibContext.const";
 
@@ -337,20 +337,20 @@ const Article = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<PageTitle page="article" />
-			<div className="header-footer">
+			<SearchBar
+				placeholder={t("pages.article.searchBar")}
+				value={query.get("q") || search.query}
+				onSearch={handleSearch}
+			>
 				<ChipFacet
 					value={search.domain}
 					values={domains}
 					onChange={handleDomain}
 				/>
-				<SearchBar
-					placeholder={t("pages.article.searchBar")}
-					value={query.get("q") || search.query}
-					onSearch={handleSearch}
-				/>
-			</div>
+			</SearchBar>
+
 			<div id="search-container">
 				<div id="search-facet">
 					<Facet
@@ -430,7 +430,7 @@ const Article = () => {
 					</ArticleContext.Provider>
 				)}
 			</div>
-		</div>
+		</>
 	);
 };
 
