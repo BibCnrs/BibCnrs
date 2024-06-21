@@ -1,26 +1,30 @@
-import "./Facet.scss";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
-import type {
-	FacetProps,
-	FacetRequired,
-} from "../../../shared/types/props.types";
-import CustomButton from "../../element/button/CustomButton";
-import FacetFacets from "../../element/facet/FacetFacets";
-import FacetLimiter from "../../element/facet/FacetLimiter";
 
-const Facet = ({
+import CustomButton from "../../element/button/CustomButton";
+import type { FacetRequired } from "./facet/Facet.type";
+import FacetFacets from "./facet/FacetFacets";
+import FacetLimiter from "./facet/FacetLimiter";
+
+export type FacetSidebarProps<T extends FacetRequired> = {
+	available: Omit<FacetRequired & T, "orderBy">;
+	active: Omit<FacetRequired & T, "orderBy">;
+	onChange: (values: Omit<FacetRequired & T, "orderBy">) => void;
+	onReset: () => void;
+};
+
+export default function ({
 	available,
 	active,
 	onChange,
 	onReset,
-}: FacetProps<FacetRequired>) => {
+}: FacetSidebarProps<FacetRequired>) {
 	const t = useTranslator();
 
 	const handleLimiter = (
-		limiters: FacetProps<FacetRequired>["active"]["limiters"],
+		limiters: FacetSidebarProps<FacetRequired>["active"]["limiters"],
 	) => {
 		onChange({
 			facets: active.facets,
@@ -29,7 +33,7 @@ const Facet = ({
 	};
 
 	const handleFacet = (
-		facets: FacetProps<FacetRequired>["active"]["facets"],
+		facets: FacetSidebarProps<FacetRequired>["active"]["facets"],
 	) => {
 		onChange({
 			limiters: active.limiters,
@@ -78,6 +82,4 @@ const Facet = ({
 			/>
 		</Paper>
 	);
-};
-
-export default memo(Facet);
+}

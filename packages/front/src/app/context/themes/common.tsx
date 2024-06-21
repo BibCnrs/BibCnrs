@@ -22,9 +22,24 @@ export const typography = {
 	},
 } satisfies ThemeOptions["typography"];
 
+export const muiPaperTheme = {
+	borderRadius: 0,
+} satisfies ThemeOptions["components"]["MuiPaper"]["styleOverrides"]["root"];
+
 export const muiCardTheme = {
 	borderRadius: 0,
 	minHeight: "140px",
 	borderWidth: "2px",
 	borderStyle: "solid",
 } satisfies ThemeOptions["components"]["MuiCard"]["styleOverrides"]["root"];
+
+export const muiCardContentTheme = {
+	styleOverrides: {
+		root: {
+			"&:last-child": {
+				paddingBottom: 16,
+				height: "100%",
+			},
+		},
+	},
+} satisfies ThemeOptions["components"]["MuiCardContent"]["styleOverrides"]["root"];

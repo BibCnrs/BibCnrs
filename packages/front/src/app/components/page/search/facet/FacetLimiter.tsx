@@ -7,22 +7,27 @@ import {
 } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Stack } from "@mui/system";
-import { memo } from "react";
-import { useTranslator } from "../../../shared/locales/I18N";
-import type {
-	FacetLimiterProps,
-	FacetRequired,
-} from "../../../shared/types/props.types";
-import TextType from "./TextType";
+import { useTranslator } from "../../../../shared/locales/I18N";
+import type { FacetEntry, FacetRequired } from "./Facet.type";
+import FacetTextType from "./FacetTextType";
 
-const FacetLimiter = ({
+type FacetLimiterProps = {
+	available: FacetRequired["limiters"];
+	active?: FacetRequired["limiters"];
+	onChange: (value: FacetRequired["limiters"]) => void;
+	HALFacet?: FacetEntry;
+	HALIsChecked?: boolean;
+	onHALFacetChange: ({ provider }: { provider: FacetEntry[] }) => void;
+};
+
+export default function FacetLimiter({
 	available,
 	active,
 	onChange,
 	HALFacet,
 	HALIsChecked,
 	onHALFacetChange,
-}: FacetLimiterProps<FacetRequired>) => {
+}: FacetLimiterProps) {
 	const t = useTranslator();
 	if (!available) {
 		return null;
@@ -76,7 +81,11 @@ const FacetLimiter = ({
 		};
 
 		textType = (
-			<TextType texts={texts} initial={initial} onChange={handleTextType} />
+			<FacetTextType
+				texts={texts}
+				initial={initial}
+				onChange={handleTextType}
+			/>
 		);
 		divider = true;
 	}
@@ -178,6 +187,4 @@ const FacetLimiter = ({
 			{dateRange}
 		</div>
 	);
-};
-
-export default memo(FacetLimiter);
+}

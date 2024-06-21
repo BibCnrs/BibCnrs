@@ -153,7 +153,7 @@ const SearchBar = ({
 							<Divider orientation="vertical" id="search-box-divider" />
 						</>
 					) : null}
-					<IconButton onClick={searchOnClick}>
+					<IconButton onClick={searchOnClick} role="search">
 						<SearchIcon />
 					</IconButton>
 				</Stack>

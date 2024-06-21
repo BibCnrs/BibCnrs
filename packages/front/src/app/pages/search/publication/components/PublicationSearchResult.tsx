@@ -1,26 +1,25 @@
-import { Popover } from "@mui/material";
+import { Link, Popover, Tooltip, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { memo, useEffect, useState } from "react";
-import { useBibContext } from "../../../context/BibContext";
-import { environment } from "../../../services/Environment";
-import { retrieve as retrieveFn } from "../../../services/search/Publication";
-import { useServicesCatch } from "../../../shared/hook";
-import { useTranslator } from "../../../shared/locales/I18N";
-import parseFullTextHoldings from "../../../shared/parseFullTextHoldings";
+import { useEffect, useState } from "react";
+import BookmarkButton from "../../../../components/element/button/BookmarkButton";
+import Diamond from "../../../../components/element/icon/Diamond";
+import OpenAccess from "../../../../components/element/icon/OpenAccess";
+import OpenablePaper from "../../../../components/element/paper/OpenablePaper";
+import SkeletonEntry from "../../../../components/element/skeleton/SkeletonEntry";
+import type { SearchResultsElementProps } from "../../../../components/page/search/SearchResults";
+import { useBibContext } from "../../../../context/BibContext";
+import { environment } from "../../../../services/Environment";
+import { retrieve as retrieveFn } from "../../../../services/search/Publication";
+import { useServicesCatch } from "../../../../shared/hook";
+import { useTranslator } from "../../../../shared/locales/I18N";
+import parseFullTextHoldings from "../../../../shared/parseFullTextHoldings";
 import type {
 	PublicationCoverageDataType,
 	PublicationHolding,
 	PublicationResultDataType,
 	PublicationRetrieveDataType,
-} from "../../../shared/types/data.types";
-import type { TableDisplayElementProps } from "../../../shared/types/props.types";
-import BookmarkButton from "../button/BookmarkButton";
-import Diamond from "../icon/Diamond";
-import OpenAccess from "../icon/OpenAccess";
-import OpenablePaper from "../paper/openable/OpenablePaper";
-import SkeletonEntry from "../skeleton/SkeletonEntry";
-import "./scss/TableList.scss";
+} from "../../../../shared/types/data.types";
 
 function proxifyOAPublication(url: string, domain: string) {
 	return `${environment.host}/ebsco/oa?url=${encodeURIComponent(
@@ -28,7 +27,26 @@ function proxifyOAPublication(url: string, domain: string) {
 	)}&sid=oa&domaine=${domain}&doi=null`;
 }
 
-const PublicationTitle = ({
+function PublicationId({ publication }: { publication: { id: number } }) {
+	return (
+		<Typography
+			component="div"
+			sx={{
+				width: "34px",
+				height: "34px",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+				fontSize: "1.2rem",
+				fontWeight: 700,
+			}}
+		>
+			{publication.id}
+		</Typography>
+	);
+}
+
+function PublicationTitle({
 	reconciledFullTextHoldings,
 	titleCoverage,
 	publication,
@@ -38,8 +56,7 @@ const PublicationTitle = ({
 	titleCoverage: string;
 	publication: PublicationResultDataType;
 	getCoverage: (coverage: PublicationCoverageDataType) => string;
-}) => {
-	const t = useTranslator();
+}) {
 	const {
 		search,
 		session: { user },
@@ -69,20 +86,28 @@ const PublicationTitle = ({
 
 	if (!isOpenAccess && !user) {
 		return (
-			<Box display="flex" alignItems="center">
-				<Box
-					className="table-list-title link"
-					sx={{ cursor: "pointer" }}
-					onClick={(e) => {
-						e.stopPropagation();
-						showLoginModal();
-					}}
-				>
-					{publication.id}. {publication.title} [{publication.type}]
-				</Box>
-				&nbsp;&nbsp;{titleCoverage}
-				{publication.isDiamond ? <Diamond className="table-icon" /> : null}
-			</Box>
+			<Stack
+				sx={{
+					flexDirection: "row",
+					gap: 1,
+				}}
+			>
+				{publication.isDiamond ? <Diamond /> : null}
+				<Tooltip title={`${publication.title} [${publication.type}]`}>
+					<Box
+						sx={{
+							flexGrow: 1,
+						}}
+						onClick={(e) => {
+							e.stopPropagation();
+							showLoginModal();
+						}}
+					>
+						{publication.title} [{publication.type}]
+					</Box>
+				</Tooltip>
+				<Box>{titleCoverage}</Box>
+			</Stack>
 		);
 	}
 
@@ -91,21 +116,30 @@ const PublicationTitle = ({
 		return (
 			<>
 				<Stack
-					component="div" // Add the component prop with the value of "div"
-					direction="row"
-					aria-describedby={idPopover}
+					sx={{
+						flexDirection: "row",
+						gap: 1,
+					}}
 					onClick={(event) => handlePopoverClick(event)}
-					sx={{ cursor: "pointer" }}
 				>
-					<span className="table-list-title link">
-						{publication.id}. {publication.title} [{publication.type}]{" "}
-					</span>
-					&nbsp;&nbsp;{titleCoverage}
 					{isOpenAccess ? (
 						<OpenAccess className="table-icon table-icon-oa" />
 					) : null}
-					{publication.isDiamond ? <Diamond className="table-icon" /> : null}
+					{publication.isDiamond ? <Diamond /> : null}
+					<Box
+						sx={{
+							flexGrow: 1,
+						}}
+						onClick={(e) => {
+							e.stopPropagation();
+							showLoginModal();
+						}}
+					>
+						{publication.title} [{publication.type}]
+					</Box>
+					<Box>{titleCoverage}</Box>
 				</Stack>
+
 				<Popover
 					id={idPopover}
 					open={openPoper}
@@ -118,9 +152,15 @@ const PublicationTitle = ({
 				>
 					<Stack spacing={2} p={2}>
 						{reconciledFullTextHoldings.map((value) => (
-							<Stack direction="row" key={value.name} gap={2}>
-								<a
-									className="table-list-title link"
+							<Stack
+								key={value.name}
+								sx={{
+									flexDirection: "row",
+									gap: 2,
+									alignItems: "center",
+								}}
+							>
+								<Link
 									href={
 										isOpenAccess && user
 											? proxifyOAPublication(value.url, search.domain)
@@ -133,7 +173,7 @@ const PublicationTitle = ({
 									}}
 								>
 									{value.name} - {getCoverage(value.coverage)}
-								</a>
+								</Link>
 								{user ? (
 									<BookmarkButton
 										className="table-bookmark-button"
@@ -150,9 +190,16 @@ const PublicationTitle = ({
 	}
 
 	return (
-		<>
-			<a
-				className="table-list-title link"
+		<Stack
+			sx={{
+				flexDirection: "row",
+				gap: 1,
+			}}
+		>
+			{isOpenAccess ? <OpenAccess /> : null}
+			{publication.isDiamond ? <Diamond /> : null}
+
+			<Link
 				href={
 					isOpenAccess && user
 						? proxifyOAPublication(href, search.domain)
@@ -163,21 +210,27 @@ const PublicationTitle = ({
 				onClick={(e) => {
 					e.stopPropagation();
 				}}
+				sx={{
+					flexGrow: 1,
+				}}
 			>
-				{publication.id}. {publication.title} [{publication.type}]
-			</a>
-			&nbsp;&nbsp;{titleCoverage}
-			{isOpenAccess ? (
-				<OpenAccess className="table-icon table-icon-oa" />
-			) : null}
-			{publication.isDiamond ? <Diamond className="table-icon" /> : null}
-		</>
-	);
-};
+				{publication.title} [{publication.type}]
+			</Link>
 
-const TablePublication = ({
+			<Box
+				sx={{
+					flexShrink: 0,
+				}}
+			>
+				{titleCoverage}
+			</Box>
+		</Stack>
+	);
+}
+
+export default function PublicationSearchResult({
 	data: dataIn,
-}: TableDisplayElementProps<PublicationResultDataType>) => {
+}: SearchResultsElementProps<PublicationResultDataType>) {
 	const {
 		fullTextHoldings,
 		title,
@@ -287,102 +340,98 @@ const TablePublication = ({
 	};
 
 	return (
-		<div className={user ? "table-bookmark-size" : undefined}>
-			<OpenablePaper
-				onOpen={handleChange}
-				Title={
-					<PublicationTitle
-						reconciledFullTextHoldings={reconciledFullTextHoldings}
-						titleCoverage={getTitleCoverage()}
-						publication={dataIn}
-						getCoverage={getCoverage}
-					/>
-				}
-				SmallBody={
-					<div className="table-list-body">
-						{issnOnline && issnOnline.length > 0 ? (
-							<div>
-								{t("components.table.content.issnOnline") /* eISSN */}
-								{issnOnline.join(", ")}
-							</div>
-						) : null}
-						{issnPrint && issnPrint.length > 0 ? (
-							<div>
-								{t("components.table.content.issnPrint") /* pISSN */}
-								{issnPrint.join(", ")}
-							</div>
-						) : null}
-						{isbnOnline && isbnOnline.length > 0 ? (
-							<div>
-								{t("components.table.content.isbnOnline") /* eISBN */}
-								{isbnOnline.join(", ")}
-							</div>
-						) : null}
-						{isbnPrint && isbnPrint.length > 0 ? (
-							<div>
-								{t("components.table.content.isbnPrint") /* pISBN */}
-								{isbnPrint.join(", ")}
-							</div>
-						) : null}
-					</div>
-				}
-				/* eslint-disable-next-line react/jsx-no-useless-fragment */
-				FullBody={
-					!dataRetrieve || isLoading || isFetching ? (
-						<SkeletonEntry animation="pulse" height={450} />
-					) : (
-						<dl className="table-list-body">
-							{dataRetrieve.items?.map((item) => {
-								if (item.name.toLowerCase() === "title") {
-									return null;
-								}
-								return (
-									<span key={item.name}>
-										<dt>{item.label}</dt>
-										<dd>
-											{item.value.map((value) => (
-												<div key={value}>{value}</div>
-											))}
-										</dd>
-									</span>
-								);
-							})}
-							<span>
-								<dt>Accès à l&apos;article</dt>
-								<dd>
-									{fullTextHoldings.map((value) => (
-										<div key={value.name}>
-											<a
-												className="link"
-												href={value.url}
-												target="_blank"
-												rel="noreferrer nofollow noopener"
-											>
-												{value.name}
-											</a>{" "}
-											{getCoverage(value.coverage)}
-											{value.embargo
-												? ` (embargo: ${value.embargo.value} ${value.embargo.unit})`
-												: null}
-										</div>
-									))}
-								</dd>
-							</span>
-						</dl>
-					)
-				}
-			/>
-			<div className="table-bookmark">
-				{user ? (
+		<OpenablePaper
+			onChange={handleChange}
+			title={
+				<PublicationTitle
+					reconciledFullTextHoldings={reconciledFullTextHoldings}
+					titleCoverage={getTitleCoverage()}
+					publication={dataIn}
+					getCoverage={getCoverage}
+				/>
+			}
+			leftAction={<PublicationId publication={dataIn} />}
+			summary={
+				<Stack gap={1}>
+					{issnOnline && issnOnline.length > 0 ? (
+						<Typography>
+							{t("components.table.content.issnOnline") /* eISSN */}
+							{issnOnline.join(", ")}
+						</Typography>
+					) : null}
+					{issnPrint && issnPrint.length > 0 ? (
+						<Typography>
+							{t("components.table.content.issnPrint") /* pISSN */}
+							{issnPrint.join(", ")}
+						</Typography>
+					) : null}
+					{isbnOnline && isbnOnline.length > 0 ? (
+						<Typography>
+							{t("components.table.content.isbnOnline") /* eISBN */}
+							{isbnOnline.join(", ")}
+						</Typography>
+					) : null}
+					{isbnPrint && isbnPrint.length > 0 ? (
+						<Typography>
+							{t("components.table.content.isbnPrint") /* pISBN */}
+							{isbnPrint.join(", ")}
+						</Typography>
+					) : null}
+				</Stack>
+			}
+			/* eslint-disable-next-line react/jsx-no-useless-fragment */
+			content={
+				!dataRetrieve || isLoading || isFetching ? (
+					<SkeletonEntry animation="pulse" height={450} />
+				) : (
+					<Typography component="dl">
+						{dataRetrieve.items?.map((item) => {
+							if (item.name.toLowerCase() === "title") {
+								return null;
+							}
+							return (
+								<Typography key={item.name}>
+									<Typography component="dt">{item.label}</Typography>
+									<Typography component="dd">
+										{item.value.map((value) => (
+											<div key={value}>{value}</div>
+										))}
+									</Typography>
+								</Typography>
+							);
+						})}
+						<Typography>
+							<Typography component="dt">Accès à l&apos;article</Typography>
+							<Typography component="dd">
+								{fullTextHoldings.map((value) => (
+									<div key={value.name}>
+										<Link
+											href={value.url}
+											target="_blank"
+											rel="noreferrer nofollow noopener"
+										>
+											{value.name}
+										</Link>
+										{getCoverage(value.coverage)}
+										{value.embargo
+											? ` (embargo: ${value.embargo.value} ${value.embargo.unit})`
+											: null}
+									</div>
+								))}
+							</Typography>
+						</Typography>
+					</Typography>
+				)
+			}
+			rightAction={
+				user ? (
 					<BookmarkButton
 						className="table-bookmark-button"
 						title={bookmarkTitle}
 						url={href}
 					/>
-				) : null}
-			</div>
-		</div>
+				) : null
+			}
+		/>
 	);
-};
-
-export default memo(TablePublication);
+}

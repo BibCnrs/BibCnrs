@@ -1,13 +1,22 @@
+import { Grid } from "@mui/material";
+import { Button } from "@mui/material";
+import { Box } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
-import TablePublication from "../../../components/element/table/TablePublication";
 import PageTitle from "../../../components/internal/PageTitle";
-import ChipFacet from "../../../components/page/facet/ChipFacet";
-import Facet from "../../../components/page/facet/Facet";
+import ChipFacet from "../../../components/page/search/ChipFacet";
+import FacetSidebar, {
+	type FacetSidebarProps,
+} from "../../../components/page/search/FacetSidebar";
+import SearchResults, {
+	type SearchResultsArgsProps,
+} from "../../../components/page/search/SearchResults";
+import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
-import Table from "../../../components/page/table/Table";
+import { useBibContext } from "../../../context/BibContext";
+import { BibContextPublicationDefault } from "../../../context/BibContext.const";
 import type { PublicationParam } from "../../../services/search/Publication";
 import { publication } from "../../../services/search/Publication";
 import {
@@ -26,16 +35,7 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { PublicationDataType } from "../../../shared/types/data.types";
-import type {
-	FacetProps,
-	TableArgsProps,
-} from "../../../shared/types/props.types";
-import type { FacetEntry } from "../../../shared/types/types";
-import "./Publication.scss";
-import { Button } from "@mui/material";
-import { Box } from "@mui/system";
-import { useBibContext } from "../../../context/BibContext";
-import { BibContextPublicationDefault } from "../../../context/BibContext.const";
+import PublicationSearchResult from "./components/PublicationSearchResult";
 
 const ALPHABET = [
 	"A",
@@ -66,17 +66,16 @@ const ALPHABET = [
 	"Z",
 ];
 
-const Publication = () => {
+const PublicationPage = () => {
 	const navigate = useNavigate();
 	const query = useSearchParams();
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
 	const facetsCleaner = useFacetsCleaner<PublicationParam>();
 	const { search, setSearch } = useBibContext();
-
+	const [searchByLetter, setSearchByLetter] = useState<string>("");
 	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);
-	const [searchByLetter, setSearchByLetter] = useState<string>("");
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -195,7 +194,6 @@ const Publication = () => {
 			},
 		});
 	};
-
 	const handleSearch = (value: string | undefined): void => {
 		setSearchByLetter("");
 		performSearch(value);
@@ -235,7 +233,7 @@ const Publication = () => {
 		setSeed(seed + 1);
 	};
 
-	const handleTable = (tableArgs: TableArgsProps) => {
+	const handleTable = (tableArgs: SearchResultsArgsProps) => {
 		setSearch({
 			...search,
 			publication: {
@@ -246,7 +244,8 @@ const Publication = () => {
 	};
 
 	const getAvailable = (result: PublicationDataType | undefined) => {
-		const available: Partial<FacetProps<PublicationParam>["available"]> = {};
+		const available: Partial<FacetSidebarProps<PublicationParam>["available"]> =
+			{};
 		available.limiters = {
 			reviewed: true,
 		};
@@ -278,7 +277,7 @@ const Publication = () => {
 	};
 
 	const getActive = () => {
-		const active: Partial<FacetProps<PublicationParam>["active"]> = {
+		const active: Partial<FacetSidebarProps<PublicationParam>["active"]> = {
 			limiters: search.publication.limiters,
 			facets: search.publication.facets,
 		};
@@ -286,7 +285,7 @@ const Publication = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<PageTitle page="publication" />
 			<SearchBar
 				placeholder={t("pages.publication.searchBar")}
@@ -364,31 +363,34 @@ const Publication = () => {
 					</Box>
 				)}
 			</SearchBar>
-			<div id="search-container">
-				<div id="search-facet">
-					<Facet
+
+			<Grid container spacing={4} padding={2}>
+				<Grid item xs={12} md={3}>
+					<FacetSidebar
 						key={seed}
 						available={getAvailable(data)}
 						active={getActive()}
 						onChange={handleFacets}
 						onReset={handleReset}
 					/>
-				</div>
-				{isLoading || isFetching ? (
-					<SearchSkeleton />
-				) : (
-					<Table
-						id="search-content"
-						DisplayElement={TablePublication}
-						results={data?.results}
-						args={search.publication.table}
-						onArgsChange={handleTable}
-						total={data?.totalHits}
-					/>
-				)}
-			</div>
-		</div>
+				</Grid>
+
+				<Grid item xs={12} md={9}>
+					{isLoading || isFetching ? (
+						<SearchSkeleton />
+					) : (
+						<SearchResults
+							DisplayElement={PublicationSearchResult}
+							results={data?.results}
+							args={search.publication.table}
+							onArgsChange={handleTable}
+							total={data?.totalHits}
+						/>
+					)}
+				</Grid>
+			</Grid>
+		</>
 	);
 };
 
-export default Publication;
+export default PublicationPage;

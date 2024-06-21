@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
+import type { FacetRequired } from "../components/page/search/facet/Facet.type";
 import { useBibContext } from "../context/BibContext";
-import type { FacetRequired } from "./types/props.types";
 
 export const useServicesCatch = () => {
 	const { logout } = useBibContext();

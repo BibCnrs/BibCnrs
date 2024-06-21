@@ -15,12 +15,12 @@ import type {
 	HistoryEntryFacetsDataType,
 	HistoryEntryLimiterDataType,
 } from "../../../shared/types/data.types";
-import type { TableDisplayElementProps } from "../../../shared/types/props.types";
-import type { FacetEntry } from "../../../shared/types/types";
 import CustomButton from "../button/CustomButton";
 import AlertModification from "../dialog/AlertModification";
 import "./scss/TableHistory.scss";
 import { useBibContext } from "../../../context/BibContext";
+import type { SearchResultsElementProps } from "../../page/search/SearchResults";
+import type { FacetEntry } from "../../page/search/facet/Facet.type";
 
 const Limiters = ({ data }: { data: HistoryEntryLimiterDataType }) => {
 	const t = useTranslator();
@@ -175,7 +175,7 @@ const TableHistory = ({
 	first,
 	last,
 	index,
-}: TableDisplayElementProps<HistoryEntryDataType>) => {
+}: SearchResultsElementProps<HistoryEntryDataType>) => {
 	const t = useTranslator();
 	const navigate = useNavigate();
 	const { theme } = useBibContext();

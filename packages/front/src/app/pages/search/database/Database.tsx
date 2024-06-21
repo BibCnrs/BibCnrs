@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
-import ChipFacet from "../../../components/page/facet/ChipFacet";
+import ChipFacet from "../../../components/page/search/ChipFacet";
 import { useBibContext } from "../../../context/BibContext";
 import { database } from "../../../services/search/Database";
 import {

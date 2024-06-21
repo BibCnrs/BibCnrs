@@ -13,9 +13,14 @@ import CustomButton from "../../../components/element/button/CustomButton";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import TableArticle from "../../../components/element/table/TableArticle";
 import PageTitle from "../../../components/internal/PageTitle";
-import Facet from "../../../components/page/facet/Facet";
+import ChipFacet from "../../../components/page/search/ChipFacet";
+import FacetSidebar, {
+	type FacetSidebarProps,
+} from "../../../components/page/search/FacetSidebar";
+import SearchResults, {
+	type SearchResultsArgsProps,
+} from "../../../components/page/search/SearchResults";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
-import Table from "../../../components/page/table/Table";
 import type {
 	ArticleParam,
 	OrderByType,
@@ -37,13 +42,8 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
-import type {
-	FacetProps,
-	TableArgsProps,
-} from "../../../shared/types/props.types";
-import type { FacetEntry } from "../../../shared/types/types";
 import "./Article.scss";
-import ChipFacet from "../../../components/page/facet/ChipFacet";
+import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
 import { useBibContext } from "../../../context/BibContext";
 import { BibContextArticleDefault } from "../../../context/BibContext.const";
 
@@ -234,7 +234,7 @@ const Article = () => {
 		setSeed(seed + 1);
 	};
 
-	const handleTable = (tableArgs: TableArgsProps) => {
+	const handleTable = (tableArgs: SearchResultsArgsProps) => {
 		setSearch({
 			...search,
 			article: {
@@ -276,7 +276,7 @@ const Article = () => {
 	};
 
 	const getAvailable = (result: ArticleDataType | undefined) => {
-		const available: Partial<FacetProps<ArticleParam>["available"]> = {};
+		const available: Partial<FacetSidebarProps<ArticleParam>["available"]> = {};
 		available.limiters = {
 			fullText: true,
 			openAccess: true,
@@ -329,7 +329,7 @@ const Article = () => {
 	};
 
 	const getActive = () => {
-		const active: Partial<FacetProps<ArticleParam>["active"]> = {
+		const active: Partial<FacetSidebarProps<ArticleParam>["active"]> = {
 			limiters: search.article.limiters,
 			facets: search.article.facets,
 		};
@@ -353,7 +353,7 @@ const Article = () => {
 
 			<div id="search-container">
 				<div id="search-facet">
-					<Facet
+					<FacetSidebar
 						key={seed}
 						available={getAvailable(data)}
 						active={getActive()}
@@ -362,7 +362,7 @@ const Article = () => {
 					/>
 				</div>
 				{isLoading || isFetching ? (
-					<SearchSkeleton order />
+					<SearchSkeleton />
 				) : (
 					<ArticleContext.Provider
 						value={{
@@ -370,7 +370,7 @@ const Article = () => {
 							setExports,
 						}}
 					>
-						<Table
+						<SearchResults
 							id="search-content"
 							DisplayElement={TableArticle}
 							results={data?.results}

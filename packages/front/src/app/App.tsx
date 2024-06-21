@@ -11,7 +11,7 @@ import Resources from "./pages/common/resources/Resources";
 import Error404 from "./pages/errors/Error404";
 import Article from "./pages/search/article/Article";
 import Database from "./pages/search/database/Database";
-import Publication from "./pages/search/publication/Publication";
+import PublicationPage from "./pages/search/publication/PublicationPage";
 import ResearchData from "./pages/search/researchdata/ResearchData";
 import UserSettings from "./pages/user/UserSettings/UserSettings";
 import Favourite from "./pages/user/favourite/Favourite";
@@ -54,7 +54,7 @@ const App = () => {
 							</ProtectedRoute>
 						}
 					/>
-					<Route path={RoutePublication} element={<Publication />} />
+					<Route path={RoutePublication} element={<PublicationPage />} />
 					<Route path={RouteDatabase} element={<Database />} />
 					<Route path={RouteResearchData} element={<ResearchData />} />
 					<Route path={RouteFaq} element={<Faq />} />

@@ -40,8 +40,8 @@ test("filter platforms ", async ({ page }) => {
 
 	await page.goto("/database");
 
-	const filter = page.getByRole("textbox", {
-		name: "Rechercher une plateforme",
+	const filter = page.getByRole("combobox", {
+		name: "Recherche",
 	});
 
 	await expect(filter).toBeVisible({
@@ -53,7 +53,13 @@ test("filter platforms ", async ({ page }) => {
 		timeout: 10000,
 	});
 
+	const searchButton = page.getByRole("search");
+	await expect(searchButton).toBeVisible({
+		timeout: 10000,
+	});
+
 	await filter.fill("HA");
+	await searchButton.click();
 
 	await expect(databases.locator("[role=listitem]")).toHaveCount(2);
 

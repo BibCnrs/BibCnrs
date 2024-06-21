@@ -1,3 +1,4 @@
+import type { FacetEntry } from "../../components/page/search/facet/Facet.type";
 import { convertFacet, convertPayload } from "../../shared/typeConvertion";
 import type {
 	ArticleDataType,
@@ -7,12 +8,7 @@ import type {
 	RetrieveItemDataType,
 	RetrieveItemValueDataType,
 } from "../../shared/types/data.types";
-import type {
-	FacetEntry,
-	Institute,
-	Url,
-	Url2,
-} from "../../shared/types/types";
+import type { Institute, Url, Url2 } from "../../shared/types/types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
 import { addHistory } from "../user/History";
 

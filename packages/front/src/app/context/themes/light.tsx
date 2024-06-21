@@ -1,5 +1,10 @@
 import type { ThemeOptions } from "@mui/material";
-import { muiCardTheme, typography } from "./common";
+import {
+	muiCardContentTheme,
+	muiCardTheme,
+	muiPaperTheme,
+	typography,
+} from "./common";
 
 const lightThemePalette = {
 	mode: "light",
@@ -31,6 +36,13 @@ export const lightTheme: ThemeOptions = {
 	palette: lightThemePalette,
 	typography,
 	components: {
+		MuiPaper: {
+			styleOverrides: {
+				root: {
+					...muiPaperTheme,
+				},
+			},
+		},
 		MuiCard: {
 			styleOverrides: {
 				root: {
@@ -44,12 +56,7 @@ export const lightTheme: ThemeOptions = {
 		},
 		MuiCardContent: {
 			styleOverrides: {
-				root: {
-					"&:last-child": {
-						paddingBottom: 16,
-						height: "100%",
-					},
-				},
+				root: muiCardContentTheme,
 			},
 		},
 	},

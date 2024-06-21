@@ -1,9 +1,10 @@
+import type { FacetEntry } from "../../components/page/search/facet/Facet.type";
 import { convertFacet, convertPayload } from "../../shared/typeConvertion";
 import type {
 	PublicationDataType,
 	PublicationRetrieveDataType,
 } from "../../shared/types/data.types";
-import type { FacetEntry, Institute } from "../../shared/types/types";
+import type { Institute } from "../../shared/types/types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
 
 export type PublicationPayLoad = {
