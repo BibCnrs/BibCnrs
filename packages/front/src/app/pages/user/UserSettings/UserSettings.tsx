@@ -14,6 +14,8 @@ import {
 	useQuery,
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import PageTitle from "../../../components/internal/PageTitle";
+import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
 import {
 	type UserSettingsType,
@@ -105,157 +107,160 @@ const UserSettings = () => {
 	}
 
 	return (
-		<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-			<Typography variant="h4" gutterBottom>
-				{t("pages.userSettings.title")}
-			</Typography>
-			<Stack gap={4}>
-				<Box>
-					<Typography variant="h5" gutterBottom>
-						{t("pages.userSettings.homeSection.title")}
-					</Typography>
-					<Typography variant="body1" gutterBottom>
-						{t("pages.userSettings.homeSection.description")}
-					</Typography>
-					<Stack gap={2}>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={switchState.displayFavorites}
-									onChange={handleSwitchChange}
-									name="displayFavorites"
-									aria-label={t(
-										"pages.userSettings.homeSection.displayFavorites",
-									)}
-								/>
-							}
-							label={t("pages.userSettings.homeSection.displayFavorites")}
-						/>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={switchState.displayTestNews}
-									onChange={handleSwitchChange}
-									name="displayTestNews"
-									aria-label={t(
-										"pages.userSettings.homeSection.displayTestNews",
-									)}
-								/>
-							}
-							label={t("pages.userSettings.homeSection.displayTestNews")}
-						/>
-					</Stack>
-				</Box>
+		<>
+			<PageTitle page="settings" />
+			<FakeSearchBar title={t("pages.userSettings.title")} />
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<Stack gap={4}>
+					<Box>
+						<Typography variant="h5" gutterBottom color="primary">
+							{t("pages.userSettings.homeSection.title")}
+						</Typography>
+						<Typography variant="body1" gutterBottom>
+							{t("pages.userSettings.homeSection.description")}
+						</Typography>
+						<Stack gap={2}>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={switchState.displayFavorites}
+										onChange={handleSwitchChange}
+										name="displayFavorites"
+										aria-label={t(
+											"pages.userSettings.homeSection.displayFavorites",
+										)}
+									/>
+								}
+								label={t("pages.userSettings.homeSection.displayFavorites")}
+							/>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={switchState.displayTestNews}
+										onChange={handleSwitchChange}
+										name="displayTestNews"
+										aria-label={t(
+											"pages.userSettings.homeSection.displayTestNews",
+										)}
+									/>
+								}
+								label={t("pages.userSettings.homeSection.displayTestNews")}
+							/>
+						</Stack>
+					</Box>
 
-				<Box>
-					<Typography variant="h5" gutterBottom>
-						{t("pages.userSettings.searchSection.title")}
-					</Typography>
-					<Typography variant="body1" gutterBottom>
-						{t("pages.userSettings.searchSection.description")}
-					</Typography>
-					<ToggleButtonGroup
-						value={toggleState.defaultSearchMode}
-						exclusive
-						onChange={handleToggleChange("defaultSearchMode")}
-						aria-label={t("pages.userSettings.searchSection.description")}
-						color="primary"
-					>
-						<ToggleButton
-							value="article"
-							aria-label={t("pages.userSettings.searchSection.article")}
+					<Box>
+						<Typography variant="h5" gutterBottom color="primary">
+							{t("pages.userSettings.searchSection.title")}
+						</Typography>
+						<Typography variant="body1" gutterBottom>
+							{t("pages.userSettings.searchSection.description")}
+						</Typography>
+						<ToggleButtonGroup
+							value={toggleState.defaultSearchMode}
+							exclusive
+							onChange={handleToggleChange("defaultSearchMode")}
+							aria-label={t("pages.userSettings.searchSection.description")}
+							color="primary"
 						>
-							{t("pages.userSettings.searchSection.article")}
-						</ToggleButton>
-						<ToggleButton
-							value="journal"
-							aria-label={t("pages.userSettings.searchSection.journal")}
-						>
-							{t("pages.userSettings.searchSection.journal")}
-						</ToggleButton>
-						<ToggleButton
-							value="platform"
-							aria-label={t("pages.userSettings.searchSection.platform")}
-						>
-							{t("pages.userSettings.searchSection.platform")}
-						</ToggleButton>
-						<ToggleButton
-							value="searchData"
-							aria-label={t("pages.userSettings.searchSection.searchData")}
-						>
-							{t("pages.userSettings.searchSection.searchData")}
-						</ToggleButton>
-					</ToggleButtonGroup>
-				</Box>
+							<ToggleButton
+								value="article"
+								aria-label={t("pages.userSettings.searchSection.article")}
+							>
+								{t("pages.userSettings.searchSection.article")}
+							</ToggleButton>
+							<ToggleButton
+								value="journal"
+								aria-label={t("pages.userSettings.searchSection.journal")}
+							>
+								{t("pages.userSettings.searchSection.journal")}
+							</ToggleButton>
+							<ToggleButton
+								value="platform"
+								aria-label={t("pages.userSettings.searchSection.platform")}
+							>
+								{t("pages.userSettings.searchSection.platform")}
+							</ToggleButton>
+							<ToggleButton
+								value="searchData"
+								aria-label={t("pages.userSettings.searchSection.searchData")}
+							>
+								{t("pages.userSettings.searchSection.searchData")}
+							</ToggleButton>
+						</ToggleButtonGroup>
+					</Box>
 
-				<Box>
-					<Typography variant="h5" gutterBottom>
-						{t("pages.userSettings.generalSection.title")}
-					</Typography>
-					<Typography variant="body1" gutterBottom>
-						{t("pages.userSettings.generalSection.descriptionLanguage")}
-					</Typography>
-					<ToggleButtonGroup
-						value={toggleState.defaultLanguage}
-						exclusive
-						onChange={handleToggleChange("defaultLanguage")}
-						aria-label={t(
-							"pages.userSettings.generalSection.descriptionLanguage",
-						)}
-						color="primary"
-					>
-						<ToggleButton
-							value="auto"
-							aria-label={t("pages.userSettings.generalSection.auto")}
+					<Box>
+						<Typography variant="h5" gutterBottom color="primary">
+							{t("pages.userSettings.generalSection.title")}
+						</Typography>
+						<Typography variant="body1" gutterBottom>
+							{t("pages.userSettings.generalSection.descriptionLanguage")}
+						</Typography>
+						<ToggleButtonGroup
+							value={toggleState.defaultLanguage}
+							exclusive
+							onChange={handleToggleChange("defaultLanguage")}
+							aria-label={t(
+								"pages.userSettings.generalSection.descriptionLanguage",
+							)}
+							color="primary"
 						>
-							{t("pages.userSettings.generalSection.auto")}
-						</ToggleButton>
-						<ToggleButton
-							value="fr"
-							aria-label={t("pages.userSettings.generalSection.fr")}
-						>
-							{t("pages.userSettings.generalSection.fr")}
-						</ToggleButton>
-						<ToggleButton
-							value="en"
-							aria-label={t("pages.userSettings.generalSection.en")}
-						>
-							{t("pages.userSettings.generalSection.en")}
-						</ToggleButton>
-					</ToggleButtonGroup>
+							<ToggleButton
+								value="auto"
+								aria-label={t("pages.userSettings.generalSection.auto")}
+							>
+								{t("pages.userSettings.generalSection.auto")}
+							</ToggleButton>
+							<ToggleButton
+								value="fr"
+								aria-label={t("pages.userSettings.generalSection.fr")}
+							>
+								{t("pages.userSettings.generalSection.fr")}
+							</ToggleButton>
+							<ToggleButton
+								value="en"
+								aria-label={t("pages.userSettings.generalSection.en")}
+							>
+								{t("pages.userSettings.generalSection.en")}
+							</ToggleButton>
+						</ToggleButtonGroup>
 
-					<Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
-						{t("pages.userSettings.generalSection.descriptionTheme")}
-					</Typography>
-					<ToggleButtonGroup
-						value={toggleState.defaultTheme}
-						exclusive
-						onChange={handleToggleChange("defaultTheme")}
-						aria-label={t("pages.userSettings.generalSection.descriptionTheme")}
-						color="primary"
-					>
-						<ToggleButton
-							value="auto"
-							aria-label={t("pages.userSettings.generalSection.auto")}
+						<Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+							{t("pages.userSettings.generalSection.descriptionTheme")}
+						</Typography>
+						<ToggleButtonGroup
+							value={toggleState.defaultTheme}
+							exclusive
+							onChange={handleToggleChange("defaultTheme")}
+							aria-label={t(
+								"pages.userSettings.generalSection.descriptionTheme",
+							)}
+							color="primary"
 						>
-							{t("pages.userSettings.generalSection.auto")}
-						</ToggleButton>
-						<ToggleButton
-							value="light"
-							aria-label={t("pages.userSettings.generalSection.light")}
-						>
-							{t("pages.userSettings.generalSection.light")}
-						</ToggleButton>
-						<ToggleButton
-							value="dark"
-							aria-label={t("pages.userSettings.generalSection.dark")}
-						>
-							{t("pages.userSettings.generalSection.dark")}
-						</ToggleButton>
-					</ToggleButtonGroup>
-				</Box>
-			</Stack>
-		</Container>
+							<ToggleButton
+								value="auto"
+								aria-label={t("pages.userSettings.generalSection.auto")}
+							>
+								{t("pages.userSettings.generalSection.auto")}
+							</ToggleButton>
+							<ToggleButton
+								value="light"
+								aria-label={t("pages.userSettings.generalSection.light")}
+							>
+								{t("pages.userSettings.generalSection.light")}
+							</ToggleButton>
+							<ToggleButton
+								value="dark"
+								aria-label={t("pages.userSettings.generalSection.dark")}
+							>
+								{t("pages.userSettings.generalSection.dark")}
+							</ToggleButton>
+						</ToggleButtonGroup>
+					</Box>
+				</Stack>
+			</Container>
+		</>
 	);
 };
 export default UserSettings;

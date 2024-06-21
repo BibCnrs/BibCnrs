@@ -1,10 +1,13 @@
+import { Container } from "@mui/system";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useState } from "react";
 import CustomButton from "../../../components/element/button/CustomButton";
 import TableHistory from "../../../components/element/table/TableHistory";
 import PageTitle from "../../../components/internal/PageTitle";
+import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import Table from "../../../components/page/table/Table";
+import { Empty } from "../../../components/shared/Empty";
 import {
 	deleteHistory,
 	deleteHistoryEntry,
@@ -14,7 +17,6 @@ import { disableAllSearchAlert } from "../../../services/user/SearchAlert";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { HistoryDataType } from "../../../shared/types/data.types";
 import type { TableArgsProps } from "../../../shared/types/props.types";
-import "./History.scss";
 
 export const HistoryContext = createContext<{
 	handleDeleteEntry: (id: number) => void;
@@ -83,34 +85,42 @@ const History = ({
 	};
 
 	return (
-		<div id="app">
+		<>
 			<PageTitle page={displayOnlyAlert ? "alert" : "history"} />
-			<h1>{t(`pages.${displayOnlyAlert ? "alert" : "history"}.title`)}</h1>
-			<HistoryContext.Provider
-				value={{ handleDeleteEntry, requestUpdate: handleUpdateRequest }}
-			>
-				<Table
-					DisplayElement={TableHistory}
-					results={data?.histories}
-					args={args}
-					onArgsChange={setArgs}
-					total={data ? data.totalCount : 0}
-					header={
-						<div className="history-header">
-							{displayOnlyAlert ? (
-								<CustomButton onClick={handleDisable}>
-									{t("pages.history.buttons.disable")}
-								</CustomButton>
-							) : (
-								<CustomButton onClick={handleDelete}>
-									{t("pages.history.buttons.delete")}
-								</CustomButton>
-							)}
-						</div>
-					}
-				/>
-			</HistoryContext.Provider>
-		</div>
+			<FakeSearchBar
+				title={t(`pages.${displayOnlyAlert ? "alert" : "history"}.title`)}
+			/>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				{data?.histories.length === 0 && <Empty />}
+
+				{data?.histories.length > 0 && (
+					<HistoryContext.Provider
+						value={{ handleDeleteEntry, requestUpdate: handleUpdateRequest }}
+					>
+						<Table
+							DisplayElement={TableHistory}
+							results={data?.histories}
+							args={args}
+							onArgsChange={setArgs}
+							total={data ? data.totalCount : 0}
+							header={
+								<div className="history-header">
+									{displayOnlyAlert ? (
+										<CustomButton onClick={handleDisable}>
+											{t("pages.history.buttons.disable")}
+										</CustomButton>
+									) : (
+										<CustomButton onClick={handleDelete}>
+											{t("pages.history.buttons.delete")}
+										</CustomButton>
+									)}
+								</div>
+							}
+						/>
+					</HistoryContext.Provider>
+				)}
+			</Container>
+		</>
 	);
 };
 

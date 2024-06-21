@@ -1,7 +1,9 @@
 import { Card, CardActionArea, CardContent, Link } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
+import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
+import { Empty } from "../../../components/shared/Empty";
 import { resources } from "../../../services/common/Resources";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type { ResourcesDataType } from "../../../shared/types/data.types";
@@ -12,7 +14,7 @@ export const DisplayResources = ({
 	const language = useLanguageKey();
 
 	if (!data || data.length === 0) {
-		return null;
+		return <Empty />;
 	}
 
 	// sort resources by name in alphabetical order
@@ -76,11 +78,13 @@ const Resources = () => {
 	});
 
 	return (
-		<div id="app">
+		<>
 			<PageTitle page="resources" />
-			<h1>{t("pages.resources.title")}</h1>
-			<DisplayResources data={data} />
-		</div>
+			<FakeSearchBar title={t("pages.resources.title")} />
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<DisplayResources data={data} />
+			</Container>
+		</>
 	);
 };
 

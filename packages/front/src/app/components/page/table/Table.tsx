@@ -47,14 +47,6 @@ const Table = ({
 			{/* Display an empty page if results and total are not initialized */}
 			{results === undefined || total === undefined ? null : (
 				<>
-					{/* Add pagination on top of the results with header */}
-					<PaginationComponent
-						currentPage={args.page}
-						onChange={onChange}
-						resultsPerPage={args.perPage}
-						total={total}
-						extend={header}
-					/>
 					{/* Display the results with the React component given in parameter,
                         or display "no data" if the total is equals to 0 */}
 					<div>

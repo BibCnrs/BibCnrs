@@ -1,14 +1,16 @@
+import { Button } from "@mui/material";
+import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import PageTitle from "../../../components/internal/PageTitle";
+import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
+import { useBibContext } from "../../../context/BibContext";
 import { licences } from "../../../services/user/Licences";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type {
 	LicenceDataType,
 	LicencesDataType,
 } from "../../../shared/types/data.types";
-import "./Licences.scss";
-import { useBibContext } from "../../../context/BibContext";
 
 const Licences = () => {
 	const t = useTranslator();
@@ -47,65 +49,94 @@ const Licences = () => {
 	}
 
 	return (
-		<div id="app">
+		<>
 			<PageTitle page="licences" />
-			<div id="licences">
-				<div id="licences-nav">
-					{data.map((value) => (
-						<button
-							type="button"
-							key={value.id}
-							id={
-								activeLicences?.id === value.id ? "licences-button-active" : ""
-							}
-							className="licences-button"
-							onClick={() => {
-								if (activeLicences?.id !== value.id) {
-									setActiveLicences(value);
-								}
-							}}
-						>
-							{language === "en" ? value.name_en : value.name_fr}
-						</button>
-					))}
-				</div>
-				<div id="licences-content">
-					{activeLicences ? (
-						<>
-							<h1 className="title">
-								{language === "en"
-									? activeLicences.name_en
-									: activeLicences.name_fr}
-							</h1>
-							{/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-							<div
-								className="cms-content"
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-								dangerouslySetInnerHTML={{
-									__html:
-										language === "en"
-											? activeLicences.content_en
-											: activeLicences.content_fr,
+			<FakeSearchBar title="Licences" />
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<Stack direction="row">
+					<Box
+						id="licences-nav"
+						sx={{
+							display: "flex",
+							flexDirection: "column",
+							width: "fit-content",
+							height: "fit-content",
+							marginRight: "40px",
+							borderStyle: "solid",
+							borderWidth: "2px",
+						}}
+					>
+						{data.map((value) => (
+							<Button
+								type="button"
+								key={value.id}
+								onClick={() => {
+									if (activeLicences?.id !== value.id) {
+										setActiveLicences(value);
+									}
 								}}
-							></div>
-							{activeLicences.pdf ? (
-								<p>
-									{t("pages.licences.pdf")}{" "}
-									<a
-										className="link"
-										href={`files/${activeLicences.pdf.src}`}
-										target="_blank"
-										rel="noopener noreferrer nofollow"
-									>
-										{activeLicences.pdf.title}
-									</a>
-								</p>
-							) : null}
-						</>
-					) : null}
-				</div>
-			</div>
-		</div>
+								sx={{
+									padding: "20px 40px",
+									fontWeight: "600",
+									textAlign: "center",
+									cursor: "pointer",
+									color: (theme) =>
+										activeLicences?.id === value.id
+											? theme.palette.primary.contrastText
+											: theme.palette.text.primary,
+									borderRadius: 0,
+									backgroundColor: (theme) =>
+										activeLicences?.id === value.id
+											? theme.palette.primary.main
+											: theme.palette.background.default,
+									"&:hover": {
+										backgroundColor: (theme) => theme.palette.primary.main,
+										color: (theme) => theme.palette.primary.contrastText,
+									},
+								}}
+							>
+								{language === "en" ? value.name_en : value.name_fr}
+							</Button>
+						))}
+					</Box>
+					<div id="licences-content">
+						{activeLicences ? (
+							<>
+								<h1 className="title">
+									{language === "en"
+										? activeLicences.name_en
+										: activeLicences.name_fr}
+								</h1>
+								{/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+								<div
+									className="cms-content"
+									// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+									dangerouslySetInnerHTML={{
+										__html:
+											language === "en"
+												? activeLicences.content_en
+												: activeLicences.content_fr,
+									}}
+								></div>
+								{activeLicences.pdf ? (
+									<p>
+										{t("pages.licences.pdf")}{" "}
+										<a
+											className="link"
+											href={`files/${activeLicences.pdf.src}`}
+											target="_blank"
+											rel="noopener noreferrer nofollow"
+										>
+											{activeLicences.pdf.title}
+										</a>
+									</p>
+								) : null}
+							</>
+						) : null}
+					</div>
+				</Stack>
+			</Container>
+		</>
 	);
 };
 

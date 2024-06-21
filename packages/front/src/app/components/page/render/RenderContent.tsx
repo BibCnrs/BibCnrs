@@ -3,7 +3,6 @@ import { useLanguageKey } from "../../../shared/locales/I18N";
 import type { RenderContentProps } from "../../../shared/types/props.types";
 import PageDate from "../../element/PageDate";
 import PageTitle from "../../internal/PageTitle";
-import "./scss/RenderContent.scss";
 
 /**
  * Component used to create CMS pages

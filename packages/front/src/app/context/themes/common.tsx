@@ -5,6 +5,21 @@ export const typography = {
 	h1: {
 		fontFamily: "IBMPlexSans",
 	},
+	h2: {
+		fontFamily: "IBMPlexSans",
+	},
+	h3: {
+		fontFamily: "IBMPlexSans",
+	},
+	h4: {
+		fontFamily: "IBMPlexSans",
+	},
+	h5: {
+		fontFamily: "IBMPlexSans",
+	},
+	h6: {
+		fontFamily: "IBMPlexSans",
+	},
 } satisfies ThemeOptions["typography"];
 
 export const muiCardTheme = {

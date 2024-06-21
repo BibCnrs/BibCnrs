@@ -1,9 +1,11 @@
+import { Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import PageTitle from "../../../components/internal/PageTitle";
 import RenderContent from "../../../components/page/render/RenderContent";
+import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { about } from "../../../services/common/CMS";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { CMSResultDataType } from "../../../shared/types/data.types";
-import "./About.scss";
 
 const About = () => {
 	const t = useTranslator();
@@ -18,9 +20,13 @@ const About = () => {
 	});
 
 	return (
-		<div id="app">
-			<RenderContent data={data} page="about" updateDocumentTitle t={t} />
-		</div>
+		<>
+			<PageTitle page="about" />
+			<FakeSearchBar title={t("pages.about.title")} />
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<RenderContent data={data} page="about" updateDocumentTitle t={t} />
+			</Container>
+		</>
 	);
 };
 

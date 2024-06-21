@@ -196,6 +196,9 @@ export type Common = {
 			INSU: string;
 			REAXYS: string;
 		};
+		empty: {
+			message: string;
+		};
 	};
 	pages: {
 		root: {
