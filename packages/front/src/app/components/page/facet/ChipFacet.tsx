@@ -1,6 +1,7 @@
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import styled from "@mui/material/styles/styled";
+import { textTransform } from "@mui/system";
 import { memo, useMemo } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ChipFacetProps } from "../../../shared/types/props.types";
@@ -8,28 +9,32 @@ import type { ChipFacetProps } from "../../../shared/types/props.types";
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 	"& .MuiToggleButtonGroup-grouped": {
 		margin: theme.spacing(0.1),
+		minWidth: "120px",
 		"&:not(:first-of-type)": {
 			marginLeft: "10px",
-			borderLeftColor: "#fff",
-			borderRadius: "5px",
+			borderRadius: "20px",
 		},
 		"&:first-of-type": {
-			borderRadius: "5px",
+			borderRadius: "20px",
 		},
 	},
 }));
 
-const StyledToggleButton = styled(ToggleButton)(() => ({
+const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 	"&.MuiToggleButton-root": {
-		textTransform: "initial",
-		fontWeight: "500",
-		color: "#fff",
-		borderColor: "#fff",
+		fontWeight: "900",
+		border: 0,
+		textTransform: "uppercase",
 		padding: "5px 20px",
+		color: "white",
+	},
+	":hover": {
+		backgroundColor: theme.palette.secondary.main,
+		color: theme.palette.text.primary,
 	},
 	"&.Mui-selected, &.Mui-selected:hover": {
-		color: "#0050a0",
-		backgroundColor: "#fff",
+		color: theme.palette.text.primary,
+		backgroundColor: theme.palette.secondary.main,
 	},
 }));
 
@@ -63,7 +68,6 @@ const ChipFacet = ({
 			exclusive
 			onChange={onChange}
 			sx={{
-				// backgroundColor: "yellow",
 				display: "flex",
 				flexWrap: "wrap",
 				justifyContent: "center",

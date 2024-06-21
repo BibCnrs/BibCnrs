@@ -7,7 +7,7 @@ const darkThemePalette = {
 		main: "#A6ADBB",
 	},
 	secondary: {
-		main: "#FFEB6E",
+		main: "#FAD6B3",
 	},
 	background: {
 		default: "#1D232B",
