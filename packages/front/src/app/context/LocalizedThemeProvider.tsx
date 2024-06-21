@@ -2,76 +2,12 @@ import { CssBaseline } from "@mui/material";
 import { frFR } from "@mui/material/locale";
 import { enUS } from "@mui/material/locale";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import createTheme, {
-	type ThemeOptions,
-} from "@mui/material/styles/createTheme";
+import createTheme from "@mui/material/styles/createTheme";
 import { useLanguageKey } from "../shared/locales/I18N";
 import type { LocalizedThemeProviderProps } from "../shared/types/props.types";
 import { useBibContext } from "./BibContext";
-
-export const lightTheme: ThemeOptions = {
-	palette: {
-		mode: "light",
-		primary: {
-			main: "#6941EB",
-		},
-		secondary: {
-			main: "#FFEB6E",
-		},
-		background: {
-			default: "#FFFFFF",
-			paper: "#FFFFFF",
-		},
-		text: {
-			primary: "#00294B",
-			secondary: "#00294B",
-		},
-		error: {
-			main: "#F35B5B",
-		},
-		info: {
-			main: "#6B7882",
-			light: "#ebf0f5",
-		},
-	},
-	typography: {
-		fontFamily: "Satoshi",
-		h1: {
-			fontFamily: "IBMPlexSans",
-		},
-	},
-	components: {},
-};
-
-export const darkTheme: ThemeOptions = {
-	palette: {
-		mode: "dark",
-		primary: {
-			main: "#A6ADBB",
-		},
-		secondary: {
-			main: "#FFEB6E",
-		},
-		background: {
-			default: "#1D232B",
-			paper: "#2A323C",
-		},
-		error: {
-			main: "#F35B5B",
-		},
-		info: {
-			main: "#6B7882",
-			light: "#ebf0f5",
-		},
-	},
-	typography: {
-		fontFamily: "Satoshi",
-		h1: {
-			fontFamily: "IBMPlexSans",
-		},
-	},
-	components: {},
-};
+import { darkTheme } from "./themes/dark";
+import { lightTheme } from "./themes/light";
 
 /**
  * Utils component used to set up the Material UI theme.
