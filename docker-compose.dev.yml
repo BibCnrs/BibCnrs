@@ -5,6 +5,7 @@ services:
       dockerfile: ./packages/api/Dockerfile
       target: dev
     volumes:
+      - ./../storage/logs:/app/packages/api/logs
       - ./../storage/uploads:/app/packages/api/uploads
     develop:
       watch:
