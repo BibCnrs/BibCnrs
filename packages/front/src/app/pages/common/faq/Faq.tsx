@@ -20,7 +20,6 @@ const FaqEntry = ({ data }: { data: CMSDataType }) => {
 				FullBody={
 					// biome-ignore lint/style/useSelfClosingElements: <explanation>
 					<div
-						className="cms-content"
 						// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 						dangerouslySetInnerHTML={{ __html: data.content_en }}
 					></div>
@@ -36,7 +35,6 @@ const FaqEntry = ({ data }: { data: CMSDataType }) => {
 			FullBody={
 				// biome-ignore lint/style/useSelfClosingElements: <explanation>
 				<div
-					className="cms-content"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 					dangerouslySetInnerHTML={{ __html: data.content_fr }}
 				></div>

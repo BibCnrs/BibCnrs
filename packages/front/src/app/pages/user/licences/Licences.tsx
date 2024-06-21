@@ -102,14 +102,13 @@ const Licences = () => {
 					<div id="licences-content">
 						{activeLicences ? (
 							<>
-								<h1 className="title">
+								<h1>
 									{language === "en"
 										? activeLicences.name_en
 										: activeLicences.name_fr}
 								</h1>
 								{/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
 								<div
-									className="cms-content"
 									// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 									dangerouslySetInnerHTML={{
 										__html:
@@ -122,7 +121,6 @@ const Licences = () => {
 									<p>
 										{t("pages.licences.pdf")}{" "}
 										<a
-											className="link"
 											href={`files/${activeLicences.pdf.src}`}
 											target="_blank"
 											rel="noopener noreferrer nofollow"

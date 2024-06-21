@@ -65,7 +65,6 @@ const RenderContent = ({
 			)}
 			{displayTitle ? <h1>{content.title}</h1> : null}
 			<div
-				className="cms-content"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 				dangerouslySetInnerHTML={{ __html: content.text }}
 			/>

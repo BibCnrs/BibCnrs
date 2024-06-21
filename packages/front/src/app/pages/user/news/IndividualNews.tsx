@@ -91,7 +91,6 @@ const IndividualNews = () => {
 					)}
 
 					<div
-						className="tests-news-content cms-content"
 						// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 						dangerouslySetInnerHTML={{
 							__html: language === "en" ? data.content_en : data.content_fr,
