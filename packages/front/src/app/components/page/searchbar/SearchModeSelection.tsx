@@ -19,6 +19,7 @@ const buttonStyles: SxProps<Theme> = {
 	color: (theme) => theme.palette.text.primary,
 	paddingX: "20px",
 	borderRadius: "20px",
+	width: "200px",
 	":hover": {
 		backgroundColor: (theme) => theme.palette.secondary.main,
 		color: (theme) => theme.palette.text.primary,
@@ -56,7 +57,7 @@ const SearchModeSelection = () => {
 	const disable = noneMatch && !rootMatch;
 
 	return (
-		<Stack direction="row" gap={3}>
+		<Stack direction={{ xs: "column", md: "row" }} gap={3}>
 			<Button
 				id={articleMatch && !disable ? getActiveDarkButtonId() : ""}
 				disabled={articleMatch ? !disable : false}

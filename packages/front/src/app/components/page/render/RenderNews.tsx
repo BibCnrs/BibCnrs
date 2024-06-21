@@ -9,7 +9,6 @@ import {
 import { Box, Stack } from "@mui/system";
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { cardStyles } from "../../../shared/commonProps";
 import { useLanguageKey } from "../../../shared/locales/I18N";
 import type { TestsNewsProps } from "../../../shared/types/props.types";
 
@@ -47,7 +46,7 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 			gap={6}
 		>
 			{filteredData.map((data) => (
-				<Card sx={cardStyles} key={data.id} elevation={0}>
+				<Card key={data.id} elevation={0}>
 					<CardActionArea
 						component={Link}
 						to={`/news/${data.id}`}

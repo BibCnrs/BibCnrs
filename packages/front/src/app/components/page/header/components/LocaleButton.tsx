@@ -46,6 +46,7 @@ const LocaleButton = () => {
 				className="header-button header-button-icon"
 				sx={{
 					color: (theme) => theme.palette.text.primary,
+					paddingBottom: 0,
 				}}
 			>
 				<div

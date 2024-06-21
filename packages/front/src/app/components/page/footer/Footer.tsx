@@ -1,6 +1,6 @@
 import XIcon from "@mui/icons-material/X";
 import { Button, Divider, IconButton, Link } from "@mui/material";
-import { Container, Stack } from "@mui/system";
+import { Container, Stack, useTheme } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
 import CNRSRFLogo from "/logos/CNRS-RF-Footer.png";
 import { RouteAbout, RouteLegal } from "../../../shared/Routes";
@@ -16,6 +16,7 @@ const FOOTER_SX = {
  * Footer component used in every page
  */
 const Footer = () => {
+	const theme = useTheme();
 	const t = useTranslator();
 
 	return (
@@ -30,9 +31,9 @@ const Footer = () => {
 				component={Stack}
 				sx={{
 					display: "flex",
-					flexDirection: "row",
-					justifyContent: "space-between",
-					alignItems: "center",
+					flexDirection: { xs: "column", md: "row" },
+					justifyContent: { xs: "center", md: "space-between" },
+					alignItems: { xs: "center", md: "center" },
 				}}
 			>
 				<Link
@@ -41,7 +42,14 @@ const Footer = () => {
 					rel="noreferrer noopener nofollow"
 					sx={{ display: "flex", justifyContent: "center" }}
 				>
-					<img src={CNRSRFLogo} alt="CNRS RF logo" style={{ width: 200 }} />
+					<img
+						src={CNRSRFLogo}
+						alt="CNRS RF logo"
+						style={{
+							width: 200,
+							filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+						}}
+					/>
 				</Link>
 
 				<Stack direction="row" spacing={2}>
@@ -70,7 +78,7 @@ const Footer = () => {
 					direction="row"
 					id="social-media"
 					spacing={1}
-					justifyContent="flex-end"
+					justifyContent={{ xs: "center", md: "flex-end" }}
 					width="200px"
 				>
 					<IconButton

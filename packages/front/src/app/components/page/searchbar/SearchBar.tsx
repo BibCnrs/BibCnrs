@@ -13,6 +13,8 @@ import { useDebounce } from "../../../shared/hook";
 import type { SearchBarProps } from "../../../shared/types/props.types";
 import SearchModeSelection from "./SearchModeSelection";
 
+const SEARCH_BAR_HEIGHT = "60px";
+
 /**
  * Search bar component used in: "Root", "Article", "Journal, book", "Database" and "Research data"
  * @param placeholder - Search bar placeholder
@@ -109,6 +111,10 @@ const SearchBar = ({ placeholder, onSearch, ...props }: SearchBarProps) => {
 						width: "100%",
 						background: (theme) => theme.palette.background.paper,
 						borderRadius: "20px",
+						height: SEARCH_BAR_HEIGHT,
+						"& .MuiAutocomplete-inputRoot": {
+							height: SEARCH_BAR_HEIGHT,
+						},
 					}}
 				>
 					<Autocomplete

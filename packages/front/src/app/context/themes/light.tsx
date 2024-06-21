@@ -19,6 +19,7 @@ const lightThemePalette = {
 	},
 	error: {
 		main: "#F35B5B",
+		light: "#F35B5B4D",
 	},
 	info: {
 		main: "#6B7882",
@@ -37,6 +38,16 @@ export const lightTheme: ThemeOptions = {
 					borderColor: lightThemePalette.info.main,
 					":hover": {
 						backgroundColor: lightThemePalette.info.light,
+					},
+				},
+			},
+		},
+		MuiCardContent: {
+			styleOverrides: {
+				root: {
+					"&:last-child": {
+						paddingBottom: 16,
+						height: "100%",
 					},
 				},
 			},

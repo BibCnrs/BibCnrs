@@ -15,10 +15,11 @@ const darkThemePalette = {
 	},
 	error: {
 		main: "#F35B5B",
+		light: "#F35B5B4D",
 	},
 	info: {
-		main: "#6B7882",
-		light: "#ebf0f5",
+		main: "##2A323C",
+		light: "#2A323C",
 	},
 } satisfies ThemeOptions["palette"];
 

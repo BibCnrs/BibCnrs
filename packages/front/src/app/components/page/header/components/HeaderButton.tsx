@@ -19,6 +19,8 @@ const HeaderButton = ({ name, route }: { name: string; route: RoutesType }) => {
 			sx={{
 				color: (theme) => theme.palette.text.primary,
 				textTransform: "none",
+				display: { xs: "none", md: "block" },
+				paddingBottom: 0,
 			}}
 		>
 			{t(`components.header.${name}`)}

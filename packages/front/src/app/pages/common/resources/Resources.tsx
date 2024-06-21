@@ -3,7 +3,6 @@ import { Box } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
 import { resources } from "../../../services/common/Resources";
-import { cardStyles } from "../../../shared/commonProps";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type { ResourcesDataType } from "../../../shared/types/data.types";
 
@@ -41,7 +40,6 @@ export const DisplayResources = ({
 					role="listitem"
 					aria-label={resource.name_fr}
 					elevation={0}
-					sx={cardStyles}
 				>
 					<CardActionArea
 						component={Link}
