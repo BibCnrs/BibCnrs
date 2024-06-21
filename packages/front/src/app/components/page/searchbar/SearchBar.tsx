@@ -93,7 +93,8 @@ const SearchBar = ({
 	return (
 		<Stack
 			sx={{
-				backgroundColor: "primary.main",
+				backgroundImage: "url(/img/SEARCH_BANNER.png)",
+				backgroundSize: "contain",
 				minHeight: "250px",
 			}}
 			alignItems="center"
