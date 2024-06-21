@@ -1,5 +1,6 @@
 import "./Footer.scss";
 import XIcon from "@mui/icons-material/X";
+import { Stack } from "@mui/system";
 import { memo } from "react";
 import CNRSLogo from "/logos/cnrs.png";
 import { RouteAbout, RouteLegal } from "../../../shared/Routes";
@@ -13,7 +14,12 @@ const Footer = () => {
 	const t = useTranslator();
 
 	return (
-		<footer>
+		<Stack
+			component="footer"
+			sx={{
+				backgroundColor: (theme) => theme.palette.info.light,
+			}}
+		>
 			<a
 				href="https://www.cnrs.fr"
 				target="_blank"
@@ -54,7 +60,7 @@ const Footer = () => {
 					<XIcon />
 				</a>
 			</div>
-		</footer>
+		</Stack>
 	);
 };
 

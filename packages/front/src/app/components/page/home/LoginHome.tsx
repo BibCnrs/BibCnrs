@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useBibContext } from "../../../context/BibContext";
 import { alert } from "../../../services/common/CMS";
 import { newsHome } from "../../../services/user/TestsNews";
+import { cardStyles } from "../../../shared/commonProps";
 import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
@@ -90,7 +91,7 @@ export const LoginHome = () => {
 						gap={6}
 					>
 						{lastNineFavourites?.map((favourite) => (
-							<Card key={favourite.id}>
+							<Card key={favourite.id} elevation={0} sx={cardStyles}>
 								<CardActionArea
 									component={MuiLink}
 									href={favourite.url}

@@ -124,9 +124,7 @@ const App = () => {
 					<Route path="*" element={<Error404 />} />
 				</Routes>
 			</div>
-			<div className="header-footer">
-				<Footer />
-			</div>
+			<Footer />
 		</>
 	);
 };

@@ -33,6 +33,10 @@ export const lightTheme: ThemeOptions = {
 		error: {
 			main: "#F35B5B",
 		},
+		info: {
+			main: "#6B7882",
+			light: "#ebf0f5",
+		},
 	},
 	typography: {
 		fontFamily: "IBMPlexSans",
@@ -79,6 +83,10 @@ export const darkTheme: ThemeOptions = {
 		},
 		error: {
 			main: "#F35B5B",
+		},
+		info: {
+			main: "#6B7882",
+			light: "#ebf0f5",
 		},
 	},
 	typography: {
