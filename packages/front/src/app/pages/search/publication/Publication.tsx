@@ -286,16 +286,15 @@ const Publication = () => {
 	return (
 		<div>
 			<PageTitle page="publication" />
-			<div className="header-footer">
+			<SearchBar
+				placeholder={t("pages.publication.searchBar")}
+				value={query.get("q") || search.query}
+				onSearch={handleSearch}
+			>
 				<ChipFacet
 					value={search.domain}
 					values={domains}
 					onChange={handleDomain}
-				/>
-				<SearchBar
-					placeholder={t("pages.publication.searchBar")}
-					value={query.get("q") || search.query}
-					onSearch={handleSearch}
 				/>
 				<div id="publication-letter-l1" className="publication-center">
 					{ALPHABET.map((letter) => (
@@ -348,7 +347,7 @@ const Publication = () => {
 						</div>
 					</div>
 				) : null}
-			</div>
+			</SearchBar>
 			<div id="search-container">
 				<div id="search-facet">
 					<Facet

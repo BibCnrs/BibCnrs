@@ -1,7 +1,6 @@
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import styled from "@mui/material/styles/styled";
-import { textTransform } from "@mui/system";
 import { memo, useMemo } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ChipFacetProps } from "../../../shared/types/props.types";
