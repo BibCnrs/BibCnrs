@@ -60,7 +60,11 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 				<Box
 					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(3, 1fr)",
+						gridTemplateColumns: {
+							xs: "repeat(1, 1fr)",
+							md: "repeat(2, 1fr)",
+							lg: "repeat(3, 1fr)",
+						},
 						gridAutoRows: "1fr",
 						gap: 2,
 					}}

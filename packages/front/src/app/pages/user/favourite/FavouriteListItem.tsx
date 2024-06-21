@@ -11,7 +11,7 @@ import {
 	CardContent,
 	IconButton,
 	Link,
-	Stack,
+	Tooltip,
 } from "@mui/material";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { useFavourites } from "./useFavourites";
@@ -70,7 +70,6 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 				ref={setActivatorNodeRef}
 				{...listeners}
 				sx={{
-					flexGrow: 1,
 					cursor: "grab",
 					display: "flex",
 					alignItems: "center",
@@ -89,42 +88,65 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 					alignItems: "center",
 				}}
 			>
-				<Link
-					href={favourite.url}
-					target="_blank"
-					rel="noreferrer noopener nofollow"
+				<Tooltip
+					enterDelay={500}
+					enterNextDelay={500}
+					leaveDelay={200}
+					title={favourite.title}
+					arrow
 				>
-					{favourite.title}
-				</Link>
+					<Box
+						sx={{
+							display: "-webkit-box",
+							"-webkit-line-clamp": "4",
+							"-webkit-box-orient": "vertical",
+							overflow: "hidden",
+						}}
+					>
+						<Link
+							href={favourite.url}
+							target="_blank"
+							rel="noreferrer noopener nofollow"
+						>
+							{favourite.title}
+						</Link>
+					</Box>
+				</Tooltip>
 			</CardContent>
 
 			<CardActions
 				sx={{
 					paddingInlineStart: 0,
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					justifyContent: favourite.isSuperFavorite
+						? "flex-start"
+						: "space-between",
+					"& button ~ button": {
+						margin: 0,
+					},
 				}}
 			>
-				<Stack gap={2}>
-					<IconButton
-						size="small"
-						onClick={handleToggleSuperFavourite}
-						disabled={
-							!favourite.isSuperFavorite &&
-							superFavouriteResources?.length === 9
-						}
-					>
-						{favourite.isSuperFavorite ? (
-							<PushPinIcon />
-						) : (
-							<PushPinOutlinedIcon />
-						)}
-					</IconButton>
-
-					{!favourite.isSuperFavorite && (
-						<IconButton onClick={handleDelete} size="small">
-							<DeleteOutlineIcon />
-						</IconButton>
+				<IconButton
+					size="small"
+					onClick={handleToggleSuperFavourite}
+					disabled={
+						!favourite.isSuperFavorite && superFavouriteResources?.length === 9
+					}
+				>
+					{favourite.isSuperFavorite ? (
+						<PushPinIcon />
+					) : (
+						<PushPinOutlinedIcon />
 					)}
-				</Stack>
+				</IconButton>
+
+				{!favourite.isSuperFavorite && (
+					<IconButton onClick={handleDelete} size="small">
+						<DeleteOutlineIcon />
+					</IconButton>
+				)}
 			</CardActions>
 		</Card>
 	);
