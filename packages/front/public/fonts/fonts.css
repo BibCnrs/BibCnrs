@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "Satoshi";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local('Satoshi'), local('Satoshi-Regular'), url("/fonts/Satoshi-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "IBMPlexSans";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local('IBMPlexSans'), local('IBMPlexSans-Regular'), url("/fonts/IBMPlexSans-Regular.ttf") format('truetype');
+}
