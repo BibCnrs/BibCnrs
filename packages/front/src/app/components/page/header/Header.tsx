@@ -59,7 +59,14 @@ const Header = () => {
 					<Typography
 						variant="h5"
 						component="h1"
-						sx={{ marginLeft: 2, fontWeight: "bold" }}
+						sx={{
+							marginLeft: 2,
+							fontWeight: "bold",
+							display: {
+								xs: "none",
+								sm: "block",
+							},
+						}}
 					>
 						{t("components.header.title")}
 					</Typography>

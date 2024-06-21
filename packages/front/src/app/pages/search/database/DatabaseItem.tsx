@@ -2,7 +2,6 @@ import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
 import { useBibContext } from "../../../context/BibContext";
-import { cardStyles } from "../../../shared/commonProps";
 import type { DatabaseItemProps } from "../../../shared/types/data.types";
 
 export function DatabaseItem(props: DatabaseItemProps) {
@@ -17,12 +16,7 @@ export function DatabaseItem(props: DatabaseItemProps) {
 			enterNextDelay={1000}
 			leaveDelay={200}
 		>
-			<Card
-				role="listitem"
-				aria-label={props.name}
-				sx={cardStyles}
-				elevation={0}
-			>
+			<Card role="listitem" aria-label={props.name} elevation={0}>
 				<CardContent
 					sx={{
 						"&:last-child": {
