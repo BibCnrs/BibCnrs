@@ -279,6 +279,7 @@ export type Common = {
 		};
 		favourite: {
 			title: string;
+			superFavourites: string;
 			add: string;
 		};
 		faq: {

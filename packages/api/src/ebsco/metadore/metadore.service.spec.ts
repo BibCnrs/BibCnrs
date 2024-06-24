@@ -3,6 +3,8 @@ import { ContextIdFactory } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { HttpService } from "../../common/http/http.service";
+import { AppLogger } from "../../common/logger/AppLogger";
+import { logContextFactory } from "../../common/logger/logger.module";
 import { RedisService } from "../../common/redis/redis.service";
 import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -25,6 +27,8 @@ describe("EbscoMetadoreService", () => {
 				}),
 			],
 			providers: [
+				logContextFactory,
+				AppLogger,
 				EbscoMetadoreService,
 				PrismaService,
 				RedisService,

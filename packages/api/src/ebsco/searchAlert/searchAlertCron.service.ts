@@ -1,8 +1,9 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Prisma, community, history } from "@prisma/client";
 import remove from "lodash.remove";
 import { SendMailOptions } from "nodemailer";
+import { FileLogger } from "../../common/logger/FileLogger";
 import { MailService } from "../../common/mail/mail.service";
 import { Config } from "../../config";
 import { JanusAccountService } from "../../janus/accounts/accounts.service";
@@ -20,7 +21,7 @@ import {
 	parseArticleLinks,
 } from "./searchAlert.utils";
 
-const logger = new Logger("EbscoSearchAlertCronService");
+const logger = new FileLogger("alerte.log", "EbscoSearchAlertCronService");
 
 @Injectable()
 export class EbscoSearchAlertCronService {

@@ -1,3 +1,4 @@
+import type { UniqueIdentifier } from "@dnd-kit/core";
 import type { Institute, Url } from "./types";
 
 export type MetadoreResultTitleType = {
@@ -102,9 +103,11 @@ export type ResourceDataType = {
 export type ResourcesDataType = ResourceDataType[];
 
 export type FavouriteResourceDataType = {
+	id: UniqueIdentifier;
 	title: string;
 	url: string;
 	personal?: boolean;
+	isSuperFavorite?: boolean;
 };
 
 export type UserSettingsDataType = {

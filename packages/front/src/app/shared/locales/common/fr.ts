@@ -294,6 +294,7 @@ Cordialement`,
 		},
 		favourite: {
 			title: "Mes Favoris",
+			superFavourites: "Mes super favoris",
 			add: "Ajouter une ressource personnelle",
 		},
 		userSettings: {

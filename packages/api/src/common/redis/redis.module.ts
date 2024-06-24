@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
+import { LoggerModule } from "../logger/logger.module";
 import { RedisService } from "./redis.service";
 
 @Module({
-	imports: [],
+	imports: [LoggerModule],
 	providers: [RedisService],
 	exports: [RedisService],
 })

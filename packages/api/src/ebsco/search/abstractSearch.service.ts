@@ -1,18 +1,18 @@
 import {
 	InternalServerErrorException,
-	Logger,
 	NotFoundException,
 	UnauthorizedException,
 } from "@nestjs/common";
 import { community } from "@prisma/client";
 import { JsonValue } from "@prisma/client/runtime/library";
 import { HttpService } from "../../common/http/http.service";
+import { FileLogger } from "../../common/logger/FileLogger";
 import { RedisService } from "../../common/redis/redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { EbscoToken } from "../token/token.type";
 
-const logger = new Logger("EbscoSearchAbstractService");
+const logger = new FileLogger("ebsco.log", "EbscoSearchAbstractService");
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type EbscoQuery = any;

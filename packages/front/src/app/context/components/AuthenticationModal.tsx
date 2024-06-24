@@ -104,6 +104,7 @@ function AuthenticationModal({
 			<Slide direction="down" in={open} timeout={400}>
 				<Card elevation={15}>
 					<CardHeader
+						id="authentication-header"
 						title={t("components.authentication.title")}
 						action={
 							<IconButton
@@ -116,7 +117,16 @@ function AuthenticationModal({
 						}
 					/>
 					<Divider />
-					<CardContent>
+					<CardContent
+						id="authentication-body"
+						sx={{
+							"& button": {
+								display: "flex",
+								gap: 1,
+								flexDirection: "row",
+							},
+						}}
+					>
 						<Stack gap={2}>
 							<Typography fontSize={12}>
 								{t("components.authentication.info")}
@@ -138,7 +148,7 @@ function AuthenticationModal({
 										variant="contained"
 										color="primary"
 									>
-										<LoginIcon className="authentication-button-icon" />
+										<LoginIcon />
 										{t("components.authentication.janus.button")}
 									</Button>
 								</Tooltip>
@@ -155,8 +165,6 @@ function AuthenticationModal({
 
 							<Stack gap={1}>
 								<Button
-									id="authentication-legacy-button"
-									className="authentication-button"
 									onClick={displayLegacy}
 									style={
 										legacy
@@ -172,7 +180,7 @@ function AuthenticationModal({
 									<LoginIcon className="authentication-button-icon" />
 									{t("components.authentication.legacy.button")}
 								</Button>
-								{/* Authentication legacy login form */}
+
 								<TransitionGroup>
 									{legacy ? (
 										<Collapse>
@@ -181,7 +189,6 @@ function AuthenticationModal({
 													<TextField
 														name="username"
 														error={legacyError}
-														className="authentication-legacy-form-input"
 														label={t(
 															"components.authentication.legacy.username",
 														)}
@@ -190,8 +197,6 @@ function AuthenticationModal({
 													<TextField
 														name="password"
 														type="password"
-														error={legacyError}
-														className="authentication-legacy-form-input"
 														label={t(
 															"components.authentication.legacy.password",
 														)}
@@ -202,10 +207,7 @@ function AuthenticationModal({
 																: undefined
 														}
 													/>
-													<Button
-														type="submit"
-														className="authentication-button authentication-legacy-form-input"
-													>
+													<Button type="submit">
 														{t("components.authentication.legacy.login")}
 													</Button>
 												</Stack>
@@ -217,8 +219,8 @@ function AuthenticationModal({
 						</Stack>
 					</CardContent>
 					<Divider />
-					<CardActions>
-						<Link className="link" href="mailto:assistance-portail@inist.fr">
+					<CardActions sx={{ padding: 2 }}>
+						<Link href="mailto:assistance-portail@inist.fr">
 							{t("components.authentication.contact")}
 						</Link>
 					</CardActions>

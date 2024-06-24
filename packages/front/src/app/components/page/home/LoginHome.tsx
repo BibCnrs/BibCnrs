@@ -10,9 +10,9 @@ import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useBibContext } from "../../../context/BibContext";
+import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { alert } from "../../../services/common/CMS";
 import { newsHome } from "../../../services/user/TestsNews";
-import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
 	CMSResultDataType,
@@ -29,11 +29,7 @@ export const LoginHome = () => {
 		session: { user },
 	} = useBibContext();
 
-	const { favouritesWithId } = useFavouriteResources();
-
-	const lastNineFavourites = favouritesWithId
-		.sort((a, b) => Number(b.id) - Number(a.id))
-		.slice(0, 9);
+	const { superFavouriteResources } = useFavourites();
 
 	const { data: alertData } = useQuery<
 		CMSResultDataType,
@@ -60,11 +56,11 @@ export const LoginHome = () => {
 	});
 
 	// Display favorite only if the user is not legacy and has the setting enabled
-	const displayFavourites = !user?.legacy && user?.settings.displayFavorites;
+	const displayFavourites = !user?.legacy && user?.settings?.displayFavorites;
 
 	// We always display test news if the user is legacy.
 	// If janus account, we display test news if the setting is enabled
-	const displayTestNews = user?.legacy || user?.settings.displayTestNews;
+	const displayTestNews = user?.legacy || user?.settings?.displayTestNews;
 
 	return (
 		<Stack gap={4}>
@@ -89,7 +85,7 @@ export const LoginHome = () => {
 						gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
 						gap={6}
 					>
-						{lastNineFavourites?.map((favourite) => (
+						{superFavouriteResources?.map((favourite) => (
 							<Card key={favourite.id} elevation={0}>
 								<CardActionArea
 									component={MuiLink}
@@ -104,10 +100,8 @@ export const LoginHome = () => {
 								</CardActionArea>
 							</Card>
 						))}
-						{lastNineFavourites.length === 0 && (
-							<Typography color="primary">
-								{t("pages.root.emptyFavorites")}
-							</Typography>
+						{superFavouriteResources?.length === 0 && (
+							<Typography>{t("pages.root.emptyFavorites")}</Typography>
 						)}
 					</Box>
 

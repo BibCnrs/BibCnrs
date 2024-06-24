@@ -1,10 +1,7 @@
-import { arrayMove } from "@dnd-kit/sortable";
 import type { MouseEvent } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useBibContext } from "../context/BibContext";
-import type { FavouriteResourceDataType } from "./types/data.types";
 import type { FacetRequired } from "./types/props.types";
-import type { FavouriteResourceWithId } from "./types/types";
 
 export const useServicesCatch = () => {
 	const { logout } = useBibContext();
@@ -77,120 +74,6 @@ export const useDomain = (): Array<{ value: string; label: string }> => {
 			};
 		}) ?? []
 	);
-};
-
-export const useStatelessFavouriteResources = (): FavouriteResourceWithId[] => {
-	const {
-		session: { user },
-	} = useBibContext();
-	return useMemo(() => {
-		let index = 1;
-		return (
-			user?.favouriteResources?.map((value) => {
-				return {
-					id: index++,
-					...value,
-				};
-			}) ?? []
-		);
-	}, [user]);
-};
-
-type UseFavouriteResourcesType = {
-	favouriteResources: FavouriteResourceDataType[];
-	favouritesWithId: FavouriteResourceWithId[];
-	addFavourite: (
-		entry: FavouriteResourceDataType | FavouriteResourceWithId,
-	) => void;
-	moveFavourite: (
-		entry: FavouriteResourceDataType | FavouriteResourceWithId,
-		oldIndex: number,
-		newIndex: number,
-	) => void;
-	removeFavourite: (
-		entry: FavouriteResourceDataType | FavouriteResourceWithId,
-	) => void;
-};
-
-export const useFavouriteResources = (): UseFavouriteResourcesType => {
-	const {
-		session: { user },
-		updateFavouriteResources,
-	} = useBibContext();
-
-	const favouritesWithId = useMemo(() => {
-		let index = 1;
-		if (!Array.isArray(user?.favouriteResources)) {
-			return [];
-		}
-		return user.favouriteResources.map((value) => {
-			return {
-				id: index++,
-				...value,
-			};
-		});
-	}, [user]);
-
-	const addFavourite = useCallback(
-		(entry: FavouriteResourceDataType | FavouriteResourceWithId) => {
-			if (!user) {
-				return;
-			}
-
-			updateFavouriteResources([
-				{
-					title: entry.title,
-					url: entry.url,
-					personal: entry.personal,
-				},
-				...user.favouriteResources,
-			]);
-		},
-		[user, updateFavouriteResources],
-	);
-
-	const removeFavourite = useCallback(
-		(entry: FavouriteResourceDataType | FavouriteResourceWithId) => {
-			if (!user) {
-				return;
-			}
-
-			updateFavouriteResources(
-				(user?.favouriteResources ?? []).filter((value) => {
-					if (value.title === entry.title) {
-						return false;
-					}
-					return value.url !== entry.url;
-				}),
-			);
-		},
-		[user, updateFavouriteResources],
-	);
-
-	const moveFavourite = useCallback(
-		(
-			entry: FavouriteResourceDataType | FavouriteResourceWithId,
-			oldIndex: number,
-			newIndex: number,
-		) => {
-			if (!user) {
-				return;
-			}
-
-			updateFavouriteResources(
-				arrayMove(user.favouriteResources, oldIndex, newIndex),
-			);
-		},
-		[user, updateFavouriteResources],
-	);
-
-	return {
-		favouriteResources: user.favouriteResources ?? [],
-		favouritesWithId,
-		addFavourite,
-		moveFavourite,
-		removeFavourite,
-	};
 };
 
 // https://codesandbox.io/s/react-query-debounce-ted8o?file=/src/useDebounce.js

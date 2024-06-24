@@ -1,9 +1,7 @@
-import type { UniqueIdentifier } from "@dnd-kit/core";
 import type { TFunction as TF, TypeOptions } from "i18next";
 import type { Dispatch, SetStateAction } from "react";
 import type { ArticleParam } from "../../services/search/Article";
 import type { PublicationParam } from "../../services/search/Publication";
-import type { FavouriteResourceDataType } from "./data.types";
 import type { TableArgsProps } from "./props.types";
 
 type Resources = TypeOptions["resources"];
@@ -76,8 +74,4 @@ export type Url2 = {
 export type FacetEntry = {
 	name: string;
 	count: number;
-};
-
-export type FavouriteResourceWithId = FavouriteResourceDataType & {
-	id: UniqueIdentifier;
 };

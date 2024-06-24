@@ -9,7 +9,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { useFavouriteResources } from "../../../shared/hook";
+import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { DialogProps } from "../../../shared/types/props.types";
 
@@ -17,7 +17,7 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 	const t = useTranslator();
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-	const { addFavourite } = useFavouriteResources();
+	const { addFavourite } = useFavourites();
 
 	const [formError, setFormError] = useState(false);
 	const [title, setTitle] = useState("");
