@@ -4,7 +4,7 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common";
 import { community } from "@prisma/client";
-import { JsonValue } from "@prisma/client/runtime/library";
+import { JsonObject } from "@prisma/client/runtime/library";
 import { HttpService } from "../../common/http/http.service";
 import { FileLogger } from "../../common/logger/FileLogger";
 import { RedisService } from "../../common/redis/redis.service";
@@ -82,7 +82,7 @@ export class AbstractEbscoSearchService {
 
 	protected async ebscoRequest<T>(
 		url: string,
-		json: JsonValue,
+		json: JsonObject,
 		authToken: string | null = null,
 		sessionToken: string | null = null,
 	): Promise<T> {
@@ -104,9 +104,10 @@ export class AbstractEbscoSearchService {
 
 		const body = await response.json();
 
+		const { UserId: _userid, Password: _password, ...cleanedJson } = json;
 		logger.log(
 			`POST ${url} ${response.status} ${JSON.stringify({
-				json,
+				cleanedJson,
 				authToken,
 				sessionToken,
 				time: `took ${Date.now() - start}ms`,

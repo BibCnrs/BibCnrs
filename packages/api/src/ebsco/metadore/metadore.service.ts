@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { HttpService } from "../../common/http/http.service";
+import { AppLogger } from "../../common/logger/AppLogger";
 import { Config } from "../../config";
 
 type RawQuery = {
@@ -12,6 +13,7 @@ type RawQuery = {
 @Injectable()
 export class EbscoMetadoreService {
 	private readonly metadoreConfig: Config["metadore"];
+	private readonly logger = new AppLogger(EbscoMetadoreService.name);
 
 	constructor(
 		private readonly configService: ConfigService<Config, true>,
@@ -103,6 +105,12 @@ export class EbscoMetadoreService {
 					message: await response.text(),
 				};
 			})
-			.then((searchResults) => this.metadoreResultsParser(searchResults));
+			.then((searchResults) => this.metadoreResultsParser(searchResults))
+			.catch((e) => {
+				this.logger.error(
+					`Failed to fetch from Metadore (status=${e.status || 500}): ${e.message || e}`,
+				);
+				throw new InternalServerErrorException();
+			});
 	}
 }

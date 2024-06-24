@@ -12,10 +12,10 @@ export class HttpService {
 	constructor(configService: ConfigService<Config, true>) {
 		const httpConfig: Config["http"] = configService.get("http");
 
-		this.dispatcher = httpConfig.httpsProxy
-			? new ProxyAgent(httpConfig.httpsProxy)
-			: httpConfig.httpProxy
-				? new ProxyAgent(httpConfig.httpProxy)
+		this.dispatcher = httpConfig.httpProxy
+			? new ProxyAgent(httpConfig.httpProxy)
+			: httpConfig.httpsProxy
+				? new ProxyAgent(httpConfig.httpsProxy)
 				: undefined;
 	}
 
