@@ -12,25 +12,23 @@ import { AppLogger } from "../logger/AppLogger";
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
+	private readonly logger = new AppLogger(RedisService.name);
 	private readonly redis: RedisClientType<
 		RedisModules,
 		RedisFunctions,
 		RedisScripts
 	>;
 
-	constructor(
-		readonly logger: AppLogger,
-		readonly configService: ConfigService<Config, true>,
-	) {
+	constructor(readonly configService: ConfigService<Config, true>) {
 		const config = this.configService.get<Config["redis"]>("redis");
 
 		this.redis = createClient({
 			url: `redis://${config.host}:${config.port}`,
 		})
-			.on("connect", () => logger.log("Connected to Redis"))
-			.on("reconnecting", () => logger.log("Reconnecting to Redis"))
-			.on("end", () => logger.log("Disconnected from Redis"))
-			.on("error", (err) => logger.error(err));
+			.on("connect", () => this.logger.log("Connected to Redis"))
+			.on("reconnecting", () => this.logger.log("Reconnecting to Redis"))
+			.on("end", () => this.logger.log("Disconnected from Redis"))
+			.on("error", (err) => this.logger.error(err));
 	}
 
 	async onModuleInit() {

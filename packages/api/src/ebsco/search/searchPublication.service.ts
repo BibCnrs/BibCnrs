@@ -117,33 +117,38 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			searchResult,
 			communityName,
 		);
-		for (const item of parsedResult.results) {
-			try {
-				item.isDiamond = false;
-				if (item.issnPrint && item.issnPrint.length > 0) {
-					const formatedIssn = `${item.issnPrint[0].slice(
-						0,
-						4,
-					)}-${item.issnPrint[0].slice(4)}`;
-					const doajInfo = await this.getInfoFromDOAJ(formatedIssn);
-					item.isDiamond = doajInfo.has_apc === false;
+
+		// Parallel process results
+		await Promise.all(
+			parsedResult.results.map(async (item) => {
+				try {
+					item.isDiamond = false;
+					if (item.issnPrint && item.issnPrint.length > 0) {
+						const formatedIssn = `${item.issnPrint[0].slice(
+							0,
+							4,
+						)}-${item.issnPrint[0].slice(4)}`;
+						const doajInfo = await this.getInfoFromDOAJ(formatedIssn);
+						item.isDiamond = doajInfo.has_apc === false;
+					}
+					if (
+						item.isDiamond === false &&
+						item.issnOnline &&
+						item.issnOnline.length > 0
+					) {
+						const formatedIssn = `${item.issnOnline[0].slice(
+							0,
+							4,
+						)}-${item.issnOnline[0].slice(4)}`;
+						const doajInfo = await this.getInfoFromDOAJ(formatedIssn);
+						item.isDiamond = doajInfo.has_apc === false;
+					}
+				} catch (e) {
+					item.isDiamond = false;
 				}
-				if (
-					item.isDiamond === false &&
-					item.issnOnline &&
-					item.issnOnline.length > 0
-				) {
-					const formatedIssn = `${item.issnOnline[0].slice(
-						0,
-						4,
-					)}-${item.issnOnline[0].slice(4)}`;
-					const doajInfo = await this.getInfoFromDOAJ(formatedIssn);
-					item.isDiamond = doajInfo.has_apc === false;
-				}
-			} catch (e) {
-				item.isDiamond = false;
-			}
-		}
+			}),
+		);
+
 		return parsedResult;
 	}
 

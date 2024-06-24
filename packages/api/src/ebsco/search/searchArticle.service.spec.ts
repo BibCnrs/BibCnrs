@@ -2,18 +2,15 @@ import { ConfigModule } from "@nestjs/config";
 import { ContextIdFactory } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { HttpService } from "../../common/http/http.service";
 import { RedisService } from "../../common/redis/redis.service";
 import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoSearchArticleService } from "./searchArticle.service";
-
-import { HttpService } from "../../common/http/http.service";
-import { AppLogger } from "../../common/logger/AppLogger";
-import { logContextFactory } from "../../common/logger/logger.module";
 import { AIDS_RESULTS_EXPECTED } from "./mock/aidsResult.expected";
 import { AIDS_RESULTS_INPUT } from "./mock/aidsResult.input";
 import { RETRIEVE_ARTICLE_PARSER_EXPECTED } from "./mock/retrieveArticleParser.expected";
 import { RETRIEVE_ARTICLE_PARSER_INPUT } from "./mock/retrieveArticleParser.input";
+import { EbscoSearchArticleService } from "./searchArticle.service";
 
 describe("EbscoSearchArticleService", () => {
 	let service: EbscoSearchArticleService;
@@ -30,8 +27,6 @@ describe("EbscoSearchArticleService", () => {
 				}),
 			],
 			providers: [
-				logContextFactory,
-				AppLogger,
 				EbscoSearchArticleService,
 				PrismaService,
 				RedisService,

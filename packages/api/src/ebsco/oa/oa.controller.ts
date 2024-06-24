@@ -19,8 +19,8 @@ import { JanusAccountService } from "../../janus/accounts/accounts.service";
 
 @Controller("ebsco")
 export class EbscoOaController {
+	private readonly logger = new AppLogger(EbscoOaController.name);
 	constructor(
-		private readonly logger: AppLogger,
 		private readonly janusAccountService: JanusAccountService,
 		private readonly inistAccountService: InistAccountService,
 		private readonly instituteService: InstitutesService,

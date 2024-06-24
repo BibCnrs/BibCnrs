@@ -105,7 +105,7 @@ export class AbstractEbscoSearchService {
 		const body = await response.json();
 
 		logger.log(
-			`[POST] ${url} ${response.status}: ${JSON.stringify({
+			`POST ${url} ${response.status} ${JSON.stringify({
 				json,
 				authToken,
 				sessionToken,
@@ -201,9 +201,7 @@ export class AbstractEbscoSearchService {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	): Promise<any> {
 		if (retries <= 0) {
-			logger.log(
-				`[ebscoSearch/${token.username}] Max retry reached. Giving up.`,
-			);
+			logger.log(`(User=${token.username}) Max retry reached. Giving up.`);
 			throw new UnauthorizedException(
 				"Could not connect to ebsco api. Please try again. If the problem persist contact us.",
 			);
@@ -232,7 +230,7 @@ export class AbstractEbscoSearchService {
 
 			if (error === "retry" || error.message === "retry") {
 				logger.log(
-					`[ebscoSearch/${token.username}] Retry, remaining retries: ${retries}`,
+					`(User=${token.username}) Retry, remaining retries: ${retries}`,
 				);
 				return this.ebscoSearch(ebscoCall, token, communityName, retries - 1);
 			}
@@ -461,12 +459,15 @@ export class AbstractEbscoSearchService {
 			const result = await this.http.request(
 				`${this.ebsco.doajUrl}search/journals/issn:${isn}`,
 			);
+
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			const body = (await result.json()) as any;
 			return {
 				has_apc: body?.results?.[0]?.bibjson?.apc?.has_apc ?? null,
 			};
 		} catch (error) {
+			logger.error(`Error while fetching DOAJ info ${error}`);
+
 			// 404 crossref
 			return {};
 		}
