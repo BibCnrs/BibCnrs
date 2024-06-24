@@ -65,8 +65,9 @@ export default function OpenablePaper({
 					sx={{
 						fontSize: 20,
 						display: "flex",
+						height: "100%",
+						minHeight: "34px",
 						alignItems: "center",
-						height: "34px",
 						color: (theme) => theme.palette.primary.main,
 						fontWeight: 700,
 						cursor: "pointer",

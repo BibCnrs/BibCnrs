@@ -1,7 +1,7 @@
+import { Link, Typography } from "@mui/material";
 import { useMemo } from "react";
 import type { ArticleContentGetter } from "../../../services/search/Article";
 import type { Url } from "../../../shared/types/types";
-import BookmarkButton from "../button/BookmarkButton";
 
 const ArticleLinks = ({
 	links,
@@ -25,35 +25,18 @@ const ArticleLinks = ({
 	}, [domain, links, proxify]);
 
 	return (
-		<dd>
+		<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 			{proxyLinks.map((value) => (
-				<div
-					key={value.name}
-					style={{
-						display: "flex",
-					}}
+				<Link
+					key={value.url}
+					href={value.url}
+					target="_blank"
+					rel="nofollow noreferrer noopener"
 				>
-					<a
-						className="link"
-						href={value.url}
-						target="_blank"
-						rel="nofollow noreferrer noopener"
-					>
-						{value.name}
-					</a>
-					<span
-						style={{
-							marginLeft: "4px",
-						}}
-					>
-						<BookmarkButton
-							title={`${title} - ${value.name}`}
-							url={value.url}
-						/>
-					</span>
-				</div>
+					{value.name}
+				</Link>
 			))}
-		</dd>
+		</Typography>
 	);
 };
 

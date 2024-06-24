@@ -1,4 +1,4 @@
-import Divider from "@mui/material/Divider";
+import { Stack } from "@mui/system";
 import { Fragment } from "react";
 import type { ReactNode } from "react";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
@@ -40,14 +40,12 @@ export default function FacetFacets({
 		});
 	};
 
-	let divider = false;
 	const facets: ReactNode[] = [];
 	keys.forEach((key) => {
 		const facet: FacetEntry[] | undefined = available[key] ?? [];
 		if (facet) {
 			const component = (
 				<Fragment key={key}>
-					{divider ? <Divider className="facet-divider" /> : null}
 					<FacetSearchList
 						name={key}
 						facets={facet}
@@ -58,10 +56,9 @@ export default function FacetFacets({
 					/>
 				</Fragment>
 			);
-			divider = true;
 			facets.push(component);
 		}
 	});
 
-	return <div>{facets}</div>;
+	return <Stack gap={1}>{facets}</Stack>;
 }

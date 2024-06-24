@@ -3,17 +3,12 @@ import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { memo, useEffect, useState } from "react";
-import { useTranslator } from "../../../shared/locales/I18N";
-import type { BookmarkButtonProps } from "../../../shared/types/props.types";
-import "./scss/BookmarkButton.scss";
 import { useBibContext } from "../../../context/BibContext";
 import { useFavourites } from "../../../pages/user/favourite/useFavourites";
+import { useTranslator } from "../../../shared/locales/I18N";
+import type { BookmarkButtonProps } from "../../../shared/types/props.types";
 
-const BookmarkButton = ({
-	title,
-	url,
-	className = "",
-}: BookmarkButtonProps) => {
+const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 	const {
 		session: { user },
 	} = useBibContext();

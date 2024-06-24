@@ -103,10 +103,9 @@ function PublicationTitle({
 							showLoginModal();
 						}}
 					>
-						{publication.title} [{publication.type}]
+						{publication.title} [{publication.type}] - {titleCoverage}
 					</Box>
 				</Tooltip>
-				<Box>{titleCoverage}</Box>
 			</Stack>
 		);
 	}
@@ -122,22 +121,24 @@ function PublicationTitle({
 					}}
 					onClick={(event) => handlePopoverClick(event)}
 				>
-					{isOpenAccess ? (
-						<OpenAccess className="table-icon table-icon-oa" />
-					) : null}
-					{publication.isDiamond ? <Diamond /> : null}
 					<Box
 						sx={{
 							flexGrow: 1,
 						}}
-						onClick={(e) => {
-							e.stopPropagation();
-							showLoginModal();
-						}}
 					>
-						{publication.title} [{publication.type}]
+						{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
+						{isOpenAccess ? (
+							<Box mr={1} display="inline-block">
+								<OpenAccess />
+							</Box>
+						) : null}
+						{publication.isDiamond ? (
+							<Box mr={1} display="inline-block">
+								<Diamond />
+							</Box>
+						) : null}
+						{publication.title} [{publication.type}] - {titleCoverage}
 					</Box>
-					<Box>{titleCoverage}</Box>
 				</Stack>
 
 				<Popover
@@ -171,6 +172,7 @@ function PublicationTitle({
 									onClick={(e) => {
 										e.stopPropagation();
 									}}
+									sx={{ textDecoration: "none" }}
 								>
 									{value.name} - {getCoverage(value.coverage)}
 								</Link>
@@ -196,9 +198,6 @@ function PublicationTitle({
 				gap: 1,
 			}}
 		>
-			{isOpenAccess ? <OpenAccess /> : null}
-			{publication.isDiamond ? <Diamond /> : null}
-
 			<Link
 				href={
 					isOpenAccess && user
@@ -212,18 +211,22 @@ function PublicationTitle({
 				}}
 				sx={{
 					flexGrow: 1,
+					textDecoration: "none",
 				}}
 			>
-				{publication.title} [{publication.type}]
+				{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
+				{isOpenAccess ? (
+					<Box mr={1} display="inline-block">
+						<OpenAccess />
+					</Box>
+				) : null}
+				{publication.isDiamond ? (
+					<Box mr={1} display="inline-block">
+						<Diamond />
+					</Box>
+				) : null}
+				{publication.title} [{publication.type}] - {titleCoverage}
 			</Link>
-
-			<Box
-				sx={{
-					flexShrink: 0,
-				}}
-			>
-				{titleCoverage}
-			</Box>
 		</Stack>
 	);
 }

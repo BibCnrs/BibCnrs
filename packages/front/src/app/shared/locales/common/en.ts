@@ -115,7 +115,7 @@ const en: Common = {
 			},
 		},
 		facet: {
-			title: "",
+			title: "Filter",
 			text: "Documents type",
 			reviewed: "Peer reviewed",
 			fullText: "Full Text",

@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { Button } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -364,31 +364,33 @@ const PublicationPage = () => {
 				)}
 			</SearchBar>
 
-			<Grid container spacing={4} padding={2}>
-				<Grid item xs={12} md={3}>
-					<FacetSidebar
-						key={seed}
-						available={getAvailable(data)}
-						active={getActive()}
-						onChange={handleFacets}
-						onReset={handleReset}
-					/>
-				</Grid>
-
-				<Grid item xs={12} md={9}>
-					{isLoading || isFetching ? (
-						<SearchSkeleton />
-					) : (
-						<SearchResults
-							DisplayElement={PublicationSearchResult}
-							results={data?.results}
-							args={search.publication.table}
-							onArgsChange={handleTable}
-							total={data?.totalHits}
+			<Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
+				<Grid container spacing={4} padding={2}>
+					<Grid item xs={12} md={3}>
+						<FacetSidebar
+							key={seed}
+							available={getAvailable(data)}
+							active={getActive()}
+							onChange={handleFacets}
+							onReset={handleReset}
 						/>
-					)}
+					</Grid>
+
+					<Grid item xs={12} md={9}>
+						{isLoading || isFetching ? (
+							<SearchSkeleton />
+						) : (
+							<SearchResults
+								DisplayElement={PublicationSearchResult}
+								results={data?.results}
+								args={search.publication.table}
+								onArgsChange={handleTable}
+								total={data?.totalHits}
+							/>
+						)}
+					</Grid>
 				</Grid>
-			</Grid>
+			</Container>
 		</>
 	);
 };

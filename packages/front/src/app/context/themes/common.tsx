@@ -20,6 +20,10 @@ export const typography = {
 	h6: {
 		fontFamily: "IBMPlexSans",
 	},
+	subtitle1: {
+		fontFamily: "IBMPlexSans",
+		fontWeight: 600,
+	},
 } satisfies ThemeOptions["typography"];
 
 export const muiPaperTheme = {
