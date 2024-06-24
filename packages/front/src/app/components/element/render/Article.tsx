@@ -73,14 +73,16 @@ const Article = ({
 									: t("components.table.content.noAccess")
 							}
 						>
+							{openAccess && href ? (
+								<Box mr={1} display="inline-block">
+									<OpenAccess />
+								</Box>
+							) : null}
 							{title} {getter.getType() ? `[${getter.getType()}]` : null}
 							{!href ? (
 								<i> ({t("components.table.content.noAccess")})</i>
 							) : null}
 						</Link>
-						{openAccess && href ? (
-							<OpenAccess className="table-icon table-icon-oa" />
-						) : null}
 					</>
 				}
 				leftAction={
@@ -92,11 +94,11 @@ const Article = ({
 				summary={
 					<Box>
 						{authors && (
-							<Typography variant="body1">{authors.join(", ")}</Typography>
+							<Typography variant="body2">{authors.join(", ")}</Typography>
 						)}
-						{source && <Typography variant="body1">{source}</Typography>}
+						{source && <Typography variant="body2">{source}</Typography>}
 						{doi && (
-							<Typography variant="body1">
+							<Typography variant="body2">
 								{t("components.table.content.doiColon")} {doi}
 							</Typography>
 						)}
@@ -117,6 +119,7 @@ const Article = ({
 											<Typography
 												component="dd"
 												sx={{ marginInlineStart: "40px" }}
+												variant="body2"
 											>
 												{entry.content.map((value) => {
 													const link = getter.proxify(
@@ -143,10 +146,11 @@ const Article = ({
 										</Typography>
 										<Typography
 											component="dd"
+											variant="body2"
 											sx={{ marginInlineStart: "40px" }}
 										>
 											{entry.content.map((value) => (
-												<Fragment key={value}>{value}</Fragment>
+												<Box key={value}>{value}</Box>
 											))}
 										</Typography>
 									</Fragment>

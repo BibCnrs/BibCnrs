@@ -1,7 +1,7 @@
 import { Link, Popover, Tooltip, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import BookmarkButton from "../../../../components/element/button/BookmarkButton";
 import Diamond from "../../../../components/element/icon/Diamond";
 import OpenAccess from "../../../../components/element/icon/OpenAccess";
@@ -393,19 +393,23 @@ export default function PublicationSearchResult({
 								return null;
 							}
 							return (
-								<Typography key={item.name}>
-									<Typography component="dt">{item.label}</Typography>
-									<Typography component="dd">
+								<Fragment key={item.name}>
+									<Typography component="dt" variant="subtitle1">
+										{item.label}
+									</Typography>
+									<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 										{item.value.map((value) => (
 											<div key={value}>{value}</div>
 										))}
 									</Typography>
-								</Typography>
+								</Fragment>
 							);
 						})}
 						<Typography>
-							<Typography component="dt">Accès à l&apos;article</Typography>
-							<Typography component="dd">
+							<Typography component="dt" variant="subtitle1">
+								Accès à l&apos;article
+							</Typography>
+							<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 								{fullTextHoldings.map((value) => (
 									<div key={value.name}>
 										<Link

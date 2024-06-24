@@ -5,8 +5,7 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import { Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { useTranslator } from "../../../../shared/locales/I18N";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
 import FacetTextType from "./FacetTextType";
@@ -33,7 +32,6 @@ export default function FacetLimiter({
 		return null;
 	}
 
-	let divider = false;
 	let textType = null;
 	if (available.reviewed || available.fullText || available.openAccess) {
 		const texts: string[] = [];
@@ -87,7 +85,6 @@ export default function FacetLimiter({
 				onChange={handleTextType}
 			/>
 		);
-		divider = true;
 	}
 
 	let dateRange = null;
@@ -127,8 +124,7 @@ export default function FacetLimiter({
 		} - ${available.dateRange.to})`;
 
 		dateRange = (
-			<>
-				{divider ? <Divider className="facet-divider" /> : null}
+			<Box mt={2} mb={2}>
 				<FormLabel component="legend">{labelDateRange}</FormLabel>
 				<Stack gap={1} direction="row" alignItems="center">
 					<TextField
@@ -151,7 +147,7 @@ export default function FacetLimiter({
 						}
 					/>
 				</Stack>
-			</>
+			</Box>
 		);
 	}
 
@@ -168,7 +164,7 @@ export default function FacetLimiter({
 	};
 
 	return (
-		<div>
+		<Stack>
 			{textType}
 			{HALFacet && (
 				<FormControlLabel
@@ -185,6 +181,6 @@ export default function FacetLimiter({
 				/>
 			)}
 			{dateRange}
-		</div>
+		</Stack>
 	);
 }
