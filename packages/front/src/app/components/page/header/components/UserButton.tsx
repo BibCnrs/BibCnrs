@@ -13,7 +13,6 @@ import type { MouseEvent, ReactElement } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBibContext } from "../../../../context/BibContext";
-import { colors } from "../../../../context/LocalizedThemeProvider";
 import {
 	RouteAlert,
 	RouteFavourite,
@@ -136,29 +135,16 @@ const UserButton = () => {
 	);
 
 	return (
-		<div className="header-nav">
-			<button
-				id={open ? "user-button-active" : "user-button"}
+		<>
+			<Avatar
+				component="button"
+				onClick={handleClick}
 				aria-controls={open ? "basic-menu" : undefined}
 				aria-haspopup="true"
 				aria-expanded={open ? "true" : undefined}
-				onClick={handleClick}
-				className={`header-button-icon${
-					user?.legacy ? getAvatarButtonClass() : ""
-				}`}
-				type="button"
 			>
-				<Avatar
-					sx={{
-						bgcolor: user?.legacy
-							? colors.other.legacy
-							: colors.cnrs.secondary.lightBlue,
-						color: colors.text.light,
-					}}
-				>
-					{user?.username?.charAt?.(0) || "U"}
-				</Avatar>
-			</button>
+				{user?.username?.charAt?.(0) || "U"}
+			</Avatar>
 			<Menu
 				id="basic-menu"
 				anchorEl={anchorEl}
@@ -170,7 +156,7 @@ const UserButton = () => {
 			>
 				{options}
 			</Menu>
-		</div>
+		</>
 	);
 };
 

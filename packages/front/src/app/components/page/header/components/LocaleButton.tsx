@@ -4,7 +4,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import type { MouseEvent } from "react";
 import { memo, useState } from "react";
-import { colors } from "../../../../context/LocalizedThemeProvider";
 import {
 	supportedLanguages,
 	useFullTranslator,
@@ -38,13 +37,17 @@ const LocaleButton = () => {
 	};
 
 	return (
-		<div className="header-nav header-nav-spacer">
+		<>
 			<Button
 				aria-controls={open ? "basic-menu" : undefined}
 				aria-haspopup="true"
 				aria-expanded={open || undefined}
 				onClick={handleClick}
 				className="header-button header-button-icon"
+				sx={{
+					color: (theme) => theme.palette.text.primary,
+					paddingBottom: 0,
+				}}
 			>
 				<div
 					style={{
@@ -54,13 +57,7 @@ const LocaleButton = () => {
 				>
 					<TranslateIcon fontSize="small" />
 				</div>
-				<div
-					style={{
-						color: colors.white,
-					}}
-				>
-					{languageKey.split("-", 2)[0].toUpperCase()}
-				</div>
+				<div>{languageKey.split("-", 2)[0].toUpperCase()}</div>
 			</Button>
 			<Menu
 				id="basic-menu"
@@ -80,9 +77,10 @@ const LocaleButton = () => {
 						sx={{
 							borderLeftStyle: "solid",
 							borderLeftWidth: "4px",
-							borderLeftColor: i18n.language.includes(lang.key)
-								? "var(--text)"
-								: "#00000000",
+							borderLeftColor: (theme) =>
+								i18n.language.includes(lang.key)
+									? theme.palette.primary.main
+									: "#00000000",
 						}}
 					>
 						{i18n.language.includes(lang.key) ? (
@@ -93,7 +91,7 @@ const LocaleButton = () => {
 					</MenuItem>
 				))}
 			</Menu>
-		</div>
+		</>
 	);
 };
 

@@ -1,11 +1,17 @@
+import { Skeleton } from "@mui/material";
+import { Stack } from "@mui/system";
 import { memo } from "react";
-import TableSkeleton from "./TableSkeleton";
 
-const SearchSkeleton = ({ order }: { order?: boolean }) => {
+const SearchSkeleton = () => {
 	return (
-		<div id="search-content" style={{ width: "100%" }}>
-			<TableSkeleton order={order} />
-		</div>
+		<Stack gap={4}>
+			{Array(10)
+				.fill(0)
+				.map((_, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+					<Skeleton variant="rounded" height={75} key={i} />
+				))}
+		</Stack>
 	);
 };
 

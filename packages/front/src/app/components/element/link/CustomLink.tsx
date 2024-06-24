@@ -1,4 +1,3 @@
-import "./CustomLink.scss";
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import type { LinkProps } from "react-router-dom";
@@ -13,7 +12,6 @@ import { useIsMatching } from "../../../shared/Routes";
 const CustomLink = ({ children, to, ...props }: LinkProps) => {
 	return (
 		<Link
-			className="custom-link"
 			style={{ textDecoration: useIsMatching(to) ? "underline" : "none" }}
 			to={to}
 			{...props}

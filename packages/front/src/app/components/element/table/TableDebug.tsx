@@ -1,6 +1,6 @@
 import { memo } from "react";
-import type { TableDisplayElementProps } from "../../../shared/types/props.types";
-import OpenablePaper from "../paper/openable/OpenablePaper";
+import type { SearchResultsElementProps } from "../../page/search/SearchResults";
+import OpenablePaper from "../paper/OpenablePaper";
 
 let init = false;
 const onCall = () => {
@@ -22,19 +22,19 @@ const TableDebug = ({
 	first,
 	index,
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-}: TableDisplayElementProps<any>) => {
+}: SearchResultsElementProps<any>) => {
 	onCall();
 
 	return (
 		<OpenablePaper
-			Title={
+			title={
 				<p>
 					key: {JSON.stringify(debugKey)}, last: {JSON.stringify(last)}, first:{" "}
 					{JSON.stringify(first)}, index: {JSON.stringify(index)}
 				</p>
 			}
-			SmallBody={<p>Table debug format, open to see data receive.</p>}
-			FullBody={<div>{JSON.stringify(data)}</div>}
+			summary={<p>Table debug format, open to see data receive.</p>}
+			content={<div>{JSON.stringify(data)}</div>}
 		/>
 	);
 };

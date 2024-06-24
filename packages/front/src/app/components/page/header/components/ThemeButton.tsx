@@ -23,12 +23,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 			},
 			"& + .MuiSwitch-track": {
 				opacity: 1,
-				backgroundColor: theme.palette.mode === "dark" ? "#687676" : "#c8e6e6",
+				backgroundColor: theme.palette.primary.main,
 			},
 		},
 	},
 	"& .MuiSwitch-thumb": {
-		backgroundColor: theme.palette.mode === "dark" ? "#0050a0" : "#2d7dc3",
+		backgroundColor: theme.palette.primary.main,
 		width: 24,
 		height: 24,
 		"&:before": {
@@ -47,7 +47,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	},
 	"& .MuiSwitch-track": {
 		opacity: 1,
-		backgroundColor: theme.palette.mode === "dark" ? "#687676" : "#c8e6e6",
+		backgroundColor: theme.palette.primary.light,
 		borderRadius: 20 / 2,
 	},
 }));
@@ -70,13 +70,11 @@ const ThemeButton = () => {
 	};
 
 	return (
-		<div className="header-nav header-nav-spacer">
-			<MaterialUISwitch
-				className="header-button-icon"
-				checked={theme === "dark"}
-				onChange={handleChange}
-			/>
-		</div>
+		<MaterialUISwitch
+			className="header-button-icon"
+			checked={theme === "dark"}
+			onChange={handleChange}
+		/>
 	);
 };
 

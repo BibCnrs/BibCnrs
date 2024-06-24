@@ -1,8 +1,8 @@
 import type { TFunction as TF, TypeOptions } from "i18next";
 import type { Dispatch, SetStateAction } from "react";
+import type { SearchResultsArgsProps } from "../../components/page/search/SearchResults";
 import type { ArticleParam } from "../../services/search/Article";
 import type { PublicationParam } from "../../services/search/Publication";
-import type { TableArgsProps } from "./props.types";
 
 type Resources = TypeOptions["resources"];
 
@@ -39,14 +39,14 @@ export type SearchContextType = {
 	query: string | undefined;
 	domain: Institute | undefined;
 	article: ArticleParam & {
-		table: TableArgsProps;
+		table: SearchResultsArgsProps;
 	};
 	publication: PublicationParam & {
-		table: TableArgsProps;
+		table: SearchResultsArgsProps;
 	};
 	metadore: {
 		field: string | null;
-		table: TableArgsProps;
+		table: SearchResultsArgsProps;
 	};
 };
 
@@ -69,9 +69,4 @@ export type Url = {
 export type Url2 = {
 	name?: string;
 	url: string;
-};
-
-export type FacetEntry = {
-	name: string;
-	count: number;
 };

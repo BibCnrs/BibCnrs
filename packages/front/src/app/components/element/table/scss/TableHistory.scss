@@ -8,7 +8,6 @@ $border-radius: 8px !default;
   grid-template-columns: 22.5% 10% 22.5% 22.5% auto;
   grid-auto-flow: column;
   padding: 2px;
-  background-color: $background;
   background-image: linear-gradient(rgba(255, 255, 255, .05), rgba(255, 255, 255, .05));
   border: $table-border solid $border-width;
   border-bottom-width: 0;

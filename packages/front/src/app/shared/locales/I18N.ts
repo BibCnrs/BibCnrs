@@ -104,6 +104,8 @@ export type Common = {
 				facets: string;
 				actions: string;
 				nbResult: string;
+				result_one: string;
+				result_other: string;
 				noAccess: string;
 				publisherUrl: string;
 				languages: string;
@@ -196,6 +198,12 @@ export type Common = {
 			INSU: string;
 			REAXYS: string;
 		};
+		empty: {
+			message: string;
+		};
+		searchError: {
+			message: string;
+		};
 	};
 	pages: {
 		root: {
@@ -278,6 +286,9 @@ export type Common = {
 			title: string;
 			superFavourites: string;
 			add: string;
+			pin: string;
+			unpin: string;
+			delete: string;
 		};
 		faq: {
 			title: string;

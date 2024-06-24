@@ -19,15 +19,15 @@ root.render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<I18nextProvider i18n={I18N}>
-				<BibContextProvider>
-					<LocalizedThemeProvider>
-						<BrowserRouter>
+				<BrowserRouter>
+					<BibContextProvider>
+						<LocalizedThemeProvider>
 							<ExceptedError>
 								<App />
 							</ExceptedError>
-						</BrowserRouter>
-					</LocalizedThemeProvider>
-				</BibContextProvider>
+						</LocalizedThemeProvider>
+					</BibContextProvider>
+				</BrowserRouter>
 			</I18nextProvider>
 			<ReactQueryDevtools />
 		</QueryClientProvider>

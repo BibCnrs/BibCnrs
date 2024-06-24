@@ -1,7 +1,6 @@
 import Button from "@mui/material/Button";
 import { useBibContext } from "../../../../context/BibContext";
 import { useTranslator } from "../../../../shared/locales/I18N";
-import { headerButtonStyle } from "../Header";
 
 /**
  * Button component used to sign-in into the application
@@ -12,15 +11,24 @@ const SignInButton = () => {
 	const t = useTranslator();
 
 	return (
-		<div className="header-nav">
-			<Button
-				className="header-button"
-				sx={headerButtonStyle}
-				onClick={showLoginModal}
-			>
-				{t("components.header.login")}
-			</Button>
-		</div>
+		<Button
+			onClick={showLoginModal}
+			color="secondary"
+			variant="contained"
+			disableElevation
+			sx={{
+				borderRadius: "20px",
+				fontWeight: "bold",
+				":hover": {
+					backgroundColor: (theme) => theme.palette.background.default,
+					color: (theme) => theme.palette.text.primary,
+					boxShadow: (theme) =>
+						`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+				},
+			}}
+		>
+			{t("components.header.login")}
+		</Button>
 	);
 };
 

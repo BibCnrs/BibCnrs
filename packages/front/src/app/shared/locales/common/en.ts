@@ -92,6 +92,8 @@ const en: Common = {
 				facets: "Facets",
 				actions: "Actions",
 				nbResult: "Results count:",
+				result_one: "result",
+				result_other: "results",
 				accessNumber: "Accession number",
 				dbId: "D&B Key Business Ratios",
 				languages: "Language",
@@ -115,7 +117,7 @@ const en: Common = {
 			},
 		},
 		facet: {
-			title: "",
+			title: "Filter",
 			text: "Documents type",
 			reviewed: "Peer reviewed",
 			fullText: "Full Text",
@@ -191,6 +193,13 @@ Sincerely`,
 			INS2I: "Informatics",
 			INSU: "Earth & Space",
 			REAXYS: "REAXYS",
+		},
+		empty: {
+			message: "No resource found.",
+		},
+		searchError: {
+			message:
+				"An error occurred during the search. Please reset the filters or try again later.",
 		},
 	},
 	pages: {
@@ -291,6 +300,9 @@ Sincerely`,
 			title: "My Favourites",
 			superFavourites: "My super favorites",
 			add: "Add a personal resource",
+			pin: "Pin {{url}}",
+			unpin: "Unpin {{url}}",
+			delete: "Delete {{url}}",
 		},
 		userSettings: {
 			title: "My preferences",

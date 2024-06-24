@@ -3,7 +3,6 @@ import { useLanguageKey } from "../../../shared/locales/I18N";
 import type { RenderContentProps } from "../../../shared/types/props.types";
 import PageDate from "../../element/PageDate";
 import PageTitle from "../../internal/PageTitle";
-import "./scss/RenderContent.scss";
 
 /**
  * Component used to create CMS pages
@@ -66,7 +65,6 @@ const RenderContent = ({
 			)}
 			{displayTitle ? <h1>{content.title}</h1> : null}
 			<div
-				className="cms-content"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 				dangerouslySetInnerHTML={{ __html: content.text }}
 			/>

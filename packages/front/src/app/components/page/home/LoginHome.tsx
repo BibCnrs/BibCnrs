@@ -73,7 +73,11 @@ export const LoginHome = () => {
 
 			{displayFavourites && (
 				<Stack gap={2}>
-					<Typography variant="h5" aria-label={t("pages.news.title")}>
+					<Typography
+						variant="h5"
+						aria-label={t("pages.news.title")}
+						color="primary"
+					>
 						{t("pages.favourite.title")}
 					</Typography>
 					<Box
@@ -82,7 +86,7 @@ export const LoginHome = () => {
 						gap={6}
 					>
 						{superFavouriteResources?.map((favourite) => (
-							<Card key={favourite.id}>
+							<Card key={favourite.id} elevation={0}>
 								<CardActionArea
 									component={MuiLink}
 									href={favourite.url}
@@ -117,7 +121,11 @@ export const LoginHome = () => {
 
 			{displayTestNews && (
 				<Stack gap={2}>
-					<Typography variant="h5" aria-label={t("pages.news.title")}>
+					<Typography
+						variant="h5"
+						aria-label={t("pages.news.title")}
+						color="primary"
+					>
 						{t("pages.news.title")}
 					</Typography>
 					<RenderNews data={data} />

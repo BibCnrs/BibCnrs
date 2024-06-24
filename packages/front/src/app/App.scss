@@ -2,7 +2,6 @@
 
 * {
   box-sizing: border-box;
-  font-family: "DM Sans", sans-serif;
 }
 
 p {
@@ -18,7 +17,6 @@ h1 {
 body {
   min-height: 100vh;
   margin: 0;
-  background-color: $background;
 }
 
 #root {
@@ -29,8 +27,4 @@ body {
 
 #app-container {
   flex: 1;
-}
-
-.header-footer {
-  background-color: $background-nav;
 }

@@ -7,9 +7,9 @@ import type {
 	MetadoreResultTitleType,
 	MetadoreResultType,
 } from "../../../shared/types/data.types";
-import type { TableDisplayElementProps } from "../../../shared/types/props.types";
+import type { SearchResultsElementProps } from "../../page/search/SearchResults";
 import BookmarkButton from "../button/BookmarkButton";
-import OpenablePaper from "../paper/openable/OpenablePaper";
+import OpenablePaper from "../paper/OpenablePaper";
 
 /**
  * Function used to get the translated title if available
@@ -65,7 +65,7 @@ const getDescription = (
  */
 const TableMetadore = ({
 	data,
-}: TableDisplayElementProps<MetadoreResultType>) => {
+}: SearchResultsElementProps<MetadoreResultType>) => {
 	// Get translation function and language key
 	const t = useTranslator();
 	const languageKey = useLanguageKey();
@@ -81,7 +81,7 @@ const TableMetadore = ({
 	return (
 		<div className={user ? "table-bookmark-size" : undefined}>
 			<OpenablePaper
-				Title={
+				title={
 					<a
 						className="table-list-title link"
 						href={data.url}
@@ -91,13 +91,13 @@ const TableMetadore = ({
 						{data.id}. {title} [{data.type}]
 					</a>
 				}
-				SmallBody={
+				summary={
 					<div className="table-list-body">
 						{t("components.table.content.doiColon")}
 						{data.doi}
 					</div>
 				}
-				FullBody={
+				content={
 					<dl className="table-list-body">
 						<span>
 							<dt>{t("components.table.content.doi")}</dt>

@@ -5,7 +5,6 @@ import type {
 	MouseEventHandler,
 	PropsWithChildren,
 	PropsWithoutRef,
-	ReactElement,
 	ReactNode,
 } from "react";
 import type {
@@ -13,7 +12,7 @@ import type {
 	HistoryEntryDataType,
 	TestsNewsDataType,
 } from "./data.types";
-import type { FacetEntry, TFunction } from "./types";
+import type { TFunction } from "./types";
 
 type HaveReactChildren = PropsWithChildren;
 
@@ -21,38 +20,12 @@ export type SearchBarProps = PropsWithoutRef<{
 	placeholder: string;
 	value?: string | null;
 	onSearch: (value: string | undefined) => void;
+	children?: ReactNode;
 }>;
 
 export type PageTitleProps = PropsWithoutRef<{
 	customTitle?: boolean;
 	page?: string;
-}>;
-
-export type TableDisplayElementProps<T> = PropsWithoutRef<{
-	debugKey: number | string;
-	first: boolean;
-	last: boolean;
-	index: number;
-	data: T;
-}>;
-
-export type TableArgsProps = PropsWithoutRef<{
-	page?: number;
-	perPage?: number;
-	stateIndex?: number; // use for specific action, like in history when the user uses the deleted button
-}>;
-
-export type TableProps = PropsWithoutRef<{
-	id?: string;
-	className?: string;
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	DisplayElement: ElementType<TableDisplayElementProps<any>>;
-	header?: ReactNode;
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	results?: any[];
-	total?: number;
-	args: TableArgsProps;
-	onArgsChange: (tableArgs: TableArgsProps) => void;
 }>;
 
 export type LocalizedThemeProviderProps = HaveReactChildren;
@@ -86,18 +59,6 @@ export type PageDateProps = PropsWithoutRef<{
 	updateAtLabel?: boolean;
 }>;
 
-export type OpenablePaperProps = PropsWithoutRef<{
-	Title: ReactElement | string | null;
-	SmallBody: ReactElement | null;
-	FullBody: ReactElement | null;
-	small?: boolean;
-	color?: Property.Color;
-	border?: boolean;
-	defaultOpenState?: boolean;
-	onChange?: (isOpen: boolean) => void;
-	onOpen?: (isOpen: boolean) => void;
-}>;
-
 export type AnimatedPaperProps = PropsWithChildren<{
 	className?: string;
 	onClick?: () => void;
@@ -129,60 +90,10 @@ export type TestsNewsProps = PropsWithoutRef<{
 	data: TestsNewsDataType | undefined;
 }>;
 
-export type FacetRequired = {
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	limiters?: any;
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	facets?: any;
-};
-
-export type FacetProps<T extends FacetRequired> = PropsWithoutRef<{
-	available: Omit<FacetRequired & T, "orderBy">;
-	active: Omit<FacetRequired & T, "orderBy">;
-	onChange: (values: Omit<FacetRequired & T, "orderBy">) => void;
-	onReset: () => void;
-}>;
-
-export type FacetLimiterProps<T extends FacetRequired> = PropsWithoutRef<{
-	available: FacetProps<T>["available"]["limiters"];
-	active?: FacetProps<T>["active"]["limiters"];
-	onChange: (value: FacetProps<T>["active"]["limiters"]) => void;
-	HALFacet?: FacetEntry;
-	HALIsChecked?: boolean;
-	onHALFacetChange: ({ provider }: { provider: FacetEntry[] }) => void;
-}>;
-
-export type FacetFacetsProps<T extends FacetRequired> = PropsWithoutRef<{
-	available: FacetProps<T>["available"]["facets"];
-	active?: FacetProps<T>["active"]["facets"];
-	onChange: (value: FacetProps<T>["active"]["facets"]) => void;
-}>;
-
 export type FacetFieldProps<T> = {
 	initial?: T;
 	onChange: (value: T) => void;
 };
-
-export type FacetTextTypeProps = PropsWithoutRef<
-	FacetFieldProps<string[]> & {
-		texts: string[];
-	}
->;
-
-export type FacetDateRangeProps = PropsWithoutRef<
-	FacetFieldProps<number[]> & {
-		min: number;
-		max: number;
-		minDistance?: number;
-	}
->;
-
-export type FacetSearchListProps = PropsWithoutRef<
-	FacetFieldProps<FacetEntry[]> & {
-		name: string;
-		facets: FacetEntry[];
-	}
->;
 
 export type ChipFacetProps = PropsWithoutRef<{
 	value?: string | null;

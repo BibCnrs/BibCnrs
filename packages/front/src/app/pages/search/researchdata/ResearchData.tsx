@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import ResearchDataSkeleton from "../../../components/element/skeleton/ResearchDataSkeleton";
 import TableMetadore from "../../../components/element/table/TableMetadore";
 import PageTitle from "../../../components/internal/PageTitle";
-import ChipFacet from "../../../components/page/facet/ChipFacet";
+import ChipFacet from "../../../components/page/search/ChipFacet";
+import SearchResults, {
+	type SearchResultsArgsProps,
+} from "../../../components/page/search/SearchResults";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
-import Table from "../../../components/page/table/Table";
 import { metadore } from "../../../services/search/Metadore";
 import {
 	RouteResearchData,
@@ -19,8 +21,8 @@ import {
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { MetadoreDataType } from "../../../shared/types/data.types";
-import type { TableArgsProps } from "../../../shared/types/props.types";
 import "./ResearchData.scss";
+import { Container } from "@mui/system";
 import { useBibContext } from "../../../context/BibContext";
 
 const ResearchData = () => {
@@ -148,7 +150,7 @@ const ResearchData = () => {
 		});
 	};
 
-	const handleTable = (tableArgs: TableArgsProps) => {
+	const handleTable = (tableArgs: SearchResultsArgsProps) => {
 		setSearch({
 			...search,
 			metadore: {
@@ -159,48 +161,42 @@ const ResearchData = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<PageTitle page="researchData" />
-			<div className="header-footer">
-				<SearchBar
-					placeholder={t("pages.researchData.search.bar")}
-					value={query.get("q") || search.query}
-					onSearch={handleSearch}
+			<SearchBar
+				placeholder={t("pages.researchData.search.bar")}
+				value={query.get("q") || search.query}
+				onSearch={handleSearch}
+			>
+				<ChipFacet
+					value={search.metadore.field}
+					values={[
+						{
+							value: "attributes.titles.title",
+							label: "title",
+						},
+						{
+							value: "attributes.descriptions.description",
+							label: "description",
+						},
+						{
+							value: "attributes.subjects.subject",
+							label: "subject",
+						},
+						{
+							value: "attributes.doi",
+							label: "doi",
+						},
+					]}
+					onChange={handleField}
+					isDomain={false}
 				/>
-				<div id="research-data-chips">
-					<span id="research-data-by">
-						{t("pages.researchData.search.chips.by")}
-					</span>
-					<ChipFacet
-						value={search.metadore.field}
-						values={[
-							{
-								value: "attributes.titles.title",
-								label: "title",
-							},
-							{
-								value: "attributes.descriptions.description",
-								label: "description",
-							},
-							{
-								value: "attributes.subjects.subject",
-								label: "subject",
-							},
-							{
-								value: "attributes.doi",
-								label: "doi",
-							},
-						]}
-						onChange={handleField}
-						isDomain={false}
-					/>
-				</div>
-			</div>
-			<div id="app">
+			</SearchBar>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				{isLoading || isFetching ? (
 					<ResearchDataSkeleton />
 				) : (
-					<Table
+					<SearchResults
 						DisplayElement={TableMetadore}
 						results={data?.results}
 						args={search.metadore.table}
@@ -208,8 +204,8 @@ const ResearchData = () => {
 						total={data?.totalHits}
 					/>
 				)}
-			</div>
-		</div>
+			</Container>
+		</>
 	);
 };
 

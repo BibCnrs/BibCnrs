@@ -93,6 +93,8 @@ const fr: Common = {
 				facets: "Facettes",
 				actions: "Actions",
 				nbResult: "Nombre de résultats : ",
+				result_one: "résultat",
+				result_other: "résultats",
 				accessNumber: "Numéro d'accès",
 				dbId: "D&B Key Business Ratios",
 				languages: "Langue",
@@ -116,7 +118,7 @@ const fr: Common = {
 			},
 		},
 		facet: {
-			title: "Affiner votre recherche",
+			title: "Filtrer",
 			text: "Type de documents",
 			reviewed: "Relu par un comité de lecture",
 			fullText: "Texte intégral",
@@ -192,6 +194,13 @@ Cordialement`,
 			INS2I: "Sciences Informatiques",
 			INSU: "Terre & Univers",
 			REAXYS: "REAXYS",
+		},
+		empty: {
+			message: "Aucune ressource trouvée.",
+		},
+		searchError: {
+			message:
+				"Une erreur est survenue lors de la recherche. Veuillez réinitialiser les filtres ou réessayer plus tard.",
 		},
 	},
 	pages: {
@@ -293,6 +302,9 @@ Cordialement`,
 			title: "Mes Favoris",
 			superFavourites: "Mes super favoris",
 			add: "Ajouter une ressource personnelle",
+			pin: "Épingler {{url}}",
+			unpin: "Désépingler {{url}}",
+			delete: "Supprimer {{url}}",
 		},
 		userSettings: {
 			title: "Mes préférences",

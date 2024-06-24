@@ -3,15 +3,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import Autocomplete from "@mui/material/Autocomplete";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
+import { Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { KeyboardEvent, SyntheticEvent } from "react";
 import { memo, useEffect, useState } from "react";
 import { autoComplete } from "../../../services/common/AutoComplete";
 import { useDebounce } from "../../../shared/hook";
 import type { SearchBarProps } from "../../../shared/types/props.types";
-import "./SearchBar.scss";
+
+import SearchModeSelection from "./SearchModeSelection";
+
+const SEARCH_BAR_HEIGHT = "50px";
 
 /**
  * Search bar component used in: "Root", "Article", "Journal, book", "Database" and "Research data"
@@ -19,7 +22,12 @@ import "./SearchBar.scss";
  * @param onSearch    - Event call when the user press 'Enter' or click on the search icon
  * @param props       - Rest of the search bar props
  */
-const SearchBar = ({ placeholder, onSearch, ...props }: SearchBarProps) => {
+const SearchBar = ({
+	placeholder,
+	onSearch,
+	children,
+	...props
+}: SearchBarProps) => {
 	// Search bar states
 	const [value, setValue] = useState<string>(props.value ?? "");
 	const [autocompleteValue, setAutocompleteValue] = useState<
@@ -83,41 +91,75 @@ const SearchBar = ({ placeholder, onSearch, ...props }: SearchBarProps) => {
 	};
 
 	return (
-		<div id="search-container">
-			<Paper id="search-box">
-				<Autocomplete
-					inputValue={value}
-					value={autocompleteValue}
-					onChange={handleAutocompleteChange}
-					onInputChange={handleChange}
-					onKeyDown={inputKeyDown}
-					renderInput={(params) => (
-						<TextField {...params} placeholder={placeholder} />
-					)}
-					options={data ?? []}
-					id="search-box-input"
-					freeSolo
-					disableClearable
-					size="small"
+		<Stack
+			sx={{
+				backgroundImage: "url(/img/SEARCH_BANNER.png)",
+				backgroundSize: "contain",
+				minHeight: "250px",
+			}}
+			alignItems="center"
+			justifyContent="center"
+		>
+			<Container
+				sx={{
+					display: "flex",
+					flexDirection: "column",
+					mt: 4,
+					mb: 4,
+					gap: 2,
+					alignItems: "center",
+				}}
+			>
+				<SearchModeSelection />
+				<Stack
+					direction="row"
+					id="search-box"
 					sx={{
-						"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-							border: "none",
+						width: "100%",
+						background: (theme) => theme.palette.background.paper,
+						borderRadius: "50px",
+						height: SEARCH_BAR_HEIGHT,
+						"& .MuiAutocomplete-inputRoot": {
+							height: SEARCH_BAR_HEIGHT,
 						},
 					}}
-				/>
-				{value !== "" ? (
-					<>
-						<IconButton onClick={clearOnClick}>
-							<ClearIcon />
-						</IconButton>
-						<Divider orientation="vertical" id="search-box-divider" />
-					</>
-				) : null}
-				<IconButton onClick={searchOnClick}>
-					<SearchIcon />
-				</IconButton>
-			</Paper>
-		</div>
+				>
+					<Autocomplete
+						inputValue={value}
+						value={autocompleteValue}
+						onChange={handleAutocompleteChange}
+						onInputChange={handleChange}
+						onKeyDown={inputKeyDown}
+						renderInput={(params) => (
+							<TextField {...params} placeholder={placeholder} />
+						)}
+						options={data ?? []}
+						id="search-box-input"
+						freeSolo
+						disableClearable
+						fullWidth
+						size="small"
+						sx={{
+							"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+								border: "none",
+							},
+						}}
+					/>
+					{value !== "" ? (
+						<>
+							<IconButton onClick={clearOnClick}>
+								<ClearIcon />
+							</IconButton>
+							<Divider orientation="vertical" id="search-box-divider" />
+						</>
+					) : null}
+					<IconButton onClick={searchOnClick} role="search">
+						<SearchIcon />
+					</IconButton>
+				</Stack>
+				{children}
+			</Container>
+		</Stack>
 	);
 };
 

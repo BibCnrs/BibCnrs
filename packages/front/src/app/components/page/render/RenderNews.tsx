@@ -11,6 +11,7 @@ import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useLanguageKey } from "../../../shared/locales/I18N";
 import type { TestsNewsProps } from "../../../shared/types/props.types";
+import { Empty } from "../../shared/Empty";
 
 /**
  * Component used to display news and tests article
@@ -30,6 +31,10 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 		);
 	}, [data]);
 
+	if (!filteredData || filteredData.length === 0) {
+		return <Empty />;
+	}
+
 	const cardActionAreaDirection = filteredData.length > 1 ? "column" : "row";
 	const imageStyle =
 		filteredData.length > 1
@@ -46,15 +51,7 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 			gap={6}
 		>
 			{filteredData.map((data) => (
-				<Card
-					sx={{
-						cursor: "pointer",
-						":hover": {
-							boxShadow: 20,
-						},
-					}}
-					key={data.id}
-				>
+				<Card key={data.id} elevation={0}>
 					<CardActionArea
 						component={Link}
 						to={`/news/${data.id}`}
