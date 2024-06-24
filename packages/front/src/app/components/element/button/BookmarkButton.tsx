@@ -8,11 +8,7 @@ import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { BookmarkButtonProps } from "../../../shared/types/props.types";
 
-const BookmarkButton = ({
-	title,
-	url,
-	className = "",
-}: BookmarkButtonProps) => {
+const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 	const {
 		session: { user },
 	} = useBibContext();

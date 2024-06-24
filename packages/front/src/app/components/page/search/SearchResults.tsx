@@ -33,6 +33,7 @@ export default function SearchResults<T>({
 	results,
 	DisplayElement,
 	total,
+	header,
 	args,
 	onArgsChange,
 }: SearchResultsProps<T>) {
@@ -57,6 +58,7 @@ export default function SearchResults<T>({
 
 	return (
 		<Stack gap={2}>
+			{header}
 			<Stack gap={4}>
 				{total !== 0 ? (
 					results.map((result: T, index: number) => (

@@ -1,7 +1,7 @@
 import { Link, Popover, Tooltip, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import BookmarkButton from "../../../../components/element/button/BookmarkButton";
 import Diamond from "../../../../components/element/icon/Diamond";
 import OpenAccess from "../../../../components/element/icon/OpenAccess";
@@ -103,10 +103,9 @@ function PublicationTitle({
 							showLoginModal();
 						}}
 					>
-						{publication.title} [{publication.type}]
+						{publication.title} [{publication.type}] - {titleCoverage}
 					</Box>
 				</Tooltip>
-				<Box>{titleCoverage}</Box>
 			</Stack>
 		);
 	}
@@ -122,22 +121,24 @@ function PublicationTitle({
 					}}
 					onClick={(event) => handlePopoverClick(event)}
 				>
-					{isOpenAccess ? (
-						<OpenAccess className="table-icon table-icon-oa" />
-					) : null}
-					{publication.isDiamond ? <Diamond /> : null}
 					<Box
 						sx={{
 							flexGrow: 1,
 						}}
-						onClick={(e) => {
-							e.stopPropagation();
-							showLoginModal();
-						}}
 					>
-						{publication.title} [{publication.type}]
+						{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
+						{isOpenAccess ? (
+							<Box mr={1} display="inline-block">
+								<OpenAccess />
+							</Box>
+						) : null}
+						{publication.isDiamond ? (
+							<Box mr={1} display="inline-block">
+								<Diamond />
+							</Box>
+						) : null}
+						{publication.title} [{publication.type}] - {titleCoverage}
 					</Box>
-					<Box>{titleCoverage}</Box>
 				</Stack>
 
 				<Popover
@@ -171,6 +172,7 @@ function PublicationTitle({
 									onClick={(e) => {
 										e.stopPropagation();
 									}}
+									sx={{ textDecoration: "none" }}
 								>
 									{value.name} - {getCoverage(value.coverage)}
 								</Link>
@@ -196,9 +198,6 @@ function PublicationTitle({
 				gap: 1,
 			}}
 		>
-			{isOpenAccess ? <OpenAccess /> : null}
-			{publication.isDiamond ? <Diamond /> : null}
-
 			<Link
 				href={
 					isOpenAccess && user
@@ -212,18 +211,22 @@ function PublicationTitle({
 				}}
 				sx={{
 					flexGrow: 1,
+					textDecoration: "none",
 				}}
 			>
-				{publication.title} [{publication.type}]
+				{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
+				{isOpenAccess ? (
+					<Box mr={1} display="inline-block">
+						<OpenAccess />
+					</Box>
+				) : null}
+				{publication.isDiamond ? (
+					<Box mr={1} display="inline-block">
+						<Diamond />
+					</Box>
+				) : null}
+				{publication.title} [{publication.type}] - {titleCoverage}
 			</Link>
-
-			<Box
-				sx={{
-					flexShrink: 0,
-				}}
-			>
-				{titleCoverage}
-			</Box>
 		</Stack>
 	);
 }
@@ -390,19 +393,23 @@ export default function PublicationSearchResult({
 								return null;
 							}
 							return (
-								<Typography key={item.name}>
-									<Typography component="dt">{item.label}</Typography>
-									<Typography component="dd">
+								<Fragment key={item.name}>
+									<Typography component="dt" variant="subtitle1">
+										{item.label}
+									</Typography>
+									<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 										{item.value.map((value) => (
 											<div key={value}>{value}</div>
 										))}
 									</Typography>
-								</Typography>
+								</Fragment>
 							);
 						})}
 						<Typography>
-							<Typography component="dt">Accès à l&apos;article</Typography>
-							<Typography component="dd">
+							<Typography component="dt" variant="subtitle1">
+								Accès à l&apos;article
+							</Typography>
+							<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 								{fullTextHoldings.map((value) => (
 									<div key={value.name}>
 										<Link

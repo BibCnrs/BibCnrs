@@ -1,9 +1,8 @@
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
 import { useMemo } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
 
-import CustomButton from "../../element/button/CustomButton";
+import { Button, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 import type { FacetRequired } from "./facet/Facet.type";
 import FacetFacets from "./facet/FacetFacets";
 import FacetLimiter from "./facet/FacetLimiter";
@@ -53,15 +52,11 @@ export default function ({
 	);
 
 	return (
-		<Paper id="facet">
-			<h3 id="facet-title" className="title">
+		<Stack gap={1}>
+			<Typography variant="h5" color="text" fontWeight="bold">
 				{t("components.facet.title")}
-			</h3>
-			<Divider className="facet-divider" />
-			<CustomButton sx={{ width: "100%" }} onClick={onReset}>
-				{t("components.facet.reset")}
-			</CustomButton>
-			<Divider className="facet-divider" />
+			</Typography>
+
 			{/* Limiter */}
 			<FacetLimiter
 				available={available.limiters}
@@ -71,15 +66,25 @@ export default function ({
 				HALIsChecked={HALIsChecked}
 				onHALFacetChange={handleFacet}
 			/>
-
-			<Divider className="facet-divider" />
 			{/* Facet */}
-
 			<FacetFacets
 				available={available.facets}
 				active={active.facets}
 				onChange={handleFacet}
 			/>
-		</Paper>
+			<Button
+				color="error"
+				size="small"
+				variant="text"
+				onClick={onReset}
+				sx={{
+					width: "auto",
+					textTransform: "none",
+					justifyContent: "flex-start",
+				}}
+			>
+				{t("components.facet.reset")}
+			</Button>
+		</Stack>
 	);
 }

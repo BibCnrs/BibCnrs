@@ -9,7 +9,6 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomButton from "../../../components/element/button/CustomButton";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import TableArticle from "../../../components/element/table/TableArticle";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -43,7 +42,10 @@ import {
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
 import "./Article.scss";
+import { Button, Grid, Typography } from "@mui/material";
+import { Container, Stack } from "@mui/system";
 import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
+import { SearchError } from "../../../components/shared/SearchError";
 import { useBibContext } from "../../../context/BibContext";
 import { BibContextArticleDefault } from "../../../context/BibContext.const";
 
@@ -351,85 +353,103 @@ const Article = () => {
 				/>
 			</SearchBar>
 
-			<div id="search-container">
-				<div id="search-facet">
-					<FacetSidebar
-						key={seed}
-						available={getAvailable(data)}
-						active={getActive()}
-						onChange={handleFacets}
-						onReset={handleReset}
-					/>
-				</div>
-				{isLoading || isFetching ? (
-					<SearchSkeleton />
-				) : (
-					<ArticleContext.Provider
-						value={{
-							exports,
-							setExports,
-						}}
-					>
-						<SearchResults
-							id="search-content"
-							DisplayElement={TableArticle}
-							results={data?.results}
-							args={search.article.table}
-							onArgsChange={handleTable}
-							total={data?.totalHits}
-							header={
-								<FormControl id="article-action" size="small">
-									{exports.length !== 0 ? (
-										<>
-											<CustomButton
-												sx={{ paddingLeft: 1, paddingRight: 2 }}
-												className="article-action-element"
-												onClick={() => {
-													handleDownload("bibtex");
-												}}
-											>
-												<SaveAltIcon sx={{ marginRight: 1 }} />
-												BIBTEX
-											</CustomButton>
-											<CustomButton
-												sx={{ paddingLeft: 1, paddingRight: 2 }}
-												className="article-action-element"
-												onClick={() => {
-													handleDownload("ris");
-												}}
-											>
-												<SaveAltIcon sx={{ marginRight: 1 }} />
-												RIS
-											</CustomButton>
-										</>
-									) : null}
-									<FormControlLabel
-										sx={{ marginLeft: 2 }}
-										control={<Checkbox onChange={handleSelectAll} />}
-										label={t("pages.article.selectAll")}
-									/>
-									<Select
-										className="article-action-element"
-										value={search.article.orderBy}
-										onChange={handleOrderChange}
-										displayEmpty
-									>
-										<MenuItem value="date_asc">
-											{t("pages.article.order.dateAsc")}
-										</MenuItem>
-										<MenuItem value="date_desc">
-											{t("pages.article.order.dateDesc")}
-										</MenuItem>
-										<MenuItem value="relevance">
-											{t("pages.article.order.relevance")}
-										</MenuItem>
-									</Select>
-								</FormControl>
-							}
+			<Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
+				<Grid container spacing={4} padding={2}>
+					<Grid item xs={12} md={3}>
+						<FacetSidebar
+							key={seed}
+							available={getAvailable(data)}
+							active={getActive()}
+							onChange={handleFacets}
+							onReset={handleReset}
 						/>
-					</ArticleContext.Provider>
-				)}
-			</div>
+					</Grid>
+
+					<Grid item xs={12} md={9}>
+						{isLoading || isFetching ? (
+							<SearchSkeleton />
+						) : isError ? (
+							<SearchError />
+						) : (
+							<ArticleContext.Provider
+								value={{
+									exports,
+									setExports,
+								}}
+							>
+								<SearchResults
+									id="search-content"
+									DisplayElement={TableArticle}
+									results={data?.results}
+									args={search.article.table}
+									onArgsChange={handleTable}
+									total={data?.totalHits}
+									header={
+										<Stack direction="row" alignItems="center">
+											<Typography fontWeight="bold">
+												{data?.totalHits}{" "}
+												{t("components.table.content.result", {
+													count: data?.totalHits,
+												})}
+											</Typography>
+											<FormControl id="article-action" size="small">
+												{exports.length !== 0 ? (
+													<>
+														<Button
+															color="primary"
+															variant="contained"
+															sx={{ paddingLeft: 1, paddingRight: 2 }}
+															className="article-action-element"
+															onClick={() => {
+																handleDownload("bibtex");
+															}}
+														>
+															<SaveAltIcon sx={{ marginRight: 1 }} />
+															BIBTEX
+														</Button>
+														<Button
+															variant="contained"
+															sx={{ paddingLeft: 1, paddingRight: 2 }}
+															className="article-action-element"
+															onClick={() => {
+																handleDownload("ris");
+															}}
+														>
+															<SaveAltIcon sx={{ marginRight: 1 }} />
+															RIS
+														</Button>
+													</>
+												) : null}
+												<FormControlLabel
+													sx={{ marginLeft: 2 }}
+													control={<Checkbox onChange={handleSelectAll} />}
+													label={t("pages.article.selectAll")}
+												/>
+												<Select
+													className="article-action-element"
+													value={search.article.orderBy}
+													onChange={handleOrderChange}
+													displayEmpty
+												>
+													<MenuItem value="date_asc">
+														{t("pages.article.order.dateAsc")}
+													</MenuItem>
+													<MenuItem value="date_desc">
+														{t("pages.article.order.dateDesc")}
+													</MenuItem>
+													<MenuItem value="relevance">
+														{t("pages.article.order.relevance")}
+													</MenuItem>
+												</Select>
+											</FormControl>
+										</Stack>
+									}
+								/>
+							</ArticleContext.Provider>
+						)}
+					</Grid>
+				</Grid>
+			</Container>
 		</>
 	);
 };
