@@ -286,6 +286,9 @@ export type Common = {
 			title: string;
 			superFavourites: string;
 			add: string;
+			pin: string;
+			unpin: string;
+			delete: string;
 		};
 		faq: {
 			title: string;
