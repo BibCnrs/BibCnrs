@@ -193,6 +193,9 @@ Cordialement`,
 			INSU: "Terre & Univers",
 			REAXYS: "REAXYS",
 		},
+		empty: {
+			message: "Aucune ressource trouvée.",
+		},
 	},
 	pages: {
 		root: {

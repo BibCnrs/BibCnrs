@@ -192,6 +192,9 @@ Sincerely`,
 			INSU: "Earth & Space",
 			REAXYS: "REAXYS",
 		},
+		empty: {
+			message: "No resource found.",
+		},
 	},
 	pages: {
 		root: {

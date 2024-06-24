@@ -1,12 +1,13 @@
+import { Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
 import RenderNews from "../../../components/page/render/RenderNews";
+import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
+import { useBibContext } from "../../../context/BibContext";
 import type { Pages } from "../../../services/user/TestsNews";
 import { news } from "../../../services/user/TestsNews";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { TestsNewsDataType } from "../../../shared/types/data.types";
-import "./News.scss";
-import { useBibContext } from "../../../context/BibContext";
 
 const News = ({ page }: { page: Pages }) => {
 	const t = useTranslator();
@@ -24,11 +25,13 @@ const News = ({ page }: { page: Pages }) => {
 	});
 
 	return (
-		<div id="app">
+		<>
 			<PageTitle page={page} />
-			<h1>{t(`pages.${page}.title`)}</h1>
-			<RenderNews data={data} />
-		</div>
+			<FakeSearchBar title={t(`pages.${page}.title`)} />
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+				<RenderNews data={data} />
+			</Container>
+		</>
 	);
 };
 

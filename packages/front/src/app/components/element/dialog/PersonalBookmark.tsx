@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -11,7 +12,6 @@ import type { ChangeEvent } from "react";
 import { useFavouriteResources } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { DialogProps } from "../../../shared/types/props.types";
-import CustomButton from "../button/CustomButton";
 
 const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 	const t = useTranslator();
@@ -89,12 +89,12 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 				</FormControl>
 			</DialogContent>
 			<DialogActions>
-				<CustomButton onClick={handleCancel}>
+				<Button color="secondary" onClick={handleCancel}>
 					{t("components.dialog.cancel")}
-				</CustomButton>
-				<CustomButton onClick={handleSave}>
+				</Button>
+				<Button variant="contained" onClick={handleSave}>
 					{t("components.dialog.save")}
-				</CustomButton>
+				</Button>
 			</DialogActions>
 		</Dialog>
 	);
