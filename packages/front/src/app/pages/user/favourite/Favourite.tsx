@@ -1,7 +1,6 @@
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { useState } from "react";
-import CustomButton from "../../../components/element/button/CustomButton";
 import PersonalBookmark from "../../../components/element/dialog/PersonalBookmark";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
@@ -67,9 +66,9 @@ const Favourite = () => {
 							}}
 						>
 							{t("pages.favourite.title")}
-							<CustomButton onClick={handleAddPersonalOpen}>
+							<Button onClick={handleAddPersonalOpen} color="primary">
 								{t("pages.favourite.add")}
-							</CustomButton>
+							</Button>
 						</Typography>
 
 						<FavouriteList

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createQuery, environment } from "../services/Environment";
 import { updateFavourite } from "../services/user/Favourite";
 import { updateAlert } from "../services/user/SearchAlert";
@@ -48,6 +49,7 @@ const getStorageTheme = (): ThemeType => {
 };
 
 export function useSession() {
+	const navigate = useNavigate();
 	const [session, setSession] = useState<BibSession>(LOADING_USER);
 	const [theme, setTheme] = useState<ThemeType>(getStorageTheme());
 
@@ -207,10 +209,15 @@ export function useSession() {
 				"Content-Type": "application/json",
 			},
 		}).finally(() => {
-			persistentStorage?.removeItem(STORAGE_KEY);
-			setSession(LOGGED_OUT_USER);
+			navigate("/", {
+				unstable_flushSync: true,
+			});
+			setTimeout(() => {
+				persistentStorage?.removeItem(STORAGE_KEY);
+				setSession(LOGGED_OUT_USER);
+			}, 0);
 		});
-	}, []);
+	}, [navigate]);
 
 	const updateFavouriteResources = useCallback(
 		(favouriteResources: FavouriteResourceDataType[] | null) => {

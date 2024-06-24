@@ -1,7 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS as DndCSS } from "@dnd-kit/utilities";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import {
@@ -13,6 +12,7 @@ import {
 	Link,
 	Tooltip,
 } from "@mui/material";
+import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { useFavourites } from "./useFavourites";
 
@@ -21,6 +21,7 @@ type FavouriteListItemProps = {
 };
 
 function FavouriteListItem({ favourite }: FavouriteListItemProps) {
+	const t = useTranslator();
 	const {
 		superFavouriteResources,
 		removeFavourite,
@@ -28,14 +29,8 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 		removeSuperFavourite,
 	} = useFavourites();
 
-	const {
-		attributes,
-		listeners,
-		setNodeRef,
-		setActivatorNodeRef,
-		transform,
-		transition,
-	} = useSortable({ id: favourite.id });
+	const { attributes, listeners, setNodeRef, transform, transition } =
+		useSortable({ id: favourite.id });
 
 	if (!favourite) {
 		return null;
@@ -46,6 +41,7 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 	};
 
 	const handleToggleSuperFavourite = () => {
+		console.log("handleToggleSuperFavourite");
 		if (favourite.isSuperFavorite) {
 			removeSuperFavourite(favourite);
 		} else {
@@ -58,6 +54,7 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 			color={favourite.personal ? "#00FFFF" : undefined}
 			ref={setNodeRef}
 			sx={{
+				cursor: "grab",
 				transform: DndCSS.Transform.toString(transform),
 				transition,
 				display: "flex",
@@ -65,25 +62,13 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 				gap: 2,
 			}}
 			{...attributes}
+			{...listeners}
+			role="listitem"
+			aria-label={favourite.url}
 		>
-			<Box
-				ref={setActivatorNodeRef}
-				{...listeners}
-				sx={{
-					cursor: "grab",
-					display: "flex",
-					alignItems: "center",
-				}}
-			>
-				<DragIndicatorIcon
-					htmlColor={favourite.personal ? "#00FFFF" : "var(--table-border)"}
-				/>
-			</Box>
-
 			<CardContent
 				sx={{
 					flexGrow: 1,
-					paddingInline: 0,
 					display: "flex",
 					alignItems: "center",
 				}}
@@ -107,6 +92,7 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 							href={favourite.url}
 							target="_blank"
 							rel="noreferrer noopener nofollow"
+							onPointerDown={(e) => e.stopPropagation()}
 						>
 							{favourite.title}
 						</Link>
@@ -131,9 +117,16 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 				<IconButton
 					size="small"
 					onClick={handleToggleSuperFavourite}
+					onPointerDown={(e) => e.stopPropagation()}
 					disabled={
 						!favourite.isSuperFavorite && superFavouriteResources?.length === 9
 					}
+					aria-label={t(
+						favourite.isSuperFavorite
+							? "pages.favourite.unpin"
+							: "pages.favourite.pin",
+						{ url: favourite.url },
+					)}
 				>
 					{favourite.isSuperFavorite ? (
 						<PushPinIcon />
@@ -143,7 +136,12 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 				</IconButton>
 
 				{!favourite.isSuperFavorite && (
-					<IconButton onClick={handleDelete} size="small">
+					<IconButton
+						onClick={handleDelete}
+						onPointerDown={(e) => e.stopPropagation()}
+						size="small"
+						aria-label={t("pages.favourite.delete", { url: favourite.url })}
+					>
 						<DeleteOutlineIcon />
 					</IconButton>
 				)}
