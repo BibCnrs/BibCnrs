@@ -15,6 +15,7 @@ import SearchResults, {
 } from "../../../components/page/search/SearchResults";
 import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
+import { SearchError } from "../../../components/shared/SearchError";
 import { useBibContext } from "../../../context/BibContext";
 import { BibContextPublicationDefault } from "../../../context/BibContext.const";
 import type { PublicationParam } from "../../../services/search/Publication";
@@ -379,6 +380,8 @@ const PublicationPage = () => {
 					<Grid item xs={12} md={9}>
 						{isLoading || isFetching ? (
 							<SearchSkeleton />
+						) : isError ? (
+							<SearchError />
 						) : (
 							<SearchResults
 								DisplayElement={PublicationSearchResult}

@@ -93,6 +93,8 @@ const fr: Common = {
 				facets: "Facettes",
 				actions: "Actions",
 				nbResult: "Nombre de résultats : ",
+				result_one: "résultat",
+				result_other: "résultats",
 				accessNumber: "Numéro d'accès",
 				dbId: "D&B Key Business Ratios",
 				languages: "Langue",
@@ -195,6 +197,10 @@ Cordialement`,
 		},
 		empty: {
 			message: "Aucune ressource trouvée.",
+		},
+		searchError: {
+			message:
+				"Une erreur est survenue lors de la recherche. Veuillez réinitialiser les filtres ou réessayer plus tard.",
 		},
 	},
 	pages: {

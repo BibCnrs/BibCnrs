@@ -104,6 +104,8 @@ export type Common = {
 				facets: string;
 				actions: string;
 				nbResult: string;
+				result_one: string;
+				result_other: string;
 				noAccess: string;
 				publisherUrl: string;
 				languages: string;
@@ -197,6 +199,9 @@ export type Common = {
 			REAXYS: string;
 		};
 		empty: {
+			message: string;
+		};
+		searchError: {
 			message: string;
 		};
 	};
