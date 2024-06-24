@@ -10,15 +10,15 @@ import type {
 	ArticleResultDataType,
 	ArticleRetrieveDataType,
 } from "../../../shared/types/data.types";
-import type { TableDisplayElementProps } from "../../../shared/types/props.types";
 import Article from "../render/Article";
 import SkeletonEntry from "../skeleton/SkeletonEntry";
 import "./scss/TableList.scss";
 import { useBibContext } from "../../../context/BibContext";
+import type { SearchResultsElementProps } from "../../page/search/SearchResults";
 
 const TableArticle = ({
 	data: dataIn,
-}: TableDisplayElementProps<ArticleResultDataType>) => {
+}: SearchResultsElementProps<ArticleResultDataType>) => {
 	const { search } = useBibContext();
 	const [retrieve, setRetrieve] = useState(false);
 	const [missing, setMissing] = useState(false);

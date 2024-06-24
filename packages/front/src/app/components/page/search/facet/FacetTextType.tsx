@@ -1,13 +1,21 @@
-import "./scss/TextType.scss";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { memo, useState } from "react";
+import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { useTranslator } from "../../../shared/locales/I18N";
-import type { FacetTextTypeProps } from "../../../shared/types/props.types";
+import { useTranslator } from "../../../../shared/locales/I18N";
 
-const TextType = ({ texts, initial, onChange }: FacetTextTypeProps) => {
+type FacetTextTypeProps = {
+	initial?: string[];
+	onChange: (value: string[]) => void;
+	texts: string[];
+};
+
+export default function FacetTextType({
+	texts,
+	initial,
+	onChange,
+}: FacetTextTypeProps) {
 	const t = useTranslator();
 	const [selectedText, setSelectedText] = useState<string[]>(initial ?? []);
 
@@ -54,6 +62,4 @@ const TextType = ({ texts, initial, onChange }: FacetTextTypeProps) => {
 			))}
 		</FormControl>
 	);
-};
-
-export default memo(TextType);
+}

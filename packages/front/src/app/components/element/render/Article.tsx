@@ -6,7 +6,7 @@ import { useTranslator } from "../../../shared/locales/I18N";
 import BookmarkButton from "../button/BookmarkButton";
 import ExportArticleCheckbox from "../button/ExportArticleCheckbox";
 import OpenAccess from "../icon/OpenAccess";
-import OpenablePaper from "../paper/openable/OpenablePaper";
+import OpenablePaper from "../paper/OpenablePaper";
 import SkeletonEntry from "../skeleton/SkeletonEntry";
 import ArticleLinks from "./ArticleLinks";
 
@@ -39,7 +39,7 @@ const Article = ({
 			<OpenablePaper
 				onChange={onChange}
 				defaultOpenState={open}
-				Title={
+				title={
 					<>
 						<ExportArticleCheckbox getter={getter} />
 						<Link
@@ -65,7 +65,7 @@ const Article = ({
 						) : null}
 					</>
 				}
-				SmallBody={
+				summary={
 					<div className="table-list-body">
 						{authors ? <div>{authors.join(", ")}</div> : null}
 						{source ? <div>{source}</div> : null}
@@ -76,7 +76,7 @@ const Article = ({
 						) : null}
 					</div>
 				}
-				FullBody={
+				content={
 					isWaiting ? (
 						<SkeletonEntry animation="pulse" height={450} />
 					) : (

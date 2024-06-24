@@ -5,8 +5,9 @@ import { createContext, useState } from "react";
 import CustomButton from "../../../components/element/button/CustomButton";
 import TableHistory from "../../../components/element/table/TableHistory";
 import PageTitle from "../../../components/internal/PageTitle";
+import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
+import SearchResults from "../../../components/page/search/SearchResults";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
-import Table from "../../../components/page/table/Table";
 import { Empty } from "../../../components/shared/Empty";
 import {
 	deleteHistory,
@@ -16,7 +17,6 @@ import {
 import { disableAllSearchAlert } from "../../../services/user/SearchAlert";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { HistoryDataType } from "../../../shared/types/data.types";
-import type { TableArgsProps } from "../../../shared/types/props.types";
 
 export const HistoryContext = createContext<{
 	handleDeleteEntry: (id: number) => void;
@@ -29,7 +29,7 @@ const History = ({
 }: { displayOnlyAlert?: boolean }) => {
 	const t = useTranslator();
 
-	const [args, setArgs] = useState<TableArgsProps>({
+	const [args, setArgs] = useState<SearchResultsArgsProps>({
 		page: 1,
 		perPage: 20,
 		stateIndex: 0,
@@ -97,7 +97,7 @@ const History = ({
 					<HistoryContext.Provider
 						value={{ handleDeleteEntry, requestUpdate: handleUpdateRequest }}
 					>
-						<Table
+						<SearchResults
 							DisplayElement={TableHistory}
 							results={data?.histories}
 							args={args}

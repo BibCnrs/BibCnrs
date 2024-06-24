@@ -1,18 +1,20 @@
 import Divider from "@mui/material/Divider";
-import { Fragment, memo } from "react";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
-import type {
-	FacetFacetsProps,
-	FacetRequired,
-} from "../../../shared/types/props.types";
-import type { FacetEntry } from "../../../shared/types/types";
-import SearchList from "./SearchList";
+import type { FacetEntry, FacetRequired } from "./Facet.type";
+import FacetSearchList from "./FacetSearchList";
 
-const FacetFacets = ({
+type FacetFacetsProps = {
+	available: FacetRequired["facets"];
+	active?: FacetRequired["facets"];
+	onChange: (value: FacetRequired["facets"]) => void;
+};
+
+export default function FacetFacets({
 	available,
 	active,
 	onChange,
-}: FacetFacetsProps<FacetRequired>) => {
+}: FacetFacetsProps) {
 	if (!available) {
 		return null;
 	}
@@ -46,7 +48,7 @@ const FacetFacets = ({
 			const component = (
 				<Fragment key={key}>
 					{divider ? <Divider className="facet-divider" /> : null}
-					<SearchList
+					<FacetSearchList
 						name={key}
 						facets={facet}
 						initial={active ? active[key] : undefined}
@@ -62,6 +64,4 @@ const FacetFacets = ({
 	});
 
 	return <div>{facets}</div>;
-};
-
-export default memo(FacetFacets);
+}

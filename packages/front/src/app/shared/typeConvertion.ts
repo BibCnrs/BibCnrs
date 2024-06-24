@@ -1,4 +1,4 @@
-import type { FacetEntry } from "./types/types";
+import type { FacetEntry } from "../components/page/search/facet/Facet.type";
 
 export const convertFacet = (array: FacetEntry[]): string[] => {
 	return array.map<string>((value) => value.name);

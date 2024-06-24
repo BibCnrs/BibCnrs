@@ -2,11 +2,17 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import type { SyntheticEvent } from "react";
 import { memo } from "react";
-import { useTranslator } from "../../../shared/locales/I18N";
-import type { FacetSearchListProps } from "../../../shared/types/props.types";
-import type { FacetEntry } from "../../../shared/types/types";
+import { useTranslator } from "../../../../shared/locales/I18N";
+import type { FacetEntry } from "./Facet.type";
 
-const SearchList = ({
+type FacetSearchListProps = {
+	initial?: FacetEntry[];
+	onChange: (value: FacetEntry[]) => void;
+	name: string;
+	facets: FacetEntry[];
+};
+
+const FacetSearchList = ({
 	facets,
 	name,
 	onChange,
@@ -56,4 +62,4 @@ const SearchList = ({
 	);
 };
 
-export default memo(SearchList);
+export default memo(FacetSearchList);
