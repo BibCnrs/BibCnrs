@@ -41,7 +41,6 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 	};
 
 	const handleToggleSuperFavourite = () => {
-		console.log("handleToggleSuperFavourite");
 		if (favourite.isSuperFavorite) {
 			removeSuperFavourite(favourite);
 		} else {

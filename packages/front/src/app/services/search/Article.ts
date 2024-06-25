@@ -217,7 +217,10 @@ export class ArticleContentGetter {
 		const retrieveObj = this.getEntry("Author", "Authors");
 		const retrieve = this.getStringArray(retrieveObj);
 		if (retrieve) {
-			return retrieve;
+			// merge this.initial.authors and retrieve
+			if (this.initial.authors) {
+				return [...new Set([...this.initial.authors, ...retrieve])];
+			}
 		}
 		if (this.initial.authors) {
 			return this.initial.authors;

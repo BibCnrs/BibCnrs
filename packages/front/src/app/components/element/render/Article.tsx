@@ -91,7 +91,9 @@ const Article = ({
 			summary={
 				<Box>
 					{authors && (
-						<Typography variant="body2">{authors.join(", ")}</Typography>
+						<Typography variant="body2">
+							{authors.slice(0, 5).join(" | ")}
+						</Typography>
 					)}
 					{source && <Typography variant="body2">{source}</Typography>}
 					{doi && (
@@ -118,20 +120,24 @@ const Article = ({
 											sx={{ marginInlineStart: "40px" }}
 											variant="body2"
 										>
-											{entry.content.map((value) => {
-												const link = getter.proxify(
-													{ url: value, name: value },
-													search.domain,
-												);
-												if (!link) {
-													return null;
-												}
-												return (
-													<Link key={value} href={link}>
-														{value}
-													</Link>
-												);
-											})}
+											<Stack direction="column" spacing={1}>
+												{entry.content.map((value) => {
+													const link = getter.proxify(
+														{ url: value, name: value },
+														search.domain,
+													);
+													if (!link) {
+														return null;
+													}
+													return (
+														<Link key={value} href={link}>
+															{value.length > 60
+																? `${value.slice(0, 60)}...`
+																: value}
+														</Link>
+													);
+												})}
+											</Stack>
 										</Typography>
 									</Fragment>
 								);
