@@ -6,7 +6,6 @@ import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import App from "./app/App";
 import { BibContextProvider } from "./app/context/BibContext";
-import LocalizedThemeProvider from "./app/context/LocalizedThemeProvider";
 import ExceptedError from "./app/pages/errors/ExceptedError";
 import "./app/shared/easter-egg/konamiCode";
 import I18N from "./app/shared/locales/I18N";
@@ -21,11 +20,9 @@ root.render(
 			<I18nextProvider i18n={I18N}>
 				<BrowserRouter>
 					<BibContextProvider>
-						<LocalizedThemeProvider>
-							<ExceptedError>
-								<App />
-							</ExceptedError>
-						</LocalizedThemeProvider>
+						<ExceptedError>
+							<App />
+						</ExceptedError>
 					</BibContextProvider>
 				</BrowserRouter>
 			</I18nextProvider>

@@ -192,7 +192,7 @@ export function useSession() {
 				_loginUser(loggedInUser);
 				return true;
 			} catch (e) {
-				setSession(LOADING_USER);
+				setSession(LOGGED_OUT_USER);
 				return false;
 			}
 		},

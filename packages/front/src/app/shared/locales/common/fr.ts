@@ -41,18 +41,18 @@ const fr: Common = {
 			},
 		},
 		authentication: {
-			title: "Identifiez-vous",
+			title: "Bienvenue",
 			info: "La ressource ou le service souhaité est réservé aux ayants droit du CNRS. Pour y accéder il est nécessaire de s'identifier.",
 			mode: "Veuillez sélectionner votre mode de connexion :",
 			janus: {
-				button: "Via le gestionnaire d'identité janus",
+				button: "Connectez-vous via janus",
 				tooltip:
 					"Compte personnel pour l'ensemble des services du CNRS : Agate, Simbad...",
 				ask: "Demander un compte janus",
 			},
 			legacy: {
-				button: "Via le code d'accès de votre unité",
-				username: "Indentifiant",
+				button: "Code d'accès de votre unité",
+				username: "Identifiant",
 				password: "Mot de passe",
 				login: "Connexion",
 				error:
