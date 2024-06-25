@@ -1,3 +1,7 @@
+import { CssBaseline } from "@mui/material";
+import { enUS, frFR } from "@mui/material/locale";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import createTheme from "@mui/material/styles/createTheme";
 import {
 	type ReactNode,
 	createContext,
@@ -5,6 +9,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
+import { useLanguageKey } from "../shared/locales/I18N";
 import type { SearchContextType, ThemeType } from "../shared/types/types";
 import {
 	BibContextArticleDefault,
@@ -12,6 +17,8 @@ import {
 	BibContextPublicationDefault,
 } from "./BibContext.const";
 import AuthenticationModal from "./components/AuthenticationModal";
+import { darkTheme } from "./themes/dark";
+import { lightTheme } from "./themes/light";
 import { useSession } from "./useSession";
 
 type BibContextType = {
@@ -32,6 +39,7 @@ type BibContextProviderProps = {
 
 export function BibContextProvider({ children }: BibContextProviderProps) {
 	const session = useSession();
+	const language = useLanguageKey();
 	const [displayAuthenticationModal, setDisplayAuthenticationModal] =
 		useState(false);
 
@@ -50,6 +58,24 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 	const hideLoginModal = () => {
 		setDisplayAuthenticationModal(false);
 	};
+
+	/**
+	 * Function used to return a Material UI language object
+	 * @returns - Material UI language
+	 *            - Default: French
+	 */
+	const getLocal = () => {
+		if (language === "en") {
+			return enUS;
+		}
+		return frFR;
+	};
+
+	// Create Material UI theme
+	const muiTheme = createTheme(
+		session.theme === "light" ? lightTheme : darkTheme,
+		getLocal(),
+	);
 
 	useEffect(() => {
 		const user = session.session.user;
@@ -78,13 +104,16 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 				hideLoginModal,
 			}}
 		>
-			{children}
+			<ThemeProvider theme={muiTheme}>
+				<CssBaseline />
+				{children}
 
-			<AuthenticationModal
-				open={displayAuthenticationModal}
-				onClose={hideLoginModal}
-				{...session}
-			/>
+				<AuthenticationModal
+					open={displayAuthenticationModal}
+					onClose={hideLoginModal}
+					{...session}
+				/>
+			</ThemeProvider>
 		</BibContext.Provider>
 	);
 }

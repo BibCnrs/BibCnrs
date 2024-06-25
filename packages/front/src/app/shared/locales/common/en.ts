@@ -41,16 +41,16 @@ const en: Common = {
 			},
 		},
 		authentication: {
-			title: "Identify yourself",
+			title: "Welcome",
 			info: "This resource or service is reserved for CNRS rights holders. Please sign in.",
 			mode: "Please select your signing-in mode:",
 			janus: {
-				button: "Via Janus identity manager",
+				button: "Connect via Janus",
 				tooltip: "Personal account for all CNRS services Agate, Simbad ...",
 				ask: "Request a janus account",
 			},
 			legacy: {
-				button: "Via your unit access code",
+				button: "Unit access code",
 				username: "Username",
 				password: "Password",
 				login: "Connection",

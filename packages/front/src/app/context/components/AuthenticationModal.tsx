@@ -1,22 +1,17 @@
-import CloseIcon from "@mui/icons-material/Close";
-import LoginIcon from "@mui/icons-material/Login";
 import {
 	Card,
-	CardActions,
 	CardContent,
 	CardHeader,
+	Divider,
 	Link,
 	Stack,
 	Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import Slide from "@mui/material/Slide";
 import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -98,86 +93,82 @@ function AuthenticationModal({
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
+				border: 0,
 			}}
 		>
 			{/* Add a sliding animation from the top */}
 			<Slide direction="down" in={open} timeout={400}>
-				<Card elevation={15}>
+				<Card
+					elevation={2}
+					sx={{
+						border: 0,
+						borderRadius: 2,
+						minWidth: 512,
+						padding: 2,
+						":hover": {
+							backgroundColor: "background.default",
+						},
+					}}
+				>
 					<CardHeader
 						id="authentication-header"
 						title={t("components.authentication.title")}
-						action={
-							<IconButton
-								id="authentication-close"
-								size="small"
-								onClick={handleClose}
-							>
-								<CloseIcon fontSize="small" />
-							</IconButton>
-						}
-					/>
-					<Divider />
-					<CardContent
-						id="authentication-body"
-						sx={{
-							"& button": {
-								display: "flex",
-								gap: 1,
-								flexDirection: "row",
-							},
+						titleTypographyProps={{
+							fontSize: 22,
+							fontWeight: "bold",
 						}}
-					>
+					/>
+					<CardContent id="authentication-body">
 						<Stack gap={2}>
-							<Typography fontSize={12}>
-								{t("components.authentication.info")}
-							</Typography>
-
-							<Typography>{t("components.authentication.mode")}</Typography>
-
-							<Stack gap={1} sx={{ alignItems: "center" }}>
-								<Tooltip
-									title={t("components.authentication.janus.tooltip")}
-									placement="top"
-									arrow
-									sx={{ maxWidth: "none" }}
+							<Stack gap={1} sx={{ alignItems: "flex-end" }}>
+								<Button
+									className="authentication-button"
+									onClick={loginToJanus}
+									fullWidth
+									disableElevation
+									variant="contained"
+									sx={{
+										textTransform: "none",
+										fontSize: "1rem",
+										height: 50,
+									}}
 								>
-									<Button
-										className="authentication-button"
-										onClick={loginToJanus}
-										fullWidth
-										variant="contained"
-										color="primary"
-									>
-										<LoginIcon />
-										{t("components.authentication.janus.button")}
-									</Button>
-								</Tooltip>
-
+									{t("components.authentication.janus.button")}
+								</Button>
 								<Link
-									className="link"
 									href="https://sesame.cnrs.fr"
 									target="blank"
 									rel="noopener noreferrer nofollow"
+									sx={{
+										fontSize: "0.8rem",
+										fontStyle: "italic",
+										textDecoration: "none",
+									}}
 								>
 									{t("components.authentication.janus.ask")}
 								</Link>
 							</Stack>
 
+							<Divider>
+								<Typography
+									color="disabled"
+									sx={{
+										color: "text.disabled",
+									}}
+								>
+									ou
+								</Typography>
+							</Divider>
+
 							<Stack gap={1}>
 								<Button
 									onClick={displayLegacy}
-									style={
-										legacy
-											? {
-													borderBottomRightRadius: 0,
-													borderBottomLeftRadius: 0,
-												}
-											: undefined
-									}
-									variant="contained"
+									variant="outlined"
 									color="primary"
+									sx={{
+										textTransform: "none",
+									}}
 								>
-									<LoginIcon className="authentication-button-icon" />
 									{t("components.authentication.legacy.button")}
 								</Button>
 
@@ -207,7 +198,13 @@ function AuthenticationModal({
 																: undefined
 														}
 													/>
-													<Button type="submit">
+													<Button
+														type="submit"
+														variant="text"
+														sx={{
+															textTransform: "none",
+														}}
+													>
 														{t("components.authentication.legacy.login")}
 													</Button>
 												</Stack>
@@ -218,12 +215,6 @@ function AuthenticationModal({
 							</Stack>
 						</Stack>
 					</CardContent>
-					<Divider />
-					<CardActions sx={{ padding: 2 }}>
-						<Link href="mailto:assistance-portail@inist.fr">
-							{t("components.authentication.contact")}
-						</Link>
-					</CardActions>
 				</Card>
 			</Slide>
 		</Modal>
