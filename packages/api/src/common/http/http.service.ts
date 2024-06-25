@@ -11,12 +11,11 @@ export class HttpService {
 
 	constructor(configService: ConfigService<Config, true>) {
 		const httpConfig: Config["http"] = configService.get("http");
+		const proxy = httpConfig.httpProxy || httpConfig.httpsProxy;
 
-		this.dispatcher = httpConfig.httpProxy
-			? new ProxyAgent(httpConfig.httpProxy)
-			: httpConfig.httpsProxy
-				? new ProxyAgent(httpConfig.httpsProxy)
-				: undefined;
+		this.logger.log(`[PROXY] Using "${proxy}" as proxy server`);
+
+		this.dispatcher = proxy ? new ProxyAgent(proxy) : undefined;
 	}
 
 	async request(url: string, options: RequestInit = {}) {
@@ -36,7 +35,7 @@ export class HttpService {
 			return response;
 		} catch (e) {
 			this.logger.error(
-				`[ERROR] ${options.method} ${url} (error=${e.message || e}, time=${Date.now() - start}ms)`,
+				`[ERROR] ${options.method} ${url} (error=${e}, time=${Date.now() - start}ms)`,
 			);
 			throw e;
 		}

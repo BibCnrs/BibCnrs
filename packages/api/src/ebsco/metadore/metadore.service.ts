@@ -108,7 +108,7 @@ export class EbscoMetadoreService {
 			.then((searchResults) => this.metadoreResultsParser(searchResults))
 			.catch((e) => {
 				this.logger.error(
-					`Failed to fetch from Metadore (status=${e.status || 500}): ${e.message || e}`,
+					`Failed to fetch from Metadore (status=${e.status || "unknown"}): ${e.message || e}`,
 				);
 				throw new InternalServerErrorException();
 			});
