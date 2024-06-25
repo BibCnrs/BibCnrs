@@ -3,7 +3,7 @@ import { type Page, expect } from "@playwright/test";
 export async function janusLogin(page: Page) {
 	await page.goto("http://localhost:3000/");
 	await page.getByRole("button", { name: "Connexion", exact: true }).click();
-	await page.getByRole("button", { name: /Compte personnel/i }).click();
+	await page.getByRole("button", { name: /Connectez-vous /i }).click();
 
 	await page.getByRole("button", { name: "d", exact: true }).click();
 	await expect(
