@@ -7,7 +7,7 @@ import { AppLogger } from "./common/logger/AppLogger";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-		logger: undefined,
+		logger: new AppLogger("Nest"),
 	});
 	app.use(cookieParser());
 	app.useBodyParser("json", { limit: "10mb" });
@@ -16,7 +16,7 @@ async function bootstrap() {
 			transform: true,
 		}),
 	);
-	app.useLogger(app.get(AppLogger));
+
 	await app.listen(3000);
 }
 bootstrap();

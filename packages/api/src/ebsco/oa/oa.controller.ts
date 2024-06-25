@@ -13,13 +13,17 @@ import { InstitutesService } from "../../admin/institutes/institutes.service";
 import { UnitsService } from "../../admin/units/units.service";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import { TokenPayload } from "../../common/auth/auth.type";
-import { AppLogger } from "../../common/logger/AppLogger";
+import { FileLogger } from "../../common/logger/FileLogger";
 import { InistAccountService } from "../../inist/accounts/accounts.service";
 import { JanusAccountService } from "../../janus/accounts/accounts.service";
 
 @Controller("ebsco")
 export class EbscoOaController {
-	private readonly logger = new AppLogger(EbscoOaController.name);
+	private readonly logger = new FileLogger(
+		"bibapi_http.log",
+		EbscoOaController.name,
+	);
+
 	constructor(
 		private readonly janusAccountService: JanusAccountService,
 		private readonly inistAccountService: InistAccountService,

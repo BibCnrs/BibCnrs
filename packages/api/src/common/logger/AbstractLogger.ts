@@ -1,12 +1,13 @@
+import path from "node:path";
 import { LogLevel, LoggerService } from "@nestjs/common";
+import * as winston from "winston";
 
-export interface Transport {
-	write(message: string): void;
-	close(): void;
-}
+type Transport = (typeof winston.transports)["File" | "Console"];
+
+export const LOG_DIRECTORY = path.join(process.cwd(), "logs");
 
 export class AbstractLogger implements LoggerService {
-	private transport: Transport;
+	private readonly logger: winston.Logger;
 
 	protected context?: string;
 	protected options: { timestamp?: boolean };
@@ -29,7 +30,9 @@ export class AbstractLogger implements LoggerService {
 		context?: string,
 		options = { timestamp: true },
 	) {
-		this.transport = transport;
+		this.logger = winston.createLogger({
+			transports: [transport],
+		});
 		this.context = context;
 		this.options = options;
 		this.localInstanceRef = this;
@@ -44,8 +47,9 @@ export class AbstractLogger implements LoggerService {
 		if (!this.logLevels.has(level)) {
 			return;
 		}
-		this.transport.write(
-			`[${this.context ?? "Nest"}] ${this.options.timestamp ? `${new Date().toISOString()} ` : ""}${level.toLocaleUpperCase()} - ${message} ${optionalParams?.join(",")}`,
+		this.logger.log(
+			level === "log" ? "info" : level,
+			`${this.options.timestamp ? `${new Date().toISOString()}` : ""}\t[${this.context ?? "Nest"}]\t${message} ${optionalParams?.join(",")}`,
 		);
 	}
 
