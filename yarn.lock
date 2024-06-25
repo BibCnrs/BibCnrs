@@ -411,7 +411,6 @@ __metadata:
     tsconfig-paths: "npm:^4.2.0"
     tsx: "npm:^4.15.2"
     typescript: "npm:^5.4.5"
-    undici: "npm:^6.18.2"
     unplugin-swc: "npm:^1.4.5"
     vitest: "npm:^1.6.0"
     winston: "npm:^3.13.0"
@@ -9676,13 +9675,6 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 10c0/bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
-  languageName: node
-  linkType: hard
-
-"undici@npm:^6.18.2":
-  version: 6.19.0
-  resolution: "undici@npm:6.19.0"
-  checksum: 10c0/cc389832bde16a74c179778163b4b1c23407a7adc74efc2deccec9c8540df765798c9caff2ec918af6dd8ecf63b4c32f7ffcd0d7b86a4737869e8419d61dc49d
   languageName: node
   linkType: hard
 
