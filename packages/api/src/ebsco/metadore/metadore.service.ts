@@ -98,11 +98,11 @@ export class EbscoMetadoreService {
 			})
 			.then(async (response) => {
 				if (response.status === 200) {
-					return response.json();
+					return response.data;
 				}
 				throw {
 					status: response.status,
-					message: await response.text(),
+					message: response.data,
 				};
 			})
 			.then((searchResults) => this.metadoreResultsParser(searchResults))

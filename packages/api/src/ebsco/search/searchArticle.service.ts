@@ -85,8 +85,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		try {
 			const result = await this.http
 				.request(`${this.ebsco.crossref}${term}`)
-				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-				.then((res) => res.json() as Promise<any>);
+				.then((res) => res.data);
 			return {
 				title: result?.message?.title?.[0],
 				issn: result?.message?.ISSN?.[0],
@@ -127,6 +126,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				.replace("https://api.unpaywall.org/v2/doi=", "")
 				.replace("?email=jjoly@ebsco.com", "");
 			const query = `{GetByDOI(dois:["${doi}"]){is_oa, best_oa_location{ url_for_pdf }}}`;
+
 			const response = await this.http.request(
 				`${this.ebsco.ezUnpaywallUrl}/api/graphql?sid=bibapi`,
 				{
@@ -135,7 +135,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 						"Content-Type": "application/json",
 						"x-api-key": `${this.ebsco.ezUnpaywallKey}`,
 					},
-					body: JSON.stringify({ query: query }),
+					data: JSON.stringify({ query: query }),
 				},
 			);
 
@@ -143,8 +143,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				throw new Error("Unpaywall error");
 			}
 
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			const result = (await response.json()) as any;
+			const result = response.data;
 
 			const is_oa = result.data.GetByDOI[0].is_oa;
 			const url = result.data.GetByDOI[0].best_oa_location.url_for_pdf;
