@@ -50,6 +50,7 @@
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.1",
 		"undici": "^6.18.2",
+		"winston": "^3.13.0",
 		"xml-flow": "^1.0.4"
 	},
 	"devDependencies": {
