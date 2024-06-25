@@ -13,6 +13,7 @@ import { InstitutesService } from "../../admin/institutes/institutes.service";
 import { UnitsService } from "../../admin/units/units.service";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import { TokenPayload } from "../../common/auth/auth.type";
+import { UserRetrieveGuard } from "../../common/auth/userRetrieveGuard";
 import { FileLogger } from "../../common/logger/FileLogger";
 import { InistAccountService } from "../../inist/accounts/accounts.service";
 import { JanusAccountService } from "../../janus/accounts/accounts.service";
@@ -168,7 +169,12 @@ export class EbscoOaController {
 	}
 
 	@Get("oa_database")
-	async oaDatabase(@Res() res: Response, @Query() query: Request["query"]) {
-		return this.redirectOA(res, query);
+	@UseGuards(UserRetrieveGuard)
+	async oaDatabase(
+		@Req() request: Request,
+		@Res() res: Response,
+		@Query() query: Request["query"],
+	) {
+		return this.redirectOA(res, query, request.user ?? null);
 	}
 }
