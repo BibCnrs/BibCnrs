@@ -300,7 +300,7 @@ Cordialement`,
 		},
 		favourite: {
 			title: "Mes Favoris",
-			superFavourites: "Mes super favoris",
+			superFavourites: "Mes favoris épinglés",
 			add: "Ajouter une ressource personnelle",
 			pin: "Épingler {{url}}",
 			unpin: "Désépingler {{url}}",

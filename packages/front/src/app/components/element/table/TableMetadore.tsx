@@ -1,4 +1,5 @@
 import "./scss/TableList.scss";
+import { Link, Typography } from "@mui/material";
 import { memo } from "react";
 import { useBibContext } from "../../../context/BibContext";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
@@ -58,6 +59,25 @@ const getDescription = (
 	return descriptions[0].description;
 };
 
+function MetadoreId({ id }: { id: number }) {
+	return (
+		<Typography
+			component="div"
+			sx={{
+				width: "34px",
+				height: "34px",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+				fontSize: "1.2rem",
+				fontWeight: 700,
+			}}
+		>
+			{id}
+		</Typography>
+	);
+}
+
 /**
  * Table Metadore display component, this component is used to display Metadore results
  * @param data Component parameter containing the data to display
@@ -82,15 +102,20 @@ const TableMetadore = ({
 		<div className={user ? "table-bookmark-size" : undefined}>
 			<OpenablePaper
 				title={
-					<a
+					<Link
 						className="table-list-title link"
 						href={data.url}
 						target="_blank"
 						rel="noopener noreferrer nofollow"
+						sx={{
+							textDecoration: "none",
+							textTransform: "none",
+						}}
 					>
-						{data.id}. {title} [{data.type}]
-					</a>
+						{title} [{data.type}]
+					</Link>
 				}
+				leftAction={<MetadoreId id={data.id} />}
 				summary={
 					<div className="table-list-body">
 						{t("components.table.content.doiColon")}
@@ -98,45 +123,59 @@ const TableMetadore = ({
 					</div>
 				}
 				content={
-					<dl className="table-list-body">
-						<span>
-							<dt>{t("components.table.content.doi")}</dt>
-							<dd>{data.doi}</dd>
-						</span>
-						<span>
-							<dt>{t("components.table.content.type")}</dt>
-							<dd>{data.type}</dd>
-						</span>
-						<span>
-							<dt>{t("components.table.content.publicationYear")}</dt>
-							<dd>{data.publicationYear}</dd>
-						</span>
+					<Typography component="dl">
+						<Typography component="dt" variant="subtitle1">
+							{t("components.table.content.doi")}
+						</Typography>
+						<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
+							{data.doi}
+						</Typography>
+						<Typography component="dt" variant="subtitle1">
+							{t("components.table.content.type")}
+						</Typography>
+						<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
+							{data.type}
+						</Typography>
+						<Typography component="dt" variant="subtitle1">
+							{t("components.table.content.publicationYear")}
+						</Typography>
+						<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
+							{data.publicationYear}
+						</Typography>
 						{/* Show description if available */}
 						{description ? (
-							<span>
-								<dt>{t("components.table.content.description")}</dt>
-								<dd>{description}</dd>
-							</span>
+							<>
+								<Typography component="dt" variant="subtitle1">
+									{t("components.table.content.description")}
+								</Typography>
+								<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
+									{description}
+								</Typography>
+							</>
 						) : null}
 						{/* Show subjects if available */}
 						{data.subjects.length !== 0 ? (
-							<span>
-								<dt>{t("components.table.content.subjects")}</dt>
-								<dd>{data.subjects.join(", ")}</dd>
-							</span>
+							<>
+								<Typography component="dt" variant="subtitle1">
+									{t("components.table.content.subjects")}
+								</Typography>
+								<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
+									{data.subjects.join(", ")}
+								</Typography>
+							</>
 						) : null}
-					</dl>
+					</Typography>
+				}
+				rightAction={
+					user ? (
+						<BookmarkButton
+							className="table-bookmark-button"
+							title={bookmarkTitle}
+							url={data.url}
+						/>
+					) : null
 				}
 			/>
-			<div className="table-bookmark">
-				{user ? (
-					<BookmarkButton
-						className="table-bookmark-button"
-						title={bookmarkTitle}
-						url={data.url}
-					/>
-				) : null}
-			</div>
 		</div>
 	);
 };

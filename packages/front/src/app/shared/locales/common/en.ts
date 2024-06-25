@@ -298,7 +298,7 @@ Sincerely`,
 		},
 		favourite: {
 			title: "My Favourites",
-			superFavourites: "My super favorites",
+			superFavourites: "My pinned favourites",
 			add: "Add a personal resource",
 			pin: "Pin {{url}}",
 			unpin: "Unpin {{url}}",

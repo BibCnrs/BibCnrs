@@ -363,6 +363,13 @@ export class JanusAccountsService {
 	}
 
 	remove(id: number) {
-		return this.prismaService.janus_account.delete({ where: { id } });
+		return this.prismaService.$transaction([
+			this.prismaService.history.deleteMany({
+				where: { user_id: id.toString() },
+			}),
+			this.prismaService.janus_account.delete({
+				where: { id },
+			}),
+		]);
 	}
 }

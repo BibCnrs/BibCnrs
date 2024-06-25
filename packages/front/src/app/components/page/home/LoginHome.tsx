@@ -78,7 +78,7 @@ export const LoginHome = () => {
 						aria-label={t("pages.news.title")}
 						color="primary"
 					>
-						{t("pages.favourite.title")}
+						{t("pages.favourite.superFavourites")}
 					</Typography>
 					<Box
 						display="grid"

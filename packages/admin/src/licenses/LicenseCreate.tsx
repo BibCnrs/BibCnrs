@@ -8,14 +8,14 @@ import {
 import { CreateActions } from "../components/Actions";
 import {
 	MultilingualContentTab,
-	validateMultilingualContentCreation,
+	validateLicenceCreation,
 } from "../components/MultilingualContentTab";
 import { LicenseCommunities } from "./LicenseCommunities";
 
 const LicenseCreate = () => {
 	return (
 		<Create actions={<CreateActions />} redirect="list">
-			<SimpleForm validate={validateMultilingualContentCreation}>
+			<SimpleForm validate={validateLicenceCreation}>
 				<LicenseCommunities />
 				<FileInput
 					sx={{ marginTop: 4 }}

@@ -26,6 +26,7 @@ type SearchResultsProps<T> = {
 	results?: T[];
 	total?: number;
 	args: SearchResultsArgsProps;
+	disableItemGap?: boolean;
 	onArgsChange: (tableArgs: SearchResultsArgsProps) => void;
 };
 
@@ -36,6 +37,7 @@ export default function SearchResults<T>({
 	header,
 	args,
 	onArgsChange,
+	disableItemGap = false,
 }: SearchResultsProps<T>) {
 	const t = useTranslator();
 
@@ -59,7 +61,7 @@ export default function SearchResults<T>({
 	return (
 		<Stack gap={2}>
 			{header}
-			<Stack gap={4}>
+			<Stack gap={disableItemGap ? 0 : 4}>
 				{total !== 0 ? (
 					results.map((result: T, index: number) => (
 						<DisplayElement
