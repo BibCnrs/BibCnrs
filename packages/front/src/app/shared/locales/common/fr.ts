@@ -105,7 +105,7 @@ const fr: Common = {
 				isbnOnline: "eISBN : ",
 				isbnPrint: "pISBN : ",
 				present: "Présent",
-				links: "Accès à l'article",
+				links: '"Accès à l\'article"{{ title }}"',
 				pdf: "Accès au pdf",
 				alert: {
 					active: {
