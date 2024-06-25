@@ -92,7 +92,7 @@ export class AbstractEbscoSearchService {
 			`${this.ebsco.host}${this.ebsco.port || ""}${url}`,
 			{
 				method: "POST",
-				body: JSON.stringify(json),
+				data: JSON.stringify(json),
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -102,7 +102,7 @@ export class AbstractEbscoSearchService {
 			},
 		);
 
-		const body = await response.json();
+		const body = response.data;
 
 		const { UserId: _userid, Password: _password, ...cleanedJson } = json;
 		logger.log(
@@ -457,14 +457,12 @@ export class AbstractEbscoSearchService {
 
 	async getInfoFromDOAJ(isn: string) {
 		try {
-			const result = await this.http.request(
+			const response = await this.http.request(
 				`${this.ebsco.doajUrl}search/journals/issn:${isn}`,
 			);
 
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			const body = (await result.json()) as any;
 			return {
-				has_apc: body?.results?.[0]?.bibjson?.apc?.has_apc ?? null,
+				has_apc: response.data?.results?.[0]?.bibjson?.apc?.has_apc ?? null,
 			};
 		} catch (error) {
 			logger.error(`Error while fetching DOAJ info ${error}`);

@@ -9,7 +9,7 @@ export class EbscoRisController {
 	async retrieveRis(@Body("links", new DefaultValuePipe([])) links: string[]) {
 		return Promise.all(
 			links.map((link) =>
-				this.http.request(link).then((response) => response.text()),
+				this.http.request(link).then((response) => response.data),
 			),
 		);
 	}
