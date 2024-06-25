@@ -1,8 +1,8 @@
+import { Button } from "@mui/material";
 import { Container } from "@mui/system";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useState } from "react";
-import CustomButton from "../../../components/element/button/CustomButton";
 import TableHistory from "../../../components/element/table/TableHistory";
 import PageTitle from "../../../components/internal/PageTitle";
 import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
@@ -99,6 +99,7 @@ const History = ({
 					>
 						<SearchResults
 							DisplayElement={TableHistory}
+							disableItemGap
 							results={data?.histories}
 							args={args}
 							onArgsChange={setArgs}
@@ -106,13 +107,13 @@ const History = ({
 							header={
 								<div className="history-header">
 									{displayOnlyAlert ? (
-										<CustomButton onClick={handleDisable}>
+										<Button variant="outlined" onClick={handleDisable}>
 											{t("pages.history.buttons.disable")}
-										</CustomButton>
+										</Button>
 									) : (
-										<CustomButton onClick={handleDelete}>
+										<Button variant="outlined" onClick={handleDelete}>
 											{t("pages.history.buttons.delete")}
-										</CustomButton>
+										</Button>
 									)}
 								</div>
 							}

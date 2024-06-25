@@ -15,9 +15,9 @@ import type {
 	HistoryEntryFacetsDataType,
 	HistoryEntryLimiterDataType,
 } from "../../../shared/types/data.types";
-import CustomButton from "../button/CustomButton";
 import AlertModification from "../dialog/AlertModification";
 import "./scss/TableHistory.scss";
+import { Button } from "@mui/material";
 import { useBibContext } from "../../../context/BibContext";
 import type { SearchResultsElementProps } from "../../page/search/SearchResults";
 import type { FacetEntry } from "../../page/search/facet/Facet.type";
@@ -25,7 +25,7 @@ import type { FacetEntry } from "../../page/search/facet/Facet.type";
 const Limiters = ({ data }: { data: HistoryEntryLimiterDataType }) => {
 	const t = useTranslator();
 	return (
-		<ul>
+		<ul style={{ margin: 0 }}>
 			{data.fullText ? (
 				<li>
 					<b>{t("ebsco.limiters.fullText")}</b>
@@ -44,7 +44,7 @@ const Limiters = ({ data }: { data: HistoryEntryLimiterDataType }) => {
 			{data.publicationDate.from ? (
 				<li>
 					<b>{t("ebsco.limiters.publicationDate")}</b>
-					<ul>
+					<ul style={{ margin: 0 }}>
 						<li>
 							<i>
 								{data.publicationDate.from}
@@ -69,7 +69,7 @@ const Facets = ({ data }: { data: HistoryEntryFacetsDataType }) => {
 			{keys.map((key) => (
 				<div key={key}>
 					<b>{t(`ebsco.facets.${key}`)}</b>
-					<ul>
+					<ul style={{ margin: 0 }}>
 						{data[key].map((facets) => (
 							<li key={facets}>
 								<i>{facets}</i>
@@ -256,14 +256,14 @@ const TableHistory = ({
 					<Facets data={data.event.activeFacets} />
 				</div>
 				<div className="table-history-box">
-					<ul>
+					<ul style={{ margin: 0 }}>
 						<li>
 							<b>{t("components.table.content.nbResult")}</b>
 							{` ${data.event.totalHits ?? data.nb_results}`}
 						</li>
 					</ul>
 					<div className="table-history-box-actions-buttons">
-						<CustomButton
+						<Button
 							className="table-history-box-actions-button"
 							size="small"
 							onClick={() => {
@@ -271,26 +271,26 @@ const TableHistory = ({
 							}}
 						>
 							<DeleteOutlineIcon />
-						</CustomButton>
-						<CustomButton
+						</Button>
+						<Button
 							className="table-history-box-actions-button"
 							size="small"
 							onClick={handleSearch}
 						>
 							<OpenInNewIcon />
-						</CustomButton>
+						</Button>
 						<FormControlLabel
 							sx={{
 								marginLeft: "0",
 							}}
 							control={
-								<CustomButton
+								<Button
 									className="table-history-box-actions-button"
 									size="small"
 									onClick={handleOpen}
 								>
 									<BellIcon hasAlert={data.hasAlert} active={data.active} />
-								</CustomButton>
+								</Button>
 							}
 							label={alertText}
 						/>

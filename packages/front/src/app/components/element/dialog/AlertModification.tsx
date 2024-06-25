@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
@@ -16,7 +17,6 @@ import { HistoryContext } from "../../../pages/user/history/History";
 import { disableSearchAlert } from "../../../services/user/SearchAlert";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { AlertModificationProps } from "../../../shared/types/props.types";
-import CustomButton from "../button/CustomButton";
 
 const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 	const t = useTranslator();
@@ -100,12 +100,12 @@ const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 					</FormControl>
 				</DialogContent>
 				<DialogActions>
-					<CustomButton onClick={handleCancel}>
+					<Button onClick={handleCancel} variant="text">
 						{t("components.dialog.cancel")}
-					</CustomButton>
-					<CustomButton onClick={handleSave}>
+					</Button>
+					<Button onClick={handleSave} variant="outlined">
 						{t("components.dialog.save")}
-					</CustomButton>
+					</Button>
 				</DialogActions>
 			</Dialog>
 			<Backdrop
