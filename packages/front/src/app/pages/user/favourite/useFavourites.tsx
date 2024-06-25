@@ -90,7 +90,6 @@ export function useFavourites() {
 
 	const addSuperFavourite = useCallback(
 		(favourite: FavouriteResourceDataType) => {
-			console.log("addSuperFavourite");
 			updateFavouriteResources([
 				...superFavouriteResources,
 				{
