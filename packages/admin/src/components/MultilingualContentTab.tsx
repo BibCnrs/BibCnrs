@@ -7,31 +7,30 @@ import { TextInput, required } from "react-admin";
 import { useFormState } from "react-hook-form";
 import TabPanel from "./TabPanel";
 
-// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-export const validateMultilingualContentCreation = (values: any) => {
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	const errors: any = {};
-	if (!values.page) {
-		errors.page = "ra.validation.required";
-	}
+export const validateLicenceCreation = (values) => {
+	const requiredFields = ["content_en", "name_en", "content_fr", "name_fr"];
+	return requiredFields.reduce((errors, field) => {
+		if (!values[field]) {
+			errors[field] = "ra.validation.required";
+		}
+		return errors;
+	}, {});
+};
 
-	if (!values.content_en) {
-		errors.content_en = "ra.validation.required";
-	}
-
-	if (!values.name_en) {
-		errors.name_en = "ra.validation.required";
-	}
-
-	if (!values.content_fr) {
-		errors.content_fr = "ra.validation.required";
-	}
-
-	if (!values.name_fr) {
-		errors.name_fr = "ra.validation.required";
-	}
-
-	return errors;
+export const validateMultilingualContentCreation = (values) => {
+	const requiredFields = [
+		"page",
+		"content_en",
+		"name_en",
+		"content_fr",
+		"name_fr",
+	];
+	return requiredFields.reduce((errors, field) => {
+		if (!values[field]) {
+			errors[field] = "ra.validation.required";
+		}
+		return errors;
+	}, {});
 };
 
 export const MultilingualContentTab = () => {
