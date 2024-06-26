@@ -98,6 +98,62 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Home
+	await prisma.content_management.createMany({
+		data: [
+			{
+				page: "home",
+				name_en: "Welcome to BIB CNRS",
+				name_fr: "Bienvenue sur la plateforme BIB CNRS",
+				content_en:
+					"Praesent dapibus at tellus a laoreet. Sed id nisi eget est pretium efficitur. Etiam libero urna, vehicula vitae vehicula sed, tempus vel dolor. Morbi sed velit finibus nulla scelerisque eleifend eu vel nunc.",
+				content_fr:
+					"Mauris nec quam faucibus, dignissim ex non, posuere lectus. Etiam in mauris accumsan, aliquet justo sit amet, convallis felis. Vivamus diam dui, pulvinar sed consequat ut, iaculis eu lectus.",
+				from: "2023-04-18T00:00:00.000Z",
+				enable: true,
+			},
+			{
+				page: "alert",
+				name_en: "Alert",
+				name_fr: "Alerte",
+				content_en:
+					"Cras magna tortor, accumsan sit amet mauris sit amet, hendrerit lobortis arcu.",
+				content_fr:
+					"Proin lacinia felis eu lacus lacinia, vel pretium ipsum tincidunt.",
+				from: "2023-04-18T00:00:00.000Z",
+				enable: true,
+			},
+		],
+	});
+
+	// Legal
+	await prisma.content_management.createMany({
+		data: [
+			{
+				page: "legal",
+				name_en: "Legal Notice",
+				name_fr: "Mentions légales",
+				content_en:
+					"Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla aliquet enim arcu, ut maximus enim semper id. In suscipit mauris a leo dapibus, quis porta leo ullamcorper.",
+				content_fr:
+					"Etiam vitae pretium turpis. Maecenas tempor velit eget lorem molestie consectetur. Proin elementum consectetur sem, vel hendrerit dui iaculis eu. Sed id odio vitae neque aliquam rutrum sed quis leo.",
+				from: "2023-04-18T00:00:00.000Z",
+				enable: true,
+			},
+			{
+				page: "about",
+				name_en: "About",
+				name_fr: "À propos",
+				content_en:
+					"Maecenas ut mi mauris. Pellentesque eget arcu luctus, egestas dolor at, elementum felis. Aliquam pretium, orci ac dapibus sollicitudin, arcu leo placerat felis, eget volutpat risus arcu at mi.",
+				content_fr:
+					"Aliquam ullamcorper varius dui in rhoncus. Etiam et est eget quam ultricies maximus iaculis eget est. Integer at augue volutpat, condimentum ex ut, cursus nisl. ",
+				from: "2023-04-18T00:00:00.000Z",
+				enable: true,
+			},
+		],
+	});
+
 	// FAQ
 	await prisma.content_management.createMany({
 		data: [
