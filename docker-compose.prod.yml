@@ -41,6 +41,9 @@ services:
       - ./../storage/uploads:/app/packages/api/uploads
       - ./../storage/logs:/app/packages/api/logs
     environment:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
       NODE_ENV: ${NODE_ENV}
       BIBAPI_HOST: ${BIBAPI_HOST}
       bib_admin_host: ${bib_admin_host}
