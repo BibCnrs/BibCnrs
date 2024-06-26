@@ -2,6 +2,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Paper, Stack, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { type MouseEvent, type ReactElement, useState } from "react";
+import { useTranslator } from "../../../shared/locales/I18N";
 
 type OpenablePaperProps = {
 	title: ReactElement | string | null;
@@ -24,6 +25,7 @@ export default function OpenablePaper({
 	leftAction,
 	rightAction,
 }: OpenablePaperProps) {
+	const t = useTranslator();
 	const [open, setOpen] = useState<boolean>(defaultOpenState);
 
 	const toggleOpen = (e: MouseEvent) => {
@@ -86,7 +88,17 @@ export default function OpenablePaper({
 					gap: 1,
 				}}
 			>
-				<IconButton size="small" color="primary" onClick={toggleOpen}>
+				<IconButton
+					size="small"
+					color="primary"
+					onClick={toggleOpen}
+					aria-label={t(
+						open
+							? "components.openablePaper.close"
+							: "components.openablePaper.open",
+						{ title: Title },
+					)}
+				>
 					<ArrowForwardIosIcon
 						sx={{
 							transition: "transform 100ms ease-in-out",

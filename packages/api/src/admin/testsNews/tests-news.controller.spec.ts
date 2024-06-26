@@ -10,7 +10,7 @@ import { AdminAuthenticationGuard } from "../authentication/authentication.guard
 import { TestsNewsController } from "./tests-news.controller";
 import { TestsNewsService } from "./tests-news.service";
 
-describe("TestsNewsController", () => {
+describe.sequential("TestsNewsController", () => {
 	let prisma: PrismaService;
 	let testsNewsController: TestsNewsController;
 

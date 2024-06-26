@@ -201,6 +201,10 @@ Sincerely`,
 			message:
 				"An error occurred during the search. Please reset the filters or try again later.",
 		},
+		openablePaper: {
+			open: "Open {{ title }}",
+			close: "Close {{ title }}",
+		},
 	},
 	pages: {
 		root: {
