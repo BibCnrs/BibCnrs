@@ -68,8 +68,8 @@ const Article = ({
 						rel="noreferrer noopener nofollow"
 						aria-label={
 							href
-								? t("components.table.content.links")
-								: t("components.table.content.noAccess")
+								? t("components.table.content.links", { title })
+								: t("components.table.content.noAccess", { title })
 						}
 					>
 						{openAccess && href ? (
