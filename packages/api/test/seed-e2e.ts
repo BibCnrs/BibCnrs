@@ -61,6 +61,24 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	await prisma.resources.createMany({
+		data: [
+			{
+				name_fr:
+					"Ressources disponibles pour le domaine Ecologie & Environnement",
+				name_en: "Resources available for the Ecology & Environment domain",
+				href: "https://localhost:3000/files/2024/6/14/BibCNRS_INEE_ListeTitres.xlsx",
+				enable: true,
+			},
+			{
+				name_fr: "Ressources disponibles pour le domaine Chimie",
+				name_en: "Resources available for the Chemistry domain",
+				href: "https://localhost:3000/files/2024/6/14/BibCNRS_INC2_ListeTitres.xlsx",
+				enable: true,
+			},
+		],
+	});
+
 	await prisma.content_management.createMany({
 		data: [
 			{
