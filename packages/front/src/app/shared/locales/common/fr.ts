@@ -202,6 +202,10 @@ Cordialement`,
 			message:
 				"Une erreur est survenue lors de la recherche. Veuillez réinitialiser les filtres ou réessayer plus tard.",
 		},
+		openablePaper: {
+			open: "Déplier {{ title }}",
+			close: "Replier {{ title }}",
+		},
 	},
 	pages: {
 		root: {

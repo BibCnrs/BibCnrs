@@ -1,4 +1,4 @@
-FROM node:22-alpine as base
+FROM node:22-alpine AS base
 
 RUN apk update && apk upgrade
 RUN mkdir -p /app/.yarn
@@ -13,7 +13,7 @@ COPY packages/front/package.json    /app/packages/front/package.json
 
 WORKDIR /app
 
-FROM base as sources
+FROM base AS sources
 
 ENV NODE_ENV=production
 
@@ -22,13 +22,13 @@ COPY --chown=node:node  packages/front/     ./packages/front/
 
 RUN yarn workspaces focus @bibcnrs/front
 
-FROM sources as dev
+FROM sources AS dev
 
 ENV NODE_ENV=development
 
 CMD ["yarn", "workspace", "@bibcnrs/front", "run", "dev"]
 
-FROM sources as prod-builder
+FROM sources AS prod-builder
 
 ARG BIBAPI_HOST
 ARG SOURCE_MAP=false

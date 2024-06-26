@@ -6,7 +6,7 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { FrontTestNewsController } from "./testNews.controller";
 import { FrontTestNewsService } from "./testNews.service";
 
-describe("FrontTestNewsController", () => {
+describe.sequential("FrontTestNewsController", () => {
 	let ebscoTestNewsController: FrontTestNewsController;
 
 	beforeEach(async () => {

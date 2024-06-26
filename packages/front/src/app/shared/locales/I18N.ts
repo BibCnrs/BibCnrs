@@ -204,6 +204,10 @@ export type Common = {
 		searchError: {
 			message: string;
 		};
+		openablePaper: {
+			open: string;
+			close: string;
+		};
 	};
 	pages: {
 		root: {

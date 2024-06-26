@@ -61,6 +61,40 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	await prisma.content_management.createMany({
+		data: [
+			{
+				page: "faq",
+				name_en: "More about Unpaywall?",
+				name_fr: "En savoir plus sur Unpaywall ?",
+				content_en:
+					"Open database of over <b>46 million free scientific articles from the Our Research project</b>, a non-profit organization that creates tools to make academic research more open.",
+				content_fr:
+					"Une base de données ouverte de plus de <b>46 millions d’articles scientifiques gratuits issue du projet de Our Research</b>, organisme à but non lucratif qui crée des outils pour rendre la recherche universitaire plus ouverte.",
+				from: "2023-04-18T00:00:00.000Z",
+				to: null,
+			},
+			{
+				page: "faq",
+				name_en: "How to search for a publication?",
+				name_fr: "Comment rechercher une publication ?",
+				content_en: "Example of search",
+				content_fr: "Exemple de recherche",
+				from: "2023-04-18T00:00:00.000Z",
+				to: null,
+			},
+			{
+				page: "faq",
+				name_en: "Test past",
+				name_fr: "Test passé",
+				content_en: "",
+				content_fr: "",
+				from: "2019-04-18T00:00:00.000Z",
+				to: "2020-04-18T00:00:00.000Z",
+			},
+		],
+	});
+
 	await prisma.janus_account.createMany({
 		data: [
 			{
