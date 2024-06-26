@@ -1,7 +1,7 @@
 import Checkbox from "@mui/material/Checkbox";
 import { memo, useContext } from "react";
 import type { ChangeEvent } from "react";
-import { ArticleContext } from "../../../pages/search/article/PageArticle";
+import { ArticleContext } from "../../../pages/search/article/ArticlePage";
 import type { ArticleContentGetter } from "../../../services/search/Article";
 
 const ExportArticleCheckbox = ({

@@ -8,9 +8,9 @@ import Select from "@mui/material/Select";
 import { Stack } from "@mui/system";
 import { type ChangeEvent, useContext } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
-import { ArticleContext } from "./PageArticle";
+import { ArticleContext } from "./ArticlePage";
 
-type PageArticleHeaderProps = {
+type ArticlePageHeaderProps = {
 	totalHits: number;
 	orderBy: string;
 	handleDownload: (format: string) => void;
@@ -21,13 +21,13 @@ type PageArticleHeaderProps = {
 	handleOrderChange: (event) => void;
 };
 
-export const PageArticleHeader = ({
+export const ArticlePageHeader = ({
 	totalHits,
 	orderBy,
 	handleDownload,
 	handleSelectAll,
 	handleOrderChange,
-}: PageArticleHeaderProps) => {
+}: ArticlePageHeaderProps) => {
 	const t = useTranslator();
 	const { exports, setExports } = useContext(ArticleContext);
 	return (

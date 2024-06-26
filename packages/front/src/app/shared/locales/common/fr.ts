@@ -108,6 +108,10 @@ const fr: Common = {
 				links: "Accès à l'article",
 				pdf: "Accès au pdf",
 				seeMore: "En savoir plus >",
+				abstract: "Résumé",
+				contributors: "Contributeurs",
+				collections: "Collections",
+				authors: "Auteurs",
 				alert: {
 					active: {
 						day: "Quotidenne",

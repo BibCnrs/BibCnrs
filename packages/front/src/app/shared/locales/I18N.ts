@@ -119,6 +119,10 @@ export type Common = {
 				links: string;
 				pdf: string;
 				seeMore: string;
+				abstract: string;
+				contributors: string;
+				collections: string;
+				authors: string;
 				alert: {
 					active: {
 						day: string;

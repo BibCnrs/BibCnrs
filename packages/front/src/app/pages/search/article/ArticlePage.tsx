@@ -40,8 +40,9 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
-import { CardArticle } from "./CardArticle";
-import { PageArticleHeader } from "./PageArticleHeader";
+import { ArticleCard } from "./ArticleCard";
+import { ArticlePageHeader } from "./ArticlePageHeader";
+import { ArticleSidebar } from "./ArticleSidebar";
 
 type ContextData = Array<{
 	id: number;
@@ -55,7 +56,7 @@ export const ArticleContext = createContext<{
 	// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 }>(null as any);
 
-const PageArticle = () => {
+const ArticlePage = () => {
 	const navigate = useNavigate();
 	const query = useSearchParams();
 	const t = useTranslator();
@@ -121,7 +122,6 @@ const PageArticle = () => {
 
 	useEffect(() => {
 		if (first) {
-			console.log("FIRST");
 			const queryValue = getString<undefined>(query, "q", search.query);
 			setSearch({
 				...search,
@@ -144,7 +144,6 @@ const PageArticle = () => {
 			setFirst(false);
 			return;
 		}
-		console.log("PAS FIRST");
 		// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 		const param: any = {};
 
@@ -382,7 +381,7 @@ const PageArticle = () => {
 									setExports,
 								}}
 							>
-								<PageArticleHeader
+								<ArticlePageHeader
 									totalHits={data?.totalHits ?? 0}
 									orderBy={search.article.orderBy}
 									handleDownload={handleDownload}
@@ -391,7 +390,7 @@ const PageArticle = () => {
 								/>
 								<Stack mt={2} spacing={2} mb={2}>
 									{data?.results.map((value) => (
-										<CardArticle
+										<ArticleCard
 											key={value.id}
 											article={value}
 											setSelectedArticle={setSelectedArticle}
@@ -404,27 +403,22 @@ const PageArticle = () => {
 									resultsPerPage={search.article.table.perPage}
 									total={data?.totalHits}
 								/>
+								<Drawer
+									anchor="right"
+									open={!!selectedArticle}
+									onClose={() => setSelectedArticle(null)}
+								>
+									{selectedArticle && (
+										<ArticleSidebar article={selectedArticle} />
+									)}
+								</Drawer>
 							</ArticleContext.Provider>
 						)}
 					</Grid>
 				</Grid>
 			</Container>
-
-			<Drawer
-				anchor="right"
-				open={!!selectedArticle}
-				onClose={() => setSelectedArticle(null)}
-			>
-				<div style={{ width: "250px", padding: "20px" }}>
-					{selectedArticle && (
-						<>
-							<h2>{selectedArticle.title}</h2>
-						</>
-					)}
-				</div>
-			</Drawer>
 		</>
 	);
 };
 
-export default PageArticle;
+export default ArticlePage;

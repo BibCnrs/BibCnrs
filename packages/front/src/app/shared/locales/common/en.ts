@@ -107,6 +107,10 @@ const en: Common = {
 				links: "Article access",
 				pdf: "Pdf access",
 				seeMore: "See more",
+				abstract: "Abstract",
+				contributors: "Contributors",
+				collections: "Collections",
+				authors: "Authors",
 				alert: {
 					active: {
 						day: "Daily",

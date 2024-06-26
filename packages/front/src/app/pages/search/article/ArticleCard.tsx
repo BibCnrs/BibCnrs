@@ -5,16 +5,16 @@ import {
 	Link,
 	Typography,
 } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import { useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import ExportArticleCheckbox from "../../../components/element/button/ExportArticleCheckbox";
-import OpenAccess from "../../../components/element/icon/OpenAccess";
 import { useBibContext } from "../../../context/BibContext";
 import { ArticleContentGetter } from "../../../services/search/Article";
 import { useTranslator } from "../../../shared/locales/I18N";
+import { ArticleTitle } from "./ArticleTitle";
 
-function ArticleId({ id }: { id: number }) {
+function IdArticle({ id }: { id: number }) {
 	return (
 		<Typography
 			component="div"
@@ -32,62 +32,17 @@ function ArticleId({ id }: { id: number }) {
 	);
 }
 
-const CardArticleTitle = ({ title, href, openAccess, type }) => {
+export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const t = useTranslator();
+	const [getterArticle, _] = useState(new ArticleContentGetter(article, null));
+	const { search } = useBibContext();
 
-	return (
-		<Typography
-			component={Link}
-			variant="h4"
-			sx={{
-				fontSize: 20,
-				display: "block",
-				height: "100%",
-				minHeight: "34px",
-				color: (theme) => theme.palette.primary.main,
-				fontWeight: 700,
-				cursor: "pointer",
-				mb: 2,
-			}}
-			underline={href ? "hover" : "none"}
-			href={href ?? undefined}
-			target="_blank"
-			rel="noreferrer noopener nofollow"
-			aria-label={
-				href
-					? `${t("components.search.content.links")}: ${title}`
-					: `${title} (${t("components.search.content.noAccess")})`
-			}
-		>
-			{openAccess && href ? (
-				<Box
-					mr={1}
-					display="inline-block"
-					aria-label={t("components.search.content.openAccess")}
-				>
-					<OpenAccess />
-				</Box>
-			) : null}
-			{title} {type ? `[${type}]` : null}
-			{!href ? <i> ({t("components.search.content.noAccess")})</i> : null}
-		</Typography>
-	);
-};
-
-export const CardArticle = ({ article, setSelectedArticle }) => {
-	const t = useTranslator();
-	const [getter, _] = useState(new ArticleContentGetter(article, null));
-	const {
-		search,
-		session: { user },
-	} = useBibContext();
-
-	const title = getter.getTitle();
-	const authors = getter.getAuthors();
-	const doi = getter.getDOI();
-	const source = getter.getSource();
-	const href = getter.proxify(getter.getHref(), search.domain);
-	const openAccess = getter.isOpenAccess();
+	const title = getterArticle.getTitle();
+	const authors = getterArticle.getAuthors();
+	const doi = getterArticle.getDOI();
+	const source = getterArticle.getSource();
+	const href = getterArticle.proxify(getterArticle.getHref(), search.domain);
+	const openAccess = getterArticle.isOpenAccess();
 
 	return (
 		<Card
@@ -99,18 +54,18 @@ export const CardArticle = ({ article, setSelectedArticle }) => {
 				border: 0,
 				minHeight: "100%",
 			}}
-			aria-label={`article-title-${getter.getId()}`}
+			aria-label={`article-title-${getterArticle.getId()}`}
 		>
 			<Stack direction="row" alignItems="center" justifyContent="space-between">
-				<ExportArticleCheckbox getter={getter} />
-				<ArticleId id={getter.getId()} />
+				<ExportArticleCheckbox getter={getterArticle} />
+				<IdArticle id={getterArticle.getId()} />
 			</Stack>
 			<CardContent sx={{ flex: 1, paddingY: 0 }}>
-				<CardArticleTitle
+				<ArticleTitle
 					title={title}
 					href={href}
 					openAccess={openAccess}
-					type={getter.getType()}
+					type={getterArticle.getType()}
 				/>
 				{authors && (
 					<Typography variant="body1">
