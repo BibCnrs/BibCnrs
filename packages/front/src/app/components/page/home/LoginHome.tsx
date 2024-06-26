@@ -113,7 +113,7 @@ export const LoginHome = () => {
 								textTransform: "none",
 							}}
 						>
-							{`${t("pages.root.seeMore")} >`}
+							{`${t("pages.root.seeMoreFavourites")} >`}
 						</Button>
 					</Box>
 				</Stack>
@@ -137,7 +137,7 @@ export const LoginHome = () => {
 								textTransform: "none",
 							}}
 						>
-							{`${t("pages.root.seeMore")} >`}
+							{`${t("pages.root.seeMoreNews")} >`}
 						</Button>
 					</Box>
 				</Stack>

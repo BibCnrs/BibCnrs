@@ -210,7 +210,8 @@ Cordialement`,
 	pages: {
 		root: {
 			title: "Accueil",
-			seeMore: "Voir plus",
+			seeMoreFavourites: "Voir plus de favoris",
+			seeMoreNews: "Voir plus d'actualités",
 			emptyFavorites:
 				"Epingler des favoris dans la page des favoris (lien) pour les voir apparaitre ici.",
 		},
