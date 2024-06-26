@@ -1,19 +1,16 @@
-import {
-	CanActivate,
-	ExecutionContext,
-	Injectable,
-	UnauthorizedException,
-} from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { Config } from "../../config";
+import { AppLogger } from "../logger/AppLogger";
 import { JWT_ALG, LOGIN_COOKIE_NAME } from "./auth.const";
 import { TokenPayload } from "./auth.type";
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class UserRetrieveGuard implements CanActivate {
 	private readonly authConfig: Config["auth"];
+	private readonly logger = new AppLogger(UserRetrieveGuard.name);
 
 	constructor(
 		private readonly jwtService: JwtService,
@@ -28,8 +25,9 @@ export class AuthGuard implements CanActivate {
 		const request = context.switchToHttp().getRequest<Request>();
 		const token = this.extractTokenFromCookie(request);
 		if (!token) {
-			throw new UnauthorizedException();
+			return true;
 		}
+
 		try {
 			const payload = await this.jwtService.verifyAsync<
 				TokenPayload<"inist" | "janus">
@@ -39,12 +37,12 @@ export class AuthGuard implements CanActivate {
 			});
 
 			if (payload.origin !== "inist" && payload.origin !== "janus") {
-				throw new UnauthorizedException();
+				return true;
 			}
 
 			request.user = payload;
-		} catch {
-			throw new UnauthorizedException();
+		} catch (e) {
+			this.logger.warn(`Failed to decode token, ${e}`);
 		}
 		return true;
 	}
