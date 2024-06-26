@@ -68,8 +68,8 @@ const Article = ({
 						rel="noreferrer noopener nofollow"
 						aria-label={
 							href
-								? t("components.table.content.links")
-								: t("components.table.content.noAccess")
+								? t("components.search.content.links")
+								: t("components.search.content.noAccess")
 						}
 					>
 						{openAccess && href ? (
@@ -78,7 +78,7 @@ const Article = ({
 							</Box>
 						) : null}
 						{title} {getter.getType() ? `[${getter.getType()}]` : null}
-						{!href ? <i> ({t("components.table.content.noAccess")})</i> : null}
+						{!href ? <i> ({t("components.search.content.noAccess")})</i> : null}
 					</Link>
 				</>
 			}
@@ -98,7 +98,7 @@ const Article = ({
 					{source && <Typography variant="body2">{source}</Typography>}
 					{doi && (
 						<Typography variant="body2">
-							{t("components.table.content.doiColon")} {doi}
+							{t("components.search.content.doiColon")} {doi}
 						</Typography>
 					)}
 				</Box>
@@ -162,7 +162,7 @@ const Article = ({
 						{articlesLinks.fullTextLinks.length > 0 && (
 							<>
 								<Typography component="dt" variant="subtitle1">
-									{t("components.table.content.links")}
+									{t("components.search.content.links")}
 								</Typography>
 								<ArticleLinks
 									links={articlesLinks.fullTextLinks}
@@ -175,7 +175,7 @@ const Article = ({
 						{articlesLinks.pdfLinks.length > 0 && (
 							<>
 								<Typography component="dt" variant="subtitle1">
-									{t("components.table.content.pdf")}
+									{t("components.search.content.pdf")}
 								</Typography>
 								<ArticleLinks
 									links={articlesLinks.pdfLinks}

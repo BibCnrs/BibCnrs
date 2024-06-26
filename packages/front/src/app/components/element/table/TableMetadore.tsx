@@ -118,26 +118,26 @@ const TableMetadore = ({
 				leftAction={<MetadoreId id={data.id} />}
 				summary={
 					<div className="table-list-body">
-						{t("components.table.content.doiColon")}
+						{t("components.search.content.doiColon")}
 						{data.doi}
 					</div>
 				}
 				content={
 					<Typography component="dl">
 						<Typography component="dt" variant="subtitle1">
-							{t("components.table.content.doi")}
+							{t("components.search.content.doi")}
 						</Typography>
 						<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 							{data.doi}
 						</Typography>
 						<Typography component="dt" variant="subtitle1">
-							{t("components.table.content.type")}
+							{t("components.search.content.type")}
 						</Typography>
 						<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 							{data.type}
 						</Typography>
 						<Typography component="dt" variant="subtitle1">
-							{t("components.table.content.publicationYear")}
+							{t("components.search.content.publicationYear")}
 						</Typography>
 						<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 							{data.publicationYear}
@@ -146,7 +146,7 @@ const TableMetadore = ({
 						{description ? (
 							<>
 								<Typography component="dt" variant="subtitle1">
-									{t("components.table.content.description")}
+									{t("components.search.content.description")}
 								</Typography>
 								<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 									{description}
@@ -157,7 +157,7 @@ const TableMetadore = ({
 						{data.subjects.length !== 0 ? (
 							<>
 								<Typography component="dt" variant="subtitle1">
-									{t("components.table.content.subjects")}
+									{t("components.search.content.subjects")}
 								</Typography>
 								<Typography component="dd" sx={{ marginInlineStart: "40px" }}>
 									{data.subjects.join(", ")}

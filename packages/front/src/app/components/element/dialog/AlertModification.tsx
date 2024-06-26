@@ -85,16 +85,16 @@ const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 					<FormControl sx={{ m: 1, minWidth: 240 }}>
 						<Select value={value} onChange={handleChange} displayEmpty>
 							<MenuItem value="day">
-								{t("components.table.content.alert.active.day")}
+								{t("components.search.content.alert.active.day")}
 							</MenuItem>
 							<MenuItem value="week">
-								{t("components.table.content.alert.active.week")}
+								{t("components.search.content.alert.active.week")}
 							</MenuItem>
 							<MenuItem value="month">
-								{t("components.table.content.alert.active.month")}
+								{t("components.search.content.alert.active.month")}
 							</MenuItem>
 							<MenuItem value="disable">
-								{t("components.table.content.alert.disable")}
+								{t("components.search.content.alert.disable")}
 							</MenuItem>
 						</Select>
 					</FormControl>

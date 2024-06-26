@@ -1,25 +1,24 @@
-import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import MenuItem from "@mui/material/MenuItem";
 import type { SelectChangeEvent } from "@mui/material/Select";
-import Select from "@mui/material/Select";
+
+import { Drawer, Grid } from "@mui/material";
+import { Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
-import TableArticle from "../../../components/element/table/TableArticle";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/search/ChipFacet";
 import FacetSidebar, {
 	type FacetSidebarProps,
 } from "../../../components/page/search/FacetSidebar";
-import SearchResults, {
-	type SearchResultsArgsProps,
-} from "../../../components/page/search/SearchResults";
+import PaginationComponent from "../../../components/page/search/PaginationComponent";
+import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
+import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
+import { SearchError } from "../../../components/shared/SearchError";
+import { useBibContext } from "../../../context/BibContext";
+import { BibContextArticleDefault } from "../../../context/BibContext.const";
 import type {
 	ArticleParam,
 	OrderByType,
@@ -41,13 +40,8 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
-import "./Article.scss";
-import { Button, Grid, Typography } from "@mui/material";
-import { Container, Stack } from "@mui/system";
-import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
-import { SearchError } from "../../../components/shared/SearchError";
-import { useBibContext } from "../../../context/BibContext";
-import { BibContextArticleDefault } from "../../../context/BibContext.const";
+import { CardArticle } from "./CardArticle";
+import { PageArticleHeader } from "./PageArticleHeader";
 
 type ContextData = Array<{
 	id: number;
@@ -61,7 +55,7 @@ export const ArticleContext = createContext<{
 	// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 }>(null as any);
 
-const Article = () => {
+const PageArticle = () => {
 	const navigate = useNavigate();
 	const query = useSearchParams();
 	const t = useTranslator();
@@ -73,6 +67,7 @@ const Article = () => {
 	const [seed, setSeed] = useState<number>(0);
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
 	const [exports, setExports] = useState<ContextData>([]);
+	const [selectedArticle, setSelectedArticle] = useState(null);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -126,6 +121,7 @@ const Article = () => {
 
 	useEffect(() => {
 		if (first) {
+			console.log("FIRST");
 			const queryValue = getString<undefined>(query, "q", search.query);
 			setSearch({
 				...search,
@@ -148,6 +144,7 @@ const Article = () => {
 			setFirst(false);
 			return;
 		}
+		console.log("PAS FIRST");
 		// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 		const param: any = {};
 
@@ -236,18 +233,8 @@ const Article = () => {
 		setSeed(seed + 1);
 	};
 
-	const handleTable = (tableArgs: SearchResultsArgsProps) => {
-		setSearch({
-			...search,
-			article: {
-				...search.article,
-				table: tableArgs,
-			},
-		});
-	};
-
 	const handleSelectAll = (
-		event: ChangeEvent<HTMLInputElement>,
+		_: ChangeEvent<HTMLInputElement>,
 		checked: boolean,
 	) => {
 		if (data && checked) {
@@ -274,6 +261,24 @@ const Article = () => {
 			document.body.appendChild(elem);
 			elem.click();
 			document.body.removeChild(elem);
+		});
+	};
+
+	const handleTable = (tableArgs: SearchResultsArgsProps) => {
+		setSearch({
+			...search,
+			article: {
+				...search.article,
+				table: tableArgs,
+			},
+		});
+	};
+
+	const handlePagination = (currentPage: number, resultsPerPage: number) => {
+		handleTable({
+			...search.article.table,
+			perPage: resultsPerPage,
+			page: currentPage,
 		});
 	};
 
@@ -377,81 +382,49 @@ const Article = () => {
 									setExports,
 								}}
 							>
-								<SearchResults
-									id="search-content"
-									DisplayElement={TableArticle}
-									results={data?.results}
-									args={search.article.table}
-									onArgsChange={handleTable}
+								<PageArticleHeader
+									totalHits={data?.totalHits ?? 0}
+									orderBy={search.article.orderBy}
+									handleDownload={handleDownload}
+									handleSelectAll={handleSelectAll}
+									handleOrderChange={handleOrderChange}
+								/>
+								<Stack mt={2} spacing={2} mb={2}>
+									{data?.results.map((value) => (
+										<CardArticle
+											key={value.id}
+											article={value}
+											setSelectedArticle={setSelectedArticle}
+										/>
+									))}
+								</Stack>
+								<PaginationComponent
+									currentPage={search.article.table.page}
+									onChange={handlePagination}
+									resultsPerPage={search.article.table.perPage}
 									total={data?.totalHits}
-									header={
-										<Stack direction="row" alignItems="center">
-											<Typography fontWeight="bold">
-												{data?.totalHits}{" "}
-												{t("components.table.content.result", {
-													count: data?.totalHits,
-												})}
-											</Typography>
-											<FormControl id="article-action" size="small">
-												{exports.length !== 0 ? (
-													<>
-														<Button
-															color="primary"
-															variant="contained"
-															sx={{ paddingLeft: 1, paddingRight: 2 }}
-															className="article-action-element"
-															onClick={() => {
-																handleDownload("bibtex");
-															}}
-														>
-															<SaveAltIcon sx={{ marginRight: 1 }} />
-															BIBTEX
-														</Button>
-														<Button
-															variant="contained"
-															sx={{ paddingLeft: 1, paddingRight: 2 }}
-															className="article-action-element"
-															onClick={() => {
-																handleDownload("ris");
-															}}
-														>
-															<SaveAltIcon sx={{ marginRight: 1 }} />
-															RIS
-														</Button>
-													</>
-												) : null}
-												<FormControlLabel
-													sx={{ marginLeft: 2 }}
-													control={<Checkbox onChange={handleSelectAll} />}
-													label={t("pages.article.selectAll")}
-												/>
-												<Select
-													className="article-action-element"
-													value={search.article.orderBy}
-													onChange={handleOrderChange}
-													displayEmpty
-												>
-													<MenuItem value="date_asc">
-														{t("pages.article.order.dateAsc")}
-													</MenuItem>
-													<MenuItem value="date_desc">
-														{t("pages.article.order.dateDesc")}
-													</MenuItem>
-													<MenuItem value="relevance">
-														{t("pages.article.order.relevance")}
-													</MenuItem>
-												</Select>
-											</FormControl>
-										</Stack>
-									}
 								/>
 							</ArticleContext.Provider>
 						)}
 					</Grid>
 				</Grid>
 			</Container>
+
+			<Drawer
+				anchor="right"
+				open={!!selectedArticle}
+				onClose={() => setSelectedArticle(null)}
+			>
+				<div style={{ width: "250px", padding: "20px" }}>
+					{selectedArticle && (
+						<>
+							<h2>{selectedArticle.title}</h2>
+						</>
+					)}
+				</div>
+			</Drawer>
 		</>
 	);
 };
 
-export default Article;
+export default PageArticle;

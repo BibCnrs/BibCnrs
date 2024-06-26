@@ -315,7 +315,7 @@ export default function PublicationSearchResult({
 				}
 				coverageString += `${start.toLocaleDateString()} - ${
 					end.getFullYear() > new Date().getFullYear()
-						? t("components.table.content.present")
+						? t("components.search.content.present")
 						: end.toLocaleDateString()
 				}`;
 			});
@@ -358,25 +358,25 @@ export default function PublicationSearchResult({
 				<Stack gap={1}>
 					{issnOnline && issnOnline.length > 0 ? (
 						<Typography>
-							{t("components.table.content.issnOnline") /* eISSN */}
+							{t("components.search.content.issnOnline") /* eISSN */}
 							{issnOnline.join(", ")}
 						</Typography>
 					) : null}
 					{issnPrint && issnPrint.length > 0 ? (
 						<Typography>
-							{t("components.table.content.issnPrint") /* pISSN */}
+							{t("components.search.content.issnPrint") /* pISSN */}
 							{issnPrint.join(", ")}
 						</Typography>
 					) : null}
 					{isbnOnline && isbnOnline.length > 0 ? (
 						<Typography>
-							{t("components.table.content.isbnOnline") /* eISBN */}
+							{t("components.search.content.isbnOnline") /* eISBN */}
 							{isbnOnline.join(", ")}
 						</Typography>
 					) : null}
 					{isbnPrint && isbnPrint.length > 0 ? (
 						<Typography>
-							{t("components.table.content.isbnPrint") /* pISBN */}
+							{t("components.search.content.isbnPrint") /* pISBN */}
 							{isbnPrint.join(", ")}
 						</Typography>
 					) : null}

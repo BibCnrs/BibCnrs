@@ -78,7 +78,7 @@ const fr: Common = {
 			publication: "Revue, ouvrage",
 			researchData: "Données de recherche",
 		},
-		table: {
+		search: {
 			noData: "Aucun résultat trouvé.",
 			content: {
 				doi: "DOI",
@@ -107,6 +107,7 @@ const fr: Common = {
 				present: "Présent",
 				links: "Accès à l'article",
 				pdf: "Accès au pdf",
+				seeMore: "En savoir plus >",
 				alert: {
 					active: {
 						day: "Quotidenne",

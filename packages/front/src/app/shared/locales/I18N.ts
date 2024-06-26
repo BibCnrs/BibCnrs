@@ -89,7 +89,7 @@ export type Common = {
 			database: string;
 			researchData: string;
 		};
-		table: {
+		search: {
 			noData: string;
 			content: {
 				doi: string;
@@ -118,6 +118,7 @@ export type Common = {
 				present: string;
 				links: string;
 				pdf: string;
+				seeMore: string;
 				alert: {
 					active: {
 						day: string;

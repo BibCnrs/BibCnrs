@@ -329,8 +329,9 @@ export class ArticleContentGetter {
 			/unpaywalleds/i.test(d.name),
 		);
 		if (!unpaywall) {
+			// BUSINESS RULES: For the moment, we consider that an open access link is a link that contains the words "open access" or "Full Text from ERIC"
 			openAccess = articleLinks.fullTextLinks.find((d) =>
-				/accès en ligne en open access/i.test(d.name),
+				/(accès en ligne en open access|Full Text from ERIC)/i.test(d.name),
 			);
 		}
 		const accessUrl = articleLinks.urls.find((d) =>
@@ -389,7 +390,8 @@ export class ArticleContentGetter {
 		}
 
 		if (!sid) {
-			if (/open access/i.test(name)) {
+			// BUSINESS RULES: For the moment, we consider that an open access link is a link that contains the words "open access" or "Full Text from ERIC"
+			if (/(open access|Full Text from ERIC)/i.test(name)) {
 				sid = "oa";
 			} else {
 				return url;
@@ -453,8 +455,9 @@ export class ArticleContentGetter {
 			/unpaywalleds/i.test(d.name),
 		);
 		if (!unpaywall) {
+			// BUSINESS RULES: For the moment, we consider that an open access link is a link that contains the words "open access" or "Full Text from ERIC"
 			openAccess = articleLinks.fullTextLinks.find((d) =>
-				/accès en ligne en open access/i.test(d.name),
+				/(accès en ligne en open access|Full Text from ERIC)/i.test(d.name),
 			);
 		}
 		const hrefWithIcon = [openAccess, unpaywall].filter(Boolean);
