@@ -105,6 +105,7 @@ describe("ContentManagementController", () => {
 				name_fr: "Bonjour Created",
 				content_en: "Hello! Created",
 				content_fr: "Bonjour! Created",
+				order: null,
 			});
 
 			expect(createdAdmin).toEqual(

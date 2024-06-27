@@ -31,7 +31,8 @@ export class FrontCmsService {
 			},
 			orderBy: [
 				{
-					from: "asc",
+					from: page === "faq" ? undefined : "asc",
+					order: page === "faq" ? "asc" : undefined,
 				},
 			],
 		});

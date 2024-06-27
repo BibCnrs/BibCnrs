@@ -7,6 +7,7 @@ import {
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
+	NumberField,
 	SelectInput,
 	TextInput,
 	WrapperField,
@@ -43,6 +44,7 @@ export default function ContentManagementList() {
 				<WrapperField label="Page">
 					<InternalChip />
 				</WrapperField>
+				<NumberField source="order" label="Ordre" />
 				<DateField source="from" label="Date début" />
 				<DateField source="to" emptyText="-" label="Date fin" />
 				<EditButton />
