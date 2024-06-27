@@ -1,10 +1,13 @@
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from "../app.module";
+import { AppLogger } from "../common/logger/AppLogger";
 import { EbscoHistoryCronService } from "../ebsco/history/historyCron.service";
 
 (async () => {
-	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+		logger: new AppLogger("Nest"),
+	});
 
 	await app.init();
 

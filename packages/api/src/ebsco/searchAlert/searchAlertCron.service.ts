@@ -169,6 +169,7 @@ export class EbscoSearchAlertCronService {
 								if (typeof last_results === "string") {
 									last_results = JSON.parse(last_results);
 								}
+
 								testedAlerts++;
 
 								if (!Array.isArray(last_results)) {
