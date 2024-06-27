@@ -20,7 +20,7 @@ import { UserLoading } from "./components/UserLoading";
  */
 const Header = () => {
 	const t = useTranslator();
-	const { session: user } = useBibContext();
+	const { session } = useBibContext();
 	const theme = useTheme();
 
 	return (
@@ -73,17 +73,17 @@ const Header = () => {
 				</Stack>
 				<Stack direction="row" alignItems="flex-end" gap={1}>
 					<LocalButton />
-					<ThemeButton />
+					{session.user?.origin !== "janus" && <ThemeButton />}
 					<HeaderButton name="resources" route={RouteResources} />
 					<HeaderButton name="questions" route={RouteFaq} />
 
-					{user.status === "loading" && <UserLoading />}
-					{user.status === "loggedIn" && (
+					{session.status === "loading" && <UserLoading />}
+					{session.status === "loggedIn" && (
 						<>
 							<UserButton />
 						</>
 					)}
-					{user.status === "loggedOut" && <SignInButton />}
+					{session.status === "loggedOut" && <SignInButton />}
 				</Stack>
 			</Stack>
 		</>

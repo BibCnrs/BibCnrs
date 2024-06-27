@@ -1,6 +1,5 @@
 import Switch from "@mui/material/Switch";
 import styled from "@mui/material/styles/styled";
-import { memo } from "react";
 import type { ChangeEvent } from "react";
 import { useBibContext } from "../../../../context/BibContext";
 
@@ -78,4 +77,4 @@ const ThemeButton = () => {
 	);
 };
 
-export default memo(ThemeButton);
+export default ThemeButton;

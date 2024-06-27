@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createQuery, environment } from "../services/Environment";
 import { updateFavourite } from "../services/user/Favourite";
 import { updateAlert } from "../services/user/SearchAlert";
-import { useFullTranslator } from "../shared/locales/I18N";
+import type { UserSettingsType } from "../services/user/UserSettings";
+import i18next, { useFullTranslator } from "../shared/locales/I18N";
 import type {
 	FavouriteResourceDataType,
 	SessionUserDataType,
@@ -35,45 +36,69 @@ const persistentStorage = window?.localStorage;
 const STORAGE_KEY = "user";
 const JANUS_STORAGE_KEY = "janus_callback";
 
+const getSystemTheme = (): ThemeType => {
+	const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+	return darkMode ? "dark" : "light";
+};
+
 const setStorageTheme = (value: ThemeType) => {
 	window?.localStorage?.setItem("mode", value);
 };
 
 const getStorageTheme = (): ThemeType => {
-	const mode = window?.localStorage?.getItem("mode");
-	if (mode == null) {
-		setStorageTheme("light");
+	if (!window.localStorage) {
 		return "light";
 	}
-	return mode as ThemeType;
+
+	if (!window.localStorage.getItem("mode")) {
+		setStorageTheme(getSystemTheme());
+	}
+
+	return window.localStorage.getItem("mode") as ThemeType;
+};
+
+const DEFAULT_USER_SETTINGS: UserSettingsType = {
+	displayFavorites: true,
+	displayTestNews: true,
+	defaultLanguage: "auto",
+	defaultTheme: "auto",
+	defaultSearchMode: "article",
 };
 
 export function useSession() {
 	const navigate = useNavigate();
-	const [session, setSession] = useState<BibSession>(LOADING_USER);
-	const [theme, setTheme] = useState<ThemeType>(getStorageTheme());
-
 	const { i18n } = useFullTranslator();
 
-	const _loginUser = useCallback((user: BibSession["user"]) => {
-		if (!user) {
-			return;
-		}
-		persistentStorage?.setItem(STORAGE_KEY, JSON.stringify(user));
-		setSession({ status: "loggedIn", user });
-	}, []);
+	const [session, setSession] = useState<BibSession>(LOADING_USER);
+	const [localTheme, setLocalTheme] = useState<ThemeType>(getStorageTheme());
 
 	const _setupLanguageAndTheme = useCallback(
 		(janusUser: SessionUserDataType) => {
 			if (!janusUser.settings) return;
 
-			if (janusUser.settings.defaultLanguage !== "auto")
+			if (janusUser.settings.defaultLanguage !== "auto") {
 				i18n.changeLanguage(janusUser.settings.defaultLanguage);
-
-			if (janusUser.settings.defaultTheme !== "auto")
-				setTheme(janusUser.settings.defaultTheme);
+			} else {
+				window.localStorage.removeItem("i18nextLng");
+				i18next.changeLanguage();
+			}
 		},
 		[i18n],
+	);
+
+	const _loginUser = useCallback(
+		(user: BibSession["user"]) => {
+			if (!user) {
+				return;
+			}
+			persistentStorage?.setItem(STORAGE_KEY, JSON.stringify(user));
+			setSession({ status: "loggedIn", user });
+
+			if (user.origin === "janus") {
+				_setupLanguageAndTheme(user);
+			}
+		},
+		[_setupLanguageAndTheme],
 	);
 
 	const _janusLogin = useCallback(() => {
@@ -94,7 +119,6 @@ export function useSession() {
 			})
 			.then((user) => {
 				_loginUser({ ...user, fetch: false, legacy: false });
-				_setupLanguageAndTheme(user);
 			})
 			.catch((res) => {
 				// This fixes the dual request on getLogin in dev mode
@@ -105,7 +129,7 @@ export function useSession() {
 			.finally(() => {
 				persistentStorage?.removeItem(JANUS_STORAGE_KEY);
 			});
-	}, [_loginUser, _setupLanguageAndTheme]);
+	}, [_loginUser]);
 
 	const _storageLogin = useCallback(() => {
 		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
@@ -113,7 +137,7 @@ export function useSession() {
 		}
 		const userJson = persistentStorage?.getItem(STORAGE_KEY);
 		if (userJson) {
-			const user = JSON.parse(userJson);
+			const user = JSON.parse(userJson) as SessionUserDataType;
 			// We ensure that user token is not expired here
 			fetch(
 				createQuery(environment.get.account.licences, {
@@ -126,7 +150,13 @@ export function useSession() {
 					}
 					setSession({
 						status: "loggedIn",
-						user,
+						user: {
+							...user,
+							settings:
+								user.origin === "janus"
+									? { ...DEFAULT_USER_SETTINGS, ...user.settings }
+									: undefined,
+						},
 					});
 				})
 				.catch(() => logout());
@@ -254,6 +284,28 @@ export function useSession() {
 				return Promise.resolve();
 			}
 			return updateAlert(session.user.id, historyId, frequency);
+		},
+		[session.user],
+	);
+
+	const theme = useMemo(() => {
+		if (session.user?.origin !== "janus") {
+			return localTheme;
+		}
+
+		if (session.user.settings.defaultTheme === "auto") {
+			return getSystemTheme();
+		}
+		return session.user.settings.defaultTheme;
+	}, [localTheme, session.user]);
+
+	const setTheme = useCallback(
+		(theme: ThemeType) => {
+			if (session.user?.origin === "janus") {
+				return;
+			}
+			setStorageTheme(theme);
+			setLocalTheme(theme);
 		},
 		[session.user],
 	);

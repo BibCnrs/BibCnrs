@@ -335,6 +335,8 @@ export type Common = {
 				descriptionTheme: string;
 				light: string;
 				dark: string;
+				systemLang: string;
+				systemTheme: string;
 			};
 		};
 	};
@@ -389,7 +391,4 @@ export const supportedLanguages: SupportedLanguages = [
 	{ key: "en", label: "EN - English" },
 ];
 
-/**
- * export i18next instance
- */
 export default i18next;
