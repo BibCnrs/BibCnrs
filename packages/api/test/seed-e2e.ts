@@ -274,6 +274,45 @@ const prisma = new PrismaClient();
 			},
 		],
 	});
+	await prisma.janus_account_unit.createMany({
+		data: [
+			{
+				unit_id: 3,
+				janus_account_id: 1,
+			},
+		],
+	});
+
+	await prisma.inist_account.createMany({
+		data: [
+			{
+				username: "Marmelab",
+				password: "M4rm3l4b",
+				mail: "developer@marmelab.com",
+				active: true,
+				main_institute: 1,
+				main_unit: 3,
+			},
+		],
+	});
+
+	await prisma.inist_account_community.createMany({
+		data: [
+			{
+				community_id: 1,
+				inist_account_id: 1,
+			},
+		],
+	});
+
+	await prisma.inist_account_unit.createMany({
+		data: [
+			{
+				unit_id: 3,
+				inist_account_id: 1,
+			},
+		],
+	});
 
 	await prisma.database.createMany({
 		data: [
