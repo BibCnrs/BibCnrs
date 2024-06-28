@@ -123,6 +123,16 @@ export type Common = {
 				contributors: string;
 				collections: string;
 				authors: string;
+				pageCount: string;
+				"Peer Reviewed": string;
+				"Publication Date": string;
+				"Document Type": string;
+				Descriptors: string;
+				"Accession Number": string;
+				"Original Identifier": string;
+				Language: string;
+				Rights: string;
+
 				alert: {
 					active: {
 						day: string;

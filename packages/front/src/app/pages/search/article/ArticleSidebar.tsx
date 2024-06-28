@@ -1,4 +1,4 @@
-import { Chip, Divider, Link, Typography } from "@mui/material";
+import { Chip, Link, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -154,10 +154,13 @@ export const ArticleSidebar = ({ article }) => {
 					otherFields.map(({ label, content }) => (
 						<Stack gap={1} key={label}>
 							<Typography variant="subtitle1" fontWeight="bold">
-								{label}
+								{t(`components.search.content.${label}`, {
+									defaultValue: label,
+									returnObjects: false,
+								})}
 							</Typography>
 							<Typography variant="body1">
-								{content.map((value, index) => (
+								{content.map((value, _) => (
 									<Box key={value}>{value}</Box>
 								))}
 							</Typography>

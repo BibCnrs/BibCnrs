@@ -112,6 +112,15 @@ const fr: Common = {
 				contributors: "Contributeurs",
 				collections: "Collections",
 				authors: "Auteurs",
+				pageCount: "Nombre de pages",
+				"Peer Reviewed": "Relu par un comité",
+				"Publication Date": "Date de publication",
+				"Document Type": "Type de document",
+				Descriptors: "Descripteurs",
+				"Accession Number": "Numéro d'accès",
+				"Original Identifier": "Identifiant original",
+				Language: "Langue",
+				Rights: "Droits",
 				alert: {
 					active: {
 						day: "Quotidenne",
