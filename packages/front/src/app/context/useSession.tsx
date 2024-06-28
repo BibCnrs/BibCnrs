@@ -178,18 +178,15 @@ export function useSession() {
 					},
 				);
 
-				const loggedInUser = {
+				if (response.status === 401) {
+					throw new Error("Invalid credentials");
+				}
+
+				_loginUser({
 					...(await response.json()),
 					fetch: false,
 					legacy: true,
-				};
-
-				// If response return an error, abort login
-				if (loggedInUser.error) {
-					throw new Error(`Error logging in: ${loggedInUser.error}`);
-				}
-
-				_loginUser(loggedInUser);
+				});
 				return true;
 			} catch (e) {
 				setSession(LOGGED_OUT_USER);

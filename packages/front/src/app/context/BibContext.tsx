@@ -85,6 +85,7 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		const domain = user.favorite_domain ?? user.domains?.at(0);
 		if (domain == null) {
 			console.error(`No domain found for this user: ${user.domains}`);
+			return;
 		}
 
 		setSearch({
