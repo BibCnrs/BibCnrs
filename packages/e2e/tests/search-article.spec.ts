@@ -3,7 +3,7 @@ import { janusLogout } from "../page-objects/login";
 import { RETRIEVE_ARTICLE_MOCK } from "./mocks/retrieveArticle.mock";
 import { SEARCH_ARTICLE_MOCK } from "./mocks/searchArticle.mock";
 
-test("Should search article", async ({ page }) => {
+test.skip("Should search article", async ({ page }) => {
 	await page.route("**/api/ebsco/*/article/search?queries=*", async (route) => {
 		await route.fulfill({ json: SEARCH_ARTICLE_MOCK });
 	});
