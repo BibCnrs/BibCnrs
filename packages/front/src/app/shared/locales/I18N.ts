@@ -89,7 +89,7 @@ export type Common = {
 			database: string;
 			researchData: string;
 		};
-		table: {
+		search: {
 			noData: string;
 			content: {
 				doi: string;
@@ -118,6 +118,21 @@ export type Common = {
 				present: string;
 				links: string;
 				pdf: string;
+				seeMore: string;
+				abstract: string;
+				contributors: string;
+				collections: string;
+				authors: string;
+				pageCount: string;
+				"Peer Reviewed": string;
+				"Publication Date": string;
+				"Document Type": string;
+				Descriptors: string;
+				"Accession Number": string;
+				"Original Identifier": string;
+				Language: string;
+				Rights: string;
+
 				alert: {
 					active: {
 						day: string;

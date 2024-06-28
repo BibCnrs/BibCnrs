@@ -292,6 +292,7 @@ export type ArticleResultDataType = {
 	copyright?: string | null;
 	affiliationAuthor?: string[] | null;
 	issn?: string[] | null;
+	collection?: string | null;
 };
 
 export type FacetValueDataType = {

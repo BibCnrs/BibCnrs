@@ -77,7 +77,7 @@ const en: Common = {
 			publication: "Journal, book",
 			researchData: "Research data",
 		},
-		table: {
+		search: {
 			noData: "No result found.",
 			content: {
 				doi: "DOI",
@@ -106,6 +106,20 @@ const en: Common = {
 				present: "Present",
 				links: 'Access to "{{ title }}" article',
 				pdf: "Pdf access",
+				seeMore: "See more",
+				abstract: "Abstract",
+				contributors: "Contributors",
+				collections: "Collections",
+				authors: "Authors",
+				pageCount: "Page count",
+				"Peer Reviewed": "Peer Reviewed",
+				"Publication Date": "Publication Date",
+				"Document Type": "Document Type",
+				Descriptors: "Descriptors",
+				"Accession Number": "Accession Number",
+				"Original Identifier": "Original Identifier",
+				Language: "Language",
+				Rights: "Rights",
 				alert: {
 					active: {
 						day: "Daily",

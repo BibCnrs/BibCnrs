@@ -74,7 +74,7 @@ export default function SearchResults<T>({
 						/>
 					))
 				) : (
-					<p>{t("components.table.noData")}</p>
+					<p>{t("components.search.noData")}</p>
 				)}
 			</Stack>
 

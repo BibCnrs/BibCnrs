@@ -9,7 +9,7 @@ import Faq from "./pages/common/faq/Faq";
 import Legal from "./pages/common/legal/Legal";
 import Resources from "./pages/common/resources/Resources";
 import Error404 from "./pages/errors/Error404";
-import Article from "./pages/search/article/Article";
+import ArticlePage from "./pages/search/article/ArticlePage";
 import Database from "./pages/search/database/Database";
 import PublicationPage from "./pages/search/publication/PublicationPage";
 import ResearchData from "./pages/search/researchdata/ResearchData";
@@ -50,7 +50,7 @@ const App = () => {
 						path={RouteArticle}
 						element={
 							<ProtectedRoute>
-								<Article />
+								<ArticlePage />
 							</ProtectedRoute>
 						}
 					/>

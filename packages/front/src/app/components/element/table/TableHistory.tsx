@@ -203,7 +203,7 @@ const TableHistory = ({
 
 	const alertText = useMemo(() => {
 		if (data.hasAlert && data.active) {
-			return t(`components.table.content.alert.active.${data.frequence}`);
+			return t(`components.search.content.alert.active.${data.frequence}`);
 		}
 
 		return "";
@@ -226,19 +226,19 @@ const TableHistory = ({
 			{first ? (
 				<div className="table-history table-history-first">
 					<div className="table-history-box">
-						<b>{t("components.table.content.term")}</b>
+						<b>{t("components.search.content.term")}</b>
 					</div>
 					<div className="table-history-box">
-						<b>{t("components.table.content.domain")}</b>
+						<b>{t("components.search.content.domain")}</b>
 					</div>
 					<div className="table-history-box">
-						<b>{t("components.table.content.limiters")}</b>
+						<b>{t("components.search.content.limiters")}</b>
 					</div>
 					<div className="table-history-box">
-						<b>{t("components.table.content.facets")}</b>
+						<b>{t("components.search.content.facets")}</b>
 					</div>
 					<div className="table-history-box">
-						<b>{t("components.table.content.actions")}</b>
+						<b>{t("components.search.content.actions")}</b>
 					</div>
 				</div>
 			) : null}
@@ -258,7 +258,7 @@ const TableHistory = ({
 				<div className="table-history-box">
 					<ul style={{ margin: 0 }}>
 						<li>
-							<b>{t("components.table.content.nbResult")}</b>
+							<b>{t("components.search.content.nbResult")}</b>
 							{` ${data.event.totalHits ?? data.nb_results}`}
 						</li>
 					</ul>
