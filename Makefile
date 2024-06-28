@@ -32,8 +32,8 @@ env-mkdirs:								## Create storage directories
 		../storage/uploads
 
 env-copy: env-mkdirs					## Copy env files if they don't exist
-	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env
-	@cp -n docker-compose.prod.env.sample 	docker-compose.prod.env
+	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env || true
+	@cp -n docker-compose.prod.env.sample 	docker-compose.prod.env || true
 
 migrate-dev: env-copy					## Run migrations in development environment
 	docker compose \
