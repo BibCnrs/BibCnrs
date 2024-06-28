@@ -51,7 +51,8 @@ const getStorageTheme = (): ThemeType => {
 	}
 
 	if (!window.localStorage.getItem("mode")) {
-		setStorageTheme(getSystemTheme());
+		// TODO: use getSystemTheme() once it is implemented
+		setStorageTheme("light");
 	}
 
 	return window.localStorage.getItem("mode") as ThemeType;
