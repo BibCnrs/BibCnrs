@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from "../app.module";
+import { AppLogger } from "../common/logger/AppLogger";
 import { EbscoSearchAlertCronService } from "../ebsco/searchAlert/searchAlertCron.service";
 
 (async () => {
@@ -8,7 +9,9 @@ import { EbscoSearchAlertCronService } from "../ebsco/searchAlert/searchAlertCro
 		throw new Error("You must provide janus user uid");
 	}
 
-	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+		logger: new AppLogger("Nest"),
+	});
 
 	await app.init();
 
