@@ -35,10 +35,15 @@ export class HttpService {
 			);
 			return response;
 		} catch (e) {
+			const response = e.response;
+			const data =
+				typeof response.data === "string"
+					? response.data
+					: JSON.stringify(response.data);
 			this.logger.error(
-				`[ERROR] ${options.method} ${url} (error=${e}, time=${Date.now() - start}ms)`,
+				`[ERROR] ${options.method} ${url} (error=${e}, time=${Date.now() - start}ms, body=${data})`,
 			);
-			throw e;
+			return response;
 		}
 	}
 }
