@@ -3,9 +3,12 @@ import { JwtModule, JwtService } from "@nestjs/jwt";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthGuard } from "../../common/auth/auth.guard";
+import { HttpService } from "../../common/http/http.service";
+import { RedisService } from "../../common/redis/redis.service";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { EbscoDomainService } from "../domain/domain.service";
+import { EbscoSearchArticleService } from "../search/searchArticle.service";
 import { EbscoSearchAlertController } from "./searchAlert.controller";
 import { EbscoSearchAlertService } from "./searchAlert.service";
 
@@ -27,9 +30,12 @@ describe("EbscoSearchAlertController", () => {
 			controllers: [EbscoSearchAlertController],
 			providers: [
 				EbscoSearchAlertService,
+				EbscoSearchArticleService,
 				EbscoDomainService,
 				PrismaService,
 				AuthGuard,
+				HttpService,
+				RedisService,
 			],
 		}).compile();
 
