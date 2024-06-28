@@ -8,24 +8,6 @@ export type UserSettingsType = {
 	defaultTheme: "auto" | "light" | "dark";
 };
 
-export const getSettings = async (
-	userId: number,
-): Promise<UserSettingsType> => {
-	const response: Response = await fetch(
-		createQuery(`${environment.get.account.settings}/${userId}`),
-		{
-			credentials: "include",
-			method: "GET",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-		},
-	);
-	throwIfNotOk(response);
-	return json(response);
-};
-
 export const updateSettings = async ({ userId, ...setting }) => {
 	const response: Response = await fetch(
 		createQuery(`${environment.put.account.settings}/${userId}`),
