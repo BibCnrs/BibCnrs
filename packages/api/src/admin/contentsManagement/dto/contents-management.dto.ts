@@ -11,6 +11,7 @@ export class CreateContentManagementDto
 	from: Date;
 	to: Date | null;
 	enable: boolean;
+	order: number | null;
 }
 
 export class UpdateContentManagementDto extends CreateContentManagementDto {

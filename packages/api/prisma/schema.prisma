@@ -388,6 +388,7 @@ model content_management {
   from       DateTime  @db.Date()
   to         DateTime? @db.Date()
   enable     Boolean   @default(true)
+  order      Int?
 }
 
 model medias {
