@@ -3,6 +3,25 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 (async () => {
+	await prisma.community.createMany({
+		data: [
+			{
+				name: "INS2I",
+				gate: "INS2I",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INSHS",
+				gate: "INSHS",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+		],
+	});
+
 	await prisma.institute.createMany({
 		data: [
 			{
@@ -79,6 +98,7 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// FAQ
 	await prisma.content_management.createMany({
 		data: [
 			{
@@ -109,6 +129,47 @@ const prisma = new PrismaClient();
 				content_fr: "",
 				from: "2019-04-18T00:00:00.000Z",
 				to: "2020-04-18T00:00:00.000Z",
+			},
+		],
+	});
+
+	// News
+	await prisma.tests_news.createMany({
+		data: [
+			{
+				page: "home",
+				name_en: "First News",
+				name_fr: "Première actualité",
+				content_en:
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nibh augue, blandit at massa feugiat, congue blandit mi. Nam tristique diam facilisis, varius tortor ornare, ullamcorper turpis.",
+				content_fr:
+					"Aenean et arcu nec orci sollicitudin ornare. Ut mollis velit ligula, facilisis egestas orci ultricies sagittis. Praesent egestas facilisis laoreet. Phasellus id tortor eros. Nulla ullamcorper nec mauris ac laoreet.",
+				from: "2023-04-18T00:00:00.000Z",
+				to: null,
+			},
+			{
+				page: "home",
+				name_en: "Second News",
+				name_fr: "Deuxième actualité",
+				content_en:
+					"uis sit amet porttitor lacus. Cras tincidunt ultricies eros, non mattis tellus tempus sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus.",
+				content_fr:
+					"Nam hendrerit, ipsum sit amet luctus sagittis, nisi dui semper tortor, id sodales nisi turpis vel odio. Nam ut efficitur sapien. Suspendisse justo libero, dapibus in erat vel, ultrices condimentum nisl. Vivamus semper porttitor gravida.",
+				from: "2023-04-18T00:00:00.000Z",
+				to: null,
+			},
+		],
+	});
+
+	await prisma.tests_news_community.createMany({
+		data: [
+			{
+				community_id: 1,
+				tests_news_id: 1,
+			},
+			{
+				community_id: 1,
+				tests_news_id: 2,
 			},
 		],
 	});
@@ -145,6 +206,15 @@ const prisma = new PrismaClient();
 						isSuperFavorite: false,
 					},
 				],
+			},
+		],
+	});
+
+	await prisma.janus_account_community.createMany({
+		data: [
+			{
+				community_id: 1,
+				janus_account_id: 1,
 			},
 		],
 	});

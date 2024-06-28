@@ -212,7 +212,8 @@ export type Common = {
 	pages: {
 		root: {
 			title: string;
-			seeMore: string;
+			seeMoreFavourites: string;
+			seeMoreNews: string;
 			emptyFavorites: string;
 		};
 		article: {
