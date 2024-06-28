@@ -25,8 +25,8 @@ export const ArticleTitle = ({ title, href, openAccess, type }) => {
 			rel="noreferrer noopener nofollow"
 			aria-label={
 				href
-					? t("components.table.content.links", { title })
-					: t("components.table.content.noAccess", { title })
+					? t("components.search.content.links", { title })
+					: t("components.search.content.noAccess", { title })
 			}
 		>
 			{openAccess && href ? (
