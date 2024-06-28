@@ -1,10 +1,18 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { JsonObject } from "@prisma/client/runtime/library";
 import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoDomainService } from "../domain/domain.service";
+import { EbscoSearchArticleService } from "../search/searchArticle.service";
 import { EbscoSearchAlertDto } from "./dto/ebsco-search-alert.dto";
+import { getResultsIdentifiers } from "./searchAlert.utils";
 
 @Injectable()
 export class EbscoSearchAlertService {
-	constructor(private prismaService: PrismaService) {}
+	constructor(
+		private prismaService: PrismaService,
+		private readonly ebscoSearchArticleService: EbscoSearchArticleService,
+		private readonly ebscoDomainService: EbscoDomainService,
+	) {}
 
 	async setSearchAlert({ historyId, frequence }: EbscoSearchAlertDto) {
 		const history = await this.prismaService.history.findUnique({
@@ -17,6 +25,23 @@ export class EbscoSearchAlertService {
 			throw new NotFoundException();
 		}
 
+		const communities = await this.ebscoDomainService.getCommunities();
+		const domains = communities.map((community) => community.name);
+		const { queries, limiters, activeFacets, domain } =
+			history.event as JsonObject;
+
+		const token = { username: "guest", domains };
+		const result = await this.ebscoSearchArticleService.searchArticleRaw(
+			token,
+			{
+				queries,
+				limiters,
+				activeFacets,
+				resultsPerPage: 100,
+			},
+			domain as string,
+		);
+
 		await this.prismaService.$queryRaw`
 		UPDATE history SET
 		has_alert = true,
@@ -24,10 +49,8 @@ export class EbscoSearchAlertService {
 		last_execution = ${
 			history.last_execution ? history.last_execution : new Date()
 		},
-		last_results = CAST(${JSON.stringify(
-			history.last_results ? history.last_results : [],
-		)} as json),
-		nb_results = ${history.nb_results ? history.nb_results : 0}
+		last_results = CAST(${JSON.stringify(getResultsIdentifiers(result))} as json),
+		nb_results = ${result?.SearchResult?.Statistics?.TotalHits ?? history.nb_results ?? 0}
 		WHERE id = ${historyId}`;
 	}
 

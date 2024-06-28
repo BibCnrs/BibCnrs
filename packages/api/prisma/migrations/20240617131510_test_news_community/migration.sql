@@ -19,5 +19,5 @@ FROM (
 	SELECT id, json_array_elements_text("domains") AS "community_name"
     FROM "tests_news"
 ) "t"
-LEFT JOIN "community" AS "c"
+INNER JOIN "community" AS "c"
 	ON "c"."name" = "t"."community_name";

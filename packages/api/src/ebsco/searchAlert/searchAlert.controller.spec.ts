@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { EbscoDomainService } from "../domain/domain.service";
 import { EbscoSearchAlertController } from "./searchAlert.controller";
 import { EbscoSearchAlertService } from "./searchAlert.service";
 
@@ -24,7 +25,12 @@ describe("EbscoSearchAlertController", () => {
 				}),
 			],
 			controllers: [EbscoSearchAlertController],
-			providers: [EbscoSearchAlertService, PrismaService, AuthGuard],
+			providers: [
+				EbscoSearchAlertService,
+				EbscoDomainService,
+				PrismaService,
+				AuthGuard,
+			],
 		}).compile();
 
 		ebscoSearchAlertController =
