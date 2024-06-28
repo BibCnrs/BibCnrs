@@ -90,6 +90,7 @@ describe("ContentManagementController", () => {
 				name_fr: "Bonjour 1",
 				content_en: "Hello! 1",
 				content_fr: "Bonjour! 1",
+				order: null,
 			});
 		});
 
