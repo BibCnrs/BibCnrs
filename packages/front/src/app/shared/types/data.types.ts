@@ -124,7 +124,7 @@ export type SessionUserDataType = {
 	domains: Institute[];
 	favorite_domain?: Institute;
 	favouriteResources?: FavouriteResourceDataType[];
-	origin?: string;
+	origin?: "janus" | "inist";
 	legacy: boolean;
 	settings?: UserSettingsDataType;
 };

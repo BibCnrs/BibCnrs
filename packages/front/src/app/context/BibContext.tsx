@@ -64,7 +64,7 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 	 * @returns - Material UI language
 	 *            - Default: French
 	 */
-	const getLocal = () => {
+	const getLocale = () => {
 		if (language === "en") {
 			return enUS;
 		}
@@ -74,7 +74,7 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 	// Create Material UI theme
 	const muiTheme = createTheme(
 		session.theme === "light" ? lightTheme : darkTheme,
-		getLocal(),
+		getLocale(),
 	);
 
 	useEffect(() => {
@@ -85,6 +85,7 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		const domain = user.favorite_domain ?? user.domains?.at(0);
 		if (domain == null) {
 			console.error(`No domain found for this user: ${user.domains}`);
+			return;
 		}
 
 		setSearch({

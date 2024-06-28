@@ -5,6 +5,7 @@ export default defineConfig({
 	test: {
 		root: "./../..",
 		testTimeout: 20000,
+		fileParallelism: false,
 	},
 	plugins: [
 		swc.vite({

@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
 import flatten from "lodash.flatten";
 import { HttpService } from "../../common/http/http.service";
+import { AppLogger } from "../../common/logger/AppLogger";
 import { RedisService } from "../../common/redis/redis.service";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -33,6 +34,8 @@ const ARTICLE_URL = "/edsapi/rest/Search";
 
 @Injectable()
 export class EbscoSearchArticleService extends AbstractEbscoSearchService {
+	private readonly logger = new AppLogger(EbscoSearchArticleService.name);
+
 	constructor(
 		configService: ConfigService<Config, true>,
 		httpService: HttpService,
@@ -153,6 +156,9 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			}
 			return null;
 		} catch (error) {
+			this.logger.error(
+				`Failed to retrieve unpawall url: ${error.message || error}`,
+			);
 			return null;
 		}
 	}
@@ -161,25 +167,21 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		result: any,
 		domain?: string,
-		isRetrieve = false,
 	) {
 		const items: { Url: string; Name: string }[] =
 			result.Items?.filter(
 				(item) => item.Name === "URL" || item.Name === "Avail",
 			) || [];
 
-		const hasOpenAccessLink =
-			result.FullText?.CustomLinks &&
-			!!result.FullText.CustomLinks.find(
-				(link) =>
-					link.Category === "fullText" &&
-					/accès en ligne en open access/i.test(link.Text),
-			);
+		const hasOpenAccessLink = !!result.FullText?.CustomLinks?.find?.(
+			(link) =>
+				link.Category === "fullText" &&
+				/accès en ligne en open access/i.test(link.Text),
+		);
 
 		const unpaywalls: { Url: string; Name: string }[] =
 			(!hasOpenAccessLink &&
-				result.CustomLinks &&
-				result.CustomLinks.filter(
+				result?.CustomLinks?.filter?.(
 					(link) =>
 						link.Category === "other" && link.Url.includes("api.unpaywall"),
 				)) ||
@@ -211,17 +213,15 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			},
 		);
 
-		if (!isRetrieve) {
-			urls.concat(
-				unpaywalls.map(async (link) => {
-					const unpaywallUrl = await this.getUrlFromUnpaywall(link.Url, domain);
-					return {
-						name: link.Name,
-						url: unpaywallUrl ? unpaywallUrl.replace("&amp;", "&") : null,
-					};
-				}, {}),
-			);
-		}
+		urls.push(
+			...unpaywalls.map(async (link) => {
+				const unpaywallUrl = await this.getUrlFromUnpaywall(link.Url, domain);
+				return {
+					name: link.Name,
+					url: unpaywallUrl ? unpaywallUrl.replace("&amp;", "&") : null,
+				};
+			}),
+		);
 
 		return Promise.all(urls).then((items) =>
 			items.filter((item) => !!item && !!item.url),
@@ -232,13 +232,12 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		result: any,
 		domain: string,
-		isRetrieve = false,
 	) {
 		return {
 			fullTextLinks: extractFullTextLinks(result),
 			pdfLinks: extractPdfLinks(result),
 			html: extractHtml(result),
-			urls: await this.extractUrls(result, domain, isRetrieve),
+			urls: await this.extractUrls(result, domain),
 		};
 	}
 
@@ -347,7 +346,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			items: await parseItems(result.Items),
 			dbLabel: result.Header ? result.Header.DbLabel : undefined,
 			dbId: result.Header ? result.Header.DbId : undefined,
-			articleLinks: await this.articleLinkParser(result, domain, true),
+			articleLinks: await this.articleLinkParser(result, domain),
 		};
 	}
 

@@ -90,6 +90,7 @@ describe("ContentManagementController", () => {
 				name_fr: "Bonjour 1",
 				content_en: "Hello! 1",
 				content_fr: "Bonjour! 1",
+				order: null,
 			});
 		});
 
@@ -105,6 +106,7 @@ describe("ContentManagementController", () => {
 				name_fr: "Bonjour Created",
 				content_en: "Hello! Created",
 				content_fr: "Bonjour! Created",
+				order: null,
 			});
 
 			expect(createdAdmin).toEqual(

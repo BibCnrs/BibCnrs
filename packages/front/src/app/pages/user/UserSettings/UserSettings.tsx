@@ -1,27 +1,16 @@
 import {
 	FormControlLabel,
-	LinearProgress,
 	Switch,
 	ToggleButton,
 	ToggleButtonGroup,
 	Typography,
 } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
-import {
-	type UseQueryResult,
-	keepPreviousData,
-	useMutation,
-	useQuery,
-} from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
-import {
-	type UserSettingsType,
-	getSettings,
-	updateSettings,
-} from "../../../services/user/UserSettings";
+import { updateSettings } from "../../../services/user/UserSettings";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { UserSettingsDataType } from "../../../shared/types/data.types";
 
@@ -31,12 +20,6 @@ const UserSettings = () => {
 		updateUserSettings,
 	} = useBibContext();
 	const t = useTranslator();
-
-	const { data, isLoading } = useQuery<UserSettingsType>({
-		queryKey: ["user_settings"],
-		queryFn: () => getSettings(user.id),
-		placeholderData: keepPreviousData,
-	}) as UseQueryResult<UserSettingsType, unknown>;
 
 	const mutation = useMutation({
 		mutationFn: updateSettings,
@@ -48,37 +31,7 @@ const UserSettings = () => {
 		},
 	});
 
-	const [switchState, setSwitchState] = useState({
-		displayFavorites: false,
-		displayTestNews: false,
-	});
-
-	const [toggleState, setToggleState] = useState({
-		defaultSearchMode: "article",
-		defaultLanguage: "auto",
-		defaultTheme: "auto",
-	});
-
-	useEffect(() => {
-		if (data) {
-			setSwitchState({
-				displayFavorites: data.displayFavorites,
-				displayTestNews: data.displayTestNews,
-			});
-
-			setToggleState({
-				defaultSearchMode: data.defaultSearchMode,
-				defaultLanguage: data.defaultLanguage,
-				defaultTheme: data.defaultTheme,
-			});
-		}
-	}, [data]);
-
 	const handleSwitchChange = (event) => {
-		setSwitchState({
-			...switchState,
-			[event.target.name]: event.target.checked,
-		});
 		mutation.mutate({
 			userId: user.id,
 			[event.target.name]: event.target.checked,
@@ -86,29 +39,18 @@ const UserSettings = () => {
 	};
 
 	const handleToggleChange =
-		(property: keyof typeof toggleState) => (_, newToggleValue) => {
+		(property: keyof typeof user.settings) => (_, newToggleValue) => {
 			if (newToggleValue === null) return;
-			setToggleState((prevState) => ({
-				...prevState,
-				[property]: newToggleValue,
-			}));
+
 			mutation.mutate({
 				userId: user.id,
 				[property]: newToggleValue,
 			});
 		};
 
-	if (isLoading) {
-		return (
-			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-				<LinearProgress color="primary" />
-			</Container>
-		);
-	}
-
 	return (
 		<>
-			<PageTitle page="settings" />
+			<PageTitle page="userSettings" />
 			<FakeSearchBar title={t("pages.userSettings.title")} />
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				<Stack gap={4}>
@@ -123,7 +65,7 @@ const UserSettings = () => {
 							<FormControlLabel
 								control={
 									<Switch
-										checked={switchState.displayFavorites}
+										checked={user.settings.displayFavorites}
 										onChange={handleSwitchChange}
 										name="displayFavorites"
 										aria-label={t(
@@ -136,7 +78,7 @@ const UserSettings = () => {
 							<FormControlLabel
 								control={
 									<Switch
-										checked={switchState.displayTestNews}
+										checked={user.settings.displayTestNews}
 										onChange={handleSwitchChange}
 										name="displayTestNews"
 										aria-label={t(
@@ -157,7 +99,7 @@ const UserSettings = () => {
 							{t("pages.userSettings.searchSection.description")}
 						</Typography>
 						<ToggleButtonGroup
-							value={toggleState.defaultSearchMode}
+							value={user.settings.defaultSearchMode}
 							exclusive
 							onChange={handleToggleChange("defaultSearchMode")}
 							aria-label={t("pages.userSettings.searchSection.description")}
@@ -198,7 +140,7 @@ const UserSettings = () => {
 							{t("pages.userSettings.generalSection.descriptionLanguage")}
 						</Typography>
 						<ToggleButtonGroup
-							value={toggleState.defaultLanguage}
+							value={user.settings.defaultLanguage}
 							exclusive
 							onChange={handleToggleChange("defaultLanguage")}
 							aria-label={t(
@@ -208,9 +150,9 @@ const UserSettings = () => {
 						>
 							<ToggleButton
 								value="auto"
-								aria-label={t("pages.userSettings.generalSection.auto")}
+								aria-label={t("pages.userSettings.generalSection.systemLang")}
 							>
-								{t("pages.userSettings.generalSection.auto")}
+								{t("pages.userSettings.generalSection.systemLang")}
 							</ToggleButton>
 							<ToggleButton
 								value="fr"
@@ -230,7 +172,7 @@ const UserSettings = () => {
 							{t("pages.userSettings.generalSection.descriptionTheme")}
 						</Typography>
 						<ToggleButtonGroup
-							value={toggleState.defaultTheme}
+							value={user.settings.defaultTheme}
 							exclusive
 							onChange={handleToggleChange("defaultTheme")}
 							aria-label={t(
@@ -240,9 +182,9 @@ const UserSettings = () => {
 						>
 							<ToggleButton
 								value="auto"
-								aria-label={t("pages.userSettings.generalSection.auto")}
+								aria-label={t("pages.userSettings.generalSection.systemTheme")}
 							>
-								{t("pages.userSettings.generalSection.auto")}
+								{t("pages.userSettings.generalSection.systemTheme")}
 							</ToggleButton>
 							<ToggleButton
 								value="light"
