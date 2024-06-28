@@ -18,6 +18,7 @@ import {
 	getLimitersHtml,
 	getLimitersText,
 	getRecordText,
+	getResultsIdentifiers,
 	parseArticleLinks,
 } from "./searchAlert.utils";
 
@@ -90,7 +91,7 @@ export class EbscoSearchAlertCronService {
             has_alert = true, 
             frequence = '1 day',
             last_results = CAST(${JSON.stringify(
-							this.getResultsIdentifiers(searchResult).slice(3),
+							getResultsIdentifiers(searchResult).slice(3),
 						)} AS json),
             last_execution = ${new Date(0)},
             nb_results = ${
@@ -142,178 +143,179 @@ export class EbscoSearchAlertCronService {
 
 			const histories = await this.selectAlertToExecute(dateIso, LIMIT);
 			try {
-				await Promise.all(
-					(histories ?? []).map(
-						async ({
-							event,
-							id,
-							nb_results,
-							last_results,
-							user_id,
-						}: history) => {
-							if (
-								event == null ||
-								typeof event !== "object" ||
-								Array.isArray(event) ||
-								typeof event.domain !== "string"
-							) {
-								logger.warn(
-									`Alert event not valid for history(id=${id}, event=${JSON.stringify(event)})`,
-								);
-								return;
-							}
+				for await (let {
+					event,
+					id,
+					nb_results,
+					last_results,
+					user_id,
+				} of histories) {
+					if (
+						event == null ||
+						typeof event !== "object" ||
+						Array.isArray(event) ||
+						typeof event.domain !== "string"
+					) {
+						logger.warn(
+							`Alert event not valid for history(id=${id}, event=${JSON.stringify(event)})`,
+						);
+						return;
+					}
 
-							const { queries, limiters, activeFacets, domain } = event;
+					const { queries, limiters, activeFacets, domain } = event;
 
-							try {
-								if (typeof last_results === "string") {
-									last_results = JSON.parse(last_results);
-								}
+					try {
+						if (typeof last_results === "string") {
+							last_results = JSON.parse(last_results);
+						}
+						testedAlerts++;
 
-								testedAlerts++;
+						if (!Array.isArray(last_results)) {
+							throw new Error("last_results is not an array");
+						}
 
-								if (!Array.isArray(last_results)) {
-									throw new Error("last_results is not an array");
-								}
+						logger.log(
+							`Alert for history(id=${id}, event=${JSON.stringify({
+								queries,
+								limiters,
+								activeFacets,
+								domain,
+							})}`,
+						);
 
-								logger.log(
-									`Alert for history(id=${id}, event=${JSON.stringify({
-										queries,
-										limiters,
-										activeFacets,
-										domain,
-									})}`,
-								);
-
-								const token = { username: "guest", domains };
-								const community = communitiesByName[domain];
-								const result =
-									await this.ebscoSearchArticleService.searchArticleRaw(
-										token,
-										{
-											queries,
-											limiters,
-											activeFacets,
-											resultsPerPage: 1,
-										},
-										domain,
-									);
-
-								const newTotalHits =
-									result?.SearchResult?.Statistics?.TotalHits ?? 0;
-
-								if (nb_results === newTotalHits) {
-									logger.log(`No new results for history(id=${id})`);
-
-									await this.updateHistory(id, {
-										last_execution: new Date(),
-									});
-
-									updatedAlerts++;
-									return;
-								}
-
-								const fullResult =
-									await this.ebscoSearchArticleService.searchArticleRaw(
-										token,
-										{
-											queries,
-											limiters,
-											activeFacets,
-											resultsPerPage: 100,
-										},
-										domain,
-									);
-
-								const newRawRecords = this.getMissingResults(
-									fullResult,
-									last_results,
-								);
-
-								if (!newRawRecords.length) {
-									logger.log(`No new records for history(id=${id})`);
-
-									await this.updateHistory(id, {
-										last_execution: new Date(),
-									});
-
-									updatedAlerts++;
-									return;
-								}
-
-								logger.log(
-									`${newRawRecords.length} new results found for history(id=${id})`,
-								);
-
-								const newRecords = await Promise.all(
-									newRawRecords.map((record) =>
-										this.ebscoSearchArticleService.searchArticleParser(
-											record,
-											domain,
-										),
-									),
-								);
-
-								const notices = await Promise.all(
-									newRecords.map(({ an, dbId }) =>
-										this.ebscoSearchArticleService.retrieveArticle(
-											token,
-											domain,
-											dbId,
-											an,
-										),
-									),
-								);
-
-								const records = newRecords.map((record, index) => ({
-									...record,
-									articleLinks: notices[index].articleLinks,
-								}));
-
-								const { mail } = await this.janusAccountService.findOneById(
-									Number.parseInt(user_id, 10),
-								);
-
-								const mailData = await this.getSearchAlertMail(
-									records,
-									community.gate,
-									// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-									queries as any[],
-									community.name,
+						const token = { username: "guest", domains };
+						const community = communitiesByName[domain];
+						const result =
+							await this.ebscoSearchArticleService.searchArticleRaw(
+								token,
+								{
+									queries,
 									limiters,
 									activeFacets,
-									mail,
-									user_id,
-								);
+									resultsPerPage: 1,
+								},
+								domain,
+							);
 
-								await this.mailService.sendMail(mailData);
-								mailsSent++;
+						const newTotalHits =
+							result?.SearchResult?.Statistics?.TotalHits ?? 0;
 
-								await this.updateHistory(id, {
-									last_results: this.getResultsIdentifiers(fullResult),
-									nb_results: fullResult.SearchResult.Statistics.TotalHits,
-									last_execution: new Date(),
-								});
-								updatedAlerts++;
-							} catch (e) {
-								await this.updateHistory(id, {
-									last_execution: new Date(),
-								});
+						if (nb_results === newTotalHits) {
+							logger.log(
+								`No new results for history(id=${id}, nb_results=${nb_results}, newTotalHits=${newTotalHits})`,
+							);
 
-								updatedAlerts++;
+							await this.updateHistory(id, {
+								last_execution: new Date(),
+							});
 
-								logger.error(
-									`Alert failed for history(id=${id}, event=${JSON.stringify({
-										queries,
-										limiters,
-										activeFacets,
-										domain,
-									})}, error="${e}"`,
-								);
-							}
-						},
-					),
-				);
+							updatedAlerts++;
+							return;
+						}
+
+						const fullResult =
+							await this.ebscoSearchArticleService.searchArticleRaw(
+								token,
+								{
+									queries,
+									limiters,
+									activeFacets,
+									resultsPerPage: 100,
+								},
+								domain,
+							);
+
+						logger.log(
+							`Retrieved results for history(id=${id}, length=${fullResult?.SearchResult?.Data?.Records?.length})`,
+						);
+
+						const newRawRecords = this.getMissingResults(
+							fullResult,
+							last_results,
+						);
+
+						if (!newRawRecords.length) {
+							logger.log(`No new records for history(id=${id})`);
+
+							await this.updateHistory(id, {
+								last_execution: new Date(),
+							});
+
+							updatedAlerts++;
+							return;
+						}
+
+						logger.log(
+							`${newRawRecords.length} new results found for history(id=${id})`,
+						);
+
+						const newRecords = await Promise.all(
+							newRawRecords.map((record) =>
+								this.ebscoSearchArticleService.searchArticleParser(
+									record,
+									domain,
+								),
+							),
+						);
+
+						const notices = await Promise.all(
+							newRecords.map(({ an, dbId }) =>
+								this.ebscoSearchArticleService.retrieveArticle(
+									token,
+									domain,
+									dbId,
+									an,
+								),
+							),
+						);
+
+						const records = newRecords.map((record, index) => ({
+							...record,
+							articleLinks: notices[index].articleLinks,
+						}));
+
+						const { mail } = await this.janusAccountService.findOneById(
+							Number.parseInt(user_id, 10),
+						);
+
+						const mailData = await this.getSearchAlertMail(
+							records,
+							community.gate,
+							// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+							queries as any[],
+							community.name,
+							limiters,
+							activeFacets,
+							mail,
+							user_id,
+						);
+
+						await this.mailService.sendMail(mailData);
+						mailsSent++;
+
+						await this.updateHistory(id, {
+							last_results: getResultsIdentifiers(fullResult),
+							nb_results: fullResult.SearchResult.Statistics.TotalHits,
+							last_execution: new Date(),
+						});
+						updatedAlerts++;
+					} catch (e) {
+						await this.updateHistory(id, {
+							last_execution: new Date(),
+						});
+
+						updatedAlerts++;
+
+						logger.error(
+							`Alert failed for history(id=${id}, event=${JSON.stringify({
+								queries,
+								limiters,
+								activeFacets,
+								domain,
+							})}, error="${e}"`,
+						);
+					}
+				}
 			} catch (e) {
 				logger.error(`Error while executing batch error="${e}"`);
 			}
@@ -359,10 +361,11 @@ export class EbscoSearchAlertCronService {
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	private getMissingResults(result1: any, ids2: any[]) {
-		const ids1 = this.getResultsIdentifiers(result1).map((id, index) => ({
-			...id,
-			index,
-		}));
+		const ids1 =
+			getResultsIdentifiers(result1).map?.((id, index) => ({
+				...id,
+				index,
+			})) ?? [];
 
 		const ids = ids1.filter(
 			({ dbId: dbId1, an: an1 }) =>
@@ -373,16 +376,6 @@ export class EbscoSearchAlertCronService {
 
 		return ids.map(
 			({ index }) => result1?.SearchResult?.Data?.Records?.[index],
-		);
-	}
-
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private getResultsIdentifiers(result: any) {
-		return result?.SearchResult?.Data?.Records?.map(
-			({ Header: { DbId, An } }) => ({
-				dbId: DbId,
-				an: An,
-			}),
 		);
 	}
 

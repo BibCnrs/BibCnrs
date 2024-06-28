@@ -247,3 +247,13 @@ const searchDataToString = (keys, data) => {
 		.filter((v) => !!v)
 		.join("; ");
 };
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const getResultsIdentifiers = (result: any) => {
+	return result?.SearchResult?.Data?.Records?.map?.(
+		({ Header: { DbId, An } }) => ({
+			dbId: DbId,
+			an: An,
+		}),
+	);
+};

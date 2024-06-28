@@ -4,7 +4,7 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common";
 import { community } from "@prisma/client";
-import { JsonObject } from "@prisma/client/runtime/library";
+import { JsonObject, JsonValue } from "@prisma/client/runtime/library";
 import { HttpService } from "../../common/http/http.service";
 import { FileLogger } from "../../common/logger/FileLogger";
 import { RedisService } from "../../common/redis/redis.service";
@@ -32,6 +32,7 @@ export class AbstractEbscoSearchService {
 	) {}
 
 	private handleEbscoError(error: {
+		query: JsonValue;
 		error?: EbscoError;
 	}) {
 		if (!error.error) {
@@ -53,8 +54,7 @@ export class AbstractEbscoSearchService {
 		}
 
 		logger.error(
-			error.error.ErrorDescription || error.error.Reason || "ebsco error",
-			error.error,
+			`Encountered Ebsco error: (query=${JSON.stringify(error.query)}), response=${JSON.stringify(error.error)})`,
 		);
 		throw new InternalServerErrorException(
 			error.error.ErrorDescription ||
@@ -115,7 +115,7 @@ export class AbstractEbscoSearchService {
 		);
 
 		if (response.status !== 200) {
-			this.handleEbscoError({ error: body as EbscoError });
+			this.handleEbscoError({ query: json, error: body as EbscoError });
 		}
 
 		return body as T;
