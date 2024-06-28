@@ -1,4 +1,4 @@
-import { Chip, Link, Typography } from "@mui/material";
+import { Chip, Link, Skeleton, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -112,6 +112,20 @@ export const ArticleSidebar = ({ article }) => {
 					openAccess={getterArticle.isOpenAccess()}
 					type={getterArticle.getType()}
 				/>
+
+				{isLoading && (
+					<>
+						<Skeleton />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+						<Skeleton animation="wave" />
+					</>
+				)}
 
 				{getterArticle.getAbstract() && (
 					<Stack gap={1}>
