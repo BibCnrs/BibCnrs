@@ -2,13 +2,11 @@ import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useTranslator } from "../../../shared/locales/I18N";
 
-type PublicationPageHeaderProps = {
+type MetadorePageHeaderProps = {
 	totalHits: number;
 };
 
-export const PublicationPageHeader = ({
-	totalHits,
-}: PublicationPageHeaderProps) => {
+export const MetadorePageHeader = ({ totalHits }: MetadorePageHeaderProps) => {
 	const t = useTranslator();
 	return (
 		<Stack direction="row" alignItems="center" justifyContent="space-between">

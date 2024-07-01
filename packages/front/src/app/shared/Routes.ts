@@ -18,7 +18,7 @@ const Routes = {
 	article: "/article",
 	publication: "/publication",
 	database: "/database",
-	researchData: "/research-data",
+	metadore: "/research-data",
 	/* Information route */
 	faq: "/faq",
 	about: "/about",
@@ -120,7 +120,7 @@ export const RouteRoot = Routes.root;
 export const RouteArticle = Routes.article;
 export const RoutePublication = Routes.publication;
 export const RouteDatabase = Routes.database;
-export const RouteResearchData = Routes.researchData;
+export const RouteMetadore = Routes.metadore;
 export const RouteFaq = Routes.faq;
 export const RouteResources = Routes.resources;
 export const RouteAbout = Routes.about;
