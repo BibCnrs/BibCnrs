@@ -1,4 +1,4 @@
-import { Chip, Link, Skeleton, Typography } from "@mui/material";
+import { Alert, Chip, Link, Skeleton, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -21,9 +21,8 @@ export const ArticleSidebar = ({ article }) => {
 
 	const {
 		data: dataRetrieve,
-		isFetching,
 		isLoading,
-		isSuccess,
+		isError,
 		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	} = useQuery<ArticleRetrieveDataType, any, ArticleRetrieveDataType, any>({
 		queryKey: [
@@ -125,6 +124,12 @@ export const ArticleSidebar = ({ article }) => {
 						<Skeleton animation="wave" />
 						<Skeleton animation="wave" />
 					</>
+				)}
+
+				{isError && (
+					<Alert severity="error">
+						{t("components.search.content.failedFetch")}
+					</Alert>
 				)}
 
 				{getterArticle.getAbstract() && (
@@ -247,7 +252,7 @@ export const ArticleSidebar = ({ article }) => {
 				{getterArticle.getArticleLinks() && (
 					<Stack gap={1}>
 						<Typography variant="subtitle1" fontWeight="bold">
-							{t("components.search.content.links")}
+							{t("components.search.content.AccessLink")}
 						</Typography>
 						<Stack gap={1}>
 							{[

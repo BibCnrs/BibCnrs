@@ -1,7 +1,7 @@
 import type { SelectChangeEvent } from "@mui/material/Select";
 
-import { Drawer, Grid } from "@mui/material";
-import { Container, Stack } from "@mui/system";
+import { Drawer, Grid, Typography } from "@mui/material";
+import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { createContext, useEffect, useState } from "react";
@@ -388,6 +388,23 @@ const ArticlePage = () => {
 									handleSelectAll={handleSelectAll}
 									handleOrderChange={handleOrderChange}
 								/>
+
+								{!data ? (
+									<Box mt={5}>
+										<Typography variant="h6">
+											{t("components.search.noSearch")}
+										</Typography>
+									</Box>
+								) : null}
+
+								{data?.totalHits === 0 ? (
+									<Box mt={5}>
+										<Typography variant="h6">
+											{t("components.search.noData")}
+										</Typography>
+									</Box>
+								) : null}
+
 								<Stack mt={2} spacing={2} mb={2}>
 									{data?.results.map((value) => (
 										<ArticleCard

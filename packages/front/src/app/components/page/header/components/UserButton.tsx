@@ -142,6 +142,7 @@ const UserButton = () => {
 				aria-controls={open ? "basic-menu" : undefined}
 				aria-haspopup="true"
 				aria-expanded={open ? "true" : undefined}
+				sx={{ cursor: "pointer" }}
 			>
 				{user?.username?.charAt?.(0) || "U"}
 			</Avatar>
