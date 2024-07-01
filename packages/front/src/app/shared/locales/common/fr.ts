@@ -80,7 +80,9 @@ const fr: Common = {
 		},
 		search: {
 			noData: "Aucun résultat trouvé.",
+			noSearch: "Veuillez effectuer une recherche pour découvrir les résultats",
 			content: {
+				failedFetch: "Une erreur est survenue lors de la récupération.",
 				doi: "DOI",
 				doiColon: "DOI : ",
 				type: "Type",
@@ -105,7 +107,7 @@ const fr: Common = {
 				isbnOnline: "eISBN : ",
 				isbnPrint: "pISBN : ",
 				present: "Présent",
-				links: '"Accès à l\'article"{{ title }}"',
+				links: 'Accès à l\'article"{{ title }}"',
 				pdf: "Accès au pdf",
 				seeMore: "En savoir plus >",
 				abstract: "Résumé",
@@ -121,6 +123,12 @@ const fr: Common = {
 				"Original Identifier": "Identifiant original",
 				Language: "Langue",
 				Rights: "Droits",
+				"Resource Type": "Type de ressource",
+				"Publisher Information": "Informations de l'éditeur",
+				Subjects: "Sujets",
+				Author: "Auteur",
+				Category: "Catégorie",
+				AccessLink: "Accès au document",
 				alert: {
 					active: {
 						day: "Quotidenne",

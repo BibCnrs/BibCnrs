@@ -91,7 +91,9 @@ export type Common = {
 		};
 		search: {
 			noData: string;
+			noSearch: string;
 			content: {
+				failedFetch: string;
 				doi: string;
 				doiColon: string;
 				type: string;
@@ -132,7 +134,12 @@ export type Common = {
 				"Original Identifier": string;
 				Language: string;
 				Rights: string;
-
+				"Resource Type": string;
+				"Publisher Information": string;
+				Subjects: string;
+				Author: string;
+				Category: string;
+				AccessLink: string;
 				alert: {
 					active: {
 						day: string;

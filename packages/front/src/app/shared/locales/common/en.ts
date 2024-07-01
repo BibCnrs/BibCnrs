@@ -79,7 +79,9 @@ const en: Common = {
 		},
 		search: {
 			noData: "No result found.",
+			noSearch: "Launch a search to find resources.",
 			content: {
+				failedFetch: "An error occurred during the retrieve.",
 				doi: "DOI",
 				doiColon: "DOI: ",
 				type: "Type",
@@ -120,6 +122,12 @@ const en: Common = {
 				"Original Identifier": "Original Identifier",
 				Language: "Language",
 				Rights: "Rights",
+				"Resource Type": "Resource Type",
+				"Publisher Information": "Publisher Information",
+				Subjects: "Sujets",
+				Author: "Author",
+				Category: "Category",
+				AccessLink: "Access to the document",
 				alert: {
 					active: {
 						day: "Daily",

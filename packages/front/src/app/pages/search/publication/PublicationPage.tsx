@@ -1,6 +1,6 @@
-import { Grid } from "@mui/material";
+import { Drawer, Grid, Typography } from "@mui/material";
 import { Button } from "@mui/material";
-import { Box, Container } from "@mui/system";
+import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,8 @@ import ChipFacet from "../../../components/page/search/ChipFacet";
 import FacetSidebar, {
 	type FacetSidebarProps,
 } from "../../../components/page/search/FacetSidebar";
-import SearchResults, {
-	type SearchResultsArgsProps,
-} from "../../../components/page/search/SearchResults";
+import PaginationComponent from "../../../components/page/search/PaginationComponent";
+import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
 import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
 import { SearchError } from "../../../components/shared/SearchError";
@@ -36,7 +35,9 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { PublicationDataType } from "../../../shared/types/data.types";
-import PublicationSearchResult from "./components/PublicationSearchResult";
+import { PublicationCard } from "./PublicationCard";
+import { PublicationPageHeader } from "./PublicationPageHeader";
+import { PublicationSidebar } from "./PublicationSidebar";
 
 const ALPHABET = [
 	"A",
@@ -77,6 +78,7 @@ const PublicationPage = () => {
 	const [searchByLetter, setSearchByLetter] = useState<string>("");
 	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);
+	const [selectedPublication, setSelectedPublication] = useState(null);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -244,6 +246,14 @@ const PublicationPage = () => {
 		});
 	};
 
+	const handlePagination = (currentPage: number, resultsPerPage: number) => {
+		handleTable({
+			...search.publication.table,
+			perPage: resultsPerPage,
+			page: currentPage,
+		});
+	};
+
 	const getAvailable = (result: PublicationDataType | undefined) => {
 		const available: Partial<FacetSidebarProps<PublicationParam>["available"]> =
 			{};
@@ -383,13 +393,50 @@ const PublicationPage = () => {
 						) : isError ? (
 							<SearchError />
 						) : (
-							<SearchResults
-								DisplayElement={PublicationSearchResult}
-								results={data?.results}
-								args={search.publication.table}
-								onArgsChange={handleTable}
-								total={data?.totalHits}
-							/>
+							<>
+								<PublicationPageHeader totalHits={data?.totalHits ?? 0} />
+
+								{!data ? (
+									<Box mt={5}>
+										<Typography variant="h6">
+											{t("components.search.noSearch")}
+										</Typography>
+									</Box>
+								) : null}
+
+								{data?.totalHits === 0 ? (
+									<Box mt={5}>
+										<Typography variant="h6">
+											{t("components.search.noData")}
+										</Typography>
+									</Box>
+								) : null}
+
+								<Stack mt={2} spacing={2} mb={2}>
+									{data?.results.map((value) => (
+										<PublicationCard
+											key={value.id}
+											publication={value}
+											setSelectedPublication={setSelectedPublication}
+										/>
+									))}
+								</Stack>
+								<PaginationComponent
+									currentPage={search.publication.table.page}
+									onChange={handlePagination}
+									resultsPerPage={search.publication.table.perPage}
+									total={data?.totalHits}
+								/>
+								<Drawer
+									anchor="right"
+									open={!!selectedPublication}
+									onClose={() => setSelectedPublication(null)}
+								>
+									{selectedPublication && (
+										<PublicationSidebar publication={selectedPublication} />
+									)}
+								</Drawer>
+							</>
 						)}
 					</Grid>
 				</Grid>
