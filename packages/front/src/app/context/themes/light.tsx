@@ -59,5 +59,12 @@ export const lightTheme: ThemeOptions = {
 				root: muiCardContentTheme,
 			},
 		},
+		MuiDialogTitle: {
+			styleOverrides: {
+				root: {
+					color: lightThemePalette.primary.main,
+				},
+			},
+		},
 	},
 };

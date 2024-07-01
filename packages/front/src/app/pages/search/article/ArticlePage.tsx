@@ -1,7 +1,14 @@
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import {
+	Box,
+	Container,
+	Drawer,
+	Grid,
+	IconButton,
+	Stack,
+	Typography,
+} from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
-
-import { Drawer, Grid, Typography } from "@mui/material";
-import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { createContext, useEffect, useState } from "react";
@@ -40,6 +47,7 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
+import ArticleAdvancedSearch from "./ArticleAvancedSearch";
 import { ArticleCard } from "./ArticleCard";
 import { ArticlePageHeader } from "./ArticlePageHeader";
 import { ArticleSidebar } from "./ArticleSidebar";
@@ -69,6 +77,10 @@ const ArticlePage = () => {
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
 	const [exports, setExports] = useState<ContextData>([]);
 	const [selectedArticle, setSelectedArticle] = useState(null);
+	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+	const [searchQuery, setSearchQuery] = useState<string>(
+		query.get("q") || search.query || "",
+	);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -342,13 +354,30 @@ const ArticlePage = () => {
 		return active;
 	};
 
+	const openAdvancedSearch = () => {
+		setShowAdvancedSearch(true);
+	};
+
+	const closeAdvancedSearch = (query?: string) => {
+		setShowAdvancedSearch(false);
+		if (query) {
+			setSearchQuery(query);
+			handleSearch(query);
+		}
+	};
+
 	return (
 		<>
 			<PageTitle page="article" />
 			<SearchBar
 				placeholder={t("pages.article.searchBar")}
-				value={query.get("q") || search.query}
+				value={searchQuery}
 				onSearch={handleSearch}
+				secondaryAction={
+					<IconButton onClick={openAdvancedSearch}>
+						<ManageSearchIcon />
+					</IconButton>
+				}
 			>
 				<ChipFacet
 					value={search.domain}
@@ -434,6 +463,10 @@ const ArticlePage = () => {
 					</Grid>
 				</Grid>
 			</Container>
+			<ArticleAdvancedSearch
+				open={showAdvancedSearch}
+				onClose={closeAdvancedSearch}
+			/>
 		</>
 	);
 };

@@ -150,6 +150,26 @@ export type Common = {
 				};
 			};
 		};
+		advancedSearch: {
+			modalTitle: string;
+			add: string;
+			remove: string;
+			search: string;
+			operator: string;
+			and: string;
+			or: string;
+			not: string;
+			field: string;
+			author: string;
+			doi: string;
+			isbn: string;
+			issn: string;
+			keywords: string;
+			abstract: string;
+			title: string;
+			source: string;
+			humanQuery: string;
+		};
 		facet: {
 			title: string;
 			text: string;

@@ -6,16 +6,27 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import { Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { KeyboardEvent, SyntheticEvent } from "react";
-import { memo, useEffect, useState } from "react";
+import type {
+	KeyboardEvent,
+	PropsWithoutRef,
+	ReactNode,
+	SyntheticEvent,
+} from "react";
+import { useEffect, useState } from "react";
 import { autoComplete } from "../../../services/common/AutoComplete";
 import { useDebounce } from "../../../shared/hook";
-import type { SearchBarProps } from "../../../shared/types/props.types";
 
 import SearchModeSelection from "./SearchModeSelection";
 
 const SEARCH_BAR_HEIGHT = "50px";
 
+type SearchBarProps = PropsWithoutRef<{
+	placeholder: string;
+	value?: string | null;
+	onSearch: (value: string | undefined) => void;
+	secondaryAction?: ReactNode;
+	children?: ReactNode;
+}>;
 /**
  * Search bar component used in: "Root", "Article", "Journal, book", "Database" and "Research data"
  * @param placeholder - Search bar placeholder
@@ -26,6 +37,7 @@ const SearchBar = ({
 	placeholder,
 	onSearch,
 	children,
+	secondaryAction,
 	...props
 }: SearchBarProps) => {
 	// Search bar states
@@ -156,6 +168,12 @@ const SearchBar = ({
 					<IconButton onClick={searchOnClick} role="search">
 						<SearchIcon />
 					</IconButton>
+					{secondaryAction && (
+						<>
+							<Divider orientation="vertical" id="search-box-divider" />
+							{secondaryAction}
+						</>
+					)}
 				</Stack>
 				{children}
 			</Container>
@@ -163,4 +181,4 @@ const SearchBar = ({
 	);
 };
 
-export default memo(SearchBar);
+export default SearchBar;
