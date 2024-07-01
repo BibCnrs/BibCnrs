@@ -1,6 +1,12 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
+	Typography,
+} from "@mui/material";
 import { Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import OpenablePaper from "../../../components/element/paper/OpenablePaper";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { faq } from "../../../services/common/CMS";
@@ -12,33 +18,24 @@ import type {
 
 const FaqEntry = ({ data }: { data: CMSDataType }) => {
 	const language = useLanguageKey();
-	if (language === "en") {
-		return (
-			<OpenablePaper
-				title={data.name_en}
-				summary={null}
-				content={
-					// biome-ignore lint/style/useSelfClosingElements: <explanation>
-					<div
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-						dangerouslySetInnerHTML={{ __html: data.content_en }}
-					></div>
-				}
-			/>
-		);
-	}
 	return (
-		<OpenablePaper
-			title={data.name_fr}
-			summary={null}
-			content={
-				// biome-ignore lint/style/useSelfClosingElements: <explanation>
-				<div
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-					dangerouslySetInnerHTML={{ __html: data.content_fr }}
-				></div>
-			}
-		/>
+		<Accordion>
+			<AccordionSummary
+				expandIcon={<ExpandMoreIcon />}
+				aria-controls={`${data.name_en}-content`}
+				id={`${data.name_en}-header`}
+			>
+				<Typography color="primary" fontWeight="bold">
+					{language === "en" ? data.name_en : data.name_fr}
+				</Typography>
+			</AccordionSummary>
+			<AccordionDetails
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+				dangerouslySetInnerHTML={{
+					__html: language === "en" ? data.content_en : data.content_fr,
+				}}
+			/>
+		</Accordion>
 	);
 };
 

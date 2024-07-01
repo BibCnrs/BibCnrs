@@ -336,6 +336,13 @@ export type Common = {
 			pin: string;
 			unpin: string;
 			delete: string;
+			emptyFavorites: string;
+			confirmDelete: {
+				title: string;
+				description: string;
+				cancel: string;
+				confirm: string;
+			};
 		};
 		faq: {
 			title: string;

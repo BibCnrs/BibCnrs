@@ -13,11 +13,21 @@ import {
 	rectSortingStrategy,
 	sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { Box } from "@mui/material";
-import { useMemo } from "react";
+import {
+	Box,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Typography,
+} from "@mui/material";
+import { useMemo, useState } from "react";
+import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import FavouriteListItem from "./FavouriteListItem";
-import type { useFavourites } from "./useFavourites";
+import { useFavourites } from "./useFavourites";
 
 type FavouriteListProps = {
 	favourites: FavouriteResourceDataType[];
@@ -27,10 +37,14 @@ type FavouriteListProps = {
 };
 
 function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
+	const t = useTranslator();
+	const [favouriteToDelete, setFavouriteToDelete] = useState(null);
 	const identifiers = useMemo(
 		() => favourites.map((favourite) => favourite.id),
 		[favourites],
 	);
+
+	const { removeFavourite } = useFavourites();
 
 	const sensors = useSensors(
 		useSensor(PointerSensor),
@@ -47,6 +61,11 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 			const newIndex = identifiers.indexOf(over.id);
 			handleMove(oldIndex, newIndex);
 		}
+	};
+
+	const handleDelete = () => {
+		removeFavourite(favouriteToDelete);
+		setFavouriteToDelete(null);
 	};
 
 	return (
@@ -70,8 +89,48 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 					}}
 				>
 					{favourites.map((favourite) => (
-						<FavouriteListItem key={favourite.id} favourite={favourite} />
+						<FavouriteListItem
+							key={favourite.id}
+							favourite={favourite}
+							setFavouriteToDelete={setFavouriteToDelete}
+						/>
 					))}
+
+					{favourites.length === 0 && (
+						<Typography
+							variant="h6"
+							component="h1"
+							sx={{
+								color: "text.disabled",
+							}}
+						>
+							{t("pages.favourite.emptyFavorites")}
+						</Typography>
+					)}
+
+					<Dialog
+						open={favouriteToDelete !== null}
+						onClose={() => setFavouriteToDelete(null)}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{t("pages.favourite.confirmDelete.title")}
+						</DialogTitle>
+						<DialogContent>
+							<DialogContentText id="alert-dialog-description">
+								{t("pages.favourite.confirmDelete.description")}
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={() => setFavouriteToDelete(null)}>
+								{t("pages.favourite.confirmDelete.cancel")}
+							</Button>
+							<Button onClick={handleDelete} autoFocus variant="contained">
+								{t("pages.favourite.confirmDelete.confirm")}
+							</Button>
+						</DialogActions>
+					</Dialog>
 				</Box>
 			</SortableContext>
 		</DndContext>
