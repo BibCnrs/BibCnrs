@@ -119,6 +119,8 @@ test("Add / Remove item", async ({ page }) => {
 	await page
 		.getByRole("button", { name: /Supprimer https:\/\/marmelab.com/i })
 		.click();
+
+	await page.getByRole("button", { name: /Confirmer/i }).click();
 	await page.waitForResponse("/api/ebsco/favourite_resources/1");
 	await expect(marmelab()).not.toBeVisible();
 	await expect(cnrsIndex()).resolves.toBe(0);
