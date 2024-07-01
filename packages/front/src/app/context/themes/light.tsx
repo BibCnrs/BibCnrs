@@ -43,6 +43,13 @@ export const lightTheme: ThemeOptions = {
 				},
 			},
 		},
+		MuiInputBase: {
+			styleOverrides: {
+				input: {
+					backgroundColor: lightThemePalette.background.paper,
+				},
+			},
+		},
 		MuiCard: {
 			styleOverrides: {
 				root: {

@@ -3,7 +3,9 @@ import { enUS, frFR } from "@mui/material/locale";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import createTheme from "@mui/material/styles/createTheme";
 import {
+	type Dispatch,
 	type ReactNode,
+	type SetStateAction,
 	createContext,
 	useContext,
 	useEffect,
@@ -26,7 +28,7 @@ type BibContextType = {
 	theme: ThemeType;
 	setTheme: (value: ThemeType) => void;
 	search: SearchContextType;
-	setSearch: (value: SearchContextType) => void;
+	setSearch: Dispatch<SetStateAction<SearchContextType>>;
 	showLoginModal: () => void;
 	hideLoginModal: () => void;
 } & ReturnType<typeof useSession>;

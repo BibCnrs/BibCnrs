@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import RemoveIcon from "@mui/icons-material/Clear";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
@@ -28,29 +28,27 @@ export const FIELDS = {
 	SO: "source",
 } as const;
 
-export type ArticleAdvancedSearchItemProps = {
-	id: string;
-	operator: keyof typeof OPERATORS | null;
-	field: keyof typeof FIELDS;
-	value: string;
+export type Operator = keyof typeof OPERATORS;
+export type Field = keyof typeof FIELDS;
 
+export type AdvancedSearchItem = {
+	id: string;
+	operator: Operator | null;
+	field: Field;
+	value: string;
+};
+
+export type ArticleAdvancedSearchItemProps = {
+	item: AdvancedSearchItem;
 	hasRemoveButton?: boolean;
-	onChange(value: AdvancedSearchItemValue): void;
+	onChange(value: AdvancedSearchItem): void;
 	onAdd(): void;
 	onRemove(): void;
 };
 
-export type AdvancedSearchItemValue = Omit<
-	ArticleAdvancedSearchItemProps,
-	"hasRemoveButton" | "onChange" | "onAdd" | "onRemove"
->;
-
 export default function ArticleAdvancedSearchItem({
 	hasRemoveButton = false,
-	id,
-	operator,
-	field,
-	value,
+	item,
 	onChange,
 	onAdd,
 	onRemove,
@@ -60,28 +58,25 @@ export default function ArticleAdvancedSearchItem({
 	const handleChange = useCallback(
 		(prop: string, newValue: string) => {
 			onChange({
-				id,
-				operator,
-				field,
-				value,
+				...item,
 				[prop]: newValue,
 			});
 		},
-		[id, operator, field, value, onChange],
+		[item, onChange],
 	);
 
 	return (
 		<Stack direction="row" gap={1} alignItems="center">
-			{operator ? (
+			{item.operator ? (
 				<FormControl
 					sx={{
-						width: "128px",
+						width: "96px",
 					}}
 					size="small"
 				>
 					<InputLabel>{t("components.advancedSearch.operator")}</InputLabel>
 					<Select
-						value={operator}
+						value={item.operator}
 						label={t("components.advancedSearch.operator")}
 						onChange={(e) => {
 							handleChange("operator", e.target.value);
@@ -97,20 +92,20 @@ export default function ArticleAdvancedSearchItem({
 			) : (
 				<Box
 					sx={{
-						width: "128px",
+						width: "96px",
 					}}
 				/>
 			)}
 			<FormControl
 				sx={{
-					width: "192px",
+					width: "128px",
 				}}
 				size="small"
 			>
 				<InputLabel>{t("components.advancedSearch.field")}</InputLabel>
 				<Select
 					label={t("components.advancedSearch.field")}
-					value={field}
+					value={item.field}
 					onChange={(e) => {
 						handleChange("field", e.target.value);
 					}}
@@ -126,7 +121,7 @@ export default function ArticleAdvancedSearchItem({
 				sx={{
 					flexGrow: 1,
 				}}
-				value={value}
+				value={item.value}
 				onChange={(e) => {
 					handleChange("value", e.target.value);
 				}}
