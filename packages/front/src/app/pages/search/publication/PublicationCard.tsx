@@ -100,7 +100,7 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 		return ` ${reconciledFullTextHoldingString}`;
 	};
 
-	const handleSelectedItem = (selectedPublication) => {
+	const handleSelectedItem = () => {
 		if (!user) {
 			return showLoginModal();
 		}
@@ -166,9 +166,7 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 							color: (theme) => theme.palette.primary.main,
 						},
 					}}
-					onClick={() => {
-						handleSelectedItem(publication);
-					}}
+					onClick={handleSelectedItem}
 				>
 					{t("components.search.content.seeMore")}
 				</Link>

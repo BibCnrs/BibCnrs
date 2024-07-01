@@ -11,8 +11,8 @@ import Resources from "./pages/common/resources/Resources";
 import Error404 from "./pages/errors/Error404";
 import ArticlePage from "./pages/search/article/ArticlePage";
 import Database from "./pages/search/database/Database";
+import MetadorePage from "./pages/search/metadore/MetadorePage";
 import PublicationPage from "./pages/search/publication/PublicationPage";
-import ResearchData from "./pages/search/researchdata/ResearchData";
 import UserSettings from "./pages/user/UserSettings/UserSettings";
 import Favourite from "./pages/user/favourite/Favourite";
 import History from "./pages/user/history/History";
@@ -29,9 +29,9 @@ import {
 	RouteHistory,
 	RouteLegal,
 	RouteLicences,
+	RouteMetadore,
 	RouteNews,
 	RoutePublication,
-	RouteResearchData,
 	RouteResources,
 	RouteRoot,
 	RouteUserSettings,
@@ -56,7 +56,7 @@ const App = () => {
 					/>
 					<Route path={RoutePublication} element={<PublicationPage />} />
 					<Route path={RouteDatabase} element={<Database />} />
-					<Route path={RouteResearchData} element={<ResearchData />} />
+					<Route path={RouteMetadore} element={<MetadorePage />} />
 					<Route path={RouteFaq} element={<Faq />} />
 					<Route path={RouteResources} element={<Resources />} />
 					{/* Protected route */}

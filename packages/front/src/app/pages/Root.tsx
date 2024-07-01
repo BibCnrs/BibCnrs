@@ -1,25 +1,24 @@
+import { LinearProgress } from "@mui/material";
+import { Container } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import { AnonymousHome } from "../components/page/home/AnonymousHome";
+import { LoginHome } from "../components/page/home/LoginHome";
 import SearchBar from "../components/page/searchbar/SearchBar";
+import { useBibContext } from "../context/BibContext";
 import {
 	RouteArticle,
 	RouteDatabase,
+	RouteMetadore,
 	RoutePublication,
-	RouteResearchData,
 	updatePageQueryUrl,
 } from "../shared/Routes";
 import { useTranslator } from "../shared/locales/I18N";
-import "./Root.scss";
-import { LinearProgress } from "@mui/material";
-import { Container } from "@mui/system";
-import { AnonymousHome } from "../components/page/home/AnonymousHome";
-import { LoginHome } from "../components/page/home/LoginHome";
-import { useBibContext } from "../context/BibContext";
 
 const ROUTE_SEARCH = {
 	article: RouteArticle,
 	journal: RoutePublication,
 	platform: RouteDatabase,
-	searchData: RouteResearchData,
+	searchData: RouteMetadore,
 };
 
 const Root = () => {

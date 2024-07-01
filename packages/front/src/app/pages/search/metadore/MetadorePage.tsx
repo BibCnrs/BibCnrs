@@ -1,18 +1,20 @@
+import { Drawer, Grid, Typography } from "@mui/material";
+import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ResearchDataSkeleton from "../../../components/element/skeleton/ResearchDataSkeleton";
-import TableMetadore from "../../../components/element/table/TableMetadore";
+import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/search/ChipFacet";
-import SearchResults, {
-	type SearchResultsArgsProps,
-} from "../../../components/page/search/SearchResults";
+import PaginationComponent from "../../../components/page/search/PaginationComponent";
+import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
+import { SearchError } from "../../../components/shared/SearchError";
+import { useBibContext } from "../../../context/BibContext";
 import { metadore } from "../../../services/search/Metadore";
 import {
-	RouteResearchData,
+	RouteMetadore,
 	getNumber,
 	getString,
 	updatePageQueryUrl,
@@ -21,11 +23,11 @@ import {
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { MetadoreDataType } from "../../../shared/types/data.types";
-import "./ResearchData.scss";
-import { Container } from "@mui/system";
-import { useBibContext } from "../../../context/BibContext";
+import { MetadoreCard } from "./MetadoreCard";
+import { MetadorePageHeader } from "./MetadorePageHeader";
+import { MetadoreSidebar } from "./MetadoreSidebar";
 
-const ResearchData = () => {
+const MetadorePage = () => {
 	const navigate = useNavigate();
 	const query = useSearchParams();
 	const t = useTranslator();
@@ -33,6 +35,7 @@ const ResearchData = () => {
 	const { search, setSearch } = useBibContext();
 
 	const [first, setFirst] = useState<boolean>(true);
+	const [selectedMetadore, setSelectedMetadore] = useState(null);
 
 	const { data, isFetching, isLoading, isError, error } = useQuery<
 		MetadoreDataType,
@@ -119,12 +122,12 @@ const ResearchData = () => {
 				param.field = search.metadore.field;
 			}
 
-			updatePageQueryUrl(RouteResearchData, navigate, param);
+			updatePageQueryUrl(RouteMetadore, navigate, param);
 		}
 	}, [first, navigate, query, search, setSearch]);
 
 	const handleField = (
-		event: MouseEvent<HTMLElement>,
+		_: MouseEvent<HTMLElement>,
 		field: string | null,
 	): void => {
 		setSearch({
@@ -160,6 +163,16 @@ const ResearchData = () => {
 		});
 	};
 
+	const handlePagination = (currentPage: number, resultsPerPage: number) => {
+		handleTable({
+			...search.metadore.table,
+			perPage: resultsPerPage,
+			page: currentPage,
+		});
+	};
+
+	console.log("DATA", data);
+
 	return (
 		<>
 			<PageTitle page="researchData" />
@@ -192,21 +205,64 @@ const ResearchData = () => {
 					isDomain={false}
 				/>
 			</SearchBar>
-			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-				{isLoading || isFetching ? (
-					<ResearchDataSkeleton />
-				) : (
-					<SearchResults
-						DisplayElement={TableMetadore}
-						results={data?.results}
-						args={search.metadore.table}
-						onArgsChange={handleTable}
-						total={data?.totalHits}
-					/>
-				)}
+			<Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
+				<Grid container spacing={4} padding={2}>
+					<Grid item xs={12} md={12}>
+						{isLoading || isFetching ? (
+							<SearchSkeleton />
+						) : isError ? (
+							<SearchError />
+						) : (
+							<>
+								<MetadorePageHeader totalHits={data?.totalHits ?? 0} />
+
+								{!data.results ? (
+									<Box mt={5}>
+										<Typography variant="h6">
+											{t("components.search.noSearch")}
+										</Typography>
+									</Box>
+								) : null}
+
+								{data?.totalHits === 0 ? (
+									<Box mt={5}>
+										<Typography variant="h6">
+											{t("components.search.noData")}
+										</Typography>
+									</Box>
+								) : null}
+
+								<Stack mt={2} spacing={2} mb={2}>
+									{data?.results?.map((value) => (
+										<MetadoreCard
+											key={value.id}
+											metadore={value}
+											setSelectedMetadore={setSelectedMetadore}
+										/>
+									))}
+								</Stack>
+								<PaginationComponent
+									currentPage={search.metadore.table.page}
+									onChange={handlePagination}
+									resultsPerPage={search.metadore.table.perPage}
+									total={data?.totalHits}
+								/>
+								<Drawer
+									anchor="right"
+									open={!!selectedMetadore}
+									onClose={() => setSelectedMetadore(null)}
+								>
+									{selectedMetadore && (
+										<MetadoreSidebar metadore={selectedMetadore} />
+									)}
+								</Drawer>
+							</>
+						)}
+					</Grid>
+				</Grid>
 			</Container>
 		</>
 	);
 };
 
-export default ResearchData;
+export default MetadorePage;

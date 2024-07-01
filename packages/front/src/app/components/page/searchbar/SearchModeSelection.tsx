@@ -7,8 +7,8 @@ import { useBibContext } from "../../../context/BibContext";
 import {
 	RouteArticle,
 	RouteDatabase,
+	RouteMetadore,
 	RoutePublication,
-	RouteResearchData,
 	useClickHandler,
 } from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -42,7 +42,7 @@ const SearchModeSelection = () => {
 	const article = useClickHandler(RouteArticle);
 	const publication = useClickHandler(RoutePublication);
 	const database = useClickHandler(RouteDatabase);
-	const researchData = useClickHandler(RouteResearchData);
+	const researchData = useClickHandler(RouteMetadore);
 
 	return (
 		<Stack direction={{ xs: "column", md: "row" }} gap={3}>
