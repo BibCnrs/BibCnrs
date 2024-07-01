@@ -11,7 +11,7 @@ import {
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -191,21 +191,24 @@ const ArticlePage = () => {
 		}
 	}, [error, isError, serviceCatch]);
 
-	const handleSearch = (value: string | undefined): void => {
-		setSaveHistory(true);
-		setSearch({
-			...search,
-			query: value,
-			article: {
-				limiters: search.article.limiters,
-				orderBy: search.article.orderBy,
-				table: {
-					page: 1,
-					perPage: search.article.table.perPage,
+	const handleSearch = useCallback(
+		(value: string | undefined): void => {
+			setSaveHistory(true);
+			setSearch((search) => ({
+				...search,
+				query: value,
+				article: {
+					limiters: search.article.limiters,
+					orderBy: search.article.orderBy,
+					table: {
+						page: 1,
+						perPage: search.article.table.perPage,
+					},
 				},
-			},
-		});
-	};
+			}));
+		},
+		[setSearch],
+	);
 
 	const handleOrderChange = (event: SelectChangeEvent<OrderByType>) => {
 		setSaveHistory(true);
@@ -358,13 +361,16 @@ const ArticlePage = () => {
 		setShowAdvancedSearch(true);
 	};
 
-	const closeAdvancedSearch = (query?: string) => {
-		setShowAdvancedSearch(false);
-		if (query) {
-			setSearchQuery(query);
-			handleSearch(query);
-		}
-	};
+	const closeAdvancedSearch = useCallback(
+		(query?: string) => {
+			setShowAdvancedSearch(false);
+			if (query) {
+				setSearchQuery(query);
+				handleSearch(query);
+			}
+		},
+		[handleSearch],
+	);
 
 	return (
 		<>
@@ -374,7 +380,15 @@ const ArticlePage = () => {
 				value={searchQuery}
 				onSearch={handleSearch}
 				secondaryAction={
-					<IconButton onClick={openAdvancedSearch}>
+					<IconButton
+						onClick={openAdvancedSearch}
+						sx={{
+							display: {
+								xs: "none",
+								md: "flex",
+							},
+						}}
+					>
 						<ManageSearchIcon />
 					</IconButton>
 				}
