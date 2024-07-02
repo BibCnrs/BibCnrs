@@ -47,6 +47,8 @@ test("Reorder favorites", async ({ page }) => {
 
 	await bib().dragTo(ins2i());
 
+	await page.waitForResponse("/api/ebsco/favourite_resources/1");
+
 	await expect(bib()).toBeVisible();
 	await expect(ins2i()).toBeVisible();
 
@@ -54,6 +56,8 @@ test("Reorder favorites", async ({ page }) => {
 	await expect(ins2iIndex()).resolves.toBe(0);
 
 	await bib().dragTo(ins2i());
+
+	await page.waitForResponse("/api/ebsco/favourite_resources/1");
 
 	await expect(bibIndex()).resolves.toBe(0);
 	await expect(ins2iIndex()).resolves.toBe(1);
@@ -121,7 +125,7 @@ test("Add / Remove item", async ({ page }) => {
 		.click();
 
 	await page.getByRole("button", { name: /Confirmer/i }).click();
-	await page.waitForResponse("/api/ebsco/favourite_resources/1");
+
 	await expect(marmelab()).not.toBeVisible();
 	await expect(cnrsIndex()).resolves.toBe(0);
 });
