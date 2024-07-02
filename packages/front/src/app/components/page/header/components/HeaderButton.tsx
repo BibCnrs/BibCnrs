@@ -21,6 +21,8 @@ const HeaderButton = ({ name, route }: { name: string; route: RoutesType }) => {
 				textTransform: "none",
 				display: { xs: "none", md: "block" },
 				paddingBottom: 0,
+				textAlign: "center",
+				minWidth: 0,
 			}}
 		>
 			{t(`components.header.${name}`)}

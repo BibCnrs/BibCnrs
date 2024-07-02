@@ -45,6 +45,7 @@ export type Common = {
 			licences: string;
 			tests: string;
 			news: string;
+			privacy: string;
 			user: {
 				history: string;
 				bookmark: string;
@@ -311,6 +312,10 @@ export type Common = {
 			title: string;
 			empty: string;
 			pdf: string;
+		};
+		privacy: {
+			title: string;
+			empty: string;
 		};
 		news: {
 			title: string;

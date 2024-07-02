@@ -21,6 +21,7 @@ const Routes = {
 	metadore: "/research-data",
 	/* Information route */
 	faq: "/faq",
+	privacy: "/privacy",
 	about: "/about",
 	legal: "/legal",
 	resources: "/resources",
@@ -122,6 +123,7 @@ export const RoutePublication = Routes.publication;
 export const RouteDatabase = Routes.database;
 export const RouteMetadore = Routes.metadore;
 export const RouteFaq = Routes.faq;
+export const RoutePrivacy = Routes.privacy;
 export const RouteResources = Routes.resources;
 export const RouteAbout = Routes.about;
 export const RouteLegal = Routes.legal;

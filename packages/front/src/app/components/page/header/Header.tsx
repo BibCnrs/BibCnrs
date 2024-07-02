@@ -4,7 +4,14 @@ import { memo } from "react";
 import BibCNRSLightLogo from "/logos/BIB_LIGHT.svg";
 import CNRSLightLogo from "/logos/CNRS_LIGHT.svg";
 import { useBibContext } from "../../../context/BibContext";
-import { RouteFaq, RouteResources, RouteRoot } from "../../../shared/Routes";
+import {
+	RouteFaq,
+	RouteLicences,
+	RouteNews,
+	RoutePrivacy,
+	RouteResources,
+	RouteRoot,
+} from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
 import CustomLink from "../../element/link/CustomLink";
 import HeaderButton from "./components/HeaderButton";
@@ -73,9 +80,17 @@ const Header = () => {
 				</Stack>
 				<Stack direction="row" alignItems="flex-end" gap={1}>
 					<LocalButton />
-					{session.user?.origin !== "janus" && <ThemeButton />}
+					<ThemeButton />
 					<HeaderButton name="resources" route={RouteResources} />
+					{session.user && (
+						<>
+							<HeaderButton name="news" route={RouteNews} />
+							<HeaderButton name="licences" route={RouteLicences} />
+						</>
+					)}
+
 					<HeaderButton name="questions" route={RouteFaq} />
+					<HeaderButton name="privacy" route={RoutePrivacy} />
 
 					{session.status === "loading" && <UserLoading />}
 					{session.status === "loggedIn" && (

@@ -32,6 +32,7 @@ const fr: Common = {
 			licences: "Licences",
 			tests: "Tests",
 			news: "Actualités",
+			privacy: "Politique de confidentialité",
 			user: {
 				history: "Mon Historique",
 				bookmark: "Mes Favoris",
@@ -326,6 +327,10 @@ Cordialement`,
 			title: "Licences",
 			empty: "Aucune licence trouvée.",
 			pdf: "Lien PDF :",
+		},
+		privacy: {
+			title: "Politique de confidentialité",
+			empty: "Aucune politique de confidentialité trouvée",
 		},
 		news: {
 			title: "Actualités",

@@ -32,6 +32,7 @@ const en: Common = {
 			licences: "Licences",
 			tests: "Tests",
 			news: "News",
+			privacy: "Privacy",
 			user: {
 				history: "My History",
 				bookmark: "My Bookmark",
@@ -324,6 +325,10 @@ Sincerely`,
 			title: "Licences",
 			empty: "No licences was founds.",
 			pdf: "PDF link:",
+		},
+		privacy: {
+			title: "Privacy",
+			empty: "No privacy policy was found.",
 		},
 		news: {
 			title: "News",
