@@ -186,6 +186,11 @@ const en: Common = {
 				doi: "DOI",
 			},
 		},
+		history: {
+			delete: "Delete entry {{ term }}",
+			search: "Search for {{ term }}",
+			alert: "Add search alert for {{ term }}",
+		},
 		icon: {
 			openAccess: "Free access to the journal's content",
 			diamond:
