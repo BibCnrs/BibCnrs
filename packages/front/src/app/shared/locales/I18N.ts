@@ -121,9 +121,11 @@ export type Common = {
 				links: string;
 				pdf: string;
 				seeMore: string;
+				seeMoreAbout: string;
 				abstract: string;
 				contributors: string;
 				collections: string;
+				source: string;
 				authors: string;
 				pageCount: string;
 				"Peer Reviewed": string;

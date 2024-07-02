@@ -93,6 +93,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 					onClick={() => {
 						setSelectedArticle(article);
 					}}
+					aria-label={t("components.search.content.seeMoreAbout", { title })}
 				>
 					{t("components.search.content.seeMore")}
 				</Link>
@@ -102,7 +103,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 					className="table-bookmark-button"
 					title={title}
 					url={href}
-					aria-label={t("components.search.content.bookmark")}
+					aria-label={t("components.search.content.bookmark", { title })}
 				/>
 			</CardActions>
 		</Card>

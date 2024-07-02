@@ -113,7 +113,9 @@ export const PublicationSidebar = ({ publication }) => {
 						className="table-bookmark-button"
 						title={bookmarkTitle}
 						url={href}
-						aria-label={t("components.search.content.bookmark")}
+						aria-label={t("components.search.content.bookmark", {
+							title: publication.title,
+						})}
 					/>
 				</Stack>
 				<PublicationTitle

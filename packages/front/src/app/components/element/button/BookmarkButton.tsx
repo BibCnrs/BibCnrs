@@ -50,7 +50,12 @@ const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 
 	return (
 		<Tooltip title={t("components.button.favourite.tooltip")} arrow>
-			<IconButton onClick={handleClick} type="button" size="small">
+			<IconButton
+				onClick={handleClick}
+				type="button"
+				size="small"
+				aria-label={t("components.button.favourite.tooltip", { title })}
+			>
 				{inBookmark ? <FavoriteIcon color="primary" /> : <FavoriteOutlined />}
 			</IconButton>
 		</Tooltip>

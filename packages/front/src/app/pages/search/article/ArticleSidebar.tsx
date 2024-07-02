@@ -102,7 +102,9 @@ export const ArticleSidebar = ({ article }) => {
 						className="table-bookmark-button"
 						title={getterArticle.getTitle()}
 						url={getterArticle.proxify(getterArticle.getHref(), search.domain)}
-						aria-label={t("components.search.content.bookmark")}
+						aria-label={t("components.search.content.bookmark", {
+							title: getterArticle.getTitle(),
+						})}
 					/>
 				</Stack>
 				<ArticleTitle

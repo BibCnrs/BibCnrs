@@ -2,6 +2,10 @@ import { expect, test } from "@playwright/test";
 import { goToFavorites } from "../page-objects/favorites";
 import { janusLogin, janusLogout } from "../page-objects/login";
 
+test.describe.configure({
+	mode: "serial",
+});
+
 test("Open pinned favorite from home page", async ({ page }) => {
 	await janusLogin(page);
 
@@ -139,4 +143,30 @@ test("Add / Remove item", async ({ page }) => {
 
 	await expect(marmelab()).not.toBeVisible();
 	await expect(cnrsIndex()).resolves.toBe(0);
+});
+
+test("Show / Hide favorites on home page", async ({ page }) => {
+	await janusLogin(page);
+
+	await expect(page.getByRole("link", { name: "BIB CNRS" })).toBeVisible();
+
+	await page.getByRole("button", { name: "d" }).click();
+	await page.getByLabel("Paramètres").click();
+	await page.locator(".MuiBackdrop-root").click();
+
+	await page.getByLabel("Favoris").first().click();
+	await page.getByRole("link", { name: "BibCNRS Logo" }).click();
+
+	await expect(page.getByRole("link", { name: "BIB CNRS" })).not.toBeVisible();
+
+	await page.getByRole("button", { name: "d" }).click();
+	await page.getByLabel("Paramètres").click();
+	await page.locator(".MuiBackdrop-root").click();
+
+	await page.getByLabel("Favoris").first().click();
+	await page.getByRole("link", { name: "BibCNRS Logo" }).click();
+
+	await expect(page.getByRole("link", { name: "BIB CNRS" })).toBeVisible();
+
+	await janusLogout(page);
 });

@@ -109,9 +109,11 @@ const en: Common = {
 				links: 'Access to "{{ title }}" article',
 				pdf: "Pdf access",
 				seeMore: "See more",
+				seeMoreAbout: "See more about {{ title }}",
 				abstract: "Abstract",
 				contributors: "Contributors",
 				collections: "Collections",
+				source: "Source",
 				authors: "Authors",
 				pageCount: "Page count",
 				"Peer Reviewed": "Peer Reviewed",
@@ -191,7 +193,7 @@ const en: Common = {
 		},
 		button: {
 			favourite: {
-				tooltip: "Add to favourites",
+				tooltip: "Add {{ title }} to favourites",
 			},
 		},
 		dnd: {
