@@ -9,7 +9,7 @@ test("Janus login and logout", async ({ page }) => {
 test("Janus user menu", async ({ page }) => {
 	await janusLogin(page);
 
-	await page.getByRole("button", { name: "d", exact: true }).click();
+	await page.getByRole("button", { name: "Profil", exact: true }).click();
 
 	await expect(
 		page.getByRole("menuitem", { name: "Mon Historique" }),

@@ -14,7 +14,7 @@ import { ArticleContentGetter } from "../../../services/search/Article";
 import { useTranslator } from "../../../shared/locales/I18N";
 import { ArticleTitle } from "./ArticleTitle";
 
-function IdArticle({ id }: { id: number }) {
+function ArticleId({ id }: { id: number }) {
 	return (
 		<Typography
 			component="div"
@@ -55,10 +55,11 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 				minHeight: "100%",
 			}}
 			aria-label={`article-title-${getterArticle.getId()}`}
+			elevation={3}
 		>
 			<Stack direction="row" alignItems="center" justifyContent="space-between">
 				<ExportArticleCheckbox getter={getterArticle} />
-				<IdArticle id={getterArticle.getId()} />
+				<ArticleId id={getterArticle.getId()} />
 			</Stack>
 			<CardContent sx={{ flex: 1, paddingY: 0 }}>
 				<ArticleTitle

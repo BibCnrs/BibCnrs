@@ -10,7 +10,7 @@ test("Inist login", async ({ page }) => {
 test("Inist user menu", async ({ page }) => {
 	await inistLogin(page);
 
-	await page.getByRole("button", { name: "M", exact: true }).click();
+	await page.getByRole("button", { name: "Profil", exact: true }).click();
 
 	await expect(
 		page.getByRole("menuitem", { name: "Mon Historique" }),

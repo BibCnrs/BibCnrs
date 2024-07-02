@@ -150,7 +150,7 @@ const Database = () => {
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				<Stack gap={2}>
 					{!user && (
-						<ColoredPaper id="database-anonymous" elevation={4} border>
+						<ColoredPaper id="database-anonymous" elevation={3} border>
 							{t("pages.database.anonymousMessage")}
 						</ColoredPaper>
 					)}

@@ -1,3 +1,4 @@
+import { Box } from "@mui/system";
 import { memo } from "react";
 import { useLanguageKey } from "../../../shared/locales/I18N";
 import type { RenderContentProps } from "../../../shared/types/props.types";
@@ -64,7 +65,12 @@ const RenderContent = ({
 				<PageTitle />
 			)}
 			{displayTitle ? <h1>{content.title}</h1> : null}
-			<div
+			<Box
+				sx={{
+					a: {
+						color: "primary.main",
+					},
+				}}
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 				dangerouslySetInnerHTML={{ __html: content.text }}
 			/>

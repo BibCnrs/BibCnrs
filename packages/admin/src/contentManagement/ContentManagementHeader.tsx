@@ -11,6 +11,7 @@ export const pages = [
 	{ id: "faq", name: "FAQ" },
 	{ id: "legal", name: "Mentions légales" },
 	{ id: "about", name: "A propos" },
+	{ id: "privacy", name: "Politique de confidentialité" },
 ];
 
 const ContentManagementHeader = () => {

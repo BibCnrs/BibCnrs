@@ -150,7 +150,7 @@ test("Show / Hide favorites on home page", async ({ page }) => {
 
 	await expect(page.getByRole("link", { name: "BIB CNRS" })).toBeVisible();
 
-	await page.getByRole("button", { name: "d" }).click();
+	await page.getByRole("button", { name: "Profil" }).click();
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
@@ -159,7 +159,7 @@ test("Show / Hide favorites on home page", async ({ page }) => {
 
 	await expect(page.getByRole("link", { name: "BIB CNRS" })).not.toBeVisible();
 
-	await page.getByRole("button", { name: "d" }).click();
+	await page.getByRole("button", { name: "Profil" }).click();
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 

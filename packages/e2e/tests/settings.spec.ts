@@ -4,7 +4,7 @@ import { janusLogin, janusLogout } from "../page-objects/login";
 test("Go To seetings page", async ({ page }) => {
 	await janusLogin(page);
 
-	await page.getByRole("button", { name: "d" }).click();
+	await page.getByRole("button", { name: "Profil" }).click();
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
@@ -38,7 +38,7 @@ test("Go To seetings page", async ({ page }) => {
 test("Change language", async ({ page }) => {
 	await janusLogin(page);
 
-	await page.getByRole("button", { name: "d" }).click();
+	await page.getByRole("button", { name: "Profil" }).click();
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 

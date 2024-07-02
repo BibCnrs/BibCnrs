@@ -7,6 +7,7 @@ import Root from "./pages/Root";
 import About from "./pages/common/about/About";
 import Faq from "./pages/common/faq/Faq";
 import Legal from "./pages/common/legal/Legal";
+import PrivacyPage from "./pages/common/privacy/PrivacyPage";
 import Resources from "./pages/common/resources/Resources";
 import Error404 from "./pages/errors/Error404";
 import ArticlePage from "./pages/search/article/ArticlePage";
@@ -31,6 +32,7 @@ import {
 	RouteLicences,
 	RouteMetadore,
 	RouteNews,
+	RoutePrivacy,
 	RoutePublication,
 	RouteResources,
 	RouteRoot,
@@ -58,6 +60,7 @@ const App = () => {
 					<Route path={RouteDatabase} element={<Database />} />
 					<Route path={RouteMetadore} element={<MetadorePage />} />
 					<Route path={RouteFaq} element={<Faq />} />
+					<Route path={RoutePrivacy} element={<PrivacyPage />} />
 					<Route path={RouteResources} element={<Resources />} />
 					{/* Protected route */}
 					<Route

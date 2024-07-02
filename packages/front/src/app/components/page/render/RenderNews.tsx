@@ -51,7 +51,7 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 			gap={6}
 		>
 			{filteredData.map((data) => (
-				<Card key={data.id} elevation={0}>
+				<Card key={data.id} elevation={3}>
 					<CardActionArea
 						component={Link}
 						to={`/news/${data.id}`}
@@ -83,7 +83,16 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 							<Stack spacing={1}>
 								<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
 									{data.page === "tests" && (
-										<Chip label="Test" size="small" variant="outlined" />
+										<Chip
+											label="Test"
+											size="small"
+											variant="filled"
+											color="secondary"
+											sx={{
+												fontWeight: 700,
+												textTransform: "uppercase",
+											}}
+										/>
 									)}
 								</Stack>
 								<Typography variant="h5" component="h6">

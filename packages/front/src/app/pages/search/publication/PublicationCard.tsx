@@ -16,7 +16,7 @@ import type {
 } from "../../../shared/types/data.types";
 import { PublicationTitle } from "./PublicationTitle";
 
-function IdPublication({ id }: { id: number }) {
+function PublicationId({ id }: { id: number }) {
 	return (
 		<Typography
 			component="div"
@@ -119,9 +119,10 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 				minHeight: "100%",
 			}}
 			aria-label={`publication-title-${id}`}
+			elevation={3}
 		>
 			<Stack direction="row" alignItems="center" justifyContent="space-between">
-				<IdPublication id={id} />
+				<PublicationId id={id} />
 			</Stack>
 			<CardContent sx={{ flex: 1, paddingY: 0 }}>
 				<PublicationTitle

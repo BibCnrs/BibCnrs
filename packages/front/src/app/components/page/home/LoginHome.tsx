@@ -86,7 +86,7 @@ export const LoginHome = () => {
 						gap={6}
 					>
 						{superFavouriteResources?.map((favourite) => (
-							<Card key={favourite.id} elevation={0}>
+							<Card key={favourite.id} elevation={3}>
 								<CardActionArea
 									component={MuiLink}
 									href={favourite.url}

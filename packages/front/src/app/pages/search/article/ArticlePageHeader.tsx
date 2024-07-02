@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Stack } from "@mui/system";
 import { type ChangeEvent, useContext } from "react";
-import { useTranslator } from "../../../shared/locales/I18N";
+import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import { ArticleContext } from "./ArticlePage";
 
 type ArticlePageHeaderProps = {
@@ -29,11 +29,14 @@ export const ArticlePageHeader = ({
 	handleOrderChange,
 }: ArticlePageHeaderProps) => {
 	const t = useTranslator();
-	const { exports, setExports } = useContext(ArticleContext);
+	const language = useLanguageKey();
+	const { exports } = useContext(ArticleContext);
 	return (
 		<Stack direction="row" alignItems="center" justifyContent="space-between">
 			<Typography fontWeight="bold">
-				{totalHits}{" "}
+				{new Intl.NumberFormat(language === "fr" ? "fr-FR" : "en-US").format(
+					totalHits,
+				)}{" "}
 				{t("components.search.content.result", {
 					count: totalHits,
 				})}

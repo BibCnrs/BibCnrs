@@ -99,7 +99,7 @@ function AuthenticationModal({
 			{/* Add a sliding animation from the top */}
 			<Slide direction="down" in={open} timeout={400}>
 				<Card
-					elevation={2}
+					elevation={3}
 					sx={{
 						border: 0,
 						borderRadius: 2,

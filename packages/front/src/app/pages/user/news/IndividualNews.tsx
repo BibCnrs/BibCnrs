@@ -1,6 +1,6 @@
 import LinkIcon from "@mui/icons-material/Link";
 import { Button, Chip, Link, Typography } from "@mui/material";
-import { Container, Stack } from "@mui/system";
+import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -68,7 +68,16 @@ const IndividualNews = () => {
 				<Stack spacing={2}>
 					<Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
 						{data.page === "tests" && (
-							<Chip label="Test" size="small" variant="outlined" />
+							<Chip
+								label="Test"
+								size="small"
+								variant="filled"
+								color="secondary"
+								sx={{
+									fontWeight: 700,
+									textTransform: "uppercase",
+								}}
+							/>
 						)}
 					</Stack>
 
@@ -90,7 +99,12 @@ const IndividualNews = () => {
 						/>
 					)}
 
-					<div
+					<Box
+						sx={{
+							a: {
+								color: "primary.main",
+							},
+						}}
 						// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 						dangerouslySetInnerHTML={{
 							__html: language === "en" ? data.content_en : data.content_fr,

@@ -4,7 +4,13 @@ import { memo } from "react";
 import BibCNRSLightLogo from "/logos/BIB_LIGHT.svg";
 import CNRSLightLogo from "/logos/CNRS_LIGHT.svg";
 import { useBibContext } from "../../../context/BibContext";
-import { RouteFaq, RouteResources, RouteRoot } from "../../../shared/Routes";
+import {
+	RouteFaq,
+	RouteLicences,
+	RouteNews,
+	RouteResources,
+	RouteRoot,
+} from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
 import CustomLink from "../../element/link/CustomLink";
 import HeaderButton from "./components/HeaderButton";
@@ -34,28 +40,30 @@ const Header = () => {
 				m={2}
 			>
 				<Stack direction="row" alignItems="flex-end" gap={2}>
-					<CustomLink to={RouteRoot}>
-						<img
-							src={CNRSLightLogo}
-							alt="CNRS Logo"
-							style={{
-								maxWidth: "60px",
-								height: "auto",
-								filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
-							}}
-						/>
-					</CustomLink>
-					<CustomLink to={RouteRoot}>
-						<img
-							src={BibCNRSLightLogo}
-							alt="BibCNRS Logo"
-							style={{
-								maxWidth: "60px",
-								height: "auto",
-								filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
-							}}
-						/>
-					</CustomLink>
+					<Stack direction="row" alignItems="flex-end" gap="60px">
+						<CustomLink to={RouteRoot}>
+							<img
+								src={CNRSLightLogo}
+								alt="CNRS Logo"
+								style={{
+									maxWidth: "60px",
+									height: "auto",
+									filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+								}}
+							/>
+						</CustomLink>
+						<CustomLink to={RouteRoot}>
+							<img
+								src={BibCNRSLightLogo}
+								alt="BibCNRS Logo"
+								style={{
+									maxWidth: "60px",
+									height: "auto",
+									filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+								}}
+							/>
+						</CustomLink>
+					</Stack>
 					<Typography
 						variant="h5"
 						component="h1"
@@ -72,9 +80,15 @@ const Header = () => {
 					</Typography>
 				</Stack>
 				<Stack direction="row" alignItems="flex-end" gap={1}>
+					<ThemeButton />
 					<LocalButton />
-					{session.user?.origin !== "janus" && <ThemeButton />}
 					<HeaderButton name="resources" route={RouteResources} />
+					{session.user && (
+						<>
+							<HeaderButton name="news" route={RouteNews} />
+							<HeaderButton name="licences" route={RouteLicences} />
+						</>
+					)}
 					<HeaderButton name="questions" route={RouteFaq} />
 
 					{session.status === "loading" && <UserLoading />}

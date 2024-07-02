@@ -107,8 +107,12 @@ const Licences = () => {
 										? activeLicences.name_en
 										: activeLicences.name_fr}
 								</h1>
-								{/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-								<div
+								<Box
+									sx={{
+										a: {
+											color: "primary.main",
+										},
+									}}
 									// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 									dangerouslySetInnerHTML={{
 										__html:
@@ -116,7 +120,7 @@ const Licences = () => {
 												? activeLicences.content_en
 												: activeLicences.content_fr,
 									}}
-								></div>
+								/>
 								{activeLicences.pdf ? (
 									<p>
 										{t("pages.licences.pdf")}{" "}

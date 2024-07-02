@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import { Container } from "@mui/system";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
@@ -35,8 +35,14 @@ const History = ({
 		stateIndex: 0,
 	});
 
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	const { data } = useQuery<HistoryDataType, any, HistoryDataType, any>({
+	const { data, isPending } = useQuery<
+		HistoryDataType,
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		any,
+		HistoryDataType,
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		any
+	>({
 		queryKey: ["history", displayOnlyAlert, args],
 		queryFn: () =>
 			history(
@@ -92,6 +98,8 @@ const History = ({
 			/>
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				{data?.histories.length === 0 && <Empty />}
+
+				{isPending && <LinearProgress />}
 
 				{data?.histories.length > 0 && (
 					<HistoryContext.Provider

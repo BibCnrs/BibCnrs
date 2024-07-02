@@ -33,6 +33,7 @@ const en: Common = {
 			tests: "Tests",
 			news: "News",
 			user: {
+				profile: "Profile",
 				history: "My History",
 				bookmark: "My Bookmark",
 				notifications: "My Alerts",
@@ -213,6 +214,7 @@ const en: Common = {
 			about: "About",
 			contact: "Contact",
 			legal: "Legal notice",
+			privacy: "Privacy",
 			mail: {
 				subject: "Request for assistance",
 				body: `Hello,
@@ -325,6 +327,10 @@ Sincerely`,
 			empty: "No licences was founds.",
 			pdf: "PDF link:",
 		},
+		privacy: {
+			title: "Privacy",
+			empty: "No privacy policy was found.",
+		},
 		news: {
 			title: "News",
 		},
@@ -343,7 +349,7 @@ Sincerely`,
 			},
 		},
 		alert: {
-			title: "Alert",
+			title: "Alerts",
 		},
 		favourite: {
 			title: "My Favourites",
