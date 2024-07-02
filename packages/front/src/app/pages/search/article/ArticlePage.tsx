@@ -191,6 +191,11 @@ const ArticlePage = () => {
 		}
 	}, [error, isError, serviceCatch]);
 
+	const handleChangeDomain = (event, field) => {
+		setSaveHistory(true);
+		handleDomain(event, field);
+	};
+
 	const handleSearch = useCallback(
 		(value: string | undefined): void => {
 			setSaveHistory(true);
@@ -396,7 +401,7 @@ const ArticlePage = () => {
 				<ChipFacet
 					value={search.domain}
 					values={domains}
-					onChange={handleDomain}
+					onChange={handleChangeDomain}
 				/>
 			</SearchBar>
 
