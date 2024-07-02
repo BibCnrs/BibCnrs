@@ -88,6 +88,7 @@ export const MetadoreCard = ({ metadore, setSelectedMetadore }) => {
 						},
 					}}
 					onClick={handleSelectedItem}
+					aria-label={t("components.search.content.seeMoreAbout", { title })}
 				>
 					{t("components.search.content.seeMore")}
 				</Link>
