@@ -33,6 +33,7 @@ const fr: Common = {
 			tests: "Tests",
 			news: "Actualités",
 			user: {
+				profile: "Profil",
 				history: "Mon Historique",
 				bookmark: "Mes Favoris",
 				notifications: "Mes Alertes",

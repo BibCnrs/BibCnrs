@@ -33,6 +33,7 @@ const en: Common = {
 			tests: "Tests",
 			news: "News",
 			user: {
+				profile: "Profile",
 				history: "My History",
 				bookmark: "My Bookmark",
 				notifications: "My Alerts",

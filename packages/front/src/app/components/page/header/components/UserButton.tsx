@@ -56,11 +56,6 @@ const UserButton = () => {
 		setAnchorEl(null);
 	};
 
-	// Change the color of the avatar if the user is using a legacy account
-	const getAvatarButtonClass = () => {
-		return open ? " user-button-active-legacy" : " user-button-legacy";
-	};
-
 	// Create menu options
 	const options: ReactElement[] = [];
 	// Add username button
@@ -160,7 +155,7 @@ const UserButton = () => {
 	return (
 		<>
 			<IconButton
-				aria-label="delete"
+				aria-label={t("components.header.user.profile")}
 				size="medium"
 				onClick={handleClick}
 				sx={{ marginBottom: "-5px", border: "1px solid" }}

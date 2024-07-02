@@ -46,6 +46,7 @@ export type Common = {
 			tests: string;
 			news: string;
 			user: {
+				profile: string;
 				history: string;
 				bookmark: string;
 				notifications: string;
