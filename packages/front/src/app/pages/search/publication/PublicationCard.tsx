@@ -168,8 +168,9 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 						},
 					}}
 					onClick={handleSelectedItem}
+					aria-label={t("components.search.content.seeMoreAbout", { title })}
 				>
-					{t("components.search.content.seeMore")}
+					{t("components.search.content.seeMore", { title })}
 				</Link>
 			</CardContent>
 			<CardActions sx={{ paddingTop: 0 }}>
