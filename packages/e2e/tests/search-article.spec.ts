@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { goToFavorites } from "../page-objects/favorites";
+import { goToHistory } from "../page-objects/history";
 import { janusLogout } from "../page-objects/login";
 import { RETRIEVE_ARTICLE_MOCK } from "./mocks/retrieveArticle.mock";
 import { SEARCH_ARTICLE_MOCK } from "./mocks/searchArticle.mock";
@@ -149,6 +150,29 @@ test("Add favorite", async ({ page }) => {
 		await response;
 	}
 	await expect(page.getByText("Over my dead body")).not.toBeVisible();
+
+	await janusLogout(page);
+});
+
+test("Should add history entry", async ({ page }) => {
+	await page.route("**/api/ebsco/*/article/search?queries=*", async (route) => {
+		await route.fulfill({ json: SEARCH_ARTICLE_MOCK });
+	});
+
+	await page.route("**/api/ebsco/*/article/retrieve?*", async (route) => {
+		await route.fulfill({ json: RETRIEVE_ARTICLE_MOCK });
+	});
+
+	await page.goto("/");
+	await page.getByRole("link", { name: "Article" }).click();
+	await page.getByRole("button", { name: /Connectez-vous /i }).click();
+	await page.getByPlaceholder(/Rechercher des articles/i).fill("turing");
+	await page.getByPlaceholder(/Rechercher des articles/i).press("Enter");
+
+	await goToHistory(page);
+
+	expect(page.getByText("turing").first()).toBeVisible();
+	expect(page.getByText("46,405").first()).toBeVisible();
 
 	await janusLogout(page);
 });

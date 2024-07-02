@@ -198,6 +198,11 @@ export type Common = {
 				doi: string;
 			};
 		};
+		history: {
+			delete: string;
+			search: string;
+			alert: string;
+		};
 		icon: {
 			openAccess: string;
 			notComplete: string;

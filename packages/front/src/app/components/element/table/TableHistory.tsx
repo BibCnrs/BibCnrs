@@ -274,6 +274,9 @@ const TableHistory = ({
 							onClick={() => {
 								handleDeleteEntry(data.id);
 							}}
+							aria-label={t("components.history.delete", {
+								term: data.event.queries[0].term,
+							})}
 						>
 							<DeleteOutlineIcon />
 						</Button>
@@ -281,6 +284,9 @@ const TableHistory = ({
 							className="table-history-box-actions-button"
 							size="small"
 							onClick={handleSearch}
+							aria-label={t("components.history.search", {
+								term: data.event.queries[0].term,
+							})}
 						>
 							<OpenInNewIcon />
 						</Button>
@@ -293,6 +299,9 @@ const TableHistory = ({
 									className="table-history-box-actions-button"
 									size="small"
 									onClick={handleOpen}
+									aria-label={t("components.history.alert", {
+										term: data.event.queries[0].term,
+									})}
 								>
 									<BellIcon hasAlert={data.hasAlert} active={data.active} />
 								</Button>
