@@ -96,7 +96,7 @@ export const MetadoreCard = ({ metadore, setSelectedMetadore }) => {
 					className="table-bookmark-button"
 					title={bookmarkTitle}
 					url={metadore.url}
-					aria-label={t("components.search.content.bookmark")}
+					aria-label={t("components.search.content.bookmark", { title })}
 				/>
 			</CardActions>
 		</Card>

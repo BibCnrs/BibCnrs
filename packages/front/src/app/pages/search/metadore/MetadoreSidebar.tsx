@@ -75,7 +75,7 @@ export const MetadoreSidebar = ({ metadore }) => {
 						className="table-bookmark-button"
 						title={bookmarkTitle}
 						url={metadore.url}
-						aria-label={t("components.search.content.bookmark")}
+						aria-label={t("components.search.content.bookmark", { title })}
 					/>
 				</Stack>
 				<MetadoreTitle title={title} href={metadore.url} type={metadore.type} />
