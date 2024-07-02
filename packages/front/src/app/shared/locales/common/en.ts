@@ -32,7 +32,6 @@ const en: Common = {
 			licences: "Licences",
 			tests: "Tests",
 			news: "News",
-			privacy: "Privacy",
 			user: {
 				history: "My History",
 				bookmark: "My Bookmark",
@@ -214,6 +213,7 @@ const en: Common = {
 			about: "About",
 			contact: "Contact",
 			legal: "Legal notice",
+			privacy: "Privacy",
 			mail: {
 				subject: "Request for assistance",
 				body: `Hello,

@@ -8,7 +8,6 @@ import {
 	RouteFaq,
 	RouteLicences,
 	RouteNews,
-	RoutePrivacy,
 	RouteResources,
 	RouteRoot,
 } from "../../../shared/Routes";
@@ -41,28 +40,30 @@ const Header = () => {
 				m={2}
 			>
 				<Stack direction="row" alignItems="flex-end" gap={2}>
-					<CustomLink to={RouteRoot}>
-						<img
-							src={CNRSLightLogo}
-							alt="CNRS Logo"
-							style={{
-								maxWidth: "60px",
-								height: "auto",
-								filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
-							}}
-						/>
-					</CustomLink>
-					<CustomLink to={RouteRoot}>
-						<img
-							src={BibCNRSLightLogo}
-							alt="BibCNRS Logo"
-							style={{
-								maxWidth: "60px",
-								height: "auto",
-								filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
-							}}
-						/>
-					</CustomLink>
+					<Stack direction="row" alignItems="flex-end" gap="60px">
+						<CustomLink to={RouteRoot}>
+							<img
+								src={CNRSLightLogo}
+								alt="CNRS Logo"
+								style={{
+									maxWidth: "60px",
+									height: "auto",
+									filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+								}}
+							/>
+						</CustomLink>
+						<CustomLink to={RouteRoot}>
+							<img
+								src={BibCNRSLightLogo}
+								alt="BibCNRS Logo"
+								style={{
+									maxWidth: "60px",
+									height: "auto",
+									filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+								}}
+							/>
+						</CustomLink>
+					</Stack>
 					<Typography
 						variant="h5"
 						component="h1"
@@ -79,8 +80,8 @@ const Header = () => {
 					</Typography>
 				</Stack>
 				<Stack direction="row" alignItems="flex-end" gap={1}>
-					<LocalButton />
 					<ThemeButton />
+					<LocalButton />
 					<HeaderButton name="resources" route={RouteResources} />
 					{session.user && (
 						<>
@@ -88,9 +89,7 @@ const Header = () => {
 							<HeaderButton name="licences" route={RouteLicences} />
 						</>
 					)}
-
 					<HeaderButton name="questions" route={RouteFaq} />
-					<HeaderButton name="privacy" route={RoutePrivacy} />
 
 					{session.status === "loading" && <UserLoading />}
 					{session.status === "loggedIn" && (

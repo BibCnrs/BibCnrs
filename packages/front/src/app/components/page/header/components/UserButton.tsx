@@ -3,7 +3,9 @@ import ErrorIcon from "@mui/icons-material/Error";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { IconButton } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -83,7 +85,14 @@ const UserButton = () => {
 		// Add user navigation if other case
 	} else {
 		options.push(
-			<MenuItem key="history" onClick={history.handler} href={history.href}>
+			<MenuItem
+				key="history"
+				onClick={(event) => {
+					history.handler(event);
+					setAnchorEl(null);
+				}}
+				href={history.href}
+			>
 				<ListItemIcon>
 					<HistoryIcon fontSize="small" />
 				</ListItemIcon>
@@ -91,7 +100,10 @@ const UserButton = () => {
 			</MenuItem>,
 			<MenuItem
 				key="bookmark"
-				onClick={favourite.handler}
+				onClick={(event) => {
+					favourite.handler(event);
+					setAnchorEl(null);
+				}}
 				href={favourite.href}
 			>
 				<ListItemIcon>
@@ -99,7 +111,14 @@ const UserButton = () => {
 				</ListItemIcon>
 				{t("components.header.user.bookmark")}
 			</MenuItem>,
-			<MenuItem key="notfications" onClick={alert.handler} href={alert.href}>
+			<MenuItem
+				key="notfications"
+				onClick={(event) => {
+					alert.handler(event);
+					setAnchorEl(null);
+				}}
+				href={alert.href}
+			>
 				<ListItemIcon>
 					<NotificationsIcon fontSize="small" />
 				</ListItemIcon>
@@ -109,6 +128,9 @@ const UserButton = () => {
 				key="settings"
 				component={Link}
 				to={RouteUserSettings}
+				onClick={() => {
+					setAnchorEl(null);
+				}}
 				aria-label={t("components.header.user.settings")}
 			>
 				<ListItemIcon>
@@ -136,16 +158,16 @@ const UserButton = () => {
 
 	return (
 		<>
-			<Avatar
-				component="button"
+			<IconButton
+				aria-label="delete"
+				size="medium"
 				onClick={handleClick}
-				aria-controls={open ? "basic-menu" : undefined}
-				aria-haspopup="true"
-				aria-expanded={open ? "true" : undefined}
-				sx={{ cursor: "pointer" }}
+				sx={{ marginBottom: "-5px", border: "1px solid" }}
+				color="primary"
 			>
-				{user?.username?.charAt?.(0) || "U"}
-			</Avatar>
+				<PersonIcon fontSize="inherit" />
+			</IconButton>
+
 			<Menu
 				id="basic-menu"
 				anchorEl={anchorEl}
