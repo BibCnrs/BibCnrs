@@ -159,7 +159,7 @@ export class EbscoSearchAlertCronService {
 						logger.warn(
 							`Alert event not valid for history(id=${id}, event=${JSON.stringify(event)})`,
 						);
-						return;
+						continue;
 					}
 
 					const { queries, limiters, activeFacets, domain } = event;
@@ -210,7 +210,7 @@ export class EbscoSearchAlertCronService {
 							});
 
 							updatedAlerts++;
-							return;
+							continue;
 						}
 
 						const fullResult =
@@ -242,7 +242,7 @@ export class EbscoSearchAlertCronService {
 							});
 
 							updatedAlerts++;
-							return;
+							continue;
 						}
 
 						logger.log(
