@@ -20,6 +20,7 @@ const buttonStyles: SxProps<Theme> = {
 	borderRadius: "20px",
 	width: "200px",
 	textTransform: "none",
+	fontWeight: "900",
 	":hover": {
 		backgroundColor: (theme) => theme.palette.secondary.main,
 		color: (theme) => theme.palette.text.primary,

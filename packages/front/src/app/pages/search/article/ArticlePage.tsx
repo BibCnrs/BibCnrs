@@ -448,7 +448,7 @@ const ArticlePage = () => {
 									</Box>
 								) : null}
 
-								<Stack mt={2} spacing={2} mb={2}>
+								<Stack mt={2} spacing={2} mb={2} gap={2}>
 									{data?.results.map((value) => (
 										<ArticleCard
 											key={value.id}

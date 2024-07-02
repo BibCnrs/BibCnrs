@@ -350,7 +350,7 @@ Cordialement`,
 			},
 		},
 		alert: {
-			title: "Alerte",
+			title: "Alertes",
 		},
 		favourite: {
 			title: "Mes Favoris",

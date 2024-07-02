@@ -63,6 +63,7 @@ export const MetadoreCard = ({ metadore, setSelectedMetadore }) => {
 				minHeight: "100%",
 			}}
 			aria-label={`metadore-title-${metadore.id}`}
+			elevation={3}
 		>
 			<Stack direction="row" alignItems="center" justifyContent="space-between">
 				<MetadoreId id={metadore.id} />

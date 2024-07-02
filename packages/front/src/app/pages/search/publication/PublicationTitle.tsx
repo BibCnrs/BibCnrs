@@ -1,4 +1,4 @@
-import { Link, Popover, Tooltip, Typography } from "@mui/material";
+import { Link, Popover, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
@@ -60,31 +60,29 @@ export function PublicationTitle({
 
 	if (!isOpenAccess && !user) {
 		return (
-			<Tooltip title={`${publication.title} [${publication.type}]`}>
-				<Typography
-					component={Box}
-					variant="h4"
-					sx={{
-						fontSize: 20,
-						display: "block",
-						minHeight: "34px",
-						color: (theme) => theme.palette.primary.main,
-						fontWeight: 700,
-						cursor: "pointer",
-						mb: 2,
-						": hover": {
-							textDecoration: "underline",
-						},
-					}}
-					onClick={(e) => {
-						e.stopPropagation();
-						showLoginModal();
-					}}
-				>
-					{publication.isDiamond ? <Diamond /> : null}
-					{publication.title} [{publication.type}] - {titleCoverage}
-				</Typography>
-			</Tooltip>
+			<Typography
+				component={Box}
+				variant="h4"
+				sx={{
+					fontSize: 20,
+					display: "block",
+					minHeight: "34px",
+					color: (theme) => theme.palette.primary.main,
+					fontWeight: 700,
+					cursor: "pointer",
+					mb: 2,
+					": hover": {
+						textDecoration: "underline",
+					},
+				}}
+				onClick={(e) => {
+					e.stopPropagation();
+					showLoginModal();
+				}}
+			>
+				{publication.isDiamond ? <Diamond /> : null}
+				{publication.title} [{publication.type}] - {titleCoverage}
+			</Typography>
 		);
 	}
 

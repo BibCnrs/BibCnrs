@@ -8,7 +8,7 @@ import { memo, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HistoryContext } from "../../../pages/user/history/History";
 import { RouteArticle, updatePageQueryUrl } from "../../../shared/Routes";
-import { useTranslator } from "../../../shared/locales/I18N";
+import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
 import type {
 	ArticleFacetsKeyDataType,
 	HistoryEntryDataType,
@@ -177,6 +177,7 @@ const TableHistory = ({
 	index,
 }: SearchResultsElementProps<HistoryEntryDataType>) => {
 	const t = useTranslator();
+	const language = useLanguageKey();
 	const navigate = useNavigate();
 	const { theme, search, setSearch } = useBibContext();
 	const { handleDeleteEntry } = useContext(HistoryContext);
@@ -263,7 +264,7 @@ const TableHistory = ({
 					<ul style={{ margin: 0 }}>
 						<li>
 							<b>{t("components.search.content.nbResult")}</b>
-							{` ${(data.event.totalHits ?? data.nb_results).toLocaleString()}`}
+							{` ${new Intl.NumberFormat(language === "fr" ? "fr-FR" : "en-US").format(data.event.totalHits ?? data.nb_results)}`}
 						</li>
 					</ul>
 					<div className="table-history-box-actions-buttons">

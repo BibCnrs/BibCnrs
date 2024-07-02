@@ -171,8 +171,6 @@ const MetadorePage = () => {
 		});
 	};
 
-	console.log("DATA", data);
-
 	return (
 		<>
 			<PageTitle page="researchData" />
@@ -232,7 +230,7 @@ const MetadorePage = () => {
 									</Box>
 								) : null}
 
-								<Stack mt={2} spacing={2} mb={2}>
+								<Stack mt={2} spacing={2} mb={2} gap={2}>
 									{data?.results?.map((value) => (
 										<MetadoreCard
 											key={value.id}

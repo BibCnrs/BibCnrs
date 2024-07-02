@@ -348,7 +348,7 @@ Sincerely`,
 			},
 		},
 		alert: {
-			title: "Alert",
+			title: "Alerts",
 		},
 		favourite: {
 			title: "My Favourites",

@@ -41,7 +41,7 @@ export const DisplayResources = ({
 					key={resource.id}
 					role="listitem"
 					aria-label={resource.name_fr}
-					elevation={0}
+					elevation={3}
 				>
 					<CardActionArea
 						component={Link}

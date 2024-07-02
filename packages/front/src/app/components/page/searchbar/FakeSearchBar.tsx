@@ -14,7 +14,7 @@ export const FakeSearchBar = ({ title }: { title: string }) => {
 		>
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				<Typography
-					variant="h3"
+					variant="h4"
 					component="h1"
 					fontWeight="bold"
 					sx={{

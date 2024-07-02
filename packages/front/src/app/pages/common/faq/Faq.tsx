@@ -30,6 +30,11 @@ const FaqEntry = ({ data }: { data: CMSDataType }) => {
 				</Typography>
 			</AccordionSummary>
 			<AccordionDetails
+				sx={{
+					a: {
+						color: "primary.main",
+					},
+				}}
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 				dangerouslySetInnerHTML={{
 					__html: language === "en" ? data.content_en : data.content_fr,

@@ -9,7 +9,7 @@ import type { AlertPaperProps } from "../../../../shared/types/props.types";
 const AlertPaper = ({ children }: AlertPaperProps) => {
 	return (
 		<Card
-			elevation={0}
+			elevation={3}
 			id="alert"
 			sx={{
 				borderColor: (theme) => theme.palette.error.main,

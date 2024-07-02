@@ -49,6 +49,7 @@ function FavouriteListItem({
 		<Card
 			color={favourite.personal ? "#00FFFF" : undefined}
 			ref={setNodeRef}
+			elevation={3}
 			sx={{
 				cursor: "grab",
 				transform: DndCSS.Transform.toString(transform),

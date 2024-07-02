@@ -1,5 +1,6 @@
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ErrorIcon from "@mui/icons-material/Error";
+import GroupsIcon from "@mui/icons-material/Groups";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -163,9 +164,10 @@ const UserButton = () => {
 				size="medium"
 				onClick={handleClick}
 				sx={{ marginBottom: "-5px", border: "1px solid" }}
-				color="primary"
+				color={user?.legacy ? "inherit" : "primary"}
 			>
-				<PersonIcon fontSize="inherit" />
+				{user?.legacy && <GroupsIcon fontSize="inherit" />}
+				{!user?.legacy && <PersonIcon fontSize="inherit" />}
 			</IconButton>
 
 			<Menu
