@@ -455,20 +455,30 @@ export class AbstractEbscoSearchService {
 		};
 	}
 
-	async getInfoFromDOAJ(isn: string) {
+	async getHasApcFromDoaj(issnList: string[]) {
 		try {
-			const response = await this.http.request(
-				`${this.ebsco.doajUrl}search/journals/issn:${isn}`,
+			const response = await this.http.request<{
+				results: { bibjson: { eissn: string; apc?: { has_apc: boolean } } }[];
+			}>(
+				`${this.ebsco.doajUrl}search/journals/issn:(${issnList.join(" OR ")})`,
 			);
 
-			return {
-				has_apc: response.data?.results?.[0]?.bibjson?.apc?.has_apc ?? null,
-			};
+			if (response.status !== 200 || !response.data?.results) {
+				return new Map<string, { has_apc?: boolean }>();
+			}
+
+			return response.data.results.reduce((map, result) => {
+				const hasApc = result.bibjson.apc?.has_apc ?? null;
+				map.set(
+					result.bibjson.eissn,
+					hasApc !== null ? { has_apc: hasApc } : {},
+				);
+				return map;
+			}, new Map<string, { has_apc?: boolean }>());
 		} catch (error) {
 			logger.error(`Error while fetching DOAJ info ${error}`);
 
-			// 404 crossref
-			return {};
+			return new Map<string, { has_apc?: boolean }>();
 		}
 	}
 }
