@@ -178,7 +178,7 @@ const TableHistory = ({
 }: SearchResultsElementProps<HistoryEntryDataType>) => {
 	const t = useTranslator();
 	const navigate = useNavigate();
-	const { theme } = useBibContext();
+	const { theme, search, setSearch } = useBibContext();
 	const { handleDeleteEntry } = useContext(HistoryContext);
 
 	const [open, setOpen] = useState(false);
@@ -210,6 +210,10 @@ const TableHistory = ({
 	}, [data.active, data.frequence, data.hasAlert, t]);
 
 	const handleSearch = () => {
+		setSearch({
+			...search,
+			domain: data.event.domain,
+		});
 		updatePageQueryUrl(RouteArticle, navigate, createParam(data.event));
 	};
 
@@ -259,7 +263,7 @@ const TableHistory = ({
 					<ul style={{ margin: 0 }}>
 						<li>
 							<b>{t("components.search.content.nbResult")}</b>
-							{` ${data.event.totalHits ?? data.nb_results}`}
+							{` ${(data.event.totalHits ?? data.nb_results).toLocaleString()}`}
 						</li>
 					</ul>
 					<div className="table-history-box-actions-buttons">

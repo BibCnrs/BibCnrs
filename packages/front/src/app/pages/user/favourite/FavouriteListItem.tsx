@@ -18,16 +18,17 @@ import { useFavourites } from "./useFavourites";
 
 type FavouriteListItemProps = {
 	favourite: FavouriteResourceDataType;
+	setFavouriteToDelete: (favourite: FavouriteResourceDataType) => void;
 };
 
-function FavouriteListItem({ favourite }: FavouriteListItemProps) {
+function FavouriteListItem({
+	favourite,
+	setFavouriteToDelete,
+}: FavouriteListItemProps) {
 	const t = useTranslator();
-	const {
-		superFavouriteResources,
-		removeFavourite,
-		addSuperFavourite,
-		removeSuperFavourite,
-	} = useFavourites();
+
+	const { superFavouriteResources, addSuperFavourite, removeSuperFavourite } =
+		useFavourites();
 
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({ id: favourite.id });
@@ -35,10 +36,6 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 	if (!favourite) {
 		return null;
 	}
-
-	const handleDelete = () => {
-		removeFavourite(favourite);
-	};
 
 	const handleToggleSuperFavourite = () => {
 		if (favourite.isSuperFavorite) {
@@ -136,7 +133,7 @@ function FavouriteListItem({ favourite }: FavouriteListItemProps) {
 
 				{!favourite.isSuperFavorite && (
 					<IconButton
-						onClick={handleDelete}
+						onClick={() => setFavouriteToDelete(favourite)}
 						onPointerDown={(e) => e.stopPropagation()}
 						size="small"
 						aria-label={t("pages.favourite.delete", { url: favourite.url })}

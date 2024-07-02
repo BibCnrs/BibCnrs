@@ -45,7 +45,11 @@ test("Reorder favorites", async ({ page }) => {
 	await expect(bibIndex()).resolves.toBe(0);
 	await expect(ins2iIndex()).resolves.toBe(1);
 
-	await bib().dragTo(ins2i());
+	{
+		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		await bib().dragTo(ins2i());
+		await response;
+	}
 
 	await expect(bib()).toBeVisible();
 	await expect(ins2i()).toBeVisible();
@@ -53,7 +57,11 @@ test("Reorder favorites", async ({ page }) => {
 	await expect(bibIndex()).resolves.toBe(1);
 	await expect(ins2iIndex()).resolves.toBe(0);
 
-	await bib().dragTo(ins2i());
+	{
+		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		await bib().dragTo(ins2i());
+		await response;
+	}
 
 	await expect(bibIndex()).resolves.toBe(0);
 	await expect(ins2iIndex()).resolves.toBe(1);
@@ -72,20 +80,27 @@ test("Pin / Unpin item", async ({ page }) => {
 
 	await expect(cnrsIndex()).resolves.toBe(0);
 
-	await page
-		.getByRole("button", { name: /Épingler https:\/\/www.cnrs.fr/i })
-		.click();
+	{
+		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		await page
+			.getByRole("button", { name: /Épingler https:\/\/www.cnrs.fr/i })
+			.click();
 
-	await page.waitForResponse("/api/ebsco/favourite_resources/1");
+		await response;
+	}
 
 	await expect(cnrs()).toBeVisible();
 	await expect(cnrsIndex()).resolves.toBe(2);
 
-	await page
-		.getByRole("button", { name: /Désépingler https:\/\/www.cnrs.fr/i })
-		.click();
+	{
+		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		await page
+			.getByRole("button", { name: /Désépingler https:\/\/www.cnrs.fr/i })
+			.click();
 
-	await page.waitForResponse("/api/ebsco/favourite_resources/1");
+		await response;
+	}
+
 	await expect(cnrs()).toBeVisible();
 	await expect(cnrsIndex()).resolves.toBe(0);
 
@@ -119,7 +134,9 @@ test("Add / Remove item", async ({ page }) => {
 	await page
 		.getByRole("button", { name: /Supprimer https:\/\/marmelab.com/i })
 		.click();
-	await page.waitForResponse("/api/ebsco/favourite_resources/1");
+
+	await page.getByRole("button", { name: /Confirmer/i }).click();
+
 	await expect(marmelab()).not.toBeVisible();
 	await expect(cnrsIndex()).resolves.toBe(0);
 });

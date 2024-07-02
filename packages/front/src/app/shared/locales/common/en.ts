@@ -350,6 +350,13 @@ Sincerely`,
 			pin: "Pin {{url}}",
 			unpin: "Unpin {{url}}",
 			delete: "Delete {{url}}",
+			emptyFavorites: "Aucun favoris n'a été trouvé pour cette catégorie.",
+			confirmDelete: {
+				title: "Supprimer un favori",
+				description: "Etês-vous sûr de vouloir supprimer ce favori ?",
+				cancel: "Annuler",
+				confirm: "Confirmer",
+			},
 		},
 		userSettings: {
 			title: "My preferences",

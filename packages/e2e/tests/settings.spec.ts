@@ -48,7 +48,7 @@ test("Show / Hide test news on home page", async ({ page }) => {
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
-	await page.getByRole("checkbox", { name: "Actualités" }).uncheck();
+	await page.getByLabel("Actualités").first().click();
 	await page.getByRole("link", { name: "BibCNRS Logo" }).click();
 
 	await expect(
@@ -61,7 +61,7 @@ test("Show / Hide test news on home page", async ({ page }) => {
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
-	await page.getByRole("checkbox", { name: "Actualités" }).check();
+	await page.getByLabel("Actualités").first().click();
 	await page.getByRole("link", { name: "BibCNRS Logo" }).click();
 
 	await expect(
@@ -82,7 +82,7 @@ test("Show / Hide favorites on home page", async ({ page }) => {
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
-	await page.getByRole("checkbox", { name: "Favoris" }).uncheck();
+	await page.getByLabel("Favoris").first().click();
 	await page.getByRole("link", { name: "BibCNRS Logo" }).click();
 
 	await expect(page.getByRole("link", { name: "BIB CNRS" })).not.toBeVisible();
@@ -91,7 +91,7 @@ test("Show / Hide favorites on home page", async ({ page }) => {
 	await page.getByLabel("Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
-	await page.getByRole("checkbox", { name: "Favoris" }).check();
+	await page.getByLabel("Favoris").first().click();
 	await page.getByRole("link", { name: "BibCNRS Logo" }).click();
 
 	await expect(page.getByRole("link", { name: "BIB CNRS" })).toBeVisible();
