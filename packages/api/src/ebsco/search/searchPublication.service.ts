@@ -118,30 +118,46 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			communityName,
 		);
 
+		const formatISSN = (issn: string) => {
+			return `${issn.slice(0, 4)}-${issn.slice(4)}`;
+		};
+
+		const apcMap = await this.getHasApcFromDoaj([
+			...new Set(
+				parsedResult.results.flatMap((item) => {
+					const issns: string[] = [];
+					if (item.issnPrint && item.issnPrint.length > 0) {
+						issns.push(formatISSN(item.issnPrint[0]));
+					}
+
+					if (item.issnOnline && item.issnOnline.length > 0) {
+						issns.push(formatISSN(item.issnOnline[0]));
+					}
+					return issns;
+				}),
+			),
+		]);
+
 		// Parallel process results
 		await Promise.all(
 			parsedResult.results.map(async (item) => {
 				try {
 					item.isDiamond = false;
 					if (item.issnPrint && item.issnPrint.length > 0) {
-						const formatedIssn = `${item.issnPrint[0].slice(
-							0,
-							4,
-						)}-${item.issnPrint[0].slice(4)}`;
-						const doajInfo = await this.getInfoFromDOAJ(formatedIssn);
-						item.isDiamond = doajInfo.has_apc === false;
+						const formatedIssn = `${formatISSN(item.issnPrint[0])}`;
+						if (apcMap.has(formatedIssn)) {
+							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
+						}
 					}
 					if (
 						item.isDiamond === false &&
 						item.issnOnline &&
 						item.issnOnline.length > 0
 					) {
-						const formatedIssn = `${item.issnOnline[0].slice(
-							0,
-							4,
-						)}-${item.issnOnline[0].slice(4)}`;
-						const doajInfo = await this.getInfoFromDOAJ(formatedIssn);
-						item.isDiamond = doajInfo.has_apc === false;
+						const formatedIssn = `${formatISSN(item.issnOnline[0])}`;
+						if (apcMap.has(formatedIssn)) {
+							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
+						}
 					}
 				} catch (e) {
 					item.isDiamond = false;
