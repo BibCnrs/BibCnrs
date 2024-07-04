@@ -99,7 +99,6 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 	}, [session.session.user, search]);
 
 	const setSearchCallback = useCallback<typeof setSearch>((value) => {
-		console.trace("setSearchCallback", value);
 		setSearch(value);
 	}, []);
 

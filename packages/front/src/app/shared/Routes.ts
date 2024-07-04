@@ -64,7 +64,6 @@ export const updatePageQueryUrl = (
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	paramIn: any,
 ) => {
-	console.trace("updatePageQueryUrl", route, paramIn);
 	const param = cleanupParam(paramIn);
 	const query = new URLSearchParams(param);
 	navigate(`${route}?${query.toString()}`);
