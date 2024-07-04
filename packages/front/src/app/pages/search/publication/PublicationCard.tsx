@@ -9,12 +9,12 @@ import { Stack } from "@mui/system";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import { useBibContext } from "../../../context/BibContext";
 import { useTranslator } from "../../../shared/locales/I18N";
-import parseFullTextHoldings from "../../../shared/parseFullTextHoldings";
 import type {
 	PublicationCoverageDataType,
 	PublicationHolding,
 } from "../../../shared/types/data.types";
 import { PublicationTitle } from "./PublicationTitle";
+import { getPrioritizedLink } from "./prioritizeLinksAlgo";
 
 function PublicationId({ id }: { id: number }) {
 	return (
@@ -50,7 +50,12 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 		id,
 	} = publication;
 
-	const reconciledFullTextHoldings = parseFullTextHoldings(
+	// TODO: Remove this when other is testing. This use the original algorithm
+	// const reconciledFullTextHoldings = parseFullTextHoldings(
+	// 	fullTextHoldings,
+	// ) as PublicationHolding[];
+
+	const reconciledFullTextHoldings = getPrioritizedLink(
 		fullTextHoldings,
 	) as PublicationHolding[];
 
