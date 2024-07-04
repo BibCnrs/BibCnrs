@@ -11,6 +11,8 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     $(eval $(COMMAND_ARGS):;@:)
 endif
 
+DIVE="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
+
 default: help
 
 help:						## Show this help
@@ -198,6 +200,39 @@ build-admin:
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:$(BIBADMIN_VERSION)' \
 		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
 		.
+
+dive-api:
+	dive \
+		build \
+		-f $(PWD)/packages/api/Dockerfile \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:$(BIBAPI_VERSION)' \
+		.
+
+trivy-api: build-api
+	trivy image vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:$(BIBAPI_VERSION)
+
+dive-front:
+	dive \
+		build \
+		-f ./packages/front/Dockerfile \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:$(BIBFRONT_VERSION)' \
+		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
+		.
+
+trivy-front: build-front
+	trivy image vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:$(BIBFRONT_VERSION)
+
+dive-admin:
+	dive \
+		build \
+		-f ./packages/admin/Dockerfile \
+		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:$(BIBADMIN_VERSION)' \
+		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
+		.
+
+trivy-admin: build-admin
+	trivy image vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:$(BIBADMIN_VERSION)
+
 # Production
 start: env-mkdirs						## Start stack in production mode
 	docker compose -f docker-compose.prod.yml up -d
