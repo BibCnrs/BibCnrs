@@ -61,26 +61,39 @@ export const AnonymousHome = () => {
 	});
 
 	return (
-		<Stack gap={4}>
+		<Stack gap={8}>
 			<RenderContent
 				data={alertData}
 				page="root"
 				t={t}
 				Container={AlertPaper}
 			/>
-			<Box display="grid" gridTemplateColumns="1fr 1fr" gap={12}>
+			<Box display="grid" gap={4} gridTemplateColumns="1fr 2fr">
+				<img
+					src="/img/about-picture.svg"
+					alt="about"
+					style={{ width: "100%" }}
+				/>
 				<RenderContent data={homeData} page="root" t={t} />
-				<Stack gap={2}>
-					<Typography
-						variant="h6"
-						aria-label={t("pages.resources.title")}
-						color="primary"
-					>
-						{t("pages.resources.title")}
-					</Typography>
-					<DisplayResources data={ResourcesData} />
-				</Stack>
 			</Box>
+			<Stack
+				gap={2}
+				sx={{
+					// rewrith min-height for Mui Card component
+					".MuiCard-root": {
+						minHeight: "100%",
+					},
+				}}
+			>
+				<Typography
+					variant="h6"
+					aria-label={t("pages.resources.title")}
+					color="primary"
+				>
+					{t("pages.resources.title")}
+				</Typography>
+				<DisplayResources data={ResourcesData} />
+			</Stack>
 		</Stack>
 	);
 };

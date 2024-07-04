@@ -1,5 +1,5 @@
 import { Button, Typography } from "@mui/material";
-import { Box, Container, Stack, SxProps, Theme } from "@mui/system";
+import { Box, Container, Stack, type SxProps, type Theme } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import PageTitle from "../../../components/internal/PageTitle";
