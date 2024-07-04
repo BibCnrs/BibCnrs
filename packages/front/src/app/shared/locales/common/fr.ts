@@ -187,6 +187,11 @@ const fr: Common = {
 				doi: "DOI",
 			},
 		},
+		history: {
+			delete: "Supprimer l'entrée {{ term }}",
+			search: "Lancer la recherche {{ term }}",
+			alert: "Ajouter une alerte pour la recherche {{ term }}",
+		},
 		icon: {
 			openAccess: "Accès gratuit au contenu de la revue",
 			notComplete: "Accès à la platforme partiel",
