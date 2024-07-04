@@ -303,12 +303,13 @@ export function useSession() {
 	const setTheme = useCallback(
 		(theme: ThemeType) => {
 			if (session.user?.origin === "janus") {
+				updateUserSettings({ ...session.user.settings, defaultTheme: theme });
 				return;
 			}
-			setStorageTheme(theme);
 			setLocalTheme(theme);
+			setStorageTheme(theme);
 		},
-		[session.user],
+		[session.user, updateUserSettings],
 	);
 
 	return {

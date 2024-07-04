@@ -80,8 +80,8 @@ const Header = () => {
 					</Typography>
 				</Stack>
 				<Stack direction="row" alignItems="flex-end" gap={1}>
-					<ThemeButton />
 					<LocalButton />
+					<ThemeButton />
 					<HeaderButton name="resources" route={RouteResources} />
 					{session.user && (
 						<>
