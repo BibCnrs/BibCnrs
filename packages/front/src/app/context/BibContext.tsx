@@ -98,17 +98,13 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		});
 	}, [session.session.user, search]);
 
-	const setSearchCallback = useCallback<typeof setSearch>((value) => {
-		setSearch(value);
-	}, []);
-
 	return (
 		<BibContext.Provider
 			value={{
 				...session,
 				displayAuthenticationModal,
 				search,
-				setSearch: setSearchCallback,
+				setSearch,
 				showLoginModal,
 				hideLoginModal,
 			}}
