@@ -54,7 +54,7 @@ const MetadorePage = () => {
 		],
 		queryFn: async () => {
 			if (
-				(!search.query && search.query !== "") ||
+				!search.query ||
 				!search.metadore.table.perPage ||
 				!search.metadore.table.page
 			) {
