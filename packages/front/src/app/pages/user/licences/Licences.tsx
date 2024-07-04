@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import { Box, Container, Stack } from "@mui/system";
+import { Button, Typography } from "@mui/material";
+import { Box, Container, Stack, SxProps, Theme } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -11,6 +11,23 @@ import type {
 	LicenceDataType,
 	LicencesDataType,
 } from "../../../shared/types/data.types";
+
+const buttonStyles: SxProps<Theme> = {
+	color: (theme) => theme.palette.text.primary,
+	paddingX: "20px",
+	borderRadius: "20px",
+	width: "200px",
+	textTransform: "none",
+	fontWeight: "900",
+	":hover": {
+		backgroundColor: (theme) => theme.palette.secondary.main,
+		color: (theme) => theme.palette.text.primary,
+	},
+	"&.active": {
+		backgroundColor: (theme) => theme.palette.secondary.main,
+		color: (theme) => theme.palette.text.primary,
+	},
+};
 
 const Licences = () => {
 	const t = useTranslator();
@@ -53,19 +70,8 @@ const Licences = () => {
 			<PageTitle page="licences" />
 			<FakeSearchBar title="Licences" />
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-				<Stack direction="row">
-					<Box
-						id="licences-nav"
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							width: "fit-content",
-							height: "fit-content",
-							marginRight: "40px",
-							borderStyle: "solid",
-							borderWidth: "2px",
-						}}
-					>
+				<Stack>
+					<Stack direction="row" gap={3} id="licences-nav" mb={4}>
 						{data.map((value) => (
 							<Button
 								type="button"
@@ -75,41 +81,35 @@ const Licences = () => {
 										setActiveLicences(value);
 									}
 								}}
+								variant="contained"
 								sx={{
-									padding: "20px 40px",
-									fontWeight: "600",
-									textAlign: "center",
-									cursor: "pointer",
-									color: (theme) =>
+									...buttonStyles,
+									background: (theme) =>
 										activeLicences?.id === value.id
-											? theme.palette.primary.contrastText
-											: theme.palette.text.primary,
-									borderRadius: 0,
-									backgroundColor: (theme) =>
-										activeLicences?.id === value.id
-											? theme.palette.primary.main
+											? theme.palette.secondary.main
 											: theme.palette.background.default,
-									"&:hover": {
-										backgroundColor: (theme) => theme.palette.primary.main,
-										color: (theme) => theme.palette.primary.contrastText,
-									},
 								}}
 							>
 								{language === "en" ? value.name_en : value.name_fr}
 							</Button>
 						))}
-					</Box>
+					</Stack>
 					<div id="licences-content">
 						{activeLicences ? (
 							<>
-								<h1>
+								<Typography
+									variant="h4"
+									component="h1"
+									fontWeight="bold"
+									color="primary"
+								>
 									{language === "en"
 										? activeLicences.name_en
 										: activeLicences.name_fr}
-								</h1>
+								</Typography>
 								<Box
 									sx={{
-										a: {
+										"a, h1": {
 											color: "primary.main",
 										},
 									}}
