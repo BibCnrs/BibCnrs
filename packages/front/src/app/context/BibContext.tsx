@@ -7,6 +7,7 @@ import {
 	type ReactNode,
 	type SetStateAction,
 	createContext,
+	useCallback,
 	useContext,
 	useEffect,
 	useState,
@@ -97,13 +98,18 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		});
 	}, [session.session.user, search]);
 
+	const setSearchCallback = useCallback<typeof setSearch>((value) => {
+		console.trace("setSearchCallback", value);
+		setSearch(value);
+	}, []);
+
 	return (
 		<BibContext.Provider
 			value={{
 				...session,
 				displayAuthenticationModal,
 				search,
-				setSearch,
+				setSearch: setSearchCallback,
 				showLoginModal,
 				hideLoginModal,
 			}}

@@ -53,6 +53,7 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
+import { useEffectOnce } from "../../../shared/useEffectOnce";
 import ArticleAdvancedSearch from "./ArticleAvancedSearch";
 import { ArticleCard } from "./ArticleCard";
 import { ArticlePageHeader } from "./ArticlePageHeader";
@@ -78,7 +79,6 @@ const ArticlePage = () => {
 	const facetsCleaner = useFacetsCleaner<Omit<ArticleParam, "orderBy">>();
 	const { search, setSearch } = useBibContext();
 
-	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
 	const [exports, setExports] = useState<ContextData>([]);
@@ -88,10 +88,6 @@ const ArticlePage = () => {
 	const articleQuery = useMemo(() => {
 		return search.article.query || search.query || "";
 	}, [search]);
-
-	const searchQuery = useMemo(() => {
-		return query.get("q") || articleQuery;
-	}, [query, articleQuery]);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -106,7 +102,7 @@ const ArticlePage = () => {
 	>({
 		queryKey: [
 			"article",
-			searchQuery,
+			articleQuery,
 			search.domain,
 			search.article.orderBy,
 			search.article.limiters,
@@ -116,7 +112,7 @@ const ArticlePage = () => {
 		],
 		queryFn: async () => {
 			if (
-				!searchQuery ||
+				!articleQuery ||
 				!search.domain ||
 				!search.article.table.perPage ||
 				!search.article.table.page
@@ -125,7 +121,7 @@ const ArticlePage = () => {
 			}
 			const values = await article(
 				search.domain,
-				searchQuery,
+				articleQuery,
 				search.article.table.page,
 				search.article.table.perPage,
 				saveHistory,
@@ -143,35 +139,34 @@ const ArticlePage = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	useEffect(() => {
-		if (first) {
-			const queryValue = getString<undefined>(query, "q", articleQuery);
-			setSearch({
-				...search,
-				query: queryValue,
-				article: {
-					...search.article,
-					limiters: getJSON(query, "limiters", search.article.limiters),
-					facets: getJSON(query, "facets", search.article.facets),
-					orderBy: getString(
-						query,
-						"orderBy",
-						search.article.orderBy,
-					) as OrderByType,
-					table: {
-						page: getNumber(query, "page", search.article.table.page),
-						perPage: getNumber(query, "perPage", search.article.table.perPage),
-					},
+	useEffectOnce(() => {
+		const queryValue = getString<undefined>(query, "q", "");
+		setSearch((search) => ({
+			...search,
+			query: queryValue,
+			article: {
+				...search.article,
+				limiters: getJSON(query, "limiters", search.article.limiters),
+				facets: getJSON(query, "facets", search.article.facets),
+				orderBy: getString(
+					query,
+					"orderBy",
+					search.article.orderBy,
+				) as OrderByType,
+				table: {
+					page: getNumber(query, "page", search.article.table.page),
+					perPage: getNumber(query, "perPage", search.article.table.perPage),
 				},
-			});
-			setFirst(false);
-			return;
-		}
+			},
+		}));
+	}, [query, setSearch]);
+
+	useEffect(() => {
 		// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 		const param: any = {};
 
 		if (search.query) {
-			param.q = articleQuery;
+			param.q = search.query;
 		}
 
 		if (search.article.table.page) {
@@ -194,7 +189,7 @@ const ArticlePage = () => {
 			param.facets = JSON.stringify(search.article.facets);
 		}
 		updatePageQueryUrl(RouteArticle, navigate, param);
-	}, [first, navigate, query, search, setSearch, articleQuery]);
+	}, [navigate, search]);
 
 	useEffect(() => {
 		if (isError) {
@@ -404,7 +399,7 @@ const ArticlePage = () => {
 			<PageTitle page="article" />
 			<SearchBar
 				placeholder={t("pages.article.searchBar")}
-				value={searchQuery}
+				value={articleQuery}
 				onSearch={handleSearch}
 				secondaryAction={
 					<IconButton
