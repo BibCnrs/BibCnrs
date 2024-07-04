@@ -1,11 +1,4 @@
-import {
-	Button,
-	Card,
-	CardActionArea,
-	CardContent,
-	Typography,
-} from "@mui/material";
-import { Link as MuiLink } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -14,6 +7,7 @@ import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { alert } from "../../../services/common/CMS";
 import { newsHome } from "../../../services/user/TestsNews";
 import { useTranslator } from "../../../shared/locales/I18N";
+
 import type {
 	CMSResultDataType,
 	TestsNewsDataType,
@@ -21,6 +15,7 @@ import type {
 import AlertPaper from "../../element/paper/alert/AlertPaper";
 import RenderContent from "../render/RenderContent";
 import RenderNews from "../render/RenderNews";
+import FavouriteCardHome from "./FavouriteCardHome";
 
 export const LoginHome = () => {
 	const t = useTranslator();
@@ -86,19 +81,7 @@ export const LoginHome = () => {
 						gap={6}
 					>
 						{superFavouriteResources?.map((favourite) => (
-							<Card key={favourite.id} elevation={3}>
-								<CardActionArea
-									component={MuiLink}
-									href={favourite.url}
-									target="_blank"
-									sx={{ height: "100%" }}
-									rel="nofollow noreferrer noopener"
-								>
-									<CardContent>
-										<Typography>{favourite.title}</Typography>
-									</CardContent>
-								</CardActionArea>
-							</Card>
+							<FavouriteCardHome key={favourite.id} favourite={favourite} />
 						))}
 						{superFavouriteResources?.length === 0 && (
 							<Typography>{t("pages.root.emptyFavorites")}</Typography>
