@@ -11,7 +11,13 @@ import {
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { createContext, useCallback, useEffect, useState } from "react";
+import {
+	createContext,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -78,9 +84,14 @@ const ArticlePage = () => {
 	const [exports, setExports] = useState<ContextData>([]);
 	const [selectedArticle, setSelectedArticle] = useState(null);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
-	const [searchQuery, setSearchQuery] = useState<string>(
-		query.get("q") || search.query || "",
-	);
+
+	const articleQuery = useMemo(() => {
+		return search.article.query || search.query || "";
+	}, [search]);
+
+	const searchQuery = useMemo(() => {
+		return query.get("q") || articleQuery;
+	}, [query, articleQuery]);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -95,7 +106,7 @@ const ArticlePage = () => {
 	>({
 		queryKey: [
 			"article",
-			search.query,
+			searchQuery,
 			search.domain,
 			search.article.orderBy,
 			search.article.limiters,
@@ -105,7 +116,7 @@ const ArticlePage = () => {
 		],
 		queryFn: async () => {
 			if (
-				(!search.query && search.query !== "") ||
+				!searchQuery ||
 				!search.domain ||
 				!search.article.table.perPage ||
 				!search.article.table.page
@@ -114,7 +125,7 @@ const ArticlePage = () => {
 			}
 			const values = await article(
 				search.domain,
-				search.query,
+				searchQuery,
 				search.article.table.page,
 				search.article.table.perPage,
 				saveHistory,
@@ -134,7 +145,7 @@ const ArticlePage = () => {
 
 	useEffect(() => {
 		if (first) {
-			const queryValue = getString<undefined>(query, "q", search.query);
+			const queryValue = getString<undefined>(query, "q", articleQuery);
 			setSearch({
 				...search,
 				query: queryValue,
@@ -160,7 +171,7 @@ const ArticlePage = () => {
 		const param: any = {};
 
 		if (search.query) {
-			param.q = search.query;
+			param.q = articleQuery;
 		}
 
 		if (search.article.table.page) {
@@ -183,7 +194,7 @@ const ArticlePage = () => {
 			param.facets = JSON.stringify(search.article.facets);
 		}
 		updatePageQueryUrl(RouteArticle, navigate, param);
-	}, [first, navigate, query, search, setSearch]);
+	}, [first, navigate, query, search, setSearch, articleQuery]);
 
 	useEffect(() => {
 		if (isError) {
@@ -370,11 +381,22 @@ const ArticlePage = () => {
 		(query?: string) => {
 			setShowAdvancedSearch(false);
 			if (query) {
-				setSearchQuery(query);
-				handleSearch(query);
+				setSaveHistory(true);
+				setSearch((search) => ({
+					...search,
+					article: {
+						query,
+						limiters: search.article.limiters,
+						orderBy: search.article.orderBy,
+						table: {
+							page: 1,
+							perPage: search.article.table.perPage,
+						},
+					},
+				}));
 			}
 		},
-		[handleSearch],
+		[setSearch],
 	);
 
 	return (

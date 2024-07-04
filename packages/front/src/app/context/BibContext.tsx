@@ -13,6 +13,7 @@ import {
 } from "react";
 import { useLanguageKey } from "../shared/locales/I18N";
 import type { SearchContextType, ThemeType } from "../shared/types/types";
+import { AdvancedSearchProvider } from "./AdvancedSearchContext";
 import {
 	BibContextArticleDefault,
 	BibContextMetadoreDefault,
@@ -109,7 +110,7 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		>
 			<ThemeProvider theme={muiTheme}>
 				<CssBaseline />
-				{children}
+				<AdvancedSearchProvider>{children}</AdvancedSearchProvider>
 
 				<AuthenticationModal
 					open={displayAuthenticationModal}

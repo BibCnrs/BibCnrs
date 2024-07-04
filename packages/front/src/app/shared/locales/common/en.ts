@@ -159,7 +159,8 @@ const en: Common = {
 			abstract: "Abstract",
 			title: "Title",
 			source: "Source title",
-			humanQuery: "How will EBSO execute query",
+			humanQuery: "How will the query be executed?",
+			reset: "Reset",
 		},
 		facet: {
 			title: "Filter",

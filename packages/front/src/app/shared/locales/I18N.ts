@@ -172,6 +172,7 @@ export type Common = {
 			title: string;
 			source: string;
 			humanQuery: string;
+			reset: string;
 		};
 		facet: {
 			title: string;

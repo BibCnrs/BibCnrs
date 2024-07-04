@@ -39,9 +39,11 @@ export type SearchContextType = {
 	query: string | undefined;
 	domain: Institute | undefined;
 	article: ArticleParam & {
+		query?: string;
 		table: SearchResultsArgsProps;
 	};
 	publication: PublicationParam & {
+		query?: string;
 		table: SearchResultsArgsProps;
 	};
 	metadore: {

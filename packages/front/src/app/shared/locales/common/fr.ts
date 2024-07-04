@@ -160,7 +160,8 @@ const fr: Common = {
 			abstract: "Résumé",
 			title: "Titre",
 			source: "Titre revue",
-			humanQuery: "Comment sera exécuté la requête sur EBSCO",
+			humanQuery: "Comment sera exécuté la requête ?",
+			reset: "Réinitialiser",
 		},
 		facet: {
 			title: "Filtrer",

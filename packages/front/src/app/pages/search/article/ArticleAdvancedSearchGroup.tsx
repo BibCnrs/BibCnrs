@@ -7,49 +7,34 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import { useTranslator } from "../../../shared/locales/I18N";
-import ArticleAdvancedSearchItem, {
-	type Operator,
-	type AdvancedSearchItem,
+import {
+	type AdvancedSearchGroup,
 	OPERATORS,
-} from "./ArticleAdvancedSearchItem";
-
-export type AdvancedSearchGroup = {
-	id: string;
-	operator: Operator | null;
-	items: AdvancedSearchItem[];
-};
+	type Operator,
+	useAdvancedSearchContext,
+} from "../../../context/AdvancedSearchContext";
+import { useTranslator } from "../../../shared/locales/I18N";
+import ArticleAdvancedSearchItem from "./ArticleAdvancedSearchItem";
 
 export type ArticleAdvancedSearchItemProps = {
 	group: AdvancedSearchGroup;
 	hasRemoveButton: boolean;
-
-	onGroupChange(group: Pick<AdvancedSearchGroup, "id" | "operator">): void;
-	onAddGoup(): void;
-	onRemoveGroup(): void;
-
-	onItemChange(group: AdvancedSearchGroup, value: AdvancedSearchItem): void;
-	onAddItem(
-		group: Pick<AdvancedSearchGroup, "id">,
-		after: Pick<AdvancedSearchItem, "id">,
-	): void;
-	onRemoveItem(
-		group: Pick<AdvancedSearchGroup, "id">,
-		item: Pick<AdvancedSearchItem, "id">,
-	): void;
 };
 
 export default function ArticleAdvancedSearchGroup({
 	group,
 	hasRemoveButton,
-	onGroupChange,
-	onAddGoup,
-	onRemoveGroup,
-	onItemChange,
-	onAddItem,
-	onRemoveItem,
 }: ArticleAdvancedSearchItemProps) {
 	const t = useTranslator();
+
+	const {
+		updateGroup,
+		addGroup,
+		removeGroup,
+		updateItem,
+		addItem,
+		removeItem,
+	} = useAdvancedSearchContext();
 
 	return (
 		<Stack direction="row" gap={2} alignItems="center">
@@ -65,7 +50,7 @@ export default function ArticleAdvancedSearchGroup({
 						value={group.operator}
 						label={t("components.advancedSearch.operator")}
 						onChange={(e) => {
-							onGroupChange({
+							updateGroup({
 								id: group.id,
 								operator: e.target.value as Operator,
 							});
@@ -96,21 +81,25 @@ export default function ArticleAdvancedSearchGroup({
 			>
 				{group.items.map((item) => (
 					<ArticleAdvancedSearchItem
+						group={group}
 						item={item}
 						key={item.id}
-						onChange={(item) => onItemChange(group, item)}
-						onAdd={() => onAddItem(group, item)}
-						onRemove={() => onRemoveItem(group, item)}
+						onChange={(item) => updateItem(group, item)}
+						onAdd={() => addItem(group, item)}
+						onRemove={() => removeItem(group, item)}
 						hasRemoveButton={group.items.length > 1}
 					/>
 				))}
 			</Stack>
 
-			<IconButton onClick={onAddGoup}>
+			<IconButton onClick={() => addGroup(group)}>
 				<AddIcon />
 			</IconButton>
 
-			<IconButton disabled={!hasRemoveButton} onClick={onRemoveGroup}>
+			<IconButton
+				disabled={!hasRemoveButton}
+				onClick={() => removeGroup(group)}
+			>
 				<RemoveIcon />
 			</IconButton>
 		</Stack>

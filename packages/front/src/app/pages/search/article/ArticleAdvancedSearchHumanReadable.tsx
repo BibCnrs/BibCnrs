@@ -3,13 +3,13 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Fragment } from "react/jsx-runtime";
-import { useTranslator } from "../../../shared/locales/I18N";
 import {
 	type AdvancedSearchItem,
 	FIELDS,
 	OPERATORS,
 	type Operator,
-} from "./ArticleAdvancedSearchItem";
+} from "../../../context/AdvancedSearchContext";
+import { useTranslator } from "../../../shared/locales/I18N";
 
 type ArticleAdvancedSearchHumanReadableProps = {
 	operator: Operator | null;
