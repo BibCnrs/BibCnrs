@@ -7,7 +7,6 @@ import {
 	type ReactNode,
 	type SetStateAction,
 	createContext,
-	useCallback,
 	useContext,
 	useEffect,
 	useState,
