@@ -184,6 +184,7 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 					title={bookmarkTitle}
 					url={href}
 					aria-label={t("components.search.content.bookmark", { title })}
+					source="publication"
 				/>
 			</CardActions>
 		</Card>

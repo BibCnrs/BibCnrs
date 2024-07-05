@@ -106,8 +106,11 @@ export type FavouriteResourceDataType = {
 	id: UniqueIdentifier;
 	title: string;
 	url: string;
-	personal?: boolean;
+	source?: "article" | "publication" | "database" | "metadore" | "personal";
 	isSuperFavorite?: boolean;
+
+	// Superseeded by source
+	personal?: boolean;
 };
 
 export type UserSettingsDataType = {

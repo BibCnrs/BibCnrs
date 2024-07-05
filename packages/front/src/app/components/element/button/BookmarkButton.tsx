@@ -7,7 +7,7 @@ import { memo, useEffect, useState } from "react";
 import { useBibContext } from "../../../context/BibContext";
 import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { useTranslator } from "../../../shared/locales/I18N";
-import type { BookmarkButtonProps } from "../../../shared/types/props.types";
+import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 
 const AnimatedIconButton = styled(IconButton)`
   &.animate {
@@ -27,7 +27,14 @@ const AnimatedIconButton = styled(IconButton)`
   }
 `;
 
-const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
+type BookmarkButtonProps = {
+	title: string;
+	url: string;
+	source: FavouriteResourceDataType["source"];
+	className?: string;
+};
+
+const BookmarkButton = ({ title, url, source }: BookmarkButtonProps) => {
 	const {
 		session: { user },
 	} = useBibContext();
@@ -58,7 +65,7 @@ const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 			addFavourite({
 				title,
 				url,
-				personal: false,
+				source,
 			});
 			setInBookmark(true);
 			return;

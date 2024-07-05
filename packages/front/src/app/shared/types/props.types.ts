@@ -101,12 +101,6 @@ export type ChipFacetProps = PropsWithoutRef<{
 	onChange: (event: MouseEvent<HTMLElement>, field: string | null) => void;
 }>;
 
-export type BookmarkButtonProps = PropsWithoutRef<{
-	title: string;
-	url: string;
-	className?: string;
-}>;
-
 export type DialogProps = PropsWithoutRef<{
 	open: boolean;
 	onClose: () => void;

@@ -116,6 +116,7 @@ export const PublicationSidebar = ({ publication }) => {
 						aria-label={t("components.search.content.bookmark", {
 							title: publication.title,
 						})}
+						source="publication"
 					/>
 				</Stack>
 				<PublicationTitle

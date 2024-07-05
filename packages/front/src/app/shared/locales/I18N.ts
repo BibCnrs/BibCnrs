@@ -348,6 +348,7 @@ export type Common = {
 		};
 		favourite: {
 			title: string;
+			search: string;
 			superFavourites: string;
 			add: string;
 			pin: string;
@@ -360,6 +361,14 @@ export type Common = {
 				description: string;
 				cancel: string;
 				confirm: string;
+			};
+			filters: {
+				title: string;
+				article: string;
+				publication: string;
+				database: string;
+				metadore: string;
+				personal: string;
 			};
 		};
 		faq: {

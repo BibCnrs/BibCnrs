@@ -34,9 +34,14 @@ type FavouriteListProps = {
 	handleMove: ReturnType<typeof useFavourites>[
 		| "moveFavourite"
 		| "moveSuperFavourite"];
+	hasFilter: boolean;
 };
 
-function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
+function FavouriteList({
+	favourites,
+	handleMove,
+	hasFilter,
+}: FavouriteListProps) {
 	const t = useTranslator();
 	const [favouriteToDelete, setFavouriteToDelete] = useState(null);
 	const identifiers = useMemo(
@@ -54,6 +59,10 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 	);
 
 	const handleDragEnd = (event: DragEndEvent) => {
+		if (hasFilter) {
+			return;
+		}
+
 		const { active, over } = event;
 
 		if (over && active.id !== over.id) {
@@ -75,63 +84,68 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 			collisionDetection={closestCenter}
 			modifiers={[restrictToWindowEdges]}
 		>
-			<SortableContext items={identifiers} strategy={rectSortingStrategy}>
-				<Box
-					sx={{
-						display: "grid",
-						gridTemplateColumns: {
-							xs: "repeat(1, 1fr)",
-							md: "repeat(2, 1fr)",
-							lg: "repeat(3, 1fr)",
-						},
-						gridAutoRows: "1fr",
-						gap: 2,
-					}}
-				>
-					{favourites.map((favourite) => (
-						<FavouriteListItem
-							key={favourite.id}
-							favourite={favourite}
-							setFavouriteToDelete={setFavouriteToDelete}
-						/>
-					))}
-
-					{favourites.length === 0 && (
-						<Typography
-							variant="h6"
-							component="h1"
-							sx={{
-								color: "text.disabled",
-							}}
-						>
-							{t("pages.favourite.emptyFavorites")}
-						</Typography>
-					)}
-
-					<Dialog
-						open={favouriteToDelete !== null}
-						onClose={() => setFavouriteToDelete(null)}
-						aria-labelledby="alert-dialog-title"
-						aria-describedby="alert-dialog-description"
+			<SortableContext
+				items={identifiers}
+				strategy={rectSortingStrategy}
+				disabled={hasFilter}
+			>
+				{favourites.length === 0 ? (
+					<Typography
+						variant="h6"
+						component="h1"
+						sx={{
+							color: "text.disabled",
+						}}
 					>
-						<DialogTitle id="alert-dialog-title">
-							{t("pages.favourite.confirmDelete.title")}
-						</DialogTitle>
-						<DialogContent>
-							<DialogContentText id="alert-dialog-description">
-								{t("pages.favourite.confirmDelete.description")}
-							</DialogContentText>
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={() => setFavouriteToDelete(null)}>
-								{t("pages.favourite.confirmDelete.cancel")}
-							</Button>
-							<Button onClick={handleDelete} autoFocus variant="contained">
-								{t("pages.favourite.confirmDelete.confirm")}
-							</Button>
-						</DialogActions>
-					</Dialog>
-				</Box>
+						{t("pages.favourite.emptyFavorites")}
+					</Typography>
+				) : (
+					<Box
+						sx={{
+							display: "grid",
+							gridTemplateColumns: {
+								xs: "repeat(1, 1fr)",
+								md: "repeat(2, 1fr)",
+								lg: "repeat(3, 1fr)",
+							},
+							gridAutoRows: "1fr",
+							gap: 2,
+						}}
+					>
+						{favourites.map((favourite) => (
+							<FavouriteListItem
+								key={favourite.id}
+								favourite={favourite}
+								setFavouriteToDelete={setFavouriteToDelete}
+								hasFilter={hasFilter}
+							/>
+						))}
+
+						<Dialog
+							open={favouriteToDelete !== null}
+							onClose={() => setFavouriteToDelete(null)}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{t("pages.favourite.confirmDelete.title")}
+							</DialogTitle>
+							<DialogContent>
+								<DialogContentText id="alert-dialog-description">
+									{t("pages.favourite.confirmDelete.description")}
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={() => setFavouriteToDelete(null)}>
+									{t("pages.favourite.confirmDelete.cancel")}
+								</Button>
+								<Button onClick={handleDelete} autoFocus variant="contained">
+									{t("pages.favourite.confirmDelete.confirm")}
+								</Button>
+							</DialogActions>
+						</Dialog>
+					</Box>
+				)}
 			</SortableContext>
 		</DndContext>
 	);

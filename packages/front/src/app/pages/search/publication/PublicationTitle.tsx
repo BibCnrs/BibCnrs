@@ -161,6 +161,7 @@ export function PublicationTitle({
 										className="table-bookmark-button"
 										title={`${value.name} - ${getCoverage(value.coverage)}`}
 										url={value.url}
+										source="publication"
 									/>
 								) : null}
 							</Stack>

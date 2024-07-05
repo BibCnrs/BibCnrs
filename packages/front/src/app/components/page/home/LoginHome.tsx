@@ -75,18 +75,20 @@ export const LoginHome = () => {
 					>
 						{t("pages.favourite.superFavourites")}
 					</Typography>
-					<Box
-						display="grid"
-						gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
-						gap={6}
-					>
-						{superFavouriteResources?.map((favourite) => (
-							<FavouriteCardHome key={favourite.id} favourite={favourite} />
-						))}
-						{superFavouriteResources?.length === 0 && (
-							<Typography>{t("pages.root.emptyFavorites")}</Typography>
-						)}
-					</Box>
+
+					{superFavouriteResources?.length === 0 ? (
+						<Typography>{t("pages.root.emptyFavorites")}</Typography>
+					) : (
+						<Box
+							display="grid"
+							gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
+							gap={6}
+						>
+							{superFavouriteResources?.map((favourite) => (
+								<FavouriteCardHome key={favourite.id} favourite={favourite} />
+							))}
+						</Box>
+					)}
 
 					<Box sx={{ textAlign: "right" }}>
 						<Button
