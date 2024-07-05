@@ -410,6 +410,7 @@ const ArticlePage = () => {
 								md: "flex",
 							},
 						}}
+						aria-label={t("components.advancedSearch.modalTitle")}
 					>
 						<ManageSearchIcon />
 					</IconButton>
