@@ -1,12 +1,17 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import PersonalBookmark from "../../../components/element/dialog/PersonalBookmark";
 import PageTitle from "../../../components/internal/PageTitle";
-import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
+import SearchBar from "../../../components/page/searchbar/SearchBar";
 import { useTranslator } from "../../../shared/locales/I18N";
+import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import FavouriteList from "./FavouriteList";
 import { useFavourites } from "./useFavourites";
+
+type FavouriteFilter = {
+	title: string | null;
+};
 
 const Favourite = () => {
 	const t = useTranslator();
@@ -17,6 +22,7 @@ const Favourite = () => {
 		moveSuperFavourite,
 	} = useFavourites();
 
+	const [filters, setFilters] = useState<FavouriteFilter>({ title: null });
 	const [personal, setPersonal] = useState(false);
 
 	const handleAddPersonalOpen = () => {
@@ -27,18 +33,48 @@ const Favourite = () => {
 		setPersonal(false);
 	};
 
+	const hasFilter = useMemo(() => {
+		return Object.values(filters).some((filter) => filter != null);
+	}, [filters]);
+
+	const filterFavoriteResource = useCallback(
+		(resources: FavouriteResourceDataType[]) => {
+			if (!filters.title) {
+				return resources;
+			}
+
+			const lowerCaseSearch = filters.title.toLowerCase();
+			return resources.filter((favourite) =>
+				favourite.title.toLowerCase().includes(lowerCaseSearch),
+			);
+		},
+		[filters],
+	);
+
+	const filteredFavouriteResources = filterFavoriteResource(favouriteResources);
+	const filteredSuperFavouriteResources = filterFavoriteResource(
+		superFavouriteResources,
+	);
+
 	return (
 		<>
-			<PageTitle page="licences" />
-			<FakeSearchBar title={t("pages.favourite.title")} />
+			<PageTitle page="favourite" />
+			<SearchBar
+				placeholder={t("pages.favourite.search")}
+				value={filters.title}
+				onSearch={(search: string) =>
+					setFilters((filters) => ({
+						...filters,
+						title: search?.toLocaleLowerCase() ?? null,
+					}))
+				}
+			/>
+
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				<Stack gap={2} id="app">
-					<PageTitle page="favourite" />
-					<PersonalBookmark open={personal} onClose={handlerAddPersonalClose} />
-
 					<Stack gap={1}>
 						<Typography
-							variant="h1"
+							variant="h2"
 							sx={{
 								fontSize: 24,
 								display: "flex",
@@ -50,14 +86,15 @@ const Favourite = () => {
 						</Typography>
 
 						<FavouriteList
-							favourites={superFavouriteResources}
+							favourites={filteredSuperFavouriteResources}
 							handleMove={moveSuperFavourite}
+							hasFilter={hasFilter}
 						/>
 					</Stack>
 
 					<Stack gap={1}>
 						<Typography
-							variant="h1"
+							variant="h2"
 							sx={{
 								fontSize: 24,
 								display: "flex",
@@ -72,12 +109,14 @@ const Favourite = () => {
 						</Typography>
 
 						<FavouriteList
-							favourites={favouriteResources}
+							favourites={filteredFavouriteResources}
 							handleMove={moveFavourite}
+							hasFilter={hasFilter}
 						/>
 					</Stack>
 				</Stack>
 			</Container>
+			<PersonalBookmark open={personal} onClose={handlerAddPersonalClose} />
 		</>
 	);
 };

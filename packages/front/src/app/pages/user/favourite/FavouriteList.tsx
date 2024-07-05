@@ -34,9 +34,14 @@ type FavouriteListProps = {
 	handleMove: ReturnType<typeof useFavourites>[
 		| "moveFavourite"
 		| "moveSuperFavourite"];
+	hasFilter: boolean;
 };
 
-function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
+function FavouriteList({
+	favourites,
+	handleMove,
+	hasFilter,
+}: FavouriteListProps) {
 	const t = useTranslator();
 	const [favouriteToDelete, setFavouriteToDelete] = useState(null);
 	const identifiers = useMemo(
@@ -54,6 +59,10 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 	);
 
 	const handleDragEnd = (event: DragEndEvent) => {
+		if (hasFilter) {
+			return;
+		}
+
 		const { active, over } = event;
 
 		if (over && active.id !== over.id) {
@@ -75,7 +84,11 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 			collisionDetection={closestCenter}
 			modifiers={[restrictToWindowEdges]}
 		>
-			<SortableContext items={identifiers} strategy={rectSortingStrategy}>
+			<SortableContext
+				items={identifiers}
+				strategy={rectSortingStrategy}
+				disabled={hasFilter}
+			>
 				<Box
 					sx={{
 						display: "grid",
@@ -93,6 +106,7 @@ function FavouriteList({ favourites, handleMove }: FavouriteListProps) {
 							key={favourite.id}
 							favourite={favourite}
 							setFavouriteToDelete={setFavouriteToDelete}
+							hasFilter={hasFilter}
 						/>
 					))}
 

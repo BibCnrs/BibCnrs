@@ -98,6 +98,7 @@ export const MetadoreCard = ({ metadore, setSelectedMetadore }) => {
 					className="table-bookmark-button"
 					title={bookmarkTitle}
 					url={metadore.url}
+					source="metadore"
 				/>
 			</CardActions>
 		</Card>

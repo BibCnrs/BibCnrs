@@ -362,6 +362,7 @@ Sincerely`,
 		},
 		favourite: {
 			title: "My Favourites",
+			search: "Search my favourites",
 			superFavourites: "My pinned favourites",
 			add: "Add a personal resource",
 			pin: "Pin {{url}}",

@@ -48,7 +48,7 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 		addFavourite({
 			title,
 			url,
-			personal: true,
+			source: "personal",
 		});
 		onClose();
 	};

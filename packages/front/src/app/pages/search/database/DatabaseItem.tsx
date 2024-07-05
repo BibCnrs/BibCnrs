@@ -46,6 +46,7 @@ export function DatabaseItem(props: DatabaseItemProps) {
 									className="database-icon-favourite"
 									title={props.name}
 									url={props.url}
+									source="database"
 								/>
 							)}
 						</Stack>

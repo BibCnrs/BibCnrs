@@ -348,6 +348,7 @@ export type Common = {
 		};
 		favourite: {
 			title: string;
+			search: string;
 			superFavourites: string;
 			add: string;
 			pin: string;

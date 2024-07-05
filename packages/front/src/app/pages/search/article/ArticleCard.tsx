@@ -105,6 +105,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 					title={title}
 					url={href}
 					aria-label={t("components.search.content.bookmark", { title })}
+					source="article"
 				/>
 			</CardActions>
 		</Card>

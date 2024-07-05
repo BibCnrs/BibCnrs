@@ -364,6 +364,7 @@ Cordialement`,
 		},
 		favourite: {
 			title: "Mes Favoris",
+			search: "Rechercher dans mes favoris",
 			superFavourites: "Mes favoris épinglés",
 			add: "Ajouter une ressource personnelle",
 			pin: "Épingler {{url}}",

@@ -20,6 +20,7 @@ import { useFavourites } from "./useFavourites";
 type FavouriteListItemProps = {
 	favourite: FavouriteResourceDataType;
 	setFavouriteToDelete: (favourite: FavouriteResourceDataType) => void;
+	hasFilter: boolean;
 };
 
 // Define keyframes for up and down movement
@@ -76,6 +77,7 @@ const ShakyIconButton = styled(IconButton)`
 function FavouriteListItem({
 	favourite,
 	setFavouriteToDelete,
+	hasFilter,
 }: FavouriteListItemProps) {
 	const t = useTranslator();
 
@@ -102,12 +104,15 @@ function FavouriteListItem({
 			ref={setNodeRef}
 			elevation={3}
 			sx={{
-				cursor: "grab",
+				cursor: hasFilter ? "default" : "grab",
 				transform: DndCSS.Transform.toString(transform),
 				transition,
 				display: "flex",
 				flexDirection: "row",
 				gap: 2,
+				"&:hover": {
+					backgroundColor: hasFilter ? "#fff" : undefined,
+				},
 			}}
 			{...attributes}
 			{...listeners}
@@ -122,7 +127,7 @@ function FavouriteListItem({
 				}}
 			>
 				<Stack direction="column" spacing={1}>
-					{favourite.personal && (
+					{(favourite.source === "personal" || favourite.personal) && (
 						<Stack direction="row">
 							<Chip
 								label="Personal"
