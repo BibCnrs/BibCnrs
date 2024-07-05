@@ -351,6 +351,7 @@ export type Common = {
 			unpin: string;
 			delete: string;
 			emptyFavorites: string;
+			personal: string;
 			confirmDelete: {
 				title: string;
 				description: string;

@@ -1,6 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS as DndCSS } from "@dnd-kit/utilities";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import {
@@ -15,7 +16,6 @@ import {
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { useFavourites } from "./useFavourites";
-
 type FavouriteListItemProps = {
 	favourite: FavouriteResourceDataType;
 	setFavouriteToDelete: (favourite: FavouriteResourceDataType) => void;
@@ -47,7 +47,6 @@ function FavouriteListItem({
 
 	return (
 		<Card
-			color={favourite.personal ? "#00FFFF" : undefined}
 			ref={setNodeRef}
 			elevation={3}
 			sx={{
@@ -103,9 +102,7 @@ function FavouriteListItem({
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					justifyContent: favourite.isSuperFavorite
-						? "flex-start"
-						: "space-between",
+					justifyContent: "space-between",
 					"& button ~ button": {
 						margin: 0,
 					},
@@ -131,6 +128,18 @@ function FavouriteListItem({
 						<PushPinOutlinedIcon />
 					)}
 				</IconButton>
+
+				{favourite.personal && (
+					<Tooltip title={t("pages.favourite.personal")} sx={{ margin: 0 }}>
+						<IconButton sx={{ cursor: "default" }}>
+							<LockPersonIcon
+								fontSize="small"
+								color="primary"
+								sx={{ margin: 0 }}
+							/>
+						</IconButton>
+					</Tooltip>
+				)}
 
 				{!favourite.isSuperFavorite && (
 					<IconButton

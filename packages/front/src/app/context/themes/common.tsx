@@ -31,7 +31,7 @@ export const muiPaperTheme = {
 } satisfies ThemeOptions["components"]["MuiPaper"]["styleOverrides"]["root"];
 
 export const muiCardTheme = {
-	borderRadius: 0,
+	borderRadius: 8,
 	minHeight: "140px",
 	borderWidth: "2px",
 	borderStyle: "solid",

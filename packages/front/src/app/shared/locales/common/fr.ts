@@ -366,6 +366,7 @@ Cordialement`,
 			pin: "Épingler {{url}}",
 			unpin: "Désépingler {{url}}",
 			delete: "Supprimer {{url}}",
+			personal: "Ressource personnelle",
 			emptyFavorites: "Aucun favoris n'a été trouvé pour cette catégorie.",
 			confirmDelete: {
 				title: "Supprimer un favori",

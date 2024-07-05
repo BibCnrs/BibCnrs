@@ -18,6 +18,7 @@ const AlertPaper = ({ children }: AlertPaperProps) => {
 				justifyContent: "center",
 				minHeight: "100%",
 				textAlign: "center",
+				pointerEvents: "none",
 			}}
 		>
 			<CardContent>{children}</CardContent>
