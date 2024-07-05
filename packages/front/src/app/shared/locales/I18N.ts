@@ -260,6 +260,9 @@ export type Common = {
 			open: string;
 			close: string;
 		};
+		fakeSearchBar: {
+			homepage: string;
+		};
 	};
 	pages: {
 		root: {
