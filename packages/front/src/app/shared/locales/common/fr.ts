@@ -268,7 +268,7 @@ Cordialement`,
 			seeMoreFavourites: "Voir plus de favoris",
 			seeMoreNews: "Voir plus d'actualités",
 			emptyFavorites:
-				"Epingler des favoris dans la page des favoris (lien) pour les voir apparaitre ici.",
+				"Epingler des favoris dans la page des favoris pour les voir apparaitre ici.",
 		},
 		resources: {
 			title: "Listes des ressources documentaires",
@@ -377,6 +377,14 @@ Cordialement`,
 				description: "Etês-vous sûr de vouloir supprimer ce favori ?",
 				cancel: "Annuler",
 				confirm: "Confirmer",
+			},
+			filters: {
+				title: "Filtres",
+				article: "Articles",
+				publication: "Publications",
+				database: "Plateformes",
+				metadore: "Données de recherche",
+				personal: "Ressources personnelles",
 			},
 		},
 		userSettings: {

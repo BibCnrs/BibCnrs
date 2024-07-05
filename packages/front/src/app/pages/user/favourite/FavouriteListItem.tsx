@@ -123,14 +123,13 @@ function FavouriteListItem({
 				sx={{
 					flexGrow: 1,
 					display: "flex",
-					alignItems: "center",
 				}}
 			>
 				<Stack direction="column" spacing={1}>
 					{(favourite.source === "personal" || favourite.personal) && (
 						<Stack direction="row">
 							<Chip
-								label="Personal"
+								label={t("pages.favourite.personal")}
 								color="secondary"
 								size="small"
 								sx={{
