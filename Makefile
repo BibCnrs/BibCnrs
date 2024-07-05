@@ -125,6 +125,25 @@ endif
 
 test: test-api							## Run tests for all packages
 
+test-front:								## Run tests for front
+	docker compose \
+		-f docker-compose.test.yml \
+		run \
+		--build \
+		--rm front-test \
+		yarn workspace @bibcnrs/front run test
+
+test-front-watch:						## Run tests for front in watch mode
+	docker compose \
+		-f docker-compose.test.yml \
+		up \
+		--build \
+		--remove-orphans \
+		--watch \
+		front-test \
+		--no-attach=front-test \
+		--no-log-prefix
+
 test-api:								## Run tests for api
 	docker compose \
 		-f docker-compose.test.yml \
