@@ -1,13 +1,12 @@
-import LockPersonIcon from "@mui/icons-material/LockPerson";
 import {
 	Box,
 	Card,
-	CardActions,
 	CardContent,
-	IconButton,
+	Chip,
 	Link as MuiLink,
 	Tooltip,
 } from "@mui/material";
+import { Stack } from "@mui/system";
 import { useTranslator } from "../../../shared/locales/I18N";
 
 // Assuming `t` is a function for translation, you might need to pass it as a prop or use a translation hook/context
@@ -20,7 +19,6 @@ const FavouriteCardHome = ({ favourite }) => {
 			sx={{
 				display: "flex",
 				flexDirection: "row",
-				gap: 2,
 			}}
 		>
 			<CardContent
@@ -30,56 +28,46 @@ const FavouriteCardHome = ({ favourite }) => {
 					alignItems: "center",
 				}}
 			>
-				<Tooltip
-					enterDelay={500}
-					enterNextDelay={500}
-					leaveDelay={200}
-					title={favourite.title}
-					arrow
-				>
-					<Box
-						sx={{
-							display: "-webkit-box",
-							"-webkit-line-clamp": "4",
-							"-webkit-box-orient": "vertical",
-							overflow: "hidden",
-						}}
+				<Stack direction="column" spacing={1}>
+					{favourite.personal && (
+						<Stack direction="row">
+							<Chip
+								label={t("pages.favourite.personal")}
+								color="secondary"
+								size="small"
+								sx={{
+									fontWeight: 700,
+									textTransform: "uppercase",
+									width: "auto",
+								}}
+							/>
+						</Stack>
+					)}
+					<Tooltip
+						enterDelay={500}
+						enterNextDelay={500}
+						leaveDelay={200}
+						title={favourite.title}
+						arrow
 					>
-						<MuiLink
+						<Box
+							sx={{
+								display: "-webkit-box",
+								"-webkit-line-clamp": "4",
+								"-webkit-box-orient": "vertical",
+								overflow: "hidden",
+							}}
+							component={MuiLink}
 							href={favourite.url}
 							target="_blank"
 							rel="noreferrer noopener nofollow"
 							onPointerDown={(e) => e.stopPropagation()}
 						>
 							{favourite.title}
-						</MuiLink>
-					</Box>
-				</Tooltip>
-			</CardContent>
-			<CardActions
-				sx={{
-					paddingInlineStart: 0,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-					justifyContent: "flex-end",
-					"& button ~ button": {
-						margin: 0,
-					},
-				}}
-			>
-				{favourite.personal && (
-					<Tooltip title={t("pages.favourite.personal")} sx={{ margin: 0 }}>
-						<IconButton sx={{ cursor: "default" }}>
-							<LockPersonIcon
-								fontSize="small"
-								color="primary"
-								sx={{ margin: 0 }}
-							/>
-						</IconButton>
+						</Box>
 					</Tooltip>
-				)}
-			</CardActions>
+				</Stack>
+			</CardContent>
 		</Card>
 	);
 };

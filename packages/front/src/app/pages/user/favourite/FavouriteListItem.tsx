@@ -9,10 +9,12 @@ import {
 	Card,
 	CardActions,
 	CardContent,
+	Chip,
 	IconButton,
 	Link,
 	Tooltip,
 } from "@mui/material";
+import { Stack } from "@mui/system";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { useFavourites } from "./useFavourites";
@@ -69,31 +71,59 @@ function FavouriteListItem({
 					alignItems: "center",
 				}}
 			>
-				<Tooltip
-					enterDelay={500}
-					enterNextDelay={500}
-					leaveDelay={200}
-					title={favourite.title}
-					arrow
-				>
-					<Box
-						sx={{
-							display: "-webkit-box",
-							"-webkit-line-clamp": "4",
-							"-webkit-box-orient": "vertical",
-							overflow: "hidden",
-						}}
+				<Stack direction="column" spacing={1}>
+					{favourite.personal && (
+						<Stack direction="row">
+							<Chip
+								label="Personal"
+								color="secondary"
+								size="small"
+								sx={{
+									fontWeight: 700,
+									textTransform: "uppercase",
+									width: "auto",
+								}}
+							/>
+						</Stack>
+					)}
+					<Tooltip
+						enterDelay={500}
+						enterNextDelay={500}
+						leaveDelay={200}
+						title={favourite.title}
+						arrow
 					>
-						<Link
+						<Box
+							sx={{
+								display: "-webkit-box",
+								"-webkit-line-clamp": "4",
+								"-webkit-box-orient": "vertical",
+								overflow: "hidden",
+							}}
+							component={Link}
 							href={favourite.url}
 							target="_blank"
 							rel="noreferrer noopener nofollow"
 							onPointerDown={(e) => e.stopPropagation()}
 						>
+							{favourite.personal && (
+								<Tooltip
+									title={t("pages.favourite.personal")}
+									sx={{ margin: 0 }}
+								>
+									<IconButton sx={{ cursor: "default", mr: 1 }}>
+										<LockPersonIcon
+											fontSize="small"
+											color="primary"
+											sx={{ margin: 0 }}
+										/>
+									</IconButton>
+								</Tooltip>
+							)}
 							{favourite.title}
-						</Link>
-					</Box>
-				</Tooltip>
+						</Box>
+					</Tooltip>
+				</Stack>
 			</CardContent>
 
 			<CardActions
@@ -128,18 +158,6 @@ function FavouriteListItem({
 						<PushPinOutlinedIcon />
 					)}
 				</IconButton>
-
-				{favourite.personal && (
-					<Tooltip title={t("pages.favourite.personal")} sx={{ margin: 0 }}>
-						<IconButton sx={{ cursor: "default" }}>
-							<LockPersonIcon
-								fontSize="small"
-								color="primary"
-								sx={{ margin: 0 }}
-							/>
-						</IconButton>
-					</Tooltip>
-				)}
 
 				{!favourite.isSuperFavorite && (
 					<IconButton
