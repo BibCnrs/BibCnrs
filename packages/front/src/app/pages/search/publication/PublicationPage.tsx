@@ -2,7 +2,7 @@ import { Drawer, Grid, Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -35,6 +35,7 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { PublicationDataType } from "../../../shared/types/data.types";
+import { useEffectOnce } from "../../../shared/useEffectOnce";
 import { PublicationCard } from "./PublicationCard";
 import { PublicationPageHeader } from "./PublicationPageHeader";
 import { PublicationSidebar } from "./PublicationSidebar";
@@ -76,12 +77,15 @@ const PublicationPage = () => {
 	const facetsCleaner = useFacetsCleaner<PublicationParam>();
 	const { search, setSearch } = useBibContext();
 	const [searchByLetter, setSearchByLetter] = useState<string>("");
-	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);
 	const [selectedPublication, setSelectedPublication] = useState(null);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
+
+	const publicationSearch = useMemo(() => {
+		return search.publication.query || search.query || "";
+	}, [search]);
 
 	const { data, isFetching, isLoading, isError, error } = useQuery<
 		PublicationDataType,
@@ -93,7 +97,7 @@ const PublicationPage = () => {
 	>({
 		queryKey: [
 			"publication",
-			search.query,
+			publicationSearch,
 			search.domain,
 			search.publication.limiters,
 			search.publication.facets,
@@ -102,15 +106,16 @@ const PublicationPage = () => {
 		],
 		queryFn: async () => {
 			if (
-				(!search.query && search.query !== "") ||
+				!publicationSearch ||
 				!search.publication.table.perPage ||
 				!search.publication.table.page
 			) {
 				return null;
 			}
+
 			return publication(
 				search.domain,
-				search.query,
+				publicationSearch,
 				search.publication.table.page,
 				search.publication.table.perPage,
 				{
@@ -130,36 +135,28 @@ const PublicationPage = () => {
 		}
 	}, [error, isError, serviceCatch]);
 
-	useEffect(() => {
-		if (first) {
-			const queryValue = getString<undefined>(query, "q", search.query);
-			setSearch({
-				...search,
-				query: queryValue,
-				publication: {
-					...search.publication,
-					limiters: getJSON(query, "limiters", search.publication.limiters),
-					facets: getJSON(query, "facets", search.publication.facets),
-					table: {
-						page: getNumber(query, "page", search.publication.table.page),
-						perPage: getNumber(
-							query,
-							"perPage",
-							search.publication.table.perPage,
-						),
-					},
+	useEffectOnce(() => {
+		const queryValue = getString<undefined>(query, "q", "");
+		setSearch({
+			...search,
+			query: queryValue,
+			publication: {
+				...search.publication,
+				limiters: getJSON(query, "limiters", search.publication.limiters),
+				facets: getJSON(query, "facets", search.publication.facets),
+				table: {
+					page: getNumber(query, "page", search.publication.table.page),
+					perPage: getNumber(
+						query,
+						"perPage",
+						search.publication.table.perPage,
+					),
 				},
-			});
-			if (queryValue) {
-				if (queryValue.length >= 2) {
-					if (ALPHABET.includes(queryValue[0]) && queryValue.endsWith("*")) {
-						setSearchByLetter(queryValue[0]);
-					}
-				}
-			}
-			setFirst(false);
-			return;
-		}
+			},
+		});
+	}, [query, setSearch]);
+
+	useEffect(() => {
 		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 		const param: any = {};
 
@@ -182,8 +179,9 @@ const PublicationPage = () => {
 		if (search.publication.facets) {
 			param.facets = JSON.stringify(search.publication.facets);
 		}
+
 		updatePageQueryUrl(RoutePublication, navigate, param);
-	}, [first, navigate, query, search, setSearch]);
+	}, [navigate, search]);
 
 	const performSearch = (value: string | undefined) => {
 		setSearch({
@@ -197,6 +195,20 @@ const PublicationPage = () => {
 			},
 		});
 	};
+
+	const performLetterSearch = (value: string | undefined) => {
+		setSearch({
+			...search,
+			publication: {
+				query: value,
+				table: {
+					page: 1,
+					perPage: search.publication.table.perPage,
+				},
+			},
+		});
+	};
+
 	const handleSearch = (value: string | undefined): void => {
 		setSearchByLetter("");
 		performSearch(value);
@@ -204,15 +216,17 @@ const PublicationPage = () => {
 
 	const handleSearchByLetterL1 = (letter: string) => {
 		setSearchByLetter(letter);
-		performSearch(`${letter}*`);
+		performLetterSearch(`${letter}*`);
 	};
 	const handleSearchByLetterL2 = (letter: string) => {
-		performSearch(`${letter}*`);
+		performLetterSearch(`${letter}*`);
 	};
 
 	const handleSearchByNumber = () => {
 		setSearchByLetter("");
-		performSearch("0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*");
+		performLetterSearch(
+			"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*",
+		);
 	};
 
 	const handleReset = () => {
@@ -300,7 +314,7 @@ const PublicationPage = () => {
 			<PageTitle page="publication" />
 			<SearchBar
 				placeholder={t("pages.publication.searchBar")}
-				value={query.get("q") || search.query}
+				value={publicationSearch}
 				onSearch={handleSearch}
 			>
 				<ChipFacet

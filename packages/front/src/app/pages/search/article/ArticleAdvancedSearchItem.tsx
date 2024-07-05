@@ -9,36 +9,16 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useCallback } from "react";
+import {
+	type AdvancedSearchGroup,
+	type AdvancedSearchItem,
+	FIELDS,
+	OPERATORS,
+} from "../../../context/AdvancedSearchContext";
 import { useTranslator } from "../../../shared/locales/I18N";
 
-export const OPERATORS = {
-	AND: "and",
-	OR: "or",
-	NOT: "not",
-} as const;
-
-export const FIELDS = {
-	AU: "author",
-	DO: "doi",
-	IB: "isbn",
-	ZI: "issn",
-	SU: "keywords",
-	AB: "abstract",
-	TI: "title",
-	SO: "source",
-} as const;
-
-export type Operator = keyof typeof OPERATORS;
-export type Field = keyof typeof FIELDS;
-
-export type AdvancedSearchItem = {
-	id: string;
-	operator: Operator | null;
-	field: Field;
-	value: string;
-};
-
 export type ArticleAdvancedSearchItemProps = {
+	group: AdvancedSearchGroup;
 	item: AdvancedSearchItem;
 	hasRemoveButton?: boolean;
 	onChange(value: AdvancedSearchItem): void;

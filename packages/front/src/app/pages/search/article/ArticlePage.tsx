@@ -11,7 +11,13 @@ import {
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { createContext, useCallback, useEffect, useState } from "react";
+import {
+	createContext,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -47,6 +53,7 @@ import {
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleDataType } from "../../../shared/types/data.types";
+import { useEffectOnce } from "../../../shared/useEffectOnce";
 import ArticleAdvancedSearch from "./ArticleAvancedSearch";
 import { ArticleCard } from "./ArticleCard";
 import { ArticlePageHeader } from "./ArticlePageHeader";
@@ -72,15 +79,15 @@ const ArticlePage = () => {
 	const facetsCleaner = useFacetsCleaner<Omit<ArticleParam, "orderBy">>();
 	const { search, setSearch } = useBibContext();
 
-	const [first, setFirst] = useState<boolean>(true);
 	const [seed, setSeed] = useState<number>(0);
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
 	const [exports, setExports] = useState<ContextData>([]);
 	const [selectedArticle, setSelectedArticle] = useState(null);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
-	const [searchQuery, setSearchQuery] = useState<string>(
-		query.get("q") || search.query || "",
-	);
+
+	const articleQuery = useMemo(() => {
+		return search.article.query || search.query || "";
+	}, [search]);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -95,7 +102,7 @@ const ArticlePage = () => {
 	>({
 		queryKey: [
 			"article",
-			search.query,
+			articleQuery,
 			search.domain,
 			search.article.orderBy,
 			search.article.limiters,
@@ -105,7 +112,7 @@ const ArticlePage = () => {
 		],
 		queryFn: async () => {
 			if (
-				(!search.query && search.query !== "") ||
+				!articleQuery ||
 				!search.domain ||
 				!search.article.table.perPage ||
 				!search.article.table.page
@@ -114,7 +121,7 @@ const ArticlePage = () => {
 			}
 			const values = await article(
 				search.domain,
-				search.query,
+				articleQuery,
 				search.article.table.page,
 				search.article.table.perPage,
 				saveHistory,
@@ -132,30 +139,29 @@ const ArticlePage = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	useEffect(() => {
-		if (first) {
-			const queryValue = getString<undefined>(query, "q", search.query);
-			setSearch({
-				...search,
-				query: queryValue,
-				article: {
-					...search.article,
-					limiters: getJSON(query, "limiters", search.article.limiters),
-					facets: getJSON(query, "facets", search.article.facets),
-					orderBy: getString(
-						query,
-						"orderBy",
-						search.article.orderBy,
-					) as OrderByType,
-					table: {
-						page: getNumber(query, "page", search.article.table.page),
-						perPage: getNumber(query, "perPage", search.article.table.perPage),
-					},
+	useEffectOnce(() => {
+		const queryValue = getString<undefined>(query, "q", "");
+		setSearch((search) => ({
+			...search,
+			query: queryValue,
+			article: {
+				...search.article,
+				limiters: getJSON(query, "limiters", search.article.limiters),
+				facets: getJSON(query, "facets", search.article.facets),
+				orderBy: getString(
+					query,
+					"orderBy",
+					search.article.orderBy,
+				) as OrderByType,
+				table: {
+					page: getNumber(query, "page", search.article.table.page),
+					perPage: getNumber(query, "perPage", search.article.table.perPage),
 				},
-			});
-			setFirst(false);
-			return;
-		}
+			},
+		}));
+	}, [query, setSearch]);
+
+	useEffect(() => {
 		// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 		const param: any = {};
 
@@ -183,7 +189,7 @@ const ArticlePage = () => {
 			param.facets = JSON.stringify(search.article.facets);
 		}
 		updatePageQueryUrl(RouteArticle, navigate, param);
-	}, [first, navigate, query, search, setSearch]);
+	}, [navigate, search]);
 
 	useEffect(() => {
 		if (isError) {
@@ -370,11 +376,22 @@ const ArticlePage = () => {
 		(query?: string) => {
 			setShowAdvancedSearch(false);
 			if (query) {
-				setSearchQuery(query);
-				handleSearch(query);
+				setSaveHistory(true);
+				setSearch((search) => ({
+					...search,
+					article: {
+						query,
+						limiters: search.article.limiters,
+						orderBy: search.article.orderBy,
+						table: {
+							page: 1,
+							perPage: search.article.table.perPage,
+						},
+					},
+				}));
 			}
 		},
-		[handleSearch],
+		[setSearch],
 	);
 
 	return (
@@ -382,7 +399,7 @@ const ArticlePage = () => {
 			<PageTitle page="article" />
 			<SearchBar
 				placeholder={t("pages.article.searchBar")}
-				value={searchQuery}
+				value={articleQuery}
 				onSearch={handleSearch}
 				secondaryAction={
 					<IconButton

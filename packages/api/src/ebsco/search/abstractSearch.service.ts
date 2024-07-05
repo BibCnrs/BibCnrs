@@ -456,6 +456,10 @@ export class AbstractEbscoSearchService {
 	}
 
 	async getHasApcFromDoaj(issnList: string[]) {
+		if (!issnList.length) {
+			return new Map<string, { has_apc?: boolean }>();
+		}
+
 		try {
 			const response = await this.http.request<{
 				results: { bibjson: { eissn: string; apc?: { has_apc: boolean } } }[];

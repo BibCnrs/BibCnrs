@@ -23,6 +23,7 @@ import {
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { MetadoreDataType } from "../../../shared/types/data.types";
+import { useEffectOnce } from "../../../shared/useEffectOnce";
 import { MetadoreCard } from "./MetadoreCard";
 import { MetadorePageHeader } from "./MetadorePageHeader";
 import { MetadoreSidebar } from "./MetadoreSidebar";
@@ -34,7 +35,6 @@ const MetadorePage = () => {
 	const serviceCatch = useServicesCatch();
 	const { search, setSearch } = useBibContext();
 
-	const [first, setFirst] = useState<boolean>(true);
 	const [selectedMetadore, setSelectedMetadore] = useState(null);
 
 	const { data, isFetching, isLoading, isError, error } = useQuery<
@@ -54,7 +54,7 @@ const MetadorePage = () => {
 		],
 		queryFn: async () => {
 			if (
-				(!search.query && search.query !== "") ||
+				!search.query ||
 				!search.metadore.table.perPage ||
 				!search.metadore.table.page
 			) {
@@ -83,48 +83,43 @@ const MetadorePage = () => {
 		}
 	}, [error, isError, serviceCatch]);
 
-	useEffect(() => {
-		if (first) {
-			const queryValue = getString<undefined>(query, "q", undefined);
-			if (search.query && !queryValue) {
-				setFirst(false);
-				return;
-			}
-			setSearch({
-				...search,
-				query: queryValue,
-				metadore: {
-					field: getString<null>(query, "field", null),
-					table: {
-						page: getNumber(query, "page", 1),
-						perPage: getNumber(query, "perPage", 25),
-					},
+	useEffectOnce(() => {
+		const queryValue = getString<undefined>(query, "q", "");
+		setSearch({
+			...search,
+			query: queryValue,
+			metadore: {
+				field: getString<null>(query, "field", null),
+				table: {
+					page: getNumber(query, "page", 1),
+					perPage: getNumber(query, "perPage", 25),
 				},
-			});
-			setFirst(false);
-		} else {
-			// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-			const param: any = {};
+			},
+		});
+	}, [query, setSearch]);
 
-			if (search.query) {
-				param.q = search.query;
-			}
+	useEffect(() => {
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		const param: any = {};
 
-			if (search.metadore.table.page) {
-				param.page = search.metadore.table.page;
-			}
-
-			if (search.metadore.table.perPage) {
-				param.perPage = search.metadore.table.perPage;
-			}
-
-			if (search.metadore.field) {
-				param.field = search.metadore.field;
-			}
-
-			updatePageQueryUrl(RouteMetadore, navigate, param);
+		if (search.query) {
+			param.q = search.query;
 		}
-	}, [first, navigate, query, search, setSearch]);
+
+		if (search.metadore.table.page) {
+			param.page = search.metadore.table.page;
+		}
+
+		if (search.metadore.table.perPage) {
+			param.perPage = search.metadore.table.perPage;
+		}
+
+		if (search.metadore.field) {
+			param.field = search.metadore.field;
+		}
+
+		updatePageQueryUrl(RouteMetadore, navigate, param);
+	}, [navigate, search]);
 
 	const handleField = (
 		_: MouseEvent<HTMLElement>,

@@ -148,8 +148,8 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 			const result = response.data;
 
-			const is_oa = result.data.GetByDOI[0].is_oa;
-			const url = result.data.GetByDOI[0].best_oa_location.url_for_pdf;
+			const is_oa = result.data.GetByDOI?.[0]?.is_oa;
+			const url = result.data.GetByDOI?.[0]?.best_oa_location.url_for_pdf;
 			if (is_oa && url) {
 				const urlEncoded = encodeURIComponent(url);
 				return `${this.ebsco.apiEndpoint}/ebsco/oa?sid=unpaywall&doi=${doi}&url=${urlEncoded}&domaine=${domain}`;
