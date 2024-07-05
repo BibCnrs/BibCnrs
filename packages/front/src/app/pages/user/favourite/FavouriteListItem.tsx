@@ -1,7 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS as DndCSS } from "@dnd-kit/utilities";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import LockPersonIcon from "@mui/icons-material/LockPerson";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import {
@@ -9,10 +8,12 @@ import {
 	Card,
 	CardActions,
 	CardContent,
+	Chip,
 	IconButton,
 	Link,
 	Tooltip,
 } from "@mui/material";
+import { Stack, styled } from "@mui/system";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { useFavourites } from "./useFavourites";
@@ -20,6 +21,57 @@ type FavouriteListItemProps = {
 	favourite: FavouriteResourceDataType;
 	setFavouriteToDelete: (favourite: FavouriteResourceDataType) => void;
 };
+
+// Define keyframes for up and down movement
+const upAndDown = `
+  @keyframes upAndDown {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+`;
+
+const StyledPinIconButton = styled(IconButton)`
+  ${upAndDown} // Include the keyframes in the component
+
+  svg {
+    transition: transform 1s ease-in-out;
+  }
+
+  &:hover {
+    animation: upAndDown 1s ease-in-out infinite; // Apply the up and down animation
+    svg {
+      transform: rotate(40deg); // Rotate the icon on hover
+    }
+  }
+`;
+
+// Define keyframes for the shaky animation
+const shakeAnimation = `
+  @keyframes shake {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: rotate(-10deg);
+    }
+    20%, 40%, 60%, 80% {
+      transform: rotate(10deg);
+    }
+  }
+`;
+
+// Styled IconButton with shaky animation on hover
+const ShakyIconButton = styled(IconButton)`
+  ${shakeAnimation} // Include the keyframes in the component
+
+  &:hover {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  }
+`;
 
 function FavouriteListItem({
 	favourite,
@@ -69,31 +121,46 @@ function FavouriteListItem({
 					alignItems: "center",
 				}}
 			>
-				<Tooltip
-					enterDelay={500}
-					enterNextDelay={500}
-					leaveDelay={200}
-					title={favourite.title}
-					arrow
-				>
-					<Box
-						sx={{
-							display: "-webkit-box",
-							"-webkit-line-clamp": "4",
-							"-webkit-box-orient": "vertical",
-							overflow: "hidden",
-						}}
+				<Stack direction="column" spacing={1}>
+					{favourite.personal && (
+						<Stack direction="row">
+							<Chip
+								label="Personal"
+								color="secondary"
+								size="small"
+								sx={{
+									fontWeight: 700,
+									textTransform: "uppercase",
+									width: "auto",
+								}}
+							/>
+						</Stack>
+					)}
+					<Tooltip
+						enterDelay={500}
+						enterNextDelay={500}
+						leaveDelay={200}
+						title={favourite.title}
+						arrow
 					>
-						<Link
+						<Box
+							sx={{
+								display: "-webkit-box",
+								"-webkit-line-clamp": "4",
+								"-webkit-box-orient": "vertical",
+								overflow: "hidden",
+								textDecoration: "none",
+							}}
+							component={Link}
 							href={favourite.url}
 							target="_blank"
 							rel="noreferrer noopener nofollow"
 							onPointerDown={(e) => e.stopPropagation()}
 						>
 							{favourite.title}
-						</Link>
-					</Box>
-				</Tooltip>
+						</Box>
+					</Tooltip>
+				</Stack>
 			</CardContent>
 
 			<CardActions
@@ -108,7 +175,7 @@ function FavouriteListItem({
 					},
 				}}
 			>
-				<IconButton
+				<StyledPinIconButton
 					size="small"
 					onClick={handleToggleSuperFavourite}
 					onPointerDown={(e) => e.stopPropagation()}
@@ -127,29 +194,17 @@ function FavouriteListItem({
 					) : (
 						<PushPinOutlinedIcon />
 					)}
-				</IconButton>
-
-				{favourite.personal && (
-					<Tooltip title={t("pages.favourite.personal")} sx={{ margin: 0 }}>
-						<IconButton sx={{ cursor: "default" }}>
-							<LockPersonIcon
-								fontSize="small"
-								color="primary"
-								sx={{ margin: 0 }}
-							/>
-						</IconButton>
-					</Tooltip>
-				)}
+				</StyledPinIconButton>
 
 				{!favourite.isSuperFavorite && (
-					<IconButton
+					<ShakyIconButton
 						onClick={() => setFavouriteToDelete(favourite)}
 						onPointerDown={(e) => e.stopPropagation()}
 						size="small"
 						aria-label={t("pages.favourite.delete", { url: favourite.url })}
 					>
 						<DeleteOutlineIcon />
-					</IconButton>
+					</ShakyIconButton>
 				)}
 			</CardActions>
 		</Card>

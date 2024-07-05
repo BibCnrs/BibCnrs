@@ -2,11 +2,30 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import { styled } from "@mui/system";
 import { memo, useEffect, useState } from "react";
 import { useBibContext } from "../../../context/BibContext";
 import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { BookmarkButtonProps } from "../../../shared/types/props.types";
+
+const AnimatedIconButton = styled(IconButton)`
+  &.animate {
+    animation: bounce 0.3s;
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+`;
 
 const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 	const {
@@ -15,6 +34,8 @@ const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 	const t = useTranslator();
 	const { allFavourites, addFavourite, removeFavourite } = useFavourites();
 	const [inBookmark, setInBookmark] = useState(false);
+
+	const [animate, setAnimate] = useState(false);
 
 	useEffect(() => {
 		if (user) {
@@ -30,6 +51,7 @@ const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 	}, [user, allFavourites, title, url]);
 
 	const handleClick = (event) => {
+		setAnimate(true);
 		event.preventDefault();
 		event.stopPropagation();
 		if (!inBookmark) {
@@ -46,18 +68,20 @@ const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 			url,
 		});
 		setInBookmark(false);
+		setTimeout(() => setAnimate(false), 300);
 	};
 
 	return (
 		<Tooltip title={t("components.button.favourite.tooltip")} arrow>
-			<IconButton
+			<AnimatedIconButton
+				className={animate ? "animate" : ""}
 				onClick={handleClick}
 				type="button"
 				size="small"
 				aria-label={t("components.button.favourite.tooltip", { title })}
 			>
 				{inBookmark ? <FavoriteIcon color="primary" /> : <FavoriteOutlined />}
-			</IconButton>
+			</AnimatedIconButton>
 		</Tooltip>
 	);
 };

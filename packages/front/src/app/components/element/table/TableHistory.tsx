@@ -18,9 +18,34 @@ import type {
 import AlertModification from "../dialog/AlertModification";
 import "./scss/TableHistory.scss";
 import { Button } from "@mui/material";
+import { styled } from "@mui/system";
 import { useBibContext } from "../../../context/BibContext";
 import type { SearchResultsElementProps } from "../../page/search/SearchResults";
 import type { FacetEntry } from "../../page/search/facet/Facet.type";
+
+// Define keyframes for the shaky animation
+const shakeAnimation = `
+  @keyframes shake {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: rotate(-10deg);
+    }
+    20%, 40%, 60%, 80% {
+      transform: rotate(10deg);
+    }
+  }
+`;
+
+// Styled IconButton with shaky animation on hover
+const ShakyButton = styled(Button)`
+  ${shakeAnimation} // Include the keyframes in the component
+
+  &:hover {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  }
+`;
 
 const Limiters = ({ data }: { data: HistoryEntryLimiterDataType }) => {
 	const t = useTranslator();
@@ -268,7 +293,7 @@ const TableHistory = ({
 						</li>
 					</ul>
 					<div className="table-history-box-actions-buttons">
-						<Button
+						<ShakyButton
 							className="table-history-box-actions-button"
 							size="small"
 							onClick={() => {
@@ -279,7 +304,7 @@ const TableHistory = ({
 							})}
 						>
 							<DeleteOutlineIcon />
-						</Button>
+						</ShakyButton>
 						<Button
 							className="table-history-box-actions-button"
 							size="small"
