@@ -258,6 +258,9 @@ Cordialement`,
 			open: "Déplier {{ title }}",
 			close: "Replier {{ title }}",
 		},
+		fakeSearchBar: {
+			homepage: "< Accueil",
+		},
 	},
 	pages: {
 		root: {

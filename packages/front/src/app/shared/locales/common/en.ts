@@ -257,6 +257,9 @@ Sincerely`,
 			open: "Open {{ title }}",
 			close: "Close {{ title }}",
 		},
+		fakeSearchBar: {
+			homepage: "< Homepage",
+		},
 	},
 	pages: {
 		root: {
