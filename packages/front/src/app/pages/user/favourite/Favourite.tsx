@@ -17,8 +17,6 @@ const Favourite = () => {
 		moveSuperFavourite,
 	} = useFavourites();
 
-	console.log(favouriteResources);
-
 	const [personal, setPersonal] = useState(false);
 
 	const handleAddPersonalOpen = () => {

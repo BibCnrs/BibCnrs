@@ -89,9 +89,7 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 				</FormControl>
 			</DialogContent>
 			<DialogActions>
-				<Button color="secondary" onClick={handleCancel}>
-					{t("components.dialog.cancel")}
-				</Button>
+				<Button onClick={handleCancel}>{t("components.dialog.cancel")}</Button>
 				<Button variant="contained" onClick={handleSave}>
 					{t("components.dialog.save")}
 				</Button>
