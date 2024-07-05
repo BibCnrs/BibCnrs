@@ -31,16 +31,19 @@ export class EbscoSearchAlertService {
 			history.event as JsonObject;
 
 		const token = { username: "guest", domains };
-		const result = await this.ebscoSearchArticleService.searchArticleRaw(
-			token,
-			{
-				queries,
-				limiters,
-				activeFacets,
-				resultsPerPage: 100,
-			},
-			domain as string,
-		);
+		const result =
+			process.env.NODE_ENV === "test"
+				? undefined // We disable search for E2E tests, otherwise it would break them
+				: await this.ebscoSearchArticleService.searchArticleRaw(
+						token,
+						{
+							queries,
+							limiters,
+							activeFacets,
+							resultsPerPage: 100,
+						},
+						domain as string,
+					);
 
 		await this.prismaService.$queryRaw`
 		UPDATE history SET

@@ -4,7 +4,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { memo, useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HistoryContext } from "../../../pages/user/history/History";
 import { RouteArticle, updatePageQueryUrl } from "../../../shared/Routes";
@@ -316,4 +316,4 @@ const TableHistory = ({
 	);
 };
 
-export default memo(TableHistory);
+export default TableHistory;

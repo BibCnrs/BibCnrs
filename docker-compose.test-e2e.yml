@@ -12,6 +12,7 @@ services:
       redis:
         condition: service_started
     environment:
+      - NODE_ENV=test
       - RENATER_FAKE_LOGIN=true
       - DATABASE_URL=postgres://postgres:S3cr3t@db/bibcnrs
       - BIBAPI_HOST= http://localhost:3000/api

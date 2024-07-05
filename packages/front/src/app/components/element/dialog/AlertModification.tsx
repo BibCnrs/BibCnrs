@@ -26,7 +26,7 @@ const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 	const { requestUpdate } = useContext(HistoryContext);
 
 	const [value, setValue] = useState<string>(
-		data.active ? data.frequence : "disable",
+		data.active ? data.frequence || "day" : "disable",
 	);
 	// TODO: Enlevais le backdrop
 	const [backdropLoading, setBackdropLoading] = useState(false);
@@ -93,9 +93,11 @@ const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 							<MenuItem value="month">
 								{t("components.search.content.alert.active.month")}
 							</MenuItem>
-							<MenuItem value="disable">
-								{t("components.search.content.alert.disable")}
-							</MenuItem>
+							{data.hasAlert && (
+								<MenuItem value="disable">
+									{t("components.search.content.alert.disable")}
+								</MenuItem>
+							)}
 						</Select>
 					</FormControl>
 				</DialogContent>
