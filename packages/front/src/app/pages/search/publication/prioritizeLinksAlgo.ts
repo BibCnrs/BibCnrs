@@ -1,9 +1,9 @@
-interface Embargo {
+export interface Embargo {
 	value: number;
 	unit: "Month" | "Year";
 }
 
-interface Coverage {
+export interface Coverage {
 	start: {
 		month: string;
 		day: string;
@@ -16,11 +16,11 @@ interface Coverage {
 	};
 }
 
-interface Link {
+export interface Link {
 	url: string;
 	name: string;
 	isCurrent: boolean;
-	embargo: Embargo;
+	embargo?: Embargo;
 	coverage: Coverage[];
 }
 
@@ -44,8 +44,10 @@ function calculateCoverageEndWithEmbargo(
 		Number.parseInt(coverage.end.month) - 1,
 		Number.parseInt(coverage.end.day),
 	);
-	const monthsToAdd = embargo.value;
-	endDate.setMonth(endDate.getMonth() + monthsToAdd);
+
+	const valueEmbargo = parseValueEmbargo(embargo);
+
+	endDate.setDate(endDate.getDate() + valueEmbargo);
 	return endDate;
 }
 
@@ -86,6 +88,15 @@ function isPresentLinkWithEmbargo(link: Link): boolean {
 }
 
 function isDateLink(link: Link): boolean {
+	// if date is past
+	if (link.coverage[0].end.year !== "9999" && link.embargo) {
+		const endDate = calculateCoverageEndWithEmbargo(
+			link.coverage[0],
+			link.embargo,
+		);
+		return endDate < new Date();
+	}
+
 	return link.coverage[0].end.year !== "9999" && !link.embargo;
 }
 
@@ -221,7 +232,15 @@ function compareEndCouvertureWhenCouvertureDifferent(
 			dateLink.coverage[0],
 			dateLink.embargo,
 		);
-		return embargoDate.getTime() < date.getTime() ? [embargoLink] : [dateLink];
+
+		const currentDate = new Date();
+
+		if (embargoDate > currentDate || date > currentDate) {
+			// At least one of the dates is in the future
+			return embargoDate > date ? [embargoLink] : [dateLink];
+		}
+		// Both dates are in the past
+		return embargoDate > date ? [dateLink] : [embargoLink];
 	}
 
 	// Step I.2.5
@@ -234,9 +253,14 @@ function compareEndCouvertureWhenCouvertureDifferent(
 			secondLink.coverage[0],
 			secondLink.embargo,
 		);
-		return firstDate.getTime() < secondDate.getTime()
-			? [firstLink]
-			: [secondLink];
+		const currentDate = new Date();
+
+		if (firstDate > currentDate || secondDate > currentDate) {
+			// At least one of the dates is in the future
+			return firstDate > secondDate ? [firstLink] : [secondLink];
+		}
+		// Both dates are in the past
+		return firstDate > secondDate ? [secondLink] : [firstLink];
 	}
 }
 
@@ -325,7 +349,7 @@ export function getPrioritizedLink(links: Link[]): Link[] {
 			// Check if the link already exists in the prioritizedLinks array before pushing
 			if (
 				!prioritizedLinks.includes(selectedLinks[0]) &&
-				i === links.length - 2
+				i === links.length - 1
 			) {
 				prioritizedLinks.push(selectedLinks[0]);
 			}
@@ -344,3 +368,20 @@ export function getPrioritizedLink(links: Link[]): Link[] {
 	}
 	return prioritizedLinks;
 }
+
+// Export the function for testing
+export {
+	calculateCoverageEndWithEmbargo,
+	parseValueEmbargo,
+	isCoverageIdentical,
+	isPresentLink,
+	isPresentLinkWithEmbargo,
+	isDateLink,
+	findPresentLink,
+	findEmbargoLink,
+	findDateLink,
+	compareStartDates,
+	linkHasEndCouverture,
+	compareEndCouvertureWhenCouvertureIsSame,
+	compareEndCouvertureWhenCouvertureDifferent,
+};
