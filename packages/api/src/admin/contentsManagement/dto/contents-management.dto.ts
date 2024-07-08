@@ -12,6 +12,7 @@ export class CreateContentManagementDto
 	to: Date | null;
 	enable: boolean;
 	order: number | null;
+	media_id: number | null;
 }
 
 export class UpdateContentManagementDto extends CreateContentManagementDto {
