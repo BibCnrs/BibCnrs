@@ -1,6 +1,8 @@
 import {
 	Datagrid,
+	DateField,
 	DeleteWithConfirmButton,
+	EditButton,
 	List,
 	TextField,
 	TextInput,
@@ -16,7 +18,12 @@ const MediasFilter = [
 
 export default function MediasList() {
 	return (
-		<List filters={MediasFilter} perPage={10} pagination={<CustomPagination />}>
+		<List
+			filters={MediasFilter}
+			perPage={10}
+			pagination={<CustomPagination />}
+			sort={{ field: "created_at", order: "DESC" }}
+		>
 			<Datagrid bulkActionButtons={<BulkActionButtons />}>
 				<TextField source="name" label="resources.medias.fields.name" />
 				<TextField
@@ -28,6 +35,11 @@ export default function MediasList() {
 					label="resources.medias.fields.url"
 					target="_blank"
 				/>
+				<DateField
+					source="created_at"
+					label="resources.medias.fields.createdAt"
+				/>
+				<EditButton />
 				<DeleteWithConfirmButton />
 			</Datagrid>
 		</List>

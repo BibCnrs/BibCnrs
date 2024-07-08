@@ -399,6 +399,7 @@ model medias {
   file_name  String       @db.VarChar(255)
   file       String
   url        String
+  created_at DateTime     @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   tests_news tests_news[]
   content_management content_management[]
 }
