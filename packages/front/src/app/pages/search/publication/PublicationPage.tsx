@@ -34,6 +34,7 @@ import {
 	useServicesCatch,
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
+import { useMatomo } from "../../../shared/matomo";
 import type { PublicationDataType } from "../../../shared/types/data.types";
 import { useEffectOnce } from "../../../shared/useEffectOnce";
 import { PublicationCard } from "./PublicationCard";
@@ -71,6 +72,7 @@ const ALPHABET = [
 
 const PublicationPage = () => {
 	const navigate = useNavigate();
+	const { trackSearch } = useMatomo();
 	const query = useSearchParams();
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
@@ -113,7 +115,7 @@ const PublicationPage = () => {
 				return null;
 			}
 
-			return publication(
+			const publications = await publication(
 				search.domain,
 				publicationSearch,
 				search.publication.table.page,
@@ -123,6 +125,10 @@ const PublicationPage = () => {
 					facets: search.publication.facets,
 				},
 			);
+
+			trackSearch(publicationSearch, "Publication", publications.totalHits);
+
+			return publications;
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache

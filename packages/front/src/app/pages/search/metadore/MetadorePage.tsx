@@ -22,6 +22,7 @@ import {
 } from "../../../shared/Routes";
 import { useServicesCatch } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
+import { useMatomo } from "../../../shared/matomo";
 import type { MetadoreDataType } from "../../../shared/types/data.types";
 import { useEffectOnce } from "../../../shared/useEffectOnce";
 import { MetadoreCard } from "./MetadoreCard";
@@ -30,6 +31,7 @@ import { MetadoreSidebar } from "./MetadoreSidebar";
 
 const MetadorePage = () => {
 	const navigate = useNavigate();
+	const { trackEvent, trackSearch } = useMatomo();
 	const query = useSearchParams();
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
@@ -65,12 +67,16 @@ const MetadorePage = () => {
 					currentPage: 1,
 				} as MetadoreDataType;
 			}
-			return await metadore(
+			const results = await metadore(
 				search.query,
 				search.metadore.table.perPage,
 				search.metadore.table.page,
 				search.metadore.field,
 			);
+
+			trackSearch(search.query, "Metadore", results.totalHits);
+
+			return results;
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
@@ -125,6 +131,7 @@ const MetadorePage = () => {
 		_: MouseEvent<HTMLElement>,
 		field: string | null,
 	): void => {
+		trackEvent("Metadore", "field", field || "all");
 		setSearch({
 			...search,
 			metadore: {

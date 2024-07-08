@@ -7,19 +7,29 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import type { SyntheticEvent } from "react";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { faq } from "../../../services/common/CMS";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useMatomo } from "../../../shared/matomo";
 import type {
 	CMSDataType,
 	CMSResultDataType,
 } from "../../../shared/types/data.types";
 
 const FaqEntry = ({ data }: { data: CMSDataType }) => {
+	const { trackEvent } = useMatomo();
 	const language = useLanguageKey();
+
+	const handleChange = (_: SyntheticEvent, expanded: boolean) => {
+		if (expanded) {
+			trackEvent("FAQ", data.name_fr, "on", data.id);
+		}
+	};
+
 	return (
-		<Accordion>
+		<Accordion onChange={handleChange}>
 			<AccordionSummary
 				expandIcon={<ExpandMoreIcon />}
 				aria-controls={`${data.name_en}-content`}
