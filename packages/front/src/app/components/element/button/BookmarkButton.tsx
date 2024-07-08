@@ -72,7 +72,7 @@ const BookmarkButton = ({ title, url }: BookmarkButtonProps) => {
 	};
 
 	return (
-		<Tooltip title={t("components.button.favourite.tooltip")} arrow>
+		<Tooltip title={t("components.button.favourite.tooltip", { title })} arrow>
 			<AnimatedIconButton
 				className={animate ? "animate" : ""}
 				onClick={handleClick}

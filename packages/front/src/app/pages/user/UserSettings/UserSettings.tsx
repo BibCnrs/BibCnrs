@@ -12,6 +12,7 @@ import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar"
 import { useBibContext } from "../../../context/BibContext";
 import { updateSettings } from "../../../services/user/UserSettings";
 import { useTranslator } from "../../../shared/locales/I18N";
+import { useMatomo } from "../../../shared/matomo";
 import type { UserSettingsDataType } from "../../../shared/types/data.types";
 
 const UserSettings = () => {
@@ -20,6 +21,7 @@ const UserSettings = () => {
 		updateUserSettings,
 	} = useBibContext();
 	const t = useTranslator();
+	const { trackEvent } = useMatomo();
 
 	const mutation = useMutation({
 		mutationFn: updateSettings,
@@ -36,6 +38,11 @@ const UserSettings = () => {
 			userId: user.id,
 			[event.target.name]: event.target.checked,
 		});
+		trackEvent(
+			"UserSettings",
+			event.target.name,
+			event.target.checked ? "on" : "off",
+		);
 	};
 
 	const handleToggleChange =
@@ -46,6 +53,8 @@ const UserSettings = () => {
 				userId: user.id,
 				[property]: newToggleValue,
 			});
+
+			trackEvent("UserSettings", property, newToggleValue);
 		};
 
 	return (

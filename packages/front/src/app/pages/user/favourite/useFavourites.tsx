@@ -1,6 +1,7 @@
 import { arrayMove } from "@dnd-kit/sortable";
 import { useCallback, useMemo } from "react";
 import { useBibContext } from "../../../context/BibContext";
+import { useMatomo } from "../../../shared/matomo";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { uuidv7 } from "../../../shared/uuidv7";
 
@@ -9,6 +10,7 @@ export function useFavourites() {
 		session: { user },
 		updateFavouriteResources,
 	} = useBibContext();
+	const { trackEvent } = useMatomo();
 
 	const favourites = useMemo(() => {
 		return (user?.favouriteResources || []).map((favourite) => ({
@@ -66,6 +68,7 @@ export function useFavourites() {
 
 	const addSuperFavourite = useCallback(
 		(favourite: FavouriteResourceDataType) => {
+			trackEvent("Favourite", "Pin Favourite", favourite.title);
 			updateFavouriteResources([
 				...superFavouriteResources,
 				{
@@ -75,7 +78,12 @@ export function useFavourites() {
 				...favouriteResources.filter(({ id }) => id !== favourite.id),
 			]);
 		},
-		[favouriteResources, superFavouriteResources, updateFavouriteResources],
+		[
+			favouriteResources,
+			superFavouriteResources,
+			updateFavouriteResources,
+			trackEvent,
+		],
 	);
 
 	const removeSuperFavourite = useCallback(

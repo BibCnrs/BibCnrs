@@ -6,11 +6,16 @@ import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar"
 import { Empty } from "../../../components/shared/Empty";
 import { resources } from "../../../services/common/Resources";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
-import type { ResourcesDataType } from "../../../shared/types/data.types";
+import { useMatomo } from "../../../shared/matomo";
+import type {
+	ResourceDataType,
+	ResourcesDataType,
+} from "../../../shared/types/data.types";
 
 export const DisplayResources = ({
 	data,
 }: { data: ResourcesDataType | undefined }) => {
+	const { trackEvent } = useMatomo();
 	const language = useLanguageKey();
 
 	if (!data || data.length === 0) {
@@ -24,6 +29,10 @@ export const DisplayResources = ({
 		}
 		return a.name_fr.localeCompare(b.name_fr);
 	});
+
+	const handleResourceClick = (resource: ResourceDataType) => {
+		trackEvent("Resource", "open", resource.name_fr, resource.id);
+	};
 
 	return (
 		<Box
@@ -48,6 +57,8 @@ export const DisplayResources = ({
 						href={resource.href}
 						sx={{ height: "100%" }}
 						rel="nofollow noreferrer noopener"
+						target="_blank"
+						onClick={() => handleResourceClick(resource)}
 					>
 						<CardContent
 							sx={{

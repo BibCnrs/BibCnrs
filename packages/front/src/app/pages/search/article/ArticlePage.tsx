@@ -52,6 +52,7 @@ import {
 	useServicesCatch,
 } from "../../../shared/hook";
 import { useTranslator } from "../../../shared/locales/I18N";
+import { useMatomo } from "../../../shared/matomo";
 import type { ArticleDataType } from "../../../shared/types/data.types";
 import { useEffectOnce } from "../../../shared/useEffectOnce";
 import ArticleAdvancedSearch from "./ArticleAvancedSearch";
@@ -73,6 +74,7 @@ export const ArticleContext = createContext<{
 
 const ArticlePage = () => {
 	const navigate = useNavigate();
+	const { trackEvent, trackSearch } = useMatomo();
 	const query = useSearchParams();
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
@@ -131,6 +133,7 @@ const ArticlePage = () => {
 					facets: search.article.facets,
 				},
 			);
+			trackSearch(articleQuery, "Articles", values.totalHits);
 			setSaveHistory(false);
 			return values;
 		},
@@ -370,11 +373,13 @@ const ArticlePage = () => {
 
 	const openAdvancedSearch = () => {
 		setShowAdvancedSearch(true);
+		trackEvent("Articles", "AdvancedSearch", "Open");
 	};
 
 	const closeAdvancedSearch = useCallback(
 		(query?: string) => {
 			setShowAdvancedSearch(false);
+			trackEvent("Articles", "AdvancedSearch", "Close");
 			if (query) {
 				setSaveHistory(true);
 				setSearch((search) => ({
@@ -391,7 +396,7 @@ const ArticlePage = () => {
 				}));
 			}
 		},
-		[setSearch],
+		[setSearch, trackEvent],
 	);
 
 	return (

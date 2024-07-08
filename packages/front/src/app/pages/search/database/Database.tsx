@@ -21,6 +21,7 @@ import type {
 import "./Database.scss";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
 import { getString, useSearchParams } from "../../../shared/Routes";
+import { useMatomo } from "../../../shared/matomo";
 import { DatabaseItem } from "./DatabaseItem";
 import { DatabasePagination } from "./DatabasePagination";
 import FilterTab from "./FilterTab";
@@ -29,9 +30,9 @@ import { INITIAL_FILTER } from "./filters";
 const Database = () => {
 	const {
 		session: { user },
-		theme,
 		search,
 	} = useBibContext();
+	const { trackSearch } = useMatomo();
 	const serviceCatch = useServicesCatch();
 	const [filters, setFilters] = useState(INITIAL_FILTER);
 	const t = useTranslator();
@@ -64,8 +65,8 @@ const Database = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	const databases: DatabaseItemProps[] = useMemo(
-		() =>
+	const databases: DatabaseItemProps[] = useMemo(() => {
+		const databases =
 			data
 				?.map((value) => {
 					const name = language === "en" ? value.name_en : value.name_fr;
@@ -79,9 +80,14 @@ const Database = () => {
 				})
 				?.filter((value) =>
 					nameFilter ? value.upperName?.includes(nameFilter) : value.upperName,
-				) ?? [],
-		[data, language, nameFilter],
-	);
+				) ?? [];
+
+		if (nameFilter) {
+			trackSearch(nameFilter, "Database", databases.length);
+		}
+
+		return databases;
+	}, [data, language, nameFilter, trackSearch]);
 
 	const filteredDatabases = useMemo(() => {
 		return databases.filter((result) => {

@@ -1,4 +1,4 @@
-import Autocomplete from "@mui/material/Autocomplete";
+import { Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import type { SyntheticEvent } from "react";
 import { memo } from "react";

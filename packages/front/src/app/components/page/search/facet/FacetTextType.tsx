@@ -4,6 +4,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslator } from "../../../../shared/locales/I18N";
+import { useMatomo } from "../../../../shared/matomo";
 
 type FacetTextTypeProps = {
 	initial?: string[];
@@ -17,6 +18,7 @@ export default function FacetTextType({
 	onChange,
 }: FacetTextTypeProps) {
 	const t = useTranslator();
+	const { trackEvent } = useMatomo();
 	const [selectedText, setSelectedText] = useState<string[]>(initial ?? []);
 
 	const handleChange = (
@@ -24,6 +26,7 @@ export default function FacetTextType({
 		checked: boolean,
 		text: string,
 	) => {
+		trackEvent("Facet", text, checked ? "on" : "off");
 		if (checked) {
 			if (selectedText.includes(text)) {
 				return;

@@ -160,7 +160,7 @@ const fr: Common = {
 			abstract: "Résumé",
 			title: "Titre",
 			source: "Titre revue",
-			humanQuery: "Comment sera exécuté la requête ?",
+			humanQuery: "Comment sera exécutée la requête ?",
 			reset: "Réinitialiser",
 		},
 		facet: {

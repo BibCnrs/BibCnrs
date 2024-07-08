@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useTranslator } from "../../../../shared/locales/I18N";
+import { useMatomo } from "../../../../shared/matomo";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
 import FacetTextType from "./FacetTextType";
 
@@ -28,6 +29,8 @@ export default function FacetLimiter({
 	onHALFacetChange,
 }: FacetLimiterProps) {
 	const t = useTranslator();
+	const { trackEvent } = useMatomo();
+
 	if (!available) {
 		return null;
 	}
@@ -152,6 +155,7 @@ export default function FacetLimiter({
 	}
 
 	const handleHALChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		trackEvent("Facet", "hal", event.target.checked ? "on" : "off");
 		if (event.target.checked) {
 			return onHALFacetChange({
 				provider: [HALFacet],
