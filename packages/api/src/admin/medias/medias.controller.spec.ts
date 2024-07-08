@@ -56,13 +56,15 @@ describe("MediaController", () => {
 
 		test("should return a single content media", async () => {
 			const data = await mediasController.findOne(2);
-			expect(data).toStrictEqual({
-				id: 2,
-				name: "media2",
-				file_name: "media2.png",
-				file: "/app/packages/api/uploads/2024/1/1/media2.png",
-				url: "http://localhost:3000/files/2024/1/1/media2.png",
-			});
+			expect(data).toEqual(
+				expect.objectContaining({
+					id: 2,
+					name: "media2",
+					file_name: "media2.png",
+					file: "/app/packages/api/uploads/2024/1/1/media2.png",
+					url: "http://localhost:3000/files/2024/1/1/media2.png",
+				}),
+			);
 		});
 	});
 });
