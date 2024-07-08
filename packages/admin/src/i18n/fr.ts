@@ -212,6 +212,7 @@ const i18n = {
 				name: "Nom",
 				fileName: "Nom du fichier",
 				url: "Lien",
+				createdAt: "Créé le",
 			},
 		},
 		notification: {
