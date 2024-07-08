@@ -43,7 +43,7 @@ export const MultilingualContentTab = () => {
 
 	return (
 		<>
-			<Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+			<Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
 				<Tabs
 					value={valueTab}
 					onChange={handleChange}
@@ -73,6 +73,7 @@ export const MultilingualContentTab = () => {
 					source="content_fr"
 					label="resources.contentManagement.fields.content"
 					validate={required()}
+					fullWidth
 				/>
 			</TabPanel>
 			<TabPanel valueTab={valueTab} index={1}>
@@ -85,6 +86,7 @@ export const MultilingualContentTab = () => {
 					source="content_en"
 					label="resources.contentManagement.fields.content"
 					validate={required()}
+					fullWidth
 				/>
 			</TabPanel>
 		</>

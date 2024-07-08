@@ -94,7 +94,7 @@ const dataProvider: DataProvider = {
 		}));
 	},
 	update: async (resource, params) => {
-		if (resource === "news") {
+		if (resource === "news" || resource === "contentManagement") {
 			let mediaID = params.data.media_id;
 			if (params.data.file) {
 				const file = await uploadFile(
@@ -155,7 +155,7 @@ const dataProvider: DataProvider = {
 			return { data: { ...file } };
 		}
 
-		if (resource === "news") {
+		if (resource === "news" || resource === "contentManagement") {
 			let mediaID = params.data.media_id;
 			if (params.data.file) {
 				const file = await uploadFile(

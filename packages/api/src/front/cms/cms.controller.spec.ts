@@ -1,5 +1,7 @@
+import { ConfigModule } from "@nestjs/config";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it } from "vitest";
+import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FrontCmsController } from "./cms.controller";
 import { FrontCmsService } from "./cms.service";
@@ -9,6 +11,13 @@ describe("FrontCmsController", () => {
 
 	beforeEach(async () => {
 		const ebscoCms: TestingModule = await Test.createTestingModule({
+			imports: [
+				ConfigModule.forRoot({
+					ignoreEnvFile: true,
+					load: [configFunction],
+					isGlobal: true,
+				}),
+			],
 			controllers: [FrontCmsController],
 			providers: [FrontCmsService, PrismaService],
 		}).compile();

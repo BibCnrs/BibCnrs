@@ -1,23 +1,49 @@
-import type { CSSProperties } from "react";
-import { BooleanInput, DateInput, NumberInput, required } from "react-admin";
+import { Divider, Stack } from "@mui/material";
+import {
+	BooleanInput,
+	DateInput,
+	FileField,
+	FileInput,
+	FormDataConsumer,
+	NumberInput,
+	ReferenceInput,
+	SelectInput,
+	required,
+} from "react-admin";
 import { MultilingualContentTab } from "../components/MultilingualContentTab";
 import ContentManagementHeader from "./ContentManagementHeader";
 
-const divStyle: CSSProperties = {
-	display: "flex",
-	marginTop: "24px",
-	width: "100%",
+const FileComponent = () => {
+	return (
+		<>
+			<Divider flexItem />
+			<ReferenceInput
+				label="Média associé"
+				source="media_id"
+				reference="medias"
+			>
+				<SelectInput optionText="name" helperText={false} />
+			</ReferenceInput>
+			<FileInput
+				sx={{ marginTop: 4 }}
+				source="file"
+				label="Média à uploader"
+				name="file"
+			>
+				<FileField source="src" title="title" />
+			</FileInput>
+		</>
+	);
 };
 
 export function ContentManagementForm() {
 	return (
 		<>
 			<ContentManagementHeader />
-			<div style={divStyle}>
+			<Stack direction="row" spacing={2} mt={4}>
 				<BooleanInput
 					label="Actif"
 					source="enable"
-					sx={{ margin: "auto" }}
 					defaultValue={true}
 					name="enable"
 					options={{}}
@@ -28,17 +54,18 @@ export function ContentManagementForm() {
 					label="Date début"
 					source="from"
 					defaultValue={new Date().toISOString().slice(0, 10)}
-					sx={{ margin: "auto" }}
 					validate={required()}
 				/>
-				<DateInput
-					name="to"
-					label="Date fin"
-					source="to"
-					sx={{ margin: "auto" }}
-				/>
-			</div>
+				<DateInput name="to" label="Date fin" source="to" />
+			</Stack>
 			<MultilingualContentTab />
+			<FormDataConsumer<{ page: "home" | "alert" | string }>>
+				{({ formData }) =>
+					formData.page === "alert" || formData.page === "home" ? (
+						<FileComponent />
+					) : null
+				}
+			</FormDataConsumer>
 		</>
 	);
 }
