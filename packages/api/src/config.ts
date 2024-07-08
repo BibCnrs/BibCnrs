@@ -32,6 +32,18 @@ const configFunction = () => ({
 		apiEndpoint: process.env.BIBAPI_HOST,
 		ezUnpaywallKey: process.env.EZ_UNPAYWALL_KEY,
 		ezUnpaywallUrl: process.env.EZ_UNPAYWALL_URL,
+		linkIq: {
+			INP: process.env.LINKIQ_API_INP,
+			INSIS: process.env.LINKIQ_API_INSIS,
+			INSB: process.env.LINKIQ_API_INSB,
+			IN2P3: process.env.LINKIQ_API_IN2P3,
+			INSHS: process.env.LINKIQ_API_INSHS,
+			INSMI: process.env.LINKIQ_API_INSMI,
+			INS2I: process.env.LINKIQ_API_INS2I,
+			INEE: process.env.LINKIQ_API_INEE,
+			INC: process.env.LINKIQ_API_INC,
+			INSU: process.env.LINKIQ_API_INSU,
+		},
 	},
 	redis: {
 		host: process.env.REDIS_HOST,
