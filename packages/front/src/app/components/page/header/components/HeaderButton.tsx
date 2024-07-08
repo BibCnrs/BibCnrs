@@ -23,6 +23,10 @@ const HeaderButton = ({ name, route }: { name: string; route: RoutesType }) => {
 				paddingBottom: 0,
 				textAlign: "center",
 				minWidth: 0,
+				// if active, set button as active
+				backgroundColor: active
+					? (theme) => theme.palette.action.selected
+					: "transparent",
 			}}
 		>
 			{t(`components.header.${name}`)}

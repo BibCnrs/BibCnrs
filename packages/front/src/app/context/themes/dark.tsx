@@ -9,10 +9,10 @@ import {
 const darkThemePalette = {
 	mode: "dark",
 	primary: {
-		main: "#A6ADBB",
+		main: "#E0B0FF",
 	},
 	secondary: {
-		main: "#FAD6B3",
+		main: "#FFEB6E",
 	},
 	background: {
 		default: "#1D232B",

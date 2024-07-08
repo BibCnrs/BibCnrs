@@ -23,11 +23,11 @@ const buttonStyles: SxProps<Theme> = {
 	fontWeight: "900",
 	":hover": {
 		backgroundColor: (theme) => theme.palette.secondary.main,
-		color: (theme) => theme.palette.text.primary,
+		color: (theme) => theme.palette.secondary.contrastText,
 	},
 	"&.active": {
 		backgroundColor: (theme) => theme.palette.secondary.main,
-		color: (theme) => theme.palette.text.primary,
+		color: (theme) => theme.palette.secondary.contrastText,
 	},
 };
 
