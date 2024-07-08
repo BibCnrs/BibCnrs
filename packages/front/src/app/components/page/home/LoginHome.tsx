@@ -12,7 +12,7 @@ import type {
 	CMSResultDataType,
 	TestsNewsDataType,
 } from "../../../shared/types/data.types";
-import AlertPaper from "../../element/paper/alert/AlertPaper";
+import AlertPaper from "../../element/paper/alert/AlertCard";
 import RenderContent from "../render/RenderContent";
 import RenderNews from "../render/RenderNews";
 import FavouriteCardHome from "./FavouriteCardHome";

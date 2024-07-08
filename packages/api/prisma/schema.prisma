@@ -389,6 +389,8 @@ model content_management {
   to         DateTime? @db.Date()
   enable     Boolean   @default(true)
   order      Int?
+  media_id   Int?
+  media      medias?                @relation(fields: [media_id], references: [id])
 }
 
 model medias {
@@ -398,6 +400,7 @@ model medias {
   file       String
   url        String
   tests_news tests_news[]
+  content_management content_management[]
 }
 
 model resources {

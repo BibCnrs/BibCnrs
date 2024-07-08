@@ -9,7 +9,7 @@ import type {
 	CMSResultDataType,
 	ResourcesDataType,
 } from "../../../shared/types/data.types";
-import AlertPaper from "../../element/paper/alert/AlertPaper";
+import AlertCard from "../../element/paper/alert/AlertCard";
 import RenderContent from "../render/RenderContent";
 
 export const AnonymousHome = () => {
@@ -62,20 +62,22 @@ export const AnonymousHome = () => {
 
 	return (
 		<Stack gap={8}>
-			<RenderContent
-				data={alertData}
-				page="root"
-				t={t}
-				Container={AlertPaper}
-			/>
-			<Box display="grid" gap={4} gridTemplateColumns="1fr 2fr">
-				<img
-					src="/img/about-picture.svg"
-					alt="about"
-					style={{ width: "100%" }}
-				/>
-				<RenderContent data={homeData} page="root" t={t} />
-			</Box>
+			<AlertCard data={alertData} />
+			{homeData?.length > 0 && (
+				<Box display="grid" gap={4} gridTemplateColumns="2fr 5fr">
+					<img
+						src={
+							homeData?.[0].media?.url
+								? homeData[0].media?.url
+								: "/img/about-picture.svg"
+						}
+						alt="about"
+						style={{ width: "100%", borderRadius: "6px" }}
+					/>
+					<RenderContent data={homeData} page="root" t={t} />
+				</Box>
+			)}
+
 			<Stack
 				gap={2}
 				sx={{

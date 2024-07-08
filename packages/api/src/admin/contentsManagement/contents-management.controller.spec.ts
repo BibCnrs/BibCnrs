@@ -91,6 +91,7 @@ describe("ContentManagementController", () => {
 				content_en: "Hello! 1",
 				content_fr: "Bonjour! 1",
 				order: null,
+				media_id: null,
 			});
 		});
 
@@ -107,6 +108,7 @@ describe("ContentManagementController", () => {
 				content_en: "Hello! Created",
 				content_fr: "Bonjour! Created",
 				order: null,
+				media_id: null,
 			});
 
 			expect(createdAdmin).toEqual(

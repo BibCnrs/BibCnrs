@@ -57,6 +57,7 @@ export type CMSDataType = {
 	from: string;
 	to: string | null;
 	enable: boolean;
+	media?: Media;
 };
 
 export type CMSResultDataType = CMSDataType[];
