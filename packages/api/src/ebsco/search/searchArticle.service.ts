@@ -32,6 +32,21 @@ import {
 const DOI_REGEX = /(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?![%"#? ])\S)+)/;
 const ARTICLE_URL = "/edsapi/rest/Search";
 
+type Info = {
+	title?: string;
+	issn?: string;
+	isbn?: string;
+};
+
+type LinkIqInfo = {
+	contextObjects: {
+		contextObjectFacts: {
+			name: "atitle" | "issn1" | "isbn1" | "isbn";
+			value: string;
+		}[];
+	}[];
+};
+
 @Injectable()
 export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	private readonly logger = new AppLogger(EbscoSearchArticleService.name);
@@ -84,11 +99,47 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		return null;
 	}
 
-	private async getInfoFromDOI(term: string) {
+	private async getInfoFromLinkIQ(
+		domain: string,
+		doi: string,
+	): Promise<Info | null> {
+		const url = this.ebsco.linkIq[domain.toUpperCase()];
+		if (!url) {
+			return null;
+		}
+
+		try {
+			const response = await this.http.request<LinkIqInfo, void>(
+				`${url}${doi}`,
+			);
+
+			if (response.status !== 200) {
+				return null;
+			}
+
+			const facts = response.data.contextObjects?.at(0)?.contextObjectFacts;
+			if (!facts) {
+				return null;
+			}
+
+			return {
+				title: facts.find((fact) => fact.name === "atitle")?.value,
+				issn: facts.find((fact) => fact.name === "issn1")?.value,
+				isbn:
+					facts.find((fact) => fact.name === "isbn1")?.value ??
+					facts.find((fact) => fact.name === "isbn")?.value,
+			};
+		} catch (error) {
+			return null;
+		}
+	}
+
+	private async getInfoFromCrossref(doi: string): Promise<Info> {
 		try {
 			const result = await this.http
-				.request(`${this.ebsco.crossref}${term}`)
+				.request(`${this.ebsco.crossref}${doi}`)
 				.then((res) => res.data);
+
 			return {
 				title: result?.message?.title?.[0],
 				issn: result?.message?.ISSN?.[0],
@@ -100,15 +151,25 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		}
 	}
 
+	private async getInfoFromDOI(domain: string, doi: string): Promise<Info> {
+		const info = await this.getInfoFromLinkIQ(domain, doi);
+		if (info) {
+			return info;
+		}
+
+		// Try crossref if any error
+		return this.getInfoFromCrossref(doi);
+	}
+
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private async getRetryQuery(query: any) {
+	private async getRetryQuery(domain: string, query: any) {
 		const doi = this.getDOIFromQuery(query);
 
 		if (!doi) {
 			return null;
 		}
 
-		const { title, issn, isbn } = await this.getInfoFromDOI(doi);
+		const { title, issn, isbn } = await this.getInfoFromDOI(domain, doi);
 		if (!title) {
 			return null;
 		}
@@ -149,7 +210,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			const result = response.data;
 
 			const is_oa = result.data.GetByDOI?.[0]?.is_oa;
-			const url = result.data.GetByDOI?.[0]?.best_oa_location.url_for_pdf;
+			const url = result.data.GetByDOI?.[0]?.best_oa_location?.url_for_pdf;
 			if (is_oa && url) {
 				const urlEncoded = encodeURIComponent(url);
 				return `${this.ebsco.apiEndpoint}/ebsco/oa?sid=unpaywall&doi=${doi}&url=${urlEncoded}&domaine=${domain}`;
@@ -294,7 +355,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		);
 
 		if (!searchResult?.SearchResult?.Statistics?.TotalHits) {
-			const retryQuery = await this.getRetryQuery(query);
+			const retryQuery = await this.getRetryQuery(communityName, query);
 			if (retryQuery) {
 				searchResult = await this.ebscoSearch(
 					async (authToken, sessionToken) => {

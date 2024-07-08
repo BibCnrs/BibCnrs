@@ -70,6 +70,16 @@ services:
       MAIL_FROM: bibcnrs@bib.cnrs.fr
       MAIL_TO: assistance-portail@inist.fr
       BIB_UPLOADS_DIR: /app/packages/api/uploads
+      LINKIQ_API_INP: ${LINKIQ_API_INP}
+      LINKIQ_API_INSIS: ${LINKIQ_API_INSIS}
+      LINKIQ_API_INSB: ${LINKIQ_API_INSB}
+      LINKIQ_API_IN2P3: ${LINKIQ_API_IN2P3}
+      LINKIQ_API_INSHS: ${LINKIQ_API_INSHS}
+      LINKIQ_API_INSMI: ${LINKIQ_API_INSMI}
+      LINKIQ_API_INS2I: ${LINKIQ_API_INS2I}
+      LINKIQ_API_INEE: ${LINKIQ_API_INEE}
+      LINKIQ_API_INC: ${LINKIQ_API_INC}
+      LINKIQ_API_INSU: ${LINKIQ_API_INSU}
     restart: always
     ports:
       - "3000:3000"
