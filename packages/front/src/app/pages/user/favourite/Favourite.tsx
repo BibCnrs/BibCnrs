@@ -34,6 +34,7 @@ const BOOLEAN_FILTERS: (keyof BooleanFavoriteFilter)[] = [
 const Favourite = () => {
 	const t = useTranslator();
 	const {
+		allFavourites,
 		favouriteResources,
 		superFavouriteResources,
 		moveFavourite,
@@ -129,7 +130,10 @@ const Favourite = () => {
 								<FormControlLabel
 									key={key}
 									control={<Checkbox checked={filters[key]} />}
-									label={t(`pages.favourite.filters.${key}`)}
+									label={t(`pages.favourite.filters.${key}`, {
+										count: allFavourites.filter(({ source }) => source === key)
+											.length,
+									})}
 									onChange={() => handleFilter(key)}
 								/>
 							))}
@@ -160,7 +164,7 @@ const Favourite = () => {
 										alignItems: "center",
 									}}
 								>
-									{t("pages.favourite.title")}
+									{t("pages.favourite.favourites")}
 									<Button onClick={handleAddPersonalOpen} color="primary">
 										{t("pages.favourite.add")}
 									</Button>
