@@ -91,17 +91,20 @@ const MetadorePage = () => {
 
 	useEffectOnce(() => {
 		const queryValue = getString<undefined>(query, "q", "");
-		setSearch({
-			...search,
-			query: queryValue,
-			metadore: {
-				field: getString<null>(query, "field", null),
-				table: {
-					page: getNumber(query, "page", 1),
-					perPage: getNumber(query, "perPage", 25),
+
+		if (queryValue) {
+			setSearch({
+				...search,
+				query: queryValue,
+				metadore: {
+					field: getString<null>(query, "field", null),
+					table: {
+						page: getNumber(query, "page", 1),
+						perPage: getNumber(query, "perPage", 25),
+					},
 				},
-			},
-		});
+			});
+		}
 	}, [query, setSearch]);
 
 	useEffect(() => {

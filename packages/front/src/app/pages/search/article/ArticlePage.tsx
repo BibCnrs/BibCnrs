@@ -144,24 +144,26 @@ const ArticlePage = () => {
 
 	useEffectOnce(() => {
 		const queryValue = getString<undefined>(query, "q", "");
-		setSearch((search) => ({
-			...search,
-			query: queryValue,
-			article: {
-				...search.article,
-				limiters: getJSON(query, "limiters", search.article.limiters),
-				facets: getJSON(query, "facets", search.article.facets),
-				orderBy: getString(
-					query,
-					"orderBy",
-					search.article.orderBy,
-				) as OrderByType,
-				table: {
-					page: getNumber(query, "page", search.article.table.page),
-					perPage: getNumber(query, "perPage", search.article.table.perPage),
+		if (queryValue) {
+			setSearch((search) => ({
+				...search,
+				query: queryValue,
+				article: {
+					...search.article,
+					limiters: getJSON(query, "limiters", search.article.limiters),
+					facets: getJSON(query, "facets", search.article.facets),
+					orderBy: getString(
+						query,
+						"orderBy",
+						search.article.orderBy,
+					) as OrderByType,
+					table: {
+						page: getNumber(query, "page", search.article.table.page),
+						perPage: getNumber(query, "perPage", search.article.table.perPage),
+					},
 				},
-			},
-		}));
+			}));
+		}
 	}, [query, setSearch]);
 
 	useEffect(() => {
