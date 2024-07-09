@@ -51,7 +51,12 @@ test("Reorder favorites", async ({ page }) => {
 
 	{
 		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
-		await bib().dragTo(ins2i());
+		await bib().dragTo(ins2i(), {
+			sourcePosition: {
+				x: 1,
+				y: 1,
+			},
+		});
 		await response;
 	}
 
@@ -63,7 +68,12 @@ test("Reorder favorites", async ({ page }) => {
 
 	{
 		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
-		await bib().dragTo(ins2i());
+		await bib().dragTo(ins2i(), {
+			sourcePosition: {
+				x: 1,
+				y: 1,
+			},
+		});
 		await response;
 	}
 

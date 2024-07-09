@@ -126,20 +126,41 @@ function FavouriteListItem({
 				}}
 			>
 				<Stack direction="column" spacing={1}>
-					{(favourite.source === "personal" || favourite.personal) && (
-						<Stack direction="row">
-							<Chip
-								label={t("pages.favourite.personal")}
-								color="secondary"
-								size="small"
-								sx={{
-									fontWeight: 700,
-									textTransform: "uppercase",
-									width: "auto",
-								}}
-							/>
-						</Stack>
+					{favourite.source === "personal" || favourite.personal ? (
+						<Chip
+							label={t("pages.favourite.personal")}
+							color="secondary"
+							size="small"
+							sx={{
+								fontWeight: 700,
+								textTransform: "uppercase",
+								width: "fit-content",
+							}}
+						/>
+					) : favourite.source ? (
+						<Chip
+							label={t(`pages.favourite.${favourite.source}`)}
+							color="primary"
+							size="small"
+							sx={{
+								fontWeight: 700,
+								textTransform: "uppercase",
+								width: "fit-content",
+							}}
+						/>
+					) : (
+						<Chip
+							label={t("pages.favourite.unknown")}
+							color="default"
+							size="small"
+							sx={{
+								fontWeight: 700,
+								textTransform: "uppercase",
+								width: "fit-content",
+							}}
+						/>
 					)}
+
 					<Tooltip
 						enterDelay={500}
 						enterNextDelay={500}

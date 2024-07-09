@@ -349,13 +349,20 @@ export type Common = {
 		favourite: {
 			title: string;
 			search: string;
+			favourites: string;
 			superFavourites: string;
 			add: string;
 			pin: string;
 			unpin: string;
 			delete: string;
 			emptyFavorites: string;
+			article: string;
+			publication: string;
+			database: string;
+			metadore: string;
 			personal: string;
+			unknown: string;
+			reset: string;
 			confirmDelete: {
 				title: string;
 				description: string;

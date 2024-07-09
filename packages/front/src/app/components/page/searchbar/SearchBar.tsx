@@ -26,6 +26,7 @@ type SearchBarProps = PropsWithoutRef<{
 	onSearch: (value: string | undefined) => void;
 	secondaryAction?: ReactNode;
 	children?: ReactNode;
+	disableAutocomplete?: boolean;
 }>;
 /**
  * Search bar component used in: "Root", "Article", "Journal, book", "Database" and "Research data"
@@ -38,6 +39,7 @@ const SearchBar = ({
 	onSearch,
 	children,
 	secondaryAction,
+	disableAutocomplete,
 	...props
 }: SearchBarProps) => {
 	// Search bar states
@@ -47,9 +49,7 @@ const SearchBar = ({
 	>("");
 
 	useEffect(() => {
-		if (props.value) {
-			setValue(props.value);
-		}
+		setValue(props.value ?? "");
 	}, [props.value]);
 
 	const debounceValue = useDebounce(value, 375);
@@ -58,10 +58,10 @@ const SearchBar = ({
 	const { data } = useQuery<string[], any, string[], any>({
 		queryKey: ["search-bar", debounceValue],
 		queryFn: () => {
-			if (value === "") {
+			if (disableAutocomplete || !debounceValue) {
 				return [];
 			}
-			return autoComplete(value);
+			return autoComplete(debounceValue);
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
