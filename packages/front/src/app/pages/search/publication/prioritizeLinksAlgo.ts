@@ -202,7 +202,11 @@ function compareEndCouvertureWhenCouvertureDifferent(
 		(isDateLink(firstLink) && isPresentLink(secondLink)) ||
 		(isDateLink(secondLink) && isPresentLink(firstLink))
 	) {
-		return [findPresentLink(firstLink, secondLink)];
+		const presentLink = findPresentLink(firstLink, secondLink);
+		const dateLink = findDateLink(firstLink, secondLink);
+		return compareStartDates(presentLink.coverage[0], dateLink.coverage[0])
+			? [presentLink]
+			: [firstLink, secondLink];
 	}
 
 	// Step I.2.3
@@ -283,6 +287,7 @@ export function getPrioritizedLink(links: Link[]): Link[] {
 				selectedLinks = [
 					compareEndCouvertureWhenCouvertureIsSame(currentLink, nextLink),
 				];
+				// Step I.2 if link has different Couverture
 			} else {
 				selectedLinks = compareEndCouvertureWhenCouvertureDifferent(
 					currentLink,
