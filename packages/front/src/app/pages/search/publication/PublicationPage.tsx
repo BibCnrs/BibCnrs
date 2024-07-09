@@ -143,23 +143,26 @@ const PublicationPage = () => {
 
 	useEffectOnce(() => {
 		const queryValue = getString<undefined>(query, "q", "");
-		setSearch({
-			...search,
-			query: queryValue,
-			publication: {
-				...search.publication,
-				limiters: getJSON(query, "limiters", search.publication.limiters),
-				facets: getJSON(query, "facets", search.publication.facets),
-				table: {
-					page: getNumber(query, "page", search.publication.table.page),
-					perPage: getNumber(
-						query,
-						"perPage",
-						search.publication.table.perPage,
-					),
+
+		if (queryValue) {
+			setSearch({
+				...search,
+				query: queryValue,
+				publication: {
+					...search.publication,
+					limiters: getJSON(query, "limiters", search.publication.limiters),
+					facets: getJSON(query, "facets", search.publication.facets),
+					table: {
+						page: getNumber(query, "page", search.publication.table.page),
+						perPage: getNumber(
+							query,
+							"perPage",
+							search.publication.table.perPage,
+						),
+					},
 				},
-			},
-		});
+			});
+		}
 	}, [query, setSearch]);
 
 	useEffect(() => {
