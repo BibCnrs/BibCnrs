@@ -2,6 +2,7 @@ import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
+import { useMutation } from "@tanstack/react-query";
 import {
 	ArrayField,
 	AutocompleteInput,
@@ -22,7 +23,6 @@ import {
 	useNotify,
 	useRefresh,
 } from "react-admin";
-import { useMutation } from "react-query";
 import CustomPagination from "../components/CustomPagination";
 import LinkEdit from "../components/LinkEdit";
 
@@ -31,22 +31,20 @@ const BulkActionLicensesButtons = () => {
 	const dataProvider = useDataProvider();
 	const notify = useNotify();
 	const refresh = useRefresh();
-	const { mutate } = useMutation(
-		["setCommonLicense", selectedIds[0]],
-		() => dataProvider.setCommonLicense(selectedIds[0]),
-		{
-			onSuccess: () => {
-				refresh();
-				notify("License commune mise à jour", { type: "success" });
-			},
-			// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-			onError: (error: any) => {
-				notify(`License commune non mise à jour: ${error.message}`, {
-					type: "warning",
-				});
-			},
+	const { mutate } = useMutation({
+		mutationKey: ["setCommonLicense", selectedIds[0]],
+		mutationFn: () => dataProvider.setCommonLicense(selectedIds[0]),
+		onSuccess: () => {
+			refresh();
+			notify("License commune mise à jour", { type: "success" });
 		},
-	);
+		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		onError: (error: any) => {
+			notify(`License commune non mise à jour: ${error.message}`, {
+				type: "warning",
+			});
+		},
+	});
 	return (
 		<>
 			<Box sx={{ display: "flex", justifyContent: "flex-end" }}>

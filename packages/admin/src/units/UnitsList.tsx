@@ -131,7 +131,7 @@ const exporter = async (
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
-export const UrlSearchInist = (props: FieldProps) => {
+export const UrlSearchInist = (props: Omit<FieldProps, "source">) => {
 	const record = useRecordContext();
 	if (!record) {
 		return null;
@@ -151,7 +151,7 @@ export const UrlSearchInist = (props: FieldProps) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
-export const UrlSearchJanus = (props: FieldProps) => {
+export const UrlSearchJanus = (props: Omit<FieldProps, "source">) => {
 	const record = useRecordContext();
 	if (!record) {
 		return null;

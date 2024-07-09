@@ -39,7 +39,7 @@ export default function TestsNewsList() {
 			<Datagrid bulkActionButtons={<BulkActionButtons />}>
 				<LinkEdit source="name_fr" label="Nom" />
 				<BooleanField label="Actif" source="enable" />
-				<WrapperField label="Page">
+				<WrapperField label="Page" source={null}>
 					<InternalChip />
 				</WrapperField>
 				<ReferenceArrayField
