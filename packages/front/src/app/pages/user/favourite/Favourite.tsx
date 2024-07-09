@@ -7,7 +7,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import PersonalBookmark from "../../../components/element/dialog/PersonalBookmark";
 import PageTitle from "../../../components/internal/PageTitle";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
@@ -31,6 +31,15 @@ const BOOLEAN_FILTERS: (keyof BooleanFavoriteFilter)[] = [
 	"personal",
 ];
 
+const INITIAL_FILTERS: FavouriteFilter = {
+	title: null,
+	article: null,
+	publication: null,
+	database: null,
+	metadore: null,
+	personal: null,
+};
+
 const Favourite = () => {
 	const t = useTranslator();
 	const {
@@ -42,12 +51,7 @@ const Favourite = () => {
 	} = useFavourites();
 
 	const [filters, setFilters] = useState<FavouriteFilter>({
-		title: null,
-		article: null,
-		publication: null,
-		database: null,
-		metadore: null,
-		personal: null,
+		...INITIAL_FILTERS,
 	});
 	const [personal, setPersonal] = useState(false);
 
@@ -59,8 +63,29 @@ const Favourite = () => {
 		setPersonal(false);
 	};
 
+	const handleFilter = (filter: string) => {
+		setFilters((filters) => ({
+			...filters,
+			[filter]: filters[filter] ? null : true,
+		}));
+	};
+
+	const resetSearch = () => {
+		setFilters({ ...INITIAL_FILTERS });
+	};
+
 	const hasFilter = useMemo(() => {
 		return Object.values(filters).some((filter) => filter != null);
+	}, [filters]);
+
+	useEffect(() => {
+		const allTrue = BOOLEAN_FILTERS.every((filter) => filters[filter] === true);
+		if (allTrue) {
+			setFilters((filters) => ({
+				...INITIAL_FILTERS,
+				title: filters.title,
+			}));
+		}
 	}, [filters]);
 
 	const filterFavoriteResource = useCallback(
@@ -97,25 +122,19 @@ const Favourite = () => {
 		superFavouriteResources,
 	);
 
-	const handleFilter = (filter: string) => {
-		setFilters((filters) => ({
-			...filters,
-			[filter]: filters[filter] ? null : true,
-		}));
-	};
-
 	return (
 		<>
 			<PageTitle page="favourite" />
 			<SearchBar
 				placeholder={t("pages.favourite.search")}
-				value={filters.title}
+				value={filters.title ?? ""}
 				onSearch={(search: string) =>
 					setFilters((filters) => ({
 						...filters,
 						title: search?.toLocaleLowerCase() ?? null,
 					}))
 				}
+				disableAutocomplete
 			/>
 
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
@@ -129,7 +148,7 @@ const Favourite = () => {
 							{BOOLEAN_FILTERS.map((key) => (
 								<FormControlLabel
 									key={key}
-									control={<Checkbox checked={filters[key]} />}
+									control={<Checkbox checked={filters[key] === true} />}
 									label={t(`pages.favourite.filters.${key}`, {
 										count: allFavourites.filter(({ source }) => source === key)
 											.length,
@@ -137,6 +156,15 @@ const Favourite = () => {
 									onChange={() => handleFilter(key)}
 								/>
 							))}
+							<Button
+								color="error"
+								sx={{
+									mt: 2,
+								}}
+								onClick={resetSearch}
+							>
+								{t("pages.favourite.reset")}
+							</Button>
 						</Stack>
 					</Grid>
 

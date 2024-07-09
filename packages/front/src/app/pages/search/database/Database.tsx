@@ -145,6 +145,7 @@ const Database = () => {
 				placeholder={t("pages.researchData.search.bar")}
 				value={query.get("q") || search.query}
 				onSearch={handleSearchChange}
+				disableAutocomplete
 			>
 				<ChipFacet
 					value={search.domain}

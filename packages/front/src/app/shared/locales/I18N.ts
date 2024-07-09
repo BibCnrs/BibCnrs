@@ -362,6 +362,7 @@ export type Common = {
 			metadore: string;
 			personal: string;
 			unknown: string;
+			reset: string;
 			confirmDelete: {
 				title: string;
 				description: string;

@@ -376,6 +376,7 @@ Sincerely`,
 			metadore: "Research data ",
 			personal: "Personal resource",
 			unknown: "Unknown",
+			reset: "Reset filters",
 			confirmDelete: {
 				title: "Delete a favourite",
 				description: "Do you really want to delete this favourite?",
