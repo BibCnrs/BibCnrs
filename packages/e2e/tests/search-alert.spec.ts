@@ -36,7 +36,8 @@ test("Add search alert", async ({ page }) => {
 		page.getByRole("heading", { name: "Aucune ressource trouvée." }),
 	).not.toBeVisible();
 
-	await expect(page.getByText("Quotidenne")).toBeVisible();
+	await page.getByLabel("alerte pour la recherche Marmelab").hover();
+	await expect(page.getByText("Quotidienne")).toBeVisible();
 
 	await page
 		.getByRole("button", { name: "Supprimer l'entrée Marmelab" })
@@ -79,16 +80,21 @@ test("Disable search alert", async ({ page }) => {
 		page.getByRole("heading", { name: "Aucune ressource trouvée." }),
 	).not.toBeVisible();
 
-	await page.getByText("Quotidenne").click();
+	await page.getByLabel("alerte pour la recherche INIST").click();
 
-	await page.getByLabel("Réglages Alerte").getByText("Quotidenne").click();
-	await page
-		.getByRole("option", { name: "Désactiver/réactiver l'alerte" })
-		.click();
+	await page.getByText("Quotidienne").click();
+	await page.getByRole("option", { name: "Désactiver/réactiver" }).click();
 
-	await page.getByRole("button", { name: "Enregistrer" }).click();
+	{
+		const listResponse = page.waitForResponse("/api/ebsco/history?limit=*");
+		const editResponse = page.waitForResponse("/api/ebsco/history/disable/*");
+		await page.getByRole("button", { name: "Enregistrer" }).click();
+		await editResponse;
+		await listResponse;
+	}
 
-	await expect(page.getByText("Quotidenne")).not.toBeVisible();
+	await page.getByLabel("alerte pour la recherche INIST").hover();
+	await expect(page.getByText("Quotidienne")).not.toBeVisible();
 
 	await page.getByRole("button", { name: "Supprimer l'entrée INIST" }).click();
 

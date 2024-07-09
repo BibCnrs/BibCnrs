@@ -134,7 +134,7 @@ const fr: Common = {
 				AccessLink: "Accès au document",
 				alert: {
 					active: {
-						day: "Quotidenne",
+						day: "Quotidienne",
 						week: "Hebdomadaire",
 						month: "Mensuelle",
 					},
