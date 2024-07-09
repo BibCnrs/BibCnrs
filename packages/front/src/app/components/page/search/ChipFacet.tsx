@@ -29,11 +29,11 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 	},
 	":hover": {
 		backgroundColor: theme.palette.secondary.main,
-		color: theme.palette.text.primary,
+		color: theme.palette.secondary.contrastText,
 	},
 	"&.Mui-selected, &.Mui-selected:hover": {
-		color: theme.palette.text.primary,
 		backgroundColor: theme.palette.secondary.main,
+		color: theme.palette.secondary.contrastText,
 	},
 }));
 

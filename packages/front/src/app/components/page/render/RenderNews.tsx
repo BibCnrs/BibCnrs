@@ -95,7 +95,7 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 										/>
 									)}
 								</Stack>
-								<Typography variant="h5" component="h6">
+								<Typography variant="h6" component="h6">
 									{language === "en" ? data.name_en : data.name_fr}
 								</Typography>
 							</Stack>

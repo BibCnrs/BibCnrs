@@ -29,7 +29,7 @@ export const FakeSearchBar = ({ title }: { title: string }) => {
 					component={Link}
 					to="/"
 					sx={{
-						color: (theme) => theme.palette.primary.contrastText,
+						color: "white",
 						textDecoration: "none",
 					}}
 				>
@@ -40,7 +40,7 @@ export const FakeSearchBar = ({ title }: { title: string }) => {
 					component="h1"
 					fontWeight="bold"
 					sx={{
-						color: (theme) => theme.palette.primary.contrastText,
+						color: "white",
 					}}
 				>
 					{title}
