@@ -3,9 +3,19 @@ import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import {
+	Button,
+	Card,
+	List,
+	ListItem,
+	Stack,
+	Tooltip,
+	Typography,
+} from "@mui/material";
+import { Box, styled } from "@mui/system";
 import { useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useBibContext } from "../../../context/BibContext";
 import { HistoryContext } from "../../../pages/user/history/History";
 import { RouteArticle, updatePageQueryUrl } from "../../../shared/Routes";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
@@ -15,13 +25,9 @@ import type {
 	HistoryEntryFacetsDataType,
 	HistoryEntryLimiterDataType,
 } from "../../../shared/types/data.types";
-import AlertModification from "../dialog/AlertModification";
-import "./scss/TableHistory.scss";
-import { Button } from "@mui/material";
-import { styled } from "@mui/system";
-import { useBibContext } from "../../../context/BibContext";
 import type { SearchResultsElementProps } from "../../page/search/SearchResults";
 import type { FacetEntry } from "../../page/search/facet/Facet.type";
+import AlertModification from "../dialog/AlertModification";
 
 // Define keyframes for the shaky animation
 const shakeAnimation = `
@@ -50,60 +56,70 @@ const ShakyButton = styled(Button)`
 const Limiters = ({ data }: { data: HistoryEntryLimiterDataType }) => {
 	const t = useTranslator();
 	return (
-		<ul style={{ margin: 0 }}>
+		<List
+			sx={{
+				"& li": {
+					padding: 0,
+				},
+			}}
+		>
 			{data.fullText ? (
-				<li>
-					<b>{t("ebsco.limiters.fullText")}</b>
-				</li>
+				<ListItem sx={{ fontStyle: "italic" }}>
+					{t("ebsco.limiters.fullText")}
+				</ListItem>
 			) : null}
 			{data.openAccess ? (
-				<li>
-					<b>{t("ebsco.limiters.openAccess")}</b>
-				</li>
+				<ListItem sx={{ fontStyle: "italic" }}>
+					{t("ebsco.limiters.openAccess")}
+				</ListItem>
 			) : null}
 			{data.peerReviewedArticle ? (
-				<li>
-					<b>{t("ebsco.limiters.peerReviewedArticle")}</b>
-				</li>
+				<ListItem sx={{ fontStyle: "italic" }}>
+					{t("ebsco.limiters.peerReviewedArticle")}
+				</ListItem>
 			) : null}
 			{data.publicationDate.from ? (
-				<li>
-					<b>{t("ebsco.limiters.publicationDate")}</b>
-					<ul style={{ margin: 0 }}>
-						<li>
-							<i>
+				<ListItem>
+					<Typography component="b" fontWeight={700}>
+						{t("ebsco.limiters.publicationDate")}
+					</Typography>
+					<List style={{ margin: 0 }}>
+						<ListItem>
+							<Typography component="i">
 								{data.publicationDate.from}
-								<b>{" → "}</b>
+								<Typography component="b" fontWeight={700}>
+									{" → "}
+								</Typography>
 								{data.publicationDate.to}
-							</i>
-						</li>
-					</ul>
-				</li>
+							</Typography>
+						</ListItem>
+					</List>
+				</ListItem>
 			) : null}
-		</ul>
+		</List>
 	);
 };
 const Facets = ({ data }: { data: HistoryEntryFacetsDataType }) => {
 	const t = useTranslator();
-	if (!data) {
-		return null;
-	}
 	const keys = Object.keys(data) as ArticleFacetsKeyDataType[];
 	return (
-		<>
+		<Stack>
 			{keys.map((key) => (
-				<div key={key}>
-					<b>{t(`ebsco.facets.${key}`)}</b>
-					<ul style={{ margin: 0 }}>
+				<List key={key} sx={{ margin: 0 }}>
+					<Typography component="b" fontWeight={700}>
+						{t(`ebsco.facets.${key}`)}
+					</Typography>
+
+					<List style={{ margin: 0 }}>
 						{data[key].map((facets) => (
-							<li key={facets}>
-								<i>{facets}</i>
-							</li>
+							<ListItem key={facets}>
+								<Typography component="i">{facets}</Typography>
+							</ListItem>
 						))}
-					</ul>
-				</div>
+					</List>
+				</List>
 			))}
-		</>
+		</Stack>
 	);
 };
 
@@ -198,34 +214,14 @@ const createParam = (event: HistoryEntryDataType["event"]): any => {
 const TableHistory = ({
 	data,
 	first,
-	last,
-	index,
 }: SearchResultsElementProps<HistoryEntryDataType>) => {
 	const t = useTranslator();
 	const language = useLanguageKey();
 	const navigate = useNavigate();
-	const { theme, search, setSearch } = useBibContext();
+	const { search, setSearch } = useBibContext();
 	const { handleDeleteEntry } = useContext(HistoryContext);
 
 	const [open, setOpen] = useState(false);
-
-	const themedClassName = useMemo(() => {
-		let className = "table-history";
-		if (theme === "light") {
-			if (index % 2 === 0) {
-				className += " table-history-grey";
-			}
-		} else {
-			className += " table-history-dark";
-			if (index % 2 === 0) {
-				className += " table-history-grey-dark";
-			}
-		}
-		if (last) {
-			className += " table-history-last";
-		}
-		return className;
-	}, [index, last, theme]);
 
 	const alertText = useMemo(() => {
 		if (data.hasAlert && data.active) {
@@ -253,90 +249,178 @@ const TableHistory = ({
 
 	return (
 		<>
-			{first ? (
-				<div className="table-history table-history-first">
-					<div className="table-history-box">
-						<b>{t("components.search.content.term")}</b>
-					</div>
-					<div className="table-history-box">
-						<b>{t("components.search.content.domain")}</b>
-					</div>
-					<div className="table-history-box">
-						<b>{t("components.search.content.limiters")}</b>
-					</div>
-					<div className="table-history-box">
-						<b>{t("components.search.content.facets")}</b>
-					</div>
-					<div className="table-history-box">
-						<b>{t("components.search.content.actions")}</b>
-					</div>
-				</div>
-			) : null}
-			<div className={themedClassName}>
-				<div className="table-history-box">
-					<b>{data.event.queries[0].term}</b>
-				</div>
-				<div className="table-history-box">
-					<b>{t(`components.domains.${data.event.domain}`)}</b>
-				</div>
-				<div className="table-history-box">
-					<Limiters data={data.event.limiters} />
-				</div>
-				<div className="table-history-box">
-					<Facets data={data.event.activeFacets} />
-				</div>
-				<div className="table-history-box">
-					<ul style={{ margin: 0 }}>
-						<li>
-							<b>{t("components.search.content.nbResult")}</b>
-							{` ${new Intl.NumberFormat(language === "fr" ? "fr-FR" : "en-US").format(data.event.totalHits ?? data.nb_results)}`}
-						</li>
-					</ul>
-					<div className="table-history-box-actions-buttons">
-						<ShakyButton
-							className="table-history-box-actions-button"
-							size="small"
-							onClick={() => {
-								handleDeleteEntry(data.id);
-							}}
-							aria-label={t("components.history.delete", {
-								term: data.event.queries[0].term,
-							})}
-						>
-							<DeleteOutlineIcon />
-						</ShakyButton>
+			{first && (
+				<Box
+					sx={{
+						background: (theme) => theme.palette.background.default,
+						position: "sticky",
+						top: 0,
+						padding: 4,
+						paddingBottom: 1,
+						zIndex: 5,
+						gridTemplateColumns: "repeat(5, 1fr) 200px",
+						border: (theme) => `2px ${theme.palette.background.default} solid`,
+						marginBottom: -4,
+						marginLeft: -2,
+						marginRight: -2,
+						display: { xs: "none", lg: "grid" },
+					}}
+				>
+					<Typography component="b" fontWeight={700}>
+						{t("components.search.content.term")}
+					</Typography>
+					<Typography component="b" fontWeight={700}>
+						{t("components.search.content.domain")}
+					</Typography>
+					<Typography component="b" fontWeight={700}>
+						{t("components.search.content.limiters")}
+					</Typography>
+					<Typography component="b" fontWeight={700}>
+						{t("components.search.content.facets")}
+					</Typography>
+					<Typography component="b" fontWeight={700}>
+						{t("components.search.content.nbResult").replace(":", "")}
+					</Typography>
+					<Typography component="b" fontWeight={700}>
+						{t("components.search.content.actions")}
+					</Typography>
+				</Box>
+			)}
+			<Card
+				sx={{
+					minHeight: 0,
+					padding: 2,
+					display: "grid",
+					gridTemplateColumns: { xs: "1fr", lg: "repeat(5, 1fr) 200px" },
+					gap: 2,
+					"& ul": {
+						margin: 0,
+						padding: 0,
+						display: "flex",
+						gap: 0.5,
+						flexDirection: "column",
+					},
+					"& li": {
+						paddingTop: 0,
+						paddingBottom: 0,
+					},
+				}}
+			>
+				<Typography
+					component="b"
+					fontWeight={700}
+					sx={{
+						display: { sx: "flex", lg: "none" },
+					}}
+				>
+					{t("components.search.content.term")}
+				</Typography>
+				<Typography>{data.event.queries[0].term}</Typography>
+
+				<Typography
+					component="b"
+					fontWeight={700}
+					sx={{
+						display: { sx: "flex", lg: "none" },
+					}}
+				>
+					{t("components.search.content.domain")}
+				</Typography>
+				<Typography>{t(`components.domains.${data.event.domain}`)}</Typography>
+
+				<Typography
+					component="b"
+					fontWeight={700}
+					sx={{
+						display: { sx: "flex", lg: "none" },
+					}}
+				>
+					{t("components.search.content.limiters")}
+				</Typography>
+				<Limiters data={data.event.limiters} />
+
+				<Typography
+					component="b"
+					fontWeight={700}
+					sx={{
+						display: { sx: "flex", lg: "none" },
+					}}
+				>
+					{t("components.search.content.facets")}
+				</Typography>
+				<Facets data={data.event.activeFacets} />
+
+				<Typography
+					component="b"
+					fontWeight={700}
+					sx={{
+						display: { sx: "flex", lg: "none" },
+					}}
+				>
+					{t("components.search.content.nbResult").replace(":", "")}
+				</Typography>
+				<Typography>
+					{` ${new Intl.NumberFormat(language === "fr" ? "fr-FR" : "en-US").format(data.event.totalHits ?? data.nb_results)}`}
+				</Typography>
+
+				<Typography
+					component="b"
+					fontWeight={700}
+					sx={{
+						display: { sx: "flex", lg: "none" },
+					}}
+				>
+					{t("components.search.content.actions")}
+				</Typography>
+				<Stack
+					sx={{
+						fontWeight: 700,
+						flexDirection: "row",
+						gap: 0.5,
+						alignItems: "flex-start",
+					}}
+				>
+					<Tooltip title={alertText} arrow>
 						<Button
 							className="table-history-box-actions-button"
 							size="small"
-							onClick={handleSearch}
-							aria-label={t("components.history.search", {
+							onClick={handleOpen}
+							aria-label={t("components.history.alert", {
 								term: data.event.queries[0].term,
 							})}
+							variant="contained"
 						>
-							<OpenInNewIcon />
+							<BellIcon hasAlert={data.hasAlert} active={data.active} />
 						</Button>
-						<FormControlLabel
-							sx={{
-								marginLeft: "0",
-							}}
-							control={
-								<Button
-									className="table-history-box-actions-button"
-									size="small"
-									onClick={handleOpen}
-									aria-label={t("components.history.alert", {
-										term: data.event.queries[0].term,
-									})}
-								>
-									<BellIcon hasAlert={data.hasAlert} active={data.active} />
-								</Button>
-							}
-							label={alertText}
-						/>
-						<AlertModification data={data} open={open} onClose={handleClose} />
-					</div>
-				</div>
-			</div>
+					</Tooltip>
+
+					<Button
+						className="table-history-box-actions-button"
+						size="small"
+						onClick={handleSearch}
+						aria-label={t("components.history.search", {
+							term: data.event.queries[0].term,
+						})}
+					>
+						<OpenInNewIcon />
+					</Button>
+
+					<ShakyButton
+						className="table-history-box-actions-button"
+						size="small"
+						onClick={() => {
+							handleDeleteEntry(data.id);
+						}}
+						aria-label={t("components.history.delete", {
+							term: data.event.queries[0].term,
+						})}
+					>
+						<DeleteOutlineIcon />
+					</ShakyButton>
+
+					<AlertModification data={data} open={open} onClose={handleClose} />
+				</Stack>
+			</Card>
 		</>
 	);
 };
