@@ -193,7 +193,22 @@ const Favourite = () => {
 									}}
 								>
 									{t("pages.favourite.favourites")}
-									<Button onClick={handleAddPersonalOpen} color="primary">
+									<Button
+										color="secondary"
+										variant="contained"
+										onClick={handleAddPersonalOpen}
+										sx={{
+											borderRadius: "20px",
+											fontWeight: "bold",
+											":hover": {
+												backgroundColor: (theme) =>
+													theme.palette.background.default,
+												color: (theme) => theme.palette.text.primary,
+												boxShadow: (theme) =>
+													`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+											},
+										}}
+									>
 										{t("pages.favourite.add")}
 									</Button>
 								</Typography>

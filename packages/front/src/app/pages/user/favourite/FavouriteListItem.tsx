@@ -137,20 +137,9 @@ function FavouriteListItem({
 								width: "fit-content",
 							}}
 						/>
-					) : favourite.source ? (
-						<Chip
-							label={t(`pages.favourite.${favourite.source}`)}
-							color="primary"
-							size="small"
-							sx={{
-								fontWeight: 700,
-								textTransform: "uppercase",
-								width: "fit-content",
-							}}
-						/>
 					) : (
 						<Chip
-							label={t("pages.favourite.unknown")}
+							label={t(`pages.favourite.${favourite.source || "unknown"}`)}
 							color="default"
 							size="small"
 							sx={{
