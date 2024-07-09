@@ -2,8 +2,8 @@
 export const environment = {
 	host: import.meta.env.VITE_BIBAPI_HOST,
 	get: {
-		cms: "/ebsco/cms",
-		resources: "/ebsco/resources",
+		cms: "/front/cms",
+		resources: "/front/resources",
 		oa: {
 			database: "/ebsco/oa_database",
 		},
@@ -20,8 +20,8 @@ export const environment = {
 		account: {
 			janus: "/ebsco/login_renater/",
 			licences: "/ebsco/licenses",
-			testsNews: "/ebsco/news",
-			testNewsHome: "/ebsco/news/home",
+			testsNews: "/front/news",
+			testNewsHome: "/front/news/home",
 			history: "/ebsco/history",
 			disableSearchAlert: "/ebsco/history/disable",
 			settings: "/front/user-settings",
