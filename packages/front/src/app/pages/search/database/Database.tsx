@@ -5,23 +5,22 @@ import { useEffect, useMemo, useState } from "react";
 import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/search/ChipFacet";
+import SearchBar from "../../../components/page/searchbar/SearchBar";
 import { useBibContext } from "../../../context/BibContext";
 import { database } from "../../../services/search/Database";
+import { getString, useSearchParams } from "../../../shared/Routes";
 import {
 	useDomain,
 	useFacetsDomainHandler,
 	useServicesCatch,
 } from "../../../shared/hook";
 import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useMatomo } from "../../../shared/matomo";
 import type {
 	DatabaseDataType,
 	DatabaseItemProps,
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
-import "./Database.scss";
-import SearchBar from "../../../components/page/searchbar/SearchBar";
-import { getString, useSearchParams } from "../../../shared/Routes";
-import { useMatomo } from "../../../shared/matomo";
 import { DatabaseItem } from "./DatabaseItem";
 import { DatabasePagination } from "./DatabasePagination";
 import FilterTab from "./FilterTab";

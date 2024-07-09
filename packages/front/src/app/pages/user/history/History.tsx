@@ -107,7 +107,6 @@ const History = ({
 					>
 						<SearchResults
 							DisplayElement={TableHistory}
-							disableItemGap
 							results={data?.histories}
 							args={args}
 							onArgsChange={setArgs}
