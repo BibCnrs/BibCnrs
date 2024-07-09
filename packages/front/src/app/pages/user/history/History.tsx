@@ -1,4 +1,4 @@
-import { Button, LinearProgress } from "@mui/material";
+import { Box, Button, LinearProgress } from "@mui/material";
 import { Container } from "@mui/system";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
@@ -112,17 +112,52 @@ const History = ({
 							onArgsChange={setArgs}
 							total={data ? data.totalCount : 0}
 							header={
-								<div className="history-header">
+								<Box
+									sx={{
+										display: "flex",
+										justifyContent: "flex-end",
+									}}
+								>
 									{displayOnlyAlert ? (
-										<Button variant="outlined" onClick={handleDisable}>
+										<Button
+											color="secondary"
+											variant="contained"
+											onClick={handleDisable}
+											sx={{
+												borderRadius: "20px",
+												fontWeight: "bold",
+												":hover": {
+													backgroundColor: (theme) =>
+														theme.palette.background.default,
+													color: (theme) => theme.palette.text.primary,
+													boxShadow: (theme) =>
+														`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+												},
+											}}
+										>
 											{t("pages.history.buttons.disable")}
 										</Button>
 									) : (
-										<Button variant="outlined" onClick={handleDelete}>
+										<Button
+											color="secondary"
+											variant="contained"
+											onClick={handleDelete}
+											sx={{
+												borderRadius: "20px",
+												fontWeight: "bold",
+												":hover": {
+													backgroundColor: (theme) =>
+														theme.palette.background.default,
+													color: (theme) => theme.palette.text.primary,
+													boxShadow: (theme) =>
+														`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+												},
+											}}
+										>
 											{t("pages.history.buttons.delete")}
 										</Button>
 									)}
-								</div>
+								</Box>
 							}
 						/>
 					</HistoryContext.Provider>

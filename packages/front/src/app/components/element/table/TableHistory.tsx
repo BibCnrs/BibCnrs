@@ -3,8 +3,15 @@ import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Button, Card, List, ListItem, Stack, Typography } from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import {
+	Button,
+	Card,
+	List,
+	ListItem,
+	Stack,
+	Tooltip,
+	Typography,
+} from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -373,25 +380,19 @@ const TableHistory = ({
 						alignItems: "flex-start",
 					}}
 				>
-					<FormControlLabel
-						sx={{
-							marginLeft: "0",
-						}}
-						control={
-							<Button
-								className="table-history-box-actions-button"
-								size="small"
-								onClick={handleOpen}
-								aria-label={t("components.history.alert", {
-									term: data.event.queries[0].term,
-								})}
-								variant="contained"
-							>
-								<BellIcon hasAlert={data.hasAlert} active={data.active} />
-							</Button>
-						}
-						label={alertText}
-					/>
+					<Tooltip title={alertText} arrow>
+						<Button
+							className="table-history-box-actions-button"
+							size="small"
+							onClick={handleOpen}
+							aria-label={t("components.history.alert", {
+								term: data.event.queries[0].term,
+							})}
+							variant="contained"
+						>
+							<BellIcon hasAlert={data.hasAlert} active={data.active} />
+						</Button>
+					</Tooltip>
 
 					<Button
 						className="table-history-box-actions-button"
