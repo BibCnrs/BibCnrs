@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { FrontTestNewsService } from "./testNews.service";
 
-@Controller("ebsco/news")
+@Controller("front/news")
 export class FrontTestNewsController {
 	constructor(private readonly ebscoTestNewsService: FrontTestNewsService) {}
 

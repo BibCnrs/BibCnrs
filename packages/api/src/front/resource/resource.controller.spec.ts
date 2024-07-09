@@ -1,26 +1,26 @@
 import { Test, type TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it } from "vitest";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoResourceController } from "./resource.controller";
-import { EbscoResourceService } from "./resource.service";
+import { FrontResourceController } from "./resource.controller";
+import { FrontResourceService } from "./resource.service";
 
-describe("EbscoResourcesController", () => {
-	let ebscoResourcesController: EbscoResourceController;
+describe("FrontResourcesController", () => {
+	let frontResourcesController: FrontResourceController;
 
 	beforeEach(async () => {
 		const ebscoResources: TestingModule = await Test.createTestingModule({
-			controllers: [EbscoResourceController],
-			providers: [EbscoResourceService, PrismaService],
+			controllers: [FrontResourceController],
+			providers: [FrontResourceService, PrismaService],
 		}).compile();
 
-		ebscoResourcesController = ebscoResources.get<EbscoResourceController>(
-			EbscoResourceController,
+		frontResourcesController = ebscoResources.get<FrontResourceController>(
+			FrontResourceController,
 		);
 	});
 
 	describe("root", () => {
 		it("should return resources", async () => {
-			expect(await ebscoResourcesController.getResources()).toStrictEqual([
+			expect(await frontResourcesController.getResources()).toStrictEqual([
 				expect.objectContaining({
 					name_en: "Bib Preprod",
 					name_fr: "Bib Preprod",

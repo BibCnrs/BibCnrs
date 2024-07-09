@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
-export class EbscoResourceService {
+export class FrontResourceService {
 	constructor(private prismaService: PrismaService) {}
 
 	async getResources() {
