@@ -150,7 +150,7 @@ function FavouriteListItem({
 						/>
 					) : (
 						<Chip
-							label={t(`pages.favourite.${favourite.source}`)}
+							label={t("pages.favourite.unknown")}
 							color="default"
 							size="small"
 							sx={{

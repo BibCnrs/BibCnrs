@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.44.1-jammy
+FROM mcr.microsoft.com/playwright:v1.45.1-jammy
 
 COPY package.json           /app/package.json
 COPY yarn.lock              /app/yarn.lock
