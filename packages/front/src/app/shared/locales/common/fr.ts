@@ -401,7 +401,7 @@ Cordialement`,
 					"Lorsque vous commencez une recherche, sur quel onglet souhaitez-vous arriver ?",
 				article: "Article",
 				journal: "Revue",
-				platform: "Plateforme",
+				platform: "Plateformes",
 				searchData: "Données de recherche",
 			},
 			generalSection: {

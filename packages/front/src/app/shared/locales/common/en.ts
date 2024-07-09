@@ -399,7 +399,7 @@ Sincerely`,
 					"When you start a search, which tab do you want to arrive on?",
 				article: "Article",
 				journal: "Journal",
-				platform: "Platform",
+				platform: "Platforms",
 				searchData: "Research data",
 			},
 			generalSection: {

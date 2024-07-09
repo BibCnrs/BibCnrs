@@ -139,7 +139,7 @@ function compareStartDates(coverage1, coverage2) {
 }
 
 function linkHasEndCouverture(link: Link): boolean {
-	return link.coverage.some((coverage) => coverage.end);
+	return link?.coverage?.some((coverage) => coverage?.end);
 }
 
 // ##################
@@ -275,6 +275,18 @@ export function getPrioritizedLink(links: Link[]): Link[] {
 
 	for (let i = 1; i < links.length; i++) {
 		let selectedLinks = null;
+
+		// check if links exist
+		if (!currentLink) {
+			currentLink = nextLink;
+			nextLink = links[i + 1];
+			continue;
+		}
+
+		if (!nextLink) {
+			nextLink = links[i + 1];
+			continue;
+		}
 
 		// Step I: Compare links based on the end of Couverture (coverage + embargo)
 		if (linkHasEndCouverture(currentLink) && linkHasEndCouverture(nextLink)) {
