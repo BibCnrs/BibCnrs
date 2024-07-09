@@ -21,7 +21,7 @@ const LicenseCreate = () => {
 					sx={{ marginTop: 4 }}
 					source="pdf"
 					label="PDF"
-					accept="application/pdf"
+					accept={{ "application/pdf": [".pdf"] }}
 					maxSize={26000000}
 					helperText="Taille maximale 25 Mb"
 				>

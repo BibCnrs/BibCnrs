@@ -41,7 +41,7 @@ export default function ContentManagementList() {
 					label="resources.contentManagement.fields.name"
 				/>
 				<BooleanField label="Actif" source="enable" />
-				<WrapperField label="Page">
+				<WrapperField label="Page" source={null}>
 					<InternalChip />
 				</WrapperField>
 				<NumberField source="order" label="Ordre" />
