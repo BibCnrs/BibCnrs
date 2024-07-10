@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const MATOMO_TRACKER_URL = import.meta.env.VITE_MATOMO_TRACKER_URL;
 const MATOMO_SCRIPT_URL = import.meta.env.VITE_MATOMO_SCRIPT_URL;
+const MATOMO_SITE_ID = import.meta.env.VITE_MATOMO_SITE_ID;
 
 export function useInitMatomo() {
 	const location = useLocation();
@@ -17,7 +18,7 @@ export function useInitMatomo() {
 		_paq.push(["trackPageView"]);
 		_paq.push(["enableLinkTracking"]);
 		_paq.push(["setTrackerUrl", MATOMO_TRACKER_URL]);
-		_paq.push(["setSiteId", "1"]);
+		_paq.push(["setSiteId", MATOMO_SITE_ID || "1"]);
 
 		const d = document;
 		const g = d.createElement("script");
