@@ -45,7 +45,6 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "fr",
 				defaultTheme: "light",
-				hasSeenPopup: false,
 			});
 		});
 	});
