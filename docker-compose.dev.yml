@@ -74,6 +74,7 @@ services:
       - VITE_SOURCE_MAP=true
       - VITE_MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
       - VITE_MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
+      - VITE_MATOMO_SITE_ID=${MATOMO_SITE_ID}
     develop:
       watch:
         - action: sync

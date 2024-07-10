@@ -207,6 +207,9 @@ build-front:
 		--no-cache \
 		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:$(BIBFRONT_VERSION)' \
 		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
+		--build-arg MATOMO_TRACKER_URL=$(MATOMO_TRACKER_URL) \
+		--build-arg MATOMO_SCRIPT_URL=$(MATOMO_SCRIPT_URL) \
+		--build-arg MATOMO_SITE_ID=$(MATOMO_SITE_ID) \
 		.
 
 build-admin:
