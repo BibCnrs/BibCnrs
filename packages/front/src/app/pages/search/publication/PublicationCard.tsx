@@ -96,13 +96,18 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 	const bookmarkTitle = `${title} - ${reconciledFullTextHoldings[0].name}`;
 
 	const getTitleCoverage = () => {
+		if (reconciledFullTextHoldings.length > 1) {
+			return null;
+		}
 		let reconciledFullTextHoldingString = getCoverage(
 			reconciledFullTextHoldings[0].coverage,
 		);
-		reconciledFullTextHoldingString += reconciledFullTextHoldings[0].embargo
-			? ` (embargo: ${reconciledFullTextHoldings[0].embargo.value} ${reconciledFullTextHoldings[0].embargo.unit})`
-			: "";
-		return ` ${reconciledFullTextHoldingString}`;
+		reconciledFullTextHoldingString +=
+			reconciledFullTextHoldings.length < 2 &&
+			reconciledFullTextHoldings[0].embargo
+				? ` (embargo: ${reconciledFullTextHoldings[0].embargo.value} ${reconciledFullTextHoldings[0].embargo.unit})`
+				: "";
+		return `${reconciledFullTextHoldingString}`;
 	};
 
 	const handleSelectedItem = () => {

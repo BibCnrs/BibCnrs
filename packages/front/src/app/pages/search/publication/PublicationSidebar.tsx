@@ -5,13 +5,13 @@ import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import { useBibContext } from "../../../context/BibContext";
 import { retrieve } from "../../../services/search/Publication";
 import { useTranslator } from "../../../shared/locales/I18N";
-import parseFullTextHoldings from "../../../shared/parseFullTextHoldings";
 import type {
 	PublicationCoverageDataType,
 	PublicationHolding,
 	PublicationRetrieveDataType,
 } from "../../../shared/types/data.types";
 import { PublicationTitle } from "./PublicationTitle";
+import { getPrioritizedLink } from "./prioritizeLinksAlgo";
 
 export const PublicationSidebar = ({ publication }) => {
 	const t = useTranslator();
@@ -46,7 +46,11 @@ export const PublicationSidebar = ({ publication }) => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	const reconciledFullTextHoldings = parseFullTextHoldings(
+	// const reconciledFullTextHoldings = parseFullTextHoldings(
+	// 	publication.fullTextHoldings,
+	// ) as PublicationHolding[];
+
+	const reconciledFullTextHoldings = getPrioritizedLink(
 		publication.fullTextHoldings,
 	) as PublicationHolding[];
 
@@ -87,13 +91,18 @@ export const PublicationSidebar = ({ publication }) => {
 	const bookmarkTitle = `${publication.title} - ${reconciledFullTextHoldings[0].name}`;
 
 	const getTitleCoverage = () => {
+		if (reconciledFullTextHoldings.length > 1) {
+			return null;
+		}
 		let reconciledFullTextHoldingString = getCoverage(
 			reconciledFullTextHoldings[0].coverage,
 		);
-		reconciledFullTextHoldingString += reconciledFullTextHoldings[0].embargo
-			? ` (embargo: ${reconciledFullTextHoldings[0].embargo.value} ${reconciledFullTextHoldings[0].embargo.unit})`
-			: "";
-		return ` ${reconciledFullTextHoldingString}`;
+		reconciledFullTextHoldingString +=
+			reconciledFullTextHoldings.length < 2 &&
+			reconciledFullTextHoldings[0].embargo
+				? ` (embargo: ${reconciledFullTextHoldings[0].embargo.value} ${reconciledFullTextHoldings[0].embargo.unit})`
+				: "";
+		return `${reconciledFullTextHoldingString}`;
 	};
 
 	return (

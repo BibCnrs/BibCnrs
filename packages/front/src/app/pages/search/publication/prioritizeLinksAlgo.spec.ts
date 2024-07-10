@@ -120,7 +120,7 @@ const linkPresent: Link = {
 			start: {
 				month: "01",
 				day: "01",
-				year: "2020",
+				year: "2023",
 			},
 			end: {
 				month: "12",
@@ -235,5 +235,12 @@ describe("Main Logic", () => {
 		expect(result).toContain(linkPresentWithEmbargo_one);
 		expect(result).not.toContain(linkPast);
 		expect(result).not.toContain(linkPresentWithEmbargo_two);
+	});
+
+	test("getPrioritizedLink with two links", () => {
+		const links = [linkPresent, linkPast];
+		const result = getPrioritizedLink(links);
+		expect(result).toContain(linkPresent);
+		expect(result).toContain(linkPast);
 	});
 });
