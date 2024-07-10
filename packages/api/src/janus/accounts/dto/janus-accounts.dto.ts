@@ -32,4 +32,5 @@ export class JanusAccountUpdateDto
 	primary_institute_communities?: number[];
 	primary_unit_communities?: number[];
 	all_communities?: number[];
+	hasSeenPopup: boolean;
 }

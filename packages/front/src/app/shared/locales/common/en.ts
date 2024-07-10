@@ -260,6 +260,11 @@ Sincerely`,
 		fakeSearchBar: {
 			homepage: "< Homepage",
 		},
+		userPopup: {
+			title: "New",
+			description: "Configure your preferences",
+			configure: "Configure",
+		},
 	},
 	pages: {
 		root: {

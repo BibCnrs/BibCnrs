@@ -67,6 +67,7 @@ describe("JanusAccountsController", () => {
 						favourite_resources: null,
 						additional_institutes: [],
 						all_communities: [],
+						hasSeenPopup: false,
 					}),
 					expect.objectContaining({
 						id: 2,
@@ -85,6 +86,7 @@ describe("JanusAccountsController", () => {
 						favourite_resources: null,
 						additional_institutes: [],
 						all_communities: [],
+						hasSeenPopup: false,
 					}),
 				]),
 			);
@@ -138,6 +140,7 @@ describe("JanusAccountsController", () => {
 				first_connexion: new Date(),
 				active: true,
 				favourite_resources: null,
+				hasSeenPopup: false,
 			});
 
 			expect(createdJanusAccount).toEqual(

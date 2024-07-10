@@ -241,6 +241,7 @@ const prisma = new PrismaClient();
 				mail: "developer@marmelab.com",
 				primary_institute: 1,
 				primary_unit: 3,
+				hasSeenPopup: true,
 				favorite_domain: "INS2I",
 				favourite_resources: [
 					{
