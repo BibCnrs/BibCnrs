@@ -295,6 +295,7 @@ export type Common = {
 			oa: string;
 			anonymousMessage: string;
 			searchDatabase: string;
+			platform_zero: string;
 			platform_one: string;
 			platform_other: string;
 			filters: {

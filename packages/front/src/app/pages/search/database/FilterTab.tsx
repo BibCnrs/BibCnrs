@@ -92,27 +92,38 @@ export default function FilterTab({
 			<Typography variant="h6" fontWeight="bold">
 				{t("pages.database.filters.title")}
 			</Typography>
-			{sections.map((section) => (
-				<Stack key={section}>
-					<FormLabel component="legend">
-						{t(`pages.database.filters.${section}`)}
-					</FormLabel>
-					{filters
-						.filter((item) => item.section === section)
-						.map((filter, index) => (
-							<FormControlLabel
-								key={`${filter.props}-${index}`}
-								control={
-									<Checkbox
-										checked={filter.value}
-										onChange={() => handleChange(filter)}
-									/>
-								}
-								label={`${getLabel(filter)} (${getLabelCount(filter)})`}
-							/>
-						))}
-				</Stack>
-			))}
+			{sections.map((section) => {
+				const filteredItems = filters.filter(
+					(item) => item.section === section && getLabelCount(item) > 0,
+				);
+
+				if (filteredItems.length === 0) {
+					return null;
+				}
+				return (
+					<Stack key={section}>
+						<FormLabel component="legend">
+							{t(`pages.database.filters.${section}`)}
+						</FormLabel>
+						{filters
+							.filter(
+								(item) => item.section === section && getLabelCount(item) > 0,
+							)
+							.map((filter, index) => (
+								<FormControlLabel
+									key={`${filter.props}-${index}`}
+									control={
+										<Checkbox
+											checked={filter.value}
+											onChange={() => handleChange(filter)}
+										/>
+									}
+									label={`${getLabel(filter)} (${getLabelCount(filter)})`}
+								/>
+							))}
+					</Stack>
+				);
+			})}
 		</FormGroup>
 	);
 }
