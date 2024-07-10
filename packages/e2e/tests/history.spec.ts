@@ -25,6 +25,7 @@ test("Should delete history entry", async ({ page }) => {
 	expect(page.getByText("46,405").first()).toBeVisible();
 
 	await page.getByRole("button", { name: "Supprimer l'entrée Le Cun" }).click();
+	await page.getByRole("button", { name: "Confirmer" }).click();
 
 	expect(page.getByText("Le Cun").first()).not.toBeVisible();
 

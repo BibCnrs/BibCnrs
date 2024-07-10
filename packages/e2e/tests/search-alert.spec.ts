@@ -43,6 +43,8 @@ test("Add search alert", async ({ page }) => {
 		.getByRole("button", { name: "Supprimer l'entrée Marmelab" })
 		.click();
 
+	await page.getByRole("button", { name: "Confirmer" }).click();
+
 	await expect(
 		page.getByRole("heading", { name: "Aucune ressource trouvée." }),
 	).toBeVisible();
@@ -97,6 +99,6 @@ test("Disable search alert", async ({ page }) => {
 	await expect(page.getByText("Quotidienne")).not.toBeVisible();
 
 	await page.getByRole("button", { name: "Supprimer l'entrée INIST" }).click();
-
+	await page.getByRole("button", { name: "Confirmer" }).click();
 	await janusLogout(page);
 });
