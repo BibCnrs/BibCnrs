@@ -26,6 +26,7 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "auto",
 				defaultTheme: "auto",
+				hasSeenPopup: false,
 			});
 		});
 
@@ -44,6 +45,7 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "fr",
 				defaultTheme: "light",
+				hasSeenPopup: false,
 			});
 		});
 	});

@@ -118,7 +118,6 @@ describe("JanusAccountsController", () => {
 				communities: [],
 				primary_institute_communities: [],
 				primary_unit_communities: [],
-				hasSeenPopup: false,
 			});
 		});
 
