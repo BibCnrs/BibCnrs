@@ -38,13 +38,32 @@ type Info = {
 	isbn?: string;
 };
 
-type LinkIqInfo = {
+type LinkIqInfoResponse = {
 	contextObjects: {
 		contextObjectFacts: {
-			name: "atitle" | "issn1" | "isbn1" | "isbn";
+			name: "atitle" | "issn1" | "isbn1" | "isbn" | "year" | "authors";
 			value: string;
 		}[];
+		targetLinks: {
+			linkName: string;
+			targetUrl: string;
+		}[];
 	}[];
+};
+type LinkIqInfoResult = {
+	id: number;
+	title: string;
+	year: string;
+	authors: string[];
+	issn?: string;
+	isbn?: string;
+	articleLinks: {
+		fullTextLinks: {
+			name: string;
+			url: string;
+		}[];
+	};
+	is_linkiq: true;
 };
 
 @Injectable()
@@ -102,14 +121,14 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	private async getInfoFromLinkIQ(
 		domain: string,
 		doi: string,
-	): Promise<Info | null> {
+	): Promise<LinkIqInfoResult | null> {
 		const url = this.ebsco.linkIq[domain.toUpperCase()];
 		if (!url) {
 			return null;
 		}
 
 		try {
-			const response = await this.http.request<LinkIqInfo, void>(
+			const response = await this.http.request<LinkIqInfoResponse, void>(
 				`${url}${doi}`,
 			);
 
@@ -117,17 +136,34 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				return null;
 			}
 
-			const facts = response.data.contextObjects?.at(0)?.contextObjectFacts;
-			if (!facts) {
+			const facts = response.data?.contextObjects?.[0].contextObjectFacts;
+			const links =
+				response.data?.contextObjects?.[0].targetLinks?.filter?.(
+					(link) => link.linkName.trim().toLocaleLowerCase() !== "unpaywall",
+				) ?? [];
+
+			const title = facts.find((fact) => fact.name === "atitle")?.value;
+			if (!facts || !title || links.length === 0) {
 				return null;
 			}
 
 			return {
+				id: 1,
 				title: facts.find((fact) => fact.name === "atitle")?.value,
+				authors:
+					facts.find((fact) => fact.name === "authors")?.value.split(";") ?? [],
+				year: facts.find((fact) => fact.name === "year")?.value,
 				issn: facts.find((fact) => fact.name === "issn1")?.value,
-				isbn:
-					facts.find((fact) => fact.name === "isbn1")?.value ??
-					facts.find((fact) => fact.name === "isbn")?.value,
+				isbn: facts.find(
+					(fact) => fact.name === "isbn1" || fact.name === "isbn",
+				)?.value,
+				articleLinks: {
+					fullTextLinks: links.map((link) => ({
+						name: link.linkName,
+						url: link.targetUrl,
+					})),
+				},
+				is_linkiq: true,
 			};
 		} catch (error) {
 			return null;
@@ -151,25 +187,15 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		}
 	}
 
-	private async getInfoFromDOI(domain: string, doi: string): Promise<Info> {
-		const info = await this.getInfoFromLinkIQ(domain, doi);
-		if (info) {
-			return info;
-		}
-
-		// Try crossref if any error
-		return this.getInfoFromCrossref(doi);
-	}
-
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	private async getRetryQuery(domain: string, query: any) {
+	private async getRetryQuery(query: any) {
 		const doi = this.getDOIFromQuery(query);
 
 		if (!doi) {
 			return null;
 		}
 
-		const { title, issn, isbn } = await this.getInfoFromDOI(domain, doi);
+		const { title, issn, isbn } = await this.getInfoFromCrossref(doi);
 		if (!title) {
 			return null;
 		}
@@ -355,7 +381,26 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		);
 
 		if (!searchResult?.SearchResult?.Statistics?.TotalHits) {
-			const retryQuery = await this.getRetryQuery(communityName, query);
+			const linkIqResult = await this.getInfoFromLinkIQ(
+				communityName,
+				this.getDOIFromQuery(query),
+			);
+
+			if (linkIqResult) {
+				return {
+					results: [linkIqResult],
+					totalHits: 1,
+					currentPage: 1,
+					maxPage: 1,
+					facets: [],
+					dateRange: {
+						min: Number.parseInt(linkIqResult.year, 10),
+						max: Number.parseInt(linkIqResult.year, 10),
+					},
+				};
+			}
+
+			const retryQuery = await this.getRetryQuery(query);
 			if (retryQuery) {
 				searchResult = await this.ebscoSearch(
 					async (authToken, sessionToken) => {

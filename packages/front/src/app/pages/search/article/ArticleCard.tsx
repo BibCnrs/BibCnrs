@@ -79,25 +79,27 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 						{t("components.search.content.doiColon")} {doi}
 					</Typography>
 				)}
-				<Link
-					component="button"
-					variant="body1"
-					sx={{
-						mt: 2,
-						textDecoration: "none",
-						fontWeight: 700,
-						color: (theme) => theme.palette.text.primary,
-						": hover": {
-							color: (theme) => theme.palette.primary.main,
-						},
-					}}
-					onClick={() => {
-						setSelectedArticle(article);
-					}}
-					aria-label={t("components.search.content.seeMoreAbout", { title })}
-				>
-					{t("components.search.content.seeMore")}
-				</Link>
+				{!getterArticle.isLinkIq() && (
+					<Link
+						component="button"
+						variant="body1"
+						sx={{
+							mt: 2,
+							textDecoration: "none",
+							fontWeight: 700,
+							color: (theme) => theme.palette.text.primary,
+							": hover": {
+								color: (theme) => theme.palette.primary.main,
+							},
+						}}
+						onClick={() => {
+							setSelectedArticle(article);
+						}}
+						aria-label={t("components.search.content.seeMoreAbout", { title })}
+					>
+						{t("components.search.content.seeMore")}
+					</Link>
+				)}
 			</CardContent>
 			<CardActions sx={{ paddingTop: 0 }}>
 				<BookmarkButton
