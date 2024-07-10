@@ -1,4 +1,4 @@
-import { Box, Button, LinearProgress } from "@mui/material";
+import { Box, Button, LinearProgress, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ import TableHistory from "../../../components/element/table/TableHistory";
 import PageTitle from "../../../components/internal/PageTitle";
 import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
 import SearchResults from "../../../components/page/search/SearchResults";
-import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
+import SearchBar from "../../../components/page/searchbar/SearchBar";
 import { Empty } from "../../../components/shared/Empty";
 import {
 	deleteHistory,
@@ -29,10 +29,11 @@ const History = ({
 }: { displayOnlyAlert?: boolean }) => {
 	const t = useTranslator();
 
-	const [args, setArgs] = useState<SearchResultsArgsProps>({
+	const [args, setArgs] = useState<SearchResultsArgsProps & { q?: string }>({
 		page: 1,
 		perPage: 20,
 		stateIndex: 0,
+		q: null,
 	});
 
 	const { data, isPending } = useQuery<
@@ -49,6 +50,7 @@ const History = ({
 				args.perPage ?? 5,
 				((args.page ?? 1) - 1) * (args.perPage ?? 1),
 				displayOnlyAlert,
+				args.q ?? null,
 			),
 	});
 
@@ -93,8 +95,16 @@ const History = ({
 	return (
 		<>
 			<PageTitle page={displayOnlyAlert ? "alert" : "history"} />
-			<FakeSearchBar
-				title={t(`pages.${displayOnlyAlert ? "alert" : "history"}.title`)}
+			<SearchBar
+				placeholder={t("pages.history.search")}
+				onSearch={(search: string) => {
+					setArgs({
+						...args,
+						q: search,
+					});
+				}}
+				disableAutocomplete
+				disableSearchButton
 			/>
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				{data?.histories.length === 0 && <Empty />}
@@ -115,9 +125,19 @@ const History = ({
 								<Box
 									sx={{
 										display: "flex",
-										justifyContent: "flex-end",
+										justifyContent: "space-between",
+										alignItems: "center",
 									}}
 								>
+									{!displayOnlyAlert ? (
+										<Typography variant="h6" fontWeight="bold">
+											{t("pages.history.title")}
+										</Typography>
+									) : (
+										<Typography variant="h6" fontWeight="bold">
+											{t("pages.alert.title")}
+										</Typography>
+									)}
 									{displayOnlyAlert ? (
 										<Button
 											color="secondary"

@@ -350,6 +350,7 @@ Cordialement`,
 		},
 		history: {
 			title: "Historique",
+			search: "Rechercher dans l'historique",
 			buttons: {
 				delete: "Supprimer l'historique",
 				disable: "Activer/Désactiver toutes les alertes",

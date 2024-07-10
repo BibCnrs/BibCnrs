@@ -10,12 +10,24 @@ export const history = async (
 	limit: number,
 	offset: number,
 	displayOnlyAlert: boolean,
+	q?: string,
 ): Promise<HistoryDataType> => {
-	const query = createQuery(environment.get.account.history, {
+	const options: {
+		limit: number;
+		offset: number;
+		has_alert: boolean;
+		q?: string;
+	} = {
 		limit,
 		offset,
 		has_alert: displayOnlyAlert,
-	});
+	};
+
+	if (q) {
+		options.q = q;
+	}
+
+	const query = createQuery(environment.get.account.history, options);
 	const response: Response = await fetch(query, {
 		credentials: "include",
 	});

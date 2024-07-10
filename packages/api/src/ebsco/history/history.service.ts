@@ -31,6 +31,7 @@ export class EbscoHistoryService {
 		limit: number,
 		offset: number,
 		hasAlert: boolean,
+		q?: string,
 	) {
 		const filters: { user_id: string; has_alert?: boolean } = {
 			user_id: userId,
@@ -40,40 +41,67 @@ export class EbscoHistoryService {
 			filters.has_alert = hasAlert;
 		}
 
-		const totalCount = await this.prismaService.history.count({
-			where: filters,
-		});
+		let query = `
+			SELECT
+				id,
+				user_id,     
+				event,          
+				created_at,      
+				has_alert as "hasAlert",      
+				frequence::text,      
+				last_execution,  
+				last_results,   
+				nb_results,
+				active          
+			FROM history
+			WHERE user_id = $1 
+			${hasAlert ? "AND has_alert = true" : ""}
+		`;
+
+		const queryParams = [userId, limit, offset];
+
+		if (q) {
+			query += "AND (event->'queries'->0->>'term')::text ILIKE $4 ";
+			queryParams.push(`%${q}%`);
+		}
+
+		query += `
+			ORDER BY created_at DESC
+			LIMIT $2
+			OFFSET $3
+		`;
 
 		const histories = await this.prismaService.$queryRawUnsafe<
 			(history & { frequence?: string })[]
-		>(
-			`SELECT
-			  id,
-			  user_id,     
-			  event,          
-			  created_at,      
-			  has_alert as "hasAlert",      
-			  frequence::text,      
-			  last_execution,  
-			  last_results,   
-			  nb_results,
-			  active          
-			  FROM history
-			  WHERE user_id = $1 
-			  ${hasAlert ? "AND has_alert = true" : ""}
-			  ORDER BY created_at DESC
-			  LIMIT $2
-			  OFFSET $3`,
-			userId,
-			limit,
-			offset,
-		);
+		>(query, ...queryParams);
 
 		for (const history of histories) {
 			history.frequence = this.parseFrequence(history.frequence);
 		}
 
-		return { histories, totalCount };
+		// Construct the count query
+		let countQuery = `
+			SELECT COUNT(*)
+			FROM history
+			WHERE user_id = $1 
+			${hasAlert ? "AND has_alert = true" : ""}
+		`;
+
+		const countParams = [userId];
+
+		if (q) {
+			countQuery += "AND (event->'queries'->0->>'term')::text ILIKE $2 ";
+			countParams.push(`%${q}%`);
+		}
+
+		// Execute the count query
+		const totalCountResult = await this.prismaService.$queryRawUnsafe<{
+			count: number;
+		}>(countQuery, ...countParams);
+
+		const totalCount = totalCountResult[0].count;
+
+		return { histories, totalCount: Number(totalCount) };
 	}
 
 	async findHistory(id: number) {

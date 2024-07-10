@@ -28,6 +28,7 @@ export class EbscoHistoryController {
 		@Query("limit", ParseIntPipe) limit: number,
 		@Query("offset", ParseIntPipe) offset: number,
 		@Query("has_alert") hasAlert = "false",
+		@Query("q") q = undefined,
 	) {
 		const user = req.user;
 		return this.ebscoHistoryService.getHistory(
@@ -35,6 +36,7 @@ export class EbscoHistoryController {
 			limit || 5,
 			offset || 0,
 			hasAlert === "true",
+			q,
 		);
 	}
 

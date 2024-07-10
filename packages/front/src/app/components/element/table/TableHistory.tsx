@@ -385,6 +385,7 @@ const TableHistory = ({
 								term: data.event.queries[0].term,
 							})}
 							variant="contained"
+							color={data.hasAlert ? "secondary" : "primary"}
 						>
 							<BellIcon hasAlert={data.hasAlert} active={data.active} />
 						</Button>

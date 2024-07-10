@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import { autoComplete } from "../../../services/common/AutoComplete";
 import { useDebounce } from "../../../shared/hook";
 
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useTranslator } from "../../../shared/locales/I18N";
 import SearchModeSelection from "./SearchModeSelection";
 
 const SEARCH_BAR_HEIGHT = "50px";
@@ -27,6 +30,7 @@ type SearchBarProps = PropsWithoutRef<{
 	secondaryAction?: ReactNode;
 	children?: ReactNode;
 	disableAutocomplete?: boolean;
+	disableSearchButton?: boolean;
 }>;
 /**
  * Search bar component used in: "Root", "Article", "Journal, book", "Database" and "Research data"
@@ -40,8 +44,10 @@ const SearchBar = ({
 	children,
 	secondaryAction,
 	disableAutocomplete,
+	disableSearchButton,
 	...props
 }: SearchBarProps) => {
+	const t = useTranslator();
 	// Search bar states
 	const [value, setValue] = useState<string>(props.value ?? "");
 	const [autocompleteValue, setAutocompleteValue] = useState<
@@ -112,6 +118,21 @@ const SearchBar = ({
 			alignItems="center"
 			justifyContent="center"
 		>
+			{disableSearchButton && (
+				<Container maxWidth="xl" sx={{ marginBottom: "20px" }}>
+					<Typography
+						variant="h6"
+						component={Link}
+						to="/"
+						sx={{
+							color: "white",
+							textDecoration: "none",
+						}}
+					>
+						{t("components.fakeSearchBar.homepage")}
+					</Typography>
+				</Container>
+			)}
 			<Container
 				sx={{
 					display: "flex",
@@ -122,7 +143,8 @@ const SearchBar = ({
 					alignItems: "center",
 				}}
 			>
-				<SearchModeSelection />
+				{!disableSearchButton && <SearchModeSelection />}
+
 				<Stack
 					direction="row"
 					id="search-box"
