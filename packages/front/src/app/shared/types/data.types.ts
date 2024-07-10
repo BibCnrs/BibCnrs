@@ -297,6 +297,7 @@ export type ArticleResultDataType = {
 	affiliationAuthor?: string[] | null;
 	issn?: string[] | null;
 	collection?: string | null;
+	is_linkiq?: boolean;
 };
 
 export type FacetValueDataType = {

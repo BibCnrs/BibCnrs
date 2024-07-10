@@ -326,6 +326,10 @@ export class ArticleContentGetter {
 
 	public getHref = (): Url | null => {
 		const articleLinks = this.getArticleLinks();
+		if (this.initial.is_linkiq) {
+			return articleLinks.fullTextLinks.at(0);
+		}
+
 		let openAccess = null;
 		const fullText = articleLinks.fullTextLinks.find((d) =>
 			/lien\(s\) texte intégral/i.test(d.name),
@@ -389,6 +393,10 @@ export class ArticleContentGetter {
 		let { url } = urlObj;
 		const { name } = urlObj;
 		let sid = this.guessSid(url);
+
+		if (this.initial.is_linkiq) {
+			sid = "linkiq";
+		}
 
 		if (database) {
 			sid = "bdd";
@@ -480,6 +488,10 @@ export class ArticleContentGetter {
 			HAL_REGEX.test(href.url)
 		);
 	};
+
+	public isLinkIq() {
+		return this.initial.is_linkiq;
+	}
 
 	public getAbstract = (): string | null => {
 		const retrieveObj = this.getEntry("Abstract");
