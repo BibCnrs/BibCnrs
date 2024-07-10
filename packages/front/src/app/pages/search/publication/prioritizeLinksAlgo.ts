@@ -237,14 +237,7 @@ function compareEndCouvertureWhenCouvertureDifferent(
 			dateLink.embargo,
 		);
 
-		const currentDate = new Date();
-
-		if (embargoDate > currentDate || date > currentDate) {
-			// At least one of the dates is in the future
-			return embargoDate > date ? [embargoLink] : [dateLink];
-		}
-		// Both dates are in the past
-		return embargoDate > date ? [dateLink] : [embargoLink];
+		return embargoDate > date ? [embargoLink] : [dateLink];
 	}
 
 	// Step I.2.5
@@ -257,14 +250,7 @@ function compareEndCouvertureWhenCouvertureDifferent(
 			secondLink.coverage[0],
 			secondLink.embargo,
 		);
-		const currentDate = new Date();
-
-		if (firstDate > currentDate || secondDate > currentDate) {
-			// At least one of the dates is in the future
-			return firstDate > secondDate ? [firstLink] : [secondLink];
-		}
-		// Both dates are in the past
-		return firstDate > secondDate ? [secondLink] : [firstLink];
+		return firstDate > secondDate ? [firstLink] : [secondLink];
 	}
 }
 
@@ -279,6 +265,21 @@ export function getPrioritizedLink(links: Link[]): Link[] {
 
 	for (let i = 1; i < links.length; i++) {
 		let selectedLinks = null;
+		if (!nextLink) {
+			nextLink = links[i + 1];
+			continue;
+		}
+
+		if (!currentLink) {
+			currentLink = nextLink;
+			nextLink = links[i + 1];
+			continue;
+		}
+
+		if (currentLink === nextLink) {
+			nextLink = links[i + 1];
+			continue;
+		}
 
 		// Step I: Compare links based on the end of Couverture (coverage + embargo)
 		if (linkHasEndCouverture(currentLink) && linkHasEndCouverture(nextLink)) {

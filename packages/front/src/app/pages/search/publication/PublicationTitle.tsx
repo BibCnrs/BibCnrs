@@ -81,7 +81,7 @@ export function PublicationTitle({
 				}}
 			>
 				{publication.isDiamond ? <Diamond /> : null}
-				{publication.title} [{publication.type}] - {titleCoverage}
+				{publication.title} [{publication.type}] {titleCoverage}
 			</Typography>
 		);
 	}
@@ -118,7 +118,7 @@ export function PublicationTitle({
 							<Diamond />
 						</Box>
 					) : null}
-					{publication.title} [{publication.type}] - {titleCoverage}
+					{publication.title} [{publication.type}] {titleCoverage}
 				</Typography>
 
 				<Popover
