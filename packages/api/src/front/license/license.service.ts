@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
-export class EbscoLicenseService {
+export class FrontLicenseService {
 	constructor(private prismaService: PrismaService) {}
 
 	async getLicenses(domains: string[] = [], take = 100, skip = 0) {

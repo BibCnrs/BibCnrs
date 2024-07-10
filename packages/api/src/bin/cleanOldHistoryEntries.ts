@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from "../app.module";
 import { AppLogger } from "../common/logger/AppLogger";
-import { EbscoHistoryCronService } from "../ebsco/history/historyCron.service";
+import { FrontHistoryCronService } from "../front/history/historyCron.service";
 
 (async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -11,7 +11,7 @@ import { EbscoHistoryCronService } from "../ebsco/history/historyCron.service";
 
 	await app.init();
 
-	const service = app.get(EbscoHistoryCronService);
+	const service = app.get(FrontHistoryCronService);
 
 	await service.cleanOldHistory();
 

@@ -126,7 +126,7 @@ test("Add favorite", async ({ page }) => {
 	await page.getByPlaceholder(/Rechercher des articles/i).press("Enter");
 
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await page
 			.getByRole("button", {
 				name: /Ajouter "Over my dead body"(.+) aux favoris/i,
@@ -145,7 +145,7 @@ test("Add favorite", async ({ page }) => {
 		})
 		.click();
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await page.getByRole("button", { name: /Confirmer/i }).click();
 		await response;
 	}

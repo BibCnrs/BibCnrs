@@ -4,7 +4,7 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { DatabaseWithCommunities, DatabaseWithDomains } from "./database.type";
 
 @Injectable()
-export class EbscoDatabaseService {
+export class FrontDatabaseService {
 	constructor(private prismaService: PrismaService) {}
 
 	private transformCommunities(

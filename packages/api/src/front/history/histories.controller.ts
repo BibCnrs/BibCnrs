@@ -10,16 +10,16 @@ import {
 } from "@nestjs/common";
 import { Request } from "express";
 import { AuthGuard } from "../../common/auth/auth.guard";
-import { EbscoHistoryService } from "./history.service";
+import { FrontHistoryService } from "./history.service";
 
-@Controller("ebsco/histories")
+@Controller("front/histories")
 @UseGuards(AuthGuard)
-export class EbscoHistoriesController {
-	constructor(private readonly ebscoHistoryService: EbscoHistoryService) {}
+export class FrontHistoriesController {
+	constructor(private readonly frontHistoryService: FrontHistoryService) {}
 
 	@Delete()
 	public async deleteHistory(@Req() req: Request) {
-		return this.ebscoHistoryService.deleteHistoryNotAlert(
+		return this.frontHistoryService.deleteHistoryNotAlert(
 			req.user.id.toString(),
 		);
 	}
@@ -30,7 +30,7 @@ export class EbscoHistoriesController {
 		@Query("hasAlert", new DefaultValuePipe(false), ParseBoolPipe)
 		hasAlert: boolean,
 	) {
-		return this.ebscoHistoryService
+		return this.frontHistoryService
 			.countHistory(req.user.id.toString(), hasAlert)
 			.then((count) => ({ count }));
 	}

@@ -11,9 +11,9 @@ type RawQuery = {
 };
 
 @Injectable()
-export class EbscoMetadoreService {
+export class FrontMetadoreService {
 	private readonly metadoreConfig: Config["metadore"];
-	private readonly logger = new AppLogger(EbscoMetadoreService.name);
+	private readonly logger = new AppLogger(FrontMetadoreService.name);
 
 	constructor(
 		private readonly configService: ConfigService<Config, true>,

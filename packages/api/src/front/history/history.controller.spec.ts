@@ -6,11 +6,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoHistoryController } from "./history.controller";
-import { EbscoHistoryService } from "./history.service";
+import { FrontHistoryController } from "./history.controller";
+import { FrontHistoryService } from "./history.service";
 
-describe("EbscoHistoryController", () => {
-	let ebscoHistoryController: EbscoHistoryController;
+describe("FrontHistoryController", () => {
+	let ebscoHistoryController: FrontHistoryController;
 
 	beforeEach(async () => {
 		const ebscoHistory: TestingModule = await Test.createTestingModule({
@@ -24,12 +24,12 @@ describe("EbscoHistoryController", () => {
 					global: false,
 				}),
 			],
-			controllers: [EbscoHistoryController],
-			providers: [EbscoHistoryService, PrismaService, AuthGuard],
+			controllers: [FrontHistoryController],
+			providers: [FrontHistoryService, PrismaService, AuthGuard],
 		}).compile();
 
-		ebscoHistoryController = ebscoHistory.get<EbscoHistoryController>(
-			EbscoHistoryController,
+		ebscoHistoryController = ebscoHistory.get<FrontHistoryController>(
+			FrontHistoryController,
 		);
 	});
 
@@ -43,7 +43,7 @@ describe("EbscoHistoryController", () => {
 
 				const guards = Reflect.getMetadata(
 					"__guards__",
-					EbscoHistoryController,
+					FrontHistoryController,
 				);
 				const guard = new guards[0](new JwtServiceMock(), configService);
 
