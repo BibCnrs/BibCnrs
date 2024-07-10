@@ -26,21 +26,21 @@ export default function LimiterList({
 	const { trackEvent } = useMatomo();
 
 	const dateRange = useMemo(() => {
-		if (activeLimiters.dateRange && limiters.dateRange) {
+		if (activeLimiters?.dateRange && limiters?.dateRange) {
 			return {
 				from: Math.max(activeLimiters.dateRange.from, limiters.dateRange.from),
 				to: Math.min(activeLimiters.dateRange.to, limiters.dateRange.to),
 			};
 		}
 
-		if (activeLimiters.dateRange) {
+		if (activeLimiters?.dateRange) {
 			return {
 				from: activeLimiters.dateRange.from,
 				to: activeLimiters.dateRange.to,
 			};
 		}
 
-		if (limiters.dateRange) {
+		if (limiters?.dateRange) {
 			return {
 				from: limiters.dateRange.from,
 				to: limiters.dateRange.to,
@@ -104,12 +104,12 @@ export default function LimiterList({
 		<Stack>
 			<FacetTextType
 				field="fullText"
-				checked={!!activeLimiters.fullText}
+				checked={!!activeLimiters?.fullText}
 				onChange={handleLimiterChange}
 			/>
 			<FacetTextType
 				field="openAccess"
-				checked={!!activeLimiters.openAccess}
+				checked={!!activeLimiters?.openAccess}
 				onChange={handleLimiterChange}
 			/>
 			{halFacet && (
@@ -128,7 +128,7 @@ export default function LimiterList({
 			)}
 			<FacetTextType
 				field="reviewed"
-				checked={!!activeLimiters.reviewed}
+				checked={!!activeLimiters?.reviewed}
 				onChange={handleLimiterChange}
 			/>
 			{dateRange && (
