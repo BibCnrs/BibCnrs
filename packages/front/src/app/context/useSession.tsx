@@ -72,6 +72,7 @@ export function useSession() {
 
 	const [session, setSession] = useState<BibSession>(LOADING_USER);
 	const [localTheme, setLocalTheme] = useState<ThemeType>(getStorageTheme());
+	const [displayUserPopup, setDisplayUserPopup] = useState(false);
 
 	const _setupLanguageAndTheme = useCallback(
 		(janusUser: SessionUserDataType) => {
@@ -97,6 +98,10 @@ export function useSession() {
 
 			if (user.origin === "janus") {
 				_setupLanguageAndTheme(user);
+
+				if (!user.settings?.hasSeenPopup) {
+					setDisplayUserPopup(true);
+				}
 			}
 		},
 		[_setupLanguageAndTheme],
@@ -279,6 +284,30 @@ export function useSession() {
 		[session.user, session.status, _loginUser],
 	);
 
+	const closeUserPopup = useCallback(async () => {
+		if (session.status !== "loggedIn" || session.user.origin !== "janus") {
+			return;
+		}
+
+		const response = await fetch(
+			createQuery(`${environment.put.account.hasSeenPopup}/${session.user.id}`),
+			{
+				method: "PATCH",
+				credentials: "include",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			},
+		);
+
+		if (response.status === 401) {
+			throw new Error("Invalid credentials");
+		}
+
+		setDisplayUserPopup(false);
+	}, [session.user, session.status]);
+
 	const updateSearchAlert = useCallback(
 		(historyId: number, frequency: string) => {
 			if (!session.user) {
@@ -322,5 +351,7 @@ export function useSession() {
 		updateSearchAlert,
 		theme,
 		setTheme,
+		displayUserPopup,
+		closeUserPopup,
 	};
 }

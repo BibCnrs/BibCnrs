@@ -28,6 +28,7 @@ export class CreateJanusAccountDto
 	additional_units?: number[];
 	additional_institutes?: number[];
 	communities?: number[];
+	hasSeenPopup: boolean;
 }
 
 export class UpdateJanusAccountDto extends CreateJanusAccountDto {

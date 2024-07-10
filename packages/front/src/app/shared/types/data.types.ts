@@ -120,6 +120,7 @@ export type UserSettingsDataType = {
 	defaultSearchMode: "article" | "journal" | "platform" | "searchData";
 	defaultLanguage: "auto" | "fr" | "en";
 	defaultTheme: "auto" | "light" | "dark";
+	hasSeenPopup: boolean;
 };
 
 export type SessionUserDataType = {

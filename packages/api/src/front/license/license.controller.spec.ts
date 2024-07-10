@@ -5,14 +5,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoLicenseController } from "./license.controller";
-import { EbscoLicenseService } from "./license.service";
+import { FrontLicenseController } from "./license.controller";
+import { FrontLicenseService } from "./license.service";
 
-describe("EbscoLicenseController", () => {
-	let ebscoLicenseController: EbscoLicenseController;
+describe("FrontLicenseController", () => {
+	let frontLicenseController: FrontLicenseController;
 
 	beforeEach(async () => {
-		const ebscoLicense: TestingModule = await Test.createTestingModule({
+		const frontLicense: TestingModule = await Test.createTestingModule({
 			imports: [
 				ConfigModule.forRoot({
 					ignoreEnvFile: true,
@@ -23,12 +23,12 @@ describe("EbscoLicenseController", () => {
 					global: false,
 				}),
 			],
-			controllers: [EbscoLicenseController],
-			providers: [EbscoLicenseService, PrismaService, AuthGuard],
+			controllers: [FrontLicenseController],
+			providers: [FrontLicenseService, PrismaService, AuthGuard],
 		}).compile();
 
-		ebscoLicenseController = ebscoLicense.get<EbscoLicenseController>(
-			EbscoLicenseController,
+		frontLicenseController = frontLicense.get<FrontLicenseController>(
+			FrontLicenseController,
 		);
 	});
 
@@ -39,7 +39,7 @@ describe("EbscoLicenseController", () => {
 			const configService = new ConfigService<Config, true>();
 			vi.spyOn(configService, "get").mockReturnValue({});
 
-			const guards = Reflect.getMetadata("__guards__", EbscoLicenseController);
+			const guards = Reflect.getMetadata("__guards__", FrontLicenseController);
 			const guard = new guards[0](new JwtServiceMock(), configService);
 
 			expect(guard).toBeInstanceOf(AuthGuard);
@@ -48,7 +48,7 @@ describe("EbscoLicenseController", () => {
 
 		it("should return content for a single domain", async () => {
 			expect(
-				await ebscoLicenseController.getLicenses({
+				await frontLicenseController.getLicenses({
 					domains: "INSB",
 				}),
 			).toStrictEqual([
@@ -64,7 +64,7 @@ describe("EbscoLicenseController", () => {
 
 		it("should return content for a multiple domains", async () => {
 			expect(
-				await ebscoLicenseController.getLicenses({
+				await frontLicenseController.getLicenses({
 					domains: "INSHS,INSB",
 				}),
 			).toStrictEqual([
@@ -87,7 +87,7 @@ describe("EbscoLicenseController", () => {
 
 		it("should apply _perPage parameter", async () => {
 			expect(
-				await ebscoLicenseController.getLicenses({
+				await frontLicenseController.getLicenses({
 					domains: "INSHS,INSB",
 					_perPage: "1",
 				}),
@@ -103,7 +103,7 @@ describe("EbscoLicenseController", () => {
 		});
 		it("should apply _page parameter", async () => {
 			expect(
-				await ebscoLicenseController.getLicenses({
+				await frontLicenseController.getLicenses({
 					domains: "INSHS,INSB",
 					_perPage: "1",
 					_page: "2",

@@ -6,8 +6,8 @@ import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
-export class EbscoHistoryCronService {
-	private readonly logger = new AppLogger(EbscoHistoryCronService.name);
+export class FrontHistoryCronService {
+	private readonly logger = new AppLogger(FrontHistoryCronService.name);
 	private readonly historyConfig: Config["history"];
 
 	constructor(

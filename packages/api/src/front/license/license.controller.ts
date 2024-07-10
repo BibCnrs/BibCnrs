@@ -1,17 +1,17 @@
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import { parsePage } from "../../utils/page";
-import { EbscoLicenseService } from "./license.service";
+import { FrontLicenseService } from "./license.service";
 
-@Controller("ebsco/licenses")
+@Controller("front/licenses")
 @UseGuards(AuthGuard)
-export class EbscoLicenseController {
-	constructor(private readonly ebscoLicenseService: EbscoLicenseService) {}
+export class FrontLicenseController {
+	constructor(private readonly frontLicenseService: FrontLicenseService) {}
 
 	@Get()
 	async getLicenses(@Query() query: Record<string, string>) {
 		const domains = query.domains ? query.domains.split(",") : [];
 		const { take, skip } = parsePage(query);
-		return this.ebscoLicenseService.getLicenses(domains, take, skip);
+		return this.frontLicenseService.getLicenses(domains, take, skip);
 	}
 }

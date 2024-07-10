@@ -261,6 +261,11 @@ Cordialement`,
 		fakeSearchBar: {
 			homepage: "< Accueil",
 		},
+		userPopup: {
+			title: "Nouveau",
+			description: "Personnalisez les paramètres de votre compte",
+			configure: "Paramétrer",
+		},
 	},
 	pages: {
 		root: {

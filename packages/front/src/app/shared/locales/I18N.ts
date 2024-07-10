@@ -263,6 +263,11 @@ export type Common = {
 		fakeSearchBar: {
 			homepage: string;
 		};
+		userPopup: {
+			title: string;
+			description: string;
+			configure: string;
+		};
 	};
 	pages: {
 		root: {

@@ -3,7 +3,7 @@ import { JsonValue } from "@prisma/client/runtime/library";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
-export class EbscoFavoriteResourcesService {
+export class FrontFavoriteResourcesService {
 	constructor(private prismaService: PrismaService) {}
 
 	async putFavoriteResources(userId: number, favoriteResources: JsonValue) {

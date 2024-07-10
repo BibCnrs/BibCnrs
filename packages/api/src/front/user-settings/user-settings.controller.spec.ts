@@ -26,6 +26,7 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "auto",
 				defaultTheme: "auto",
+				hasSeenPopup: false,
 			});
 		});
 

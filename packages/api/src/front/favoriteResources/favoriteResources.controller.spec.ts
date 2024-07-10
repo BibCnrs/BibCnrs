@@ -8,10 +8,10 @@ import { AuthGuard } from "../../common/auth/auth.guard";
 import { TokenPayload } from "../../common/auth/auth.type";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoFavoriteResourcesController } from "./favoriteResources.controller";
-import { EbscoFavoriteResourcesService } from "./favoriteResources.service";
+import { FrontFavoriteResourcesController } from "./favoriteResources.controller";
+import { FrontFavoriteResourcesService } from "./favoriteResources.service";
 
-describe("EbscoFavoriteResourcesController", () => {
+describe("FrontFavoriteResourcesController", () => {
 	const testInistToken: Omit<TokenPayload<"inist">, "exp"> = {
 		origin: "inist",
 		id: 1,
@@ -30,10 +30,10 @@ describe("EbscoFavoriteResourcesController", () => {
 	};
 
 	let prismaService: PrismaService;
-	let ebscoFavoriteResourcesController: EbscoFavoriteResourcesController;
+	let frontFavoriteResourcesController: FrontFavoriteResourcesController;
 
 	beforeEach(async () => {
-		const ebscoFavoriteResources: TestingModule =
+		const frontFavoriteResources: TestingModule =
 			await Test.createTestingModule({
 				imports: [
 					ConfigModule.forRoot({
@@ -45,14 +45,14 @@ describe("EbscoFavoriteResourcesController", () => {
 						global: false,
 					}),
 				],
-				controllers: [EbscoFavoriteResourcesController],
-				providers: [EbscoFavoriteResourcesService, PrismaService, AuthGuard],
+				controllers: [FrontFavoriteResourcesController],
+				providers: [FrontFavoriteResourcesService, PrismaService, AuthGuard],
 			}).compile();
 
-		prismaService = ebscoFavoriteResources.get<PrismaService>(PrismaService);
-		ebscoFavoriteResourcesController =
-			ebscoFavoriteResources.get<EbscoFavoriteResourcesController>(
-				EbscoFavoriteResourcesController,
+		prismaService = frontFavoriteResources.get<PrismaService>(PrismaService);
+		frontFavoriteResourcesController =
+			frontFavoriteResources.get<FrontFavoriteResourcesController>(
+				FrontFavoriteResourcesController,
 			);
 	});
 
@@ -65,7 +65,7 @@ describe("EbscoFavoriteResourcesController", () => {
 
 			const guards = Reflect.getMetadata(
 				"__guards__",
-				EbscoFavoriteResourcesController,
+				FrontFavoriteResourcesController,
 			);
 			const guard = new guards[0](new JwtServiceMock(), configService);
 
@@ -79,7 +79,7 @@ describe("EbscoFavoriteResourcesController", () => {
 			} as unknown as Request;
 
 			expect(() =>
-				ebscoFavoriteResourcesController.putFavoriteResources(request, {}),
+				frontFavoriteResourcesController.putFavoriteResources(request, {}),
 			).rejects.toThrow(ForbiddenException);
 		});
 
@@ -88,7 +88,7 @@ describe("EbscoFavoriteResourcesController", () => {
 				user: testJanusToken,
 			} as unknown as Request;
 
-			await ebscoFavoriteResourcesController.putFavoriteResources(request, [
+			await frontFavoriteResourcesController.putFavoriteResources(request, [
 				{ a: "b" },
 			]);
 

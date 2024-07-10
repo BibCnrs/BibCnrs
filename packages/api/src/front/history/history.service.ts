@@ -4,7 +4,7 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { CreateHistoryDto } from "./dto/history.dto";
 
 @Injectable()
-export class EbscoHistoryService {
+export class FrontHistoryService {
 	constructor(private prismaService: PrismaService) {}
 
 	private parseFrequence(frequence: string) {

@@ -6,15 +6,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import configFunction, { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoHistoriesController } from "./histories.controller";
-import { EbscoHistoryService } from "./history.service";
+import { FrontHistoriesController } from "./histories.controller";
+import { FrontHistoryService } from "./history.service";
 
-describe("EbscoHistoriesController", () => {
+describe("FrontHistoriesController", () => {
 	let prismaService: PrismaService;
-	let ebscoHistoriesController: EbscoHistoriesController;
+	let frontHistoriesController: FrontHistoriesController;
 
 	beforeEach(async () => {
-		const ebscoHistories: TestingModule = await Test.createTestingModule({
+		const frontHistories: TestingModule = await Test.createTestingModule({
 			imports: [
 				ConfigModule.forRoot({
 					ignoreEnvFile: true,
@@ -25,13 +25,13 @@ describe("EbscoHistoriesController", () => {
 					global: false,
 				}),
 			],
-			controllers: [EbscoHistoriesController],
-			providers: [EbscoHistoryService, PrismaService, AuthGuard],
+			controllers: [FrontHistoriesController],
+			providers: [FrontHistoryService, PrismaService, AuthGuard],
 		}).compile();
 
-		prismaService = ebscoHistories.get<PrismaService>(PrismaService);
-		ebscoHistoriesController = ebscoHistories.get<EbscoHistoriesController>(
-			EbscoHistoriesController,
+		prismaService = frontHistories.get<PrismaService>(PrismaService);
+		frontHistoriesController = frontHistories.get<FrontHistoriesController>(
+			FrontHistoriesController,
 		);
 	});
 
@@ -44,7 +44,7 @@ describe("EbscoHistoriesController", () => {
 
 			const guards = Reflect.getMetadata(
 				"__guards__",
-				EbscoHistoriesController,
+				FrontHistoriesController,
 			);
 			const guard = new guards[0](new JwtServiceMock(), configService);
 
@@ -60,7 +60,7 @@ describe("EbscoHistoriesController", () => {
 					},
 				} as unknown as Request;
 
-				await ebscoHistoriesController.deleteHistory(request);
+				await frontHistoriesController.deleteHistory(request);
 				expect(
 					await prismaService.history.findMany({
 						where: {
@@ -88,11 +88,11 @@ describe("EbscoHistoriesController", () => {
 					},
 				} as unknown as Request;
 				expect(
-					await ebscoHistoriesController.countHistory(request, true),
+					await frontHistoriesController.countHistory(request, true),
 				).toStrictEqual({ count: 1 });
 
 				expect(
-					await ebscoHistoriesController.countHistory(request, false),
+					await frontHistoriesController.countHistory(request, false),
 				).toStrictEqual({ count: 1 });
 			});
 		});

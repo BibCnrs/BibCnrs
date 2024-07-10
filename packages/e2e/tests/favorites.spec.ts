@@ -50,7 +50,7 @@ test("Reorder favorites", async ({ page }) => {
 	await expect(ins2iIndex()).resolves.toBe(1);
 
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await bib().dragTo(ins2i(), {
 			sourcePosition: {
 				x: 1,
@@ -67,7 +67,7 @@ test("Reorder favorites", async ({ page }) => {
 	await expect(ins2iIndex()).resolves.toBe(0);
 
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await bib().dragTo(ins2i(), {
 			sourcePosition: {
 				x: 1,
@@ -95,7 +95,7 @@ test("Pin / Unpin item", async ({ page }) => {
 	await expect(cnrsIndex()).resolves.toBe(0);
 
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await page
 			.getByRole("button", { name: /Épingler https:\/\/www.cnrs.fr/i })
 			.click();
@@ -107,7 +107,7 @@ test("Pin / Unpin item", async ({ page }) => {
 	await expect(cnrsIndex()).resolves.toBe(2);
 
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await page
 			.getByRole("button", { name: /Désépingler https:\/\/www.cnrs.fr/i })
 			.click();

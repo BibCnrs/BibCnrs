@@ -1,26 +1,26 @@
 import { Test, type TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it } from "vitest";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoDatabaseController } from "./database.controller";
-import { EbscoDatabaseService } from "./database.service";
+import { FrontDatabaseController } from "./database.controller";
+import { FrontDatabaseService } from "./database.service";
 
-describe("EbscoDatabaseController", () => {
-	let ebscoDatabaseController: EbscoDatabaseController;
+describe("FrontDatabaseController", () => {
+	let frontDatabaseController: FrontDatabaseController;
 
 	beforeEach(async () => {
-		const ebscoDatabase: TestingModule = await Test.createTestingModule({
-			controllers: [EbscoDatabaseController],
-			providers: [EbscoDatabaseService, PrismaService],
+		const frontDatabase: TestingModule = await Test.createTestingModule({
+			controllers: [FrontDatabaseController],
+			providers: [FrontDatabaseService, PrismaService],
 		}).compile();
 
-		ebscoDatabaseController = ebscoDatabase.get<EbscoDatabaseController>(
-			EbscoDatabaseController,
+		frontDatabaseController = frontDatabase.get<FrontDatabaseController>(
+			FrontDatabaseController,
 		);
 	});
 
 	describe("root", () => {
 		it("should return active databases", async () => {
-			expect(await ebscoDatabaseController.getDatabases()).toStrictEqual([
+			expect(await frontDatabaseController.getDatabases()).toStrictEqual([
 				expect.objectContaining({
 					name_fr: "Wiley",
 					text_fr: "Plateforme multidisciplinaire",

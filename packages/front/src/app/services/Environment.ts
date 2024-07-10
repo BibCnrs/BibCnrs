@@ -10,8 +10,8 @@ export const environment = {
 		search: {
 			article: "/ebsco/{domain}/article/search",
 			publication: "/ebsco/{domain}/publication/search",
-			database: "/ebsco/databases",
-			metadore: "/ebsco/metadore/search",
+			database: "/front/databases",
+			metadore: "/front/metadore/search",
 		},
 		retrieve: {
 			article: "/ebsco/{domain}/article/retrieve",
@@ -19,11 +19,11 @@ export const environment = {
 		},
 		account: {
 			janus: "/ebsco/login_renater/",
-			licences: "/ebsco/licenses",
+			licences: "/front/licenses",
 			testsNews: "/front/news",
 			testNewsHome: "/front/news/home",
-			history: "/ebsco/history",
-			disableSearchAlert: "/ebsco/history/disable",
+			history: "/front/history",
+			disableSearchAlert: "/front/history/disable",
 			settings: "/front/user-settings",
 		},
 	},
@@ -32,7 +32,7 @@ export const environment = {
 			legacy: "/ebsco/login",
 			user: "/ebsco/getLogin",
 			logout: "/ebsco/logout",
-			history: "/ebsco/history",
+			history: "/front/history",
 		},
 		retrieve: {
 			articleExport: "/ebsco/retrieve_ris",
@@ -41,14 +41,15 @@ export const environment = {
 	put: {
 		account: {
 			settings: "/front/user-settings",
-			favourite: "/ebsco/favourite_resources",
+			favourite: "/front/favourite_resources",
 			searchAlert: "/ebsco/search-alert",
+			hasSeenPopup: "/front/user-settings/has-seen-popup",
 		},
 	},
 	delete: {
 		account: {
-			history: "/ebsco/history",
-			histories: "/ebsco/histories",
+			history: "/front/history",
+			histories: "/front/histories",
 		},
 	},
 } as const;

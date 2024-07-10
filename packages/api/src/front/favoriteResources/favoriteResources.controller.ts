@@ -10,13 +10,13 @@ import {
 import { JsonValue } from "@prisma/client/runtime/library";
 import { Request } from "express";
 import { AuthGuard } from "../../common/auth/auth.guard";
-import { EbscoFavoriteResourcesService } from "./favoriteResources.service";
+import { FrontFavoriteResourcesService } from "./favoriteResources.service";
 
-@Controller("ebsco/favourite_resources")
+@Controller("front/favourite_resources")
 @UseGuards(AuthGuard)
-export class EbscoFavoriteResourcesController {
+export class FrontFavoriteResourcesController {
 	constructor(
-		private readonly ebscoFavoriteResourcesService: EbscoFavoriteResourcesService,
+		private readonly frontFavoriteResourcesService: FrontFavoriteResourcesService,
 	) {}
 
 	// The userId here is kept for historical reasons, but it is not used.
@@ -33,7 +33,7 @@ export class EbscoFavoriteResourcesController {
 			throw new BadRequestException("favouriteResources must be an array");
 		}
 
-		await this.ebscoFavoriteResourcesService.putFavoriteResources(
+		await this.frontFavoriteResourcesService.putFavoriteResources(
 			request.user.id,
 			favoriteResources,
 		);

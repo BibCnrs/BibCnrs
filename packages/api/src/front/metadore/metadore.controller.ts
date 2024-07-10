@@ -6,11 +6,11 @@ import {
 	ParseIntPipe,
 	Query,
 } from "@nestjs/common";
-import { EbscoMetadoreService } from "./metadore.service";
+import { FrontMetadoreService } from "./metadore.service";
 
-@Controller("ebsco/metadore")
-export class EbscoMetadoreController {
-	constructor(private readonly ebscoMetadoreService: EbscoMetadoreService) {}
+@Controller("front/metadore")
+export class FrontMetadoreController {
+	constructor(private readonly frontMetadoreService: FrontMetadoreService) {}
 
 	@Get("search")
 	public async searchMetadore(
@@ -21,7 +21,7 @@ export class EbscoMetadoreController {
 		currentPage: number,
 	) {
 		try {
-			return this.ebscoMetadoreService.metadoreRequest({
+			return this.frontMetadoreService.metadoreRequest({
 				queries,
 				resultsPerPage,
 				currentPage,

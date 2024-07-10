@@ -1,10 +1,5 @@
 import { Module } from "@nestjs/common";
-import { EbscoDatabaseModule } from "./database/database.module";
 import { EbscoDomainModule } from "./domain/domain.module";
-import { EbscoFavoriteResourcesModule } from "./favoriteResources/favoriteResources.module";
-import { EbscoHistoryModule } from "./history/history.module";
-import { EbscoLicenseModule } from "./license/license.module";
-import { EbscoMetadoreModule } from "./metadore/metadore.module";
 import { EbscoOaModule } from "./oa/oa.module";
 import { EbscoRisModule } from "./ris/ris.module";
 import { EbscoSearchModule } from "./search/search.module";
@@ -14,12 +9,7 @@ import { EbscoTokenModule } from "./token/token.module";
 @Module({
 	imports: [
 		EbscoDomainModule,
-		EbscoLicenseModule,
-		EbscoHistoryModule,
 		EbscoRisModule,
-		EbscoDatabaseModule,
-		EbscoMetadoreModule,
-		EbscoFavoriteResourcesModule,
 		EbscoOaModule,
 		EbscoSearchAlertModule,
 		EbscoTokenModule,
