@@ -20,6 +20,7 @@ import {
 	BibContextPublicationDefault,
 } from "./BibContext.const";
 import AuthenticationModal from "./components/AuthenticationModal";
+import { UserPopup } from "./components/UserPopup";
 import { darkTheme } from "./themes/dark";
 import { lightTheme } from "./themes/light";
 import { useSession } from "./useSession";
@@ -111,7 +112,10 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 			<ThemeProvider theme={muiTheme}>
 				<CssBaseline />
 				<AdvancedSearchProvider>{children}</AdvancedSearchProvider>
-
+				<UserPopup
+					open={session.displayUserPopup}
+					onClose={session.closeUserPopup}
+				/>
 				<AuthenticationModal
 					open={displayAuthenticationModal}
 					onClose={hideLoginModal}

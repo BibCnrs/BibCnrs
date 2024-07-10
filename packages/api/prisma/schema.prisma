@@ -200,6 +200,7 @@ model janus_account {
   defaultSearchMode       SearchMode                @default(article)
   defaultLanguage         Language                  @default(auto)
   defaultTheme            Theme                     @default(auto)
+  hasSeenPopup            Boolean                   @default(false)
   janus_account_community janus_account_community[]
   janus_account_institute janus_account_institute[]
   janus_account_unit      janus_account_unit[]
