@@ -353,6 +353,7 @@ Sincerely`,
 		},
 		history: {
 			title: "History",
+			search: "Search my history",
 			buttons: {
 				delete: "Delete history",
 				disable: "Enable/disable all alert",

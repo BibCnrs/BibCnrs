@@ -340,6 +340,7 @@ export type Common = {
 		};
 		history: {
 			title: string;
+			search: string;
 			buttons: {
 				delete: string;
 				disable: string;

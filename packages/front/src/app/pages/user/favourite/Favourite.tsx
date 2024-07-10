@@ -135,6 +135,7 @@ const Favourite = () => {
 					}))
 				}
 				disableAutocomplete
+				disableSearchButton
 			/>
 
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>

@@ -7,7 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./app/App";
 import { BibContextProvider } from "./app/context/BibContext";
 import ExceptedError from "./app/pages/errors/ExceptedError";
-import "./app/shared/easter-egg/konamiCode";
 import I18N from "./app/shared/locales/I18N";
 
 const container = document.getElementById("root") as HTMLElement;

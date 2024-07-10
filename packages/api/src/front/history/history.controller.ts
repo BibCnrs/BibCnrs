@@ -28,6 +28,7 @@ export class FrontHistoryController {
 		@Query("limit", ParseIntPipe) limit: number,
 		@Query("offset", ParseIntPipe) offset: number,
 		@Query("has_alert") hasAlert = "false",
+		@Query("q") q = undefined,
 	) {
 		const user = req.user;
 		return this.frontHistoryService.getHistory(
@@ -35,6 +36,7 @@ export class FrontHistoryController {
 			limit || 5,
 			offset || 0,
 			hasAlert === "true",
+			q,
 		);
 	}
 
