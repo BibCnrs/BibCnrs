@@ -556,13 +556,13 @@ export class EbscoSearchAlertCronService {
 									margin-top: 10px;
 									margin-bottom: 10px;
 									font-size: 18px;
-									color: #337ab7;">
+									color: #6941EB;">
 									${id}. ${title} ${type}</a>`
 									: `${id}. ${title} ${type} - Pas d'accès pour cet article`
 							}
 							${
 								oaLink && oaLink.OA === true
-									? `<span style="background-color: #FB9A83; color: #337ab7; padding: 2.5px;">
+									? `<span style="background-color: #FB9A83; color: #6941EB; padding: 2.5px;">
 										OA
 									</span>`
 									: ""
