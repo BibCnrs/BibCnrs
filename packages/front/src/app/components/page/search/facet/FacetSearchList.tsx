@@ -1,23 +1,22 @@
-import { Autocomplete } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import type { SyntheticEvent } from "react";
-import { memo } from "react";
 import { useTranslator } from "../../../../shared/locales/I18N";
 import type { FacetEntry } from "./Facet.type";
 
 type FacetSearchListProps = {
-	initial?: FacetEntry[];
-	onChange: (value: FacetEntry[]) => void;
 	name: string;
-	facets: FacetEntry[];
+	options: FacetEntry[];
+	value?: FacetEntry[];
+	onChange: (value: FacetEntry[]) => void;
 };
 
-const FacetSearchList = ({
-	facets,
+export default function FacetSearchList({
 	name,
+	options,
+	value = [],
 	onChange,
-	initial = undefined,
-}: FacetSearchListProps) => {
+}: FacetSearchListProps) {
 	const t = useTranslator();
 
 	const handleChange = (event: SyntheticEvent, value: FacetEntry[]) => {
@@ -40,26 +39,22 @@ const FacetSearchList = ({
 	};
 
 	return (
-		<div>
-			<Autocomplete
-				size="small"
-				multiple
-				options={facets}
-				groupBy={handleGroupBy}
-				getOptionLabel={(option) => `${option.name} (${option.count})`}
-				defaultValue={initial}
-				isOptionEqualToValue={handleIsOptionEqualToValue}
-				filterSelectedOptions
-				renderInput={(params) => (
-					<TextField
-						{...params}
-						label={`${t(`components.facet.${name}`)} - ${facets.length}`}
-					/>
-				)}
-				onChange={handleChange}
-			/>
-		</div>
+		<Autocomplete
+			size="small"
+			multiple
+			options={options}
+			groupBy={handleGroupBy}
+			getOptionLabel={(option) => `${option.name} (${option.count})`}
+			value={value}
+			isOptionEqualToValue={handleIsOptionEqualToValue}
+			filterSelectedOptions
+			renderInput={(params) => (
+				<TextField
+					{...params}
+					label={`${t(`components.facet.${name}`)} - ${options.length}`}
+				/>
+			)}
+			onChange={handleChange}
+		/>
 	);
-};
-
-export default memo(FacetSearchList);
+}

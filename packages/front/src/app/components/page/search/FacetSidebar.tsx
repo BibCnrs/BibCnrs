@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
 
 import { Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import type { FacetRequired } from "./facet/Facet.type";
-import FacetFacets from "./facet/FacetFacets";
-import FacetLimiter from "./facet/FacetLimiter";
+import FacetList from "./facet/FacetList";
+import LimiterList from "./facet/LimiterList";
 
 export type FacetSidebarProps<T extends FacetRequired> = {
 	available: Omit<FacetRequired & T, "orderBy">;
@@ -22,33 +22,45 @@ export default function ({
 }: FacetSidebarProps<FacetRequired>) {
 	const t = useTranslator();
 
-	const handleLimiter = (
-		limiters: FacetSidebarProps<FacetRequired>["active"]["limiters"],
-	) => {
-		onChange({
-			facets: active.facets,
-			limiters,
-		});
-	};
+	const handleLimiterChange = useCallback(
+		(limiters: FacetSidebarProps<FacetRequired>["active"]["limiters"]) => {
+			onChange({
+				facets: active.facets,
+				limiters,
+			});
+		},
+		[active.facets, onChange],
+	);
 
-	const handleFacet = (
-		facets: FacetSidebarProps<FacetRequired>["active"]["facets"],
-	) => {
-		onChange({
-			limiters: active.limiters,
-			facets,
-		});
-	};
+	const handleFacetChange = useCallback(
+		(facets: FacetSidebarProps<FacetRequired>["active"]["facets"]) => {
+			onChange({
+				limiters: active.limiters,
+				facets,
+			});
+		},
+		[active.limiters, onChange],
+	);
 
-	const HALFacet = useMemo(
+	const handleHalChange = useCallback(
+		(facets: FacetSidebarProps<FacetRequired>["active"]["facets"]) => {
+			onChange({
+				limiters: active.limiters,
+				facets,
+			});
+		},
+		[active.limiters, onChange],
+	);
+
+	const halFacet = useMemo(
 		() => available.facets?.provider?.find((facet) => facet.name === "HAL"),
 		[available.facets],
 	);
 
-	const HALIsChecked = useMemo(
+	const halActive = useMemo(
 		() =>
-			active.facets?.provider?.some((facet) => facet?.name === HALFacet?.name),
-		[active.facets, HALFacet],
+			active.facets?.provider?.some((facet) => facet?.name === halFacet?.name),
+		[active.facets, halFacet],
 	);
 
 	return (
@@ -58,19 +70,19 @@ export default function ({
 			</Typography>
 
 			{/* Limiter */}
-			<FacetLimiter
-				available={available.limiters}
-				active={active.limiters}
-				onChange={handleLimiter}
-				HALFacet={HALFacet}
-				HALIsChecked={HALIsChecked}
-				onHALFacetChange={handleFacet}
+			<LimiterList
+				limiters={available.limiters}
+				activeLimiters={active.limiters}
+				onLimitersChange={handleLimiterChange}
+				halFacet={halFacet}
+				halActive={halActive}
+				onHalChange={handleHalChange}
 			/>
 			{/* Facet */}
-			<FacetFacets
-				available={available.facets}
-				active={active.facets}
-				onChange={handleFacet}
+			<FacetList
+				facets={available.facets}
+				activeFacets={active.facets}
+				onChange={handleFacetChange}
 			/>
 			<Button
 				color="error"

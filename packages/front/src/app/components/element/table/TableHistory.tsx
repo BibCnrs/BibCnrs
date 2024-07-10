@@ -189,9 +189,6 @@ const createParam = (event: HistoryEntryDataType["event"]): any => {
 		if (event.activeFacets.Language) {
 			param.facets.language = convertFacet(event.activeFacets.Language);
 		}
-		if (event.activeFacets.RangeLexile) {
-			param.facets.lexile = convertFacet(event.activeFacets.RangeLexile);
-		}
 		if (event.activeFacets.CollectionLibrary) {
 			param.facets.collection = convertFacet(
 				event.activeFacets.CollectionLibrary,
@@ -382,7 +379,6 @@ const TableHistory = ({
 				>
 					<Tooltip title={alertText} arrow>
 						<Button
-							className="table-history-box-actions-button"
 							size="small"
 							onClick={handleOpen}
 							aria-label={t("components.history.alert", {

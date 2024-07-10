@@ -237,31 +237,34 @@ const ArticlePage = () => {
 		});
 	};
 
-	const handleFacets = (values: Omit<ArticleParam, "orderBy">) => {
-		setSaveHistory(true);
-		facetsCleaner(values);
-		setSearch({
-			...search,
-			article: {
-				...search.article,
-				facets: values.facets,
-				limiters: values.limiters,
-			},
-		});
-		setSeed(seed + 1);
-	};
+	const handleFacets = useCallback(
+		(values: Omit<ArticleParam, "orderBy">) => {
+			setSaveHistory(true);
+			facetsCleaner(values);
+			setSearch((search) => ({
+				...search,
+				article: {
+					...search.article,
+					facets: values.facets,
+					limiters: values.limiters,
+				},
+			}));
+			setSeed((seed) => seed + 1);
+		},
+		[facetsCleaner, setSearch],
+	);
 
-	const handleReset = () => {
+	const handleReset = useCallback(() => {
 		setSaveHistory(true);
-		setSearch({
+		setSearch((search) => ({
 			...search,
 			article: {
 				...BibContextArticleDefault,
 				orderBy: search.article.orderBy,
 			},
-		});
-		setSeed(seed + 1);
-	};
+		}));
+		setSeed((seed) => seed + 1);
+	}, [setSearch]);
 
 	const handleSelectAll = (
 		_: ChangeEvent<HTMLInputElement>,
@@ -349,9 +352,6 @@ const ArticlePage = () => {
 						break;
 					case "Publisher":
 						available.facets.publisher = values;
-						break;
-					case "RangeLexile":
-						available.facets.lexile = values;
 						break;
 					case "SourceType":
 						available.facets.source = values;

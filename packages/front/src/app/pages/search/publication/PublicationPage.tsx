@@ -2,7 +2,7 @@ import { Drawer, Grid, Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -238,26 +238,29 @@ const PublicationPage = () => {
 		);
 	};
 
-	const handleReset = () => {
-		setSearch({
+	const handleReset = useCallback(() => {
+		setSearch((search) => ({
 			...search,
 			publication: BibContextPublicationDefault,
-		});
-		setSeed(seed + 1);
-	};
+		}));
+		setSeed((seed) => seed + 1);
+	}, [setSearch]);
 
-	const handleFacets = (values: PublicationParam) => {
-		facetsCleaner(values);
-		setSearch({
-			...search,
-			publication: {
-				...search.publication,
-				facets: values.facets,
-				limiters: values.limiters,
-			},
-		});
-		setSeed(seed + 1);
-	};
+	const handleFacets = useCallback(
+		(values: PublicationParam) => {
+			facetsCleaner(values);
+			setSearch((search) => ({
+				...search,
+				publication: {
+					...search.publication,
+					facets: values.facets,
+					limiters: values.limiters,
+				},
+			}));
+			setSeed((seed) => seed + 1);
+		},
+		[facetsCleaner, setSearch],
+	);
 
 	const handleTable = (tableArgs: SearchResultsArgsProps) => {
 		setSearch({

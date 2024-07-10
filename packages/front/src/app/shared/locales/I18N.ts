@@ -23,7 +23,6 @@ export type Common = {
 			SourceType: string;
 			Journal: string;
 			Language: string;
-			RangeLexile: string;
 			CollectionLibrary: string;
 			Publisher: string;
 			ContentProvider: string;
@@ -192,6 +191,7 @@ export type Common = {
 			provider: string;
 			reset: string;
 			type: string;
+			more: string;
 			chips: {
 				title: string;
 				description: string;

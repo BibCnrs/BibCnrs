@@ -24,7 +24,6 @@ export type ArticlePayLoad = {
 		SubjectEDS?: string[];
 		Journal?: string[];
 		Language?: string[];
-		RangeLexile?: string[];
 		CollectionLibrary?: string[];
 		Publisher?: string[];
 		ContentProvider?: string[];
@@ -129,9 +128,6 @@ export const article = async (
 		}
 		if (param.facets.language) {
 			payload.activeFacets.Language = convertFacet(param.facets.language);
-		}
-		if (param.facets.lexile) {
-			payload.activeFacets.RangeLexile = convertFacet(param.facets.lexile);
 		}
 		if (param.facets.collection) {
 			payload.activeFacets.CollectionLibrary = convertFacet(

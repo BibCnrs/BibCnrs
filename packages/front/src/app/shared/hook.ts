@@ -1,5 +1,5 @@
 import type { MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FacetRequired } from "../components/page/search/facet/Facet.type";
 import { useBibContext } from "../context/BibContext";
 
@@ -13,7 +13,7 @@ export const useServicesCatch = () => {
 };
 
 export const useFacetsCleaner = <T extends FacetRequired>() => {
-	return (values: T): T => {
+	return useCallback((values: T): T => {
 		if (values.limiters) {
 			for (const key of Object.keys(values.limiters)) {
 				if (
@@ -43,7 +43,7 @@ export const useFacetsCleaner = <T extends FacetRequired>() => {
 			}
 		}
 		return values;
-	};
+	}, []);
 };
 
 export const useFacetsDomainHandler = () => {

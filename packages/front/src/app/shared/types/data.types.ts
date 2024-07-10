@@ -193,7 +193,6 @@ export type ArticleFacetsKeyDataType =
 	| "Journal"
 	| "Language"
 	| "Publisher"
-	| "RangeLexile"
 	| "SourceType"
 	| "SubjectEDS";
 
