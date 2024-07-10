@@ -86,8 +86,8 @@ test("Disable search alert", async ({ page }) => {
 	await page.getByRole("option", { name: "Désactiver/réactiver" }).click();
 
 	{
-		const listResponse = page.waitForResponse("/api/ebsco/history?limit=*");
-		const editResponse = page.waitForResponse("/api/ebsco/history/disable/*");
+		const listResponse = page.waitForResponse("/api/front/history?limit=*");
+		const editResponse = page.waitForResponse("/api/front/history/disable/*");
 		await page.getByRole("button", { name: "Enregistrer" }).click();
 		await editResponse;
 		await listResponse;

@@ -38,7 +38,7 @@ services:
           cpus: "1"
           memory: ${API_MAX_MEMORY:-2G}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/ebsco/databases"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/front/databases"]
       interval: 10s
       timeout: 5s
       retries: 5

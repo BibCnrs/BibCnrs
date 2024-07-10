@@ -4,7 +4,7 @@ import { janusLogin, janusLogout } from "../page-objects/login";
 import { SEARCH_METADORE_MOCK } from "./mocks/searchMetadore.mock";
 
 test("Should search metadore", async ({ page }) => {
-	await page.route("**/api/ebsco/metadore/search?*", async (route) => {
+	await page.route("**/api/front/metadore/search?*", async (route) => {
 		await route.fulfill({ json: SEARCH_METADORE_MOCK });
 	});
 
@@ -23,7 +23,7 @@ test("Should search metadore", async ({ page }) => {
 });
 
 test("Should open drawer when clicking on see more about", async ({ page }) => {
-	await page.route("**/api/ebsco/metadore/search?*", async (route) => {
+	await page.route("**/api/front/metadore/search?*", async (route) => {
 		await route.fulfill({ json: SEARCH_METADORE_MOCK });
 	});
 
@@ -73,7 +73,7 @@ test("Should open drawer when clicking on see more about", async ({ page }) => {
 });
 
 test("Add favorite", async ({ page }) => {
-	await page.route("**/api/ebsco/metadore/search?*", async (route) => {
+	await page.route("**/api/front/metadore/search?*", async (route) => {
 		await route.fulfill({ json: SEARCH_METADORE_MOCK });
 	});
 
@@ -86,7 +86,7 @@ test("Add favorite", async ({ page }) => {
 	await page.getByPlaceholder(/Recherche/i).press("Enter");
 
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await page
 			.getByRole("button", {
 				name: /Ajouter (.+)A user experience(.+) aux favoris/i,
@@ -105,7 +105,7 @@ test("Add favorite", async ({ page }) => {
 		})
 		.click();
 	{
-		const response = page.waitForResponse("/api/ebsco/favourite_resources/1");
+		const response = page.waitForResponse("/api/front/favourite_resources/1");
 		await page.getByRole("button", { name: /Confirmer/i }).click();
 		await response;
 	}

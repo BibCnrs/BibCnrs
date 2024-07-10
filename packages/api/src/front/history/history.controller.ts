@@ -15,12 +15,12 @@ import {
 import { Request } from "express";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import { CreateHistoryDto } from "./dto/history.dto";
-import { EbscoHistoryService } from "./history.service";
+import { FrontHistoryService } from "./history.service";
 
-@Controller("ebsco/history")
+@Controller("front/history")
 @UseGuards(AuthGuard)
-export class EbscoHistoryController {
-	constructor(private readonly ebscoHistoryService: EbscoHistoryService) {}
+export class FrontHistoryController {
+	constructor(private readonly frontHistoryService: FrontHistoryService) {}
 
 	@Get()
 	public async getHistory(
@@ -30,7 +30,7 @@ export class EbscoHistoryController {
 		@Query("has_alert") hasAlert = "false",
 	) {
 		const user = req.user;
-		return this.ebscoHistoryService.getHistory(
+		return this.frontHistoryService.getHistory(
 			user.id.toString(),
 			limit || 5,
 			offset || 0,
@@ -45,7 +45,7 @@ export class EbscoHistoryController {
 	) {
 		const user = req.user;
 		const { frequence, ...rest } = history;
-		return this.ebscoHistoryService.createHistory(
+		return this.frontHistoryService.createHistory(
 			user.id.toString(),
 			rest,
 			frequence,
@@ -60,7 +60,7 @@ export class EbscoHistoryController {
 		if (!id) {
 			throw new NotFoundException();
 		}
-		return this.ebscoHistoryService.deleteHistory(req.user.id.toString(), id);
+		return this.frontHistoryService.deleteHistory(req.user.id.toString(), id);
 	}
 
 	// Hard to test due in watch mode, skipping tests for now
@@ -68,7 +68,7 @@ export class EbscoHistoryController {
 	public async toggleAllAlerts(@Req() req: Request) {
 		const user = req.user;
 		try {
-			await this.ebscoHistoryService.toggleAllAlerts(user.id.toString());
+			await this.frontHistoryService.toggleAllAlerts(user.id.toString());
 			return { message: "ok" };
 		} catch (e) {
 			throw new InternalServerErrorException({
@@ -84,7 +84,7 @@ export class EbscoHistoryController {
 		@Param("id", ParseIntPipe) id: number,
 	) {
 		const user = req.user;
-		const updatedHistory = await this.ebscoHistoryService.toggleAlert(
+		const updatedHistory = await this.frontHistoryService.toggleAlert(
 			user.id.toString(),
 			id,
 		);

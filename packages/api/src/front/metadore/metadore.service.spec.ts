@@ -6,12 +6,12 @@ import { HttpService } from "../../common/http/http.service";
 import { RedisService } from "../../common/redis/redis.service";
 import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
-import { EbscoMetadoreService } from "./metadore.service";
+import { FrontMetadoreService } from "./metadore.service";
 import { COVID_RESULTS_EXPECTED } from "./mock/covidResult.expected";
 import { COVID_RESULTS_INPUT } from "./mock/covidResult.input";
 
-describe("EbscoMetadoreService", () => {
-	let service: EbscoMetadoreService;
+describe("FrontMetadoreService", () => {
+	let service: FrontMetadoreService;
 
 	beforeEach(async () => {
 		const contextId = ContextIdFactory.create();
@@ -25,15 +25,15 @@ describe("EbscoMetadoreService", () => {
 				}),
 			],
 			providers: [
-				EbscoMetadoreService,
+				FrontMetadoreService,
 				PrismaService,
 				RedisService,
 				HttpService,
 			],
 		}).compile();
 
-		service = await module.resolve<EbscoMetadoreService>(
-			EbscoMetadoreService,
+		service = await module.resolve<FrontMetadoreService>(
+			FrontMetadoreService,
 			contextId,
 		);
 	});
