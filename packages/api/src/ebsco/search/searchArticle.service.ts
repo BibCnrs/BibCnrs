@@ -52,6 +52,7 @@ type LinkIqInfoResponse = {
 };
 type LinkIqInfoResult = {
 	id: number;
+	doi: string;
 	title: string;
 	year: string;
 	authors: string[];
@@ -149,6 +150,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 			return {
 				id: 1,
+				doi,
 				title: facts.find((fact) => fact.name === "atitle")?.value,
 				authors:
 					facts.find((fact) => fact.name === "authors")?.value.split(";") ?? [],
