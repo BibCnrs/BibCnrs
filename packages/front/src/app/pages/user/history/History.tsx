@@ -1,4 +1,14 @@
-import { Box, Button, LinearProgress, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	LinearProgress,
+	Typography,
+} from "@mui/material";
 import { Container } from "@mui/system";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +29,7 @@ import { useTranslator } from "../../../shared/locales/I18N";
 import type { HistoryDataType } from "../../../shared/types/data.types";
 
 export const HistoryContext = createContext<{
-	handleDeleteEntry: (id: number) => void;
+	handleOpenDeletePopup: (id: number) => void;
 	requestUpdate: () => void;
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 }>(null as any);
@@ -28,6 +38,7 @@ const History = ({
 	displayOnlyAlert = false,
 }: { displayOnlyAlert?: boolean }) => {
 	const t = useTranslator();
+	const [historyToDelete, setHistoryToDelete] = useState(null);
 
 	const [args, setArgs] = useState<SearchResultsArgsProps & { q?: string }>({
 		page: 1,
@@ -76,13 +87,18 @@ const History = ({
 		});
 	};
 
-	const handleDeleteEntry = (id: number) => {
-		deleteHistoryEntry(id).then(() => {
+	const handleDeleteEntry = () => {
+		deleteHistoryEntry(historyToDelete).then(() => {
 			setArgs({
 				...args,
 				stateIndex: (args.stateIndex ?? 0) + 1,
 			});
+			setHistoryToDelete(null);
 		});
+	};
+
+	const handleOpenDeletePopup = (id: number) => {
+		setHistoryToDelete(id);
 	};
 
 	const handleUpdateRequest = () => {
@@ -113,7 +129,10 @@ const History = ({
 
 				{data?.histories.length > 0 && (
 					<HistoryContext.Provider
-						value={{ handleDeleteEntry, requestUpdate: handleUpdateRequest }}
+						value={{
+							handleOpenDeletePopup,
+							requestUpdate: handleUpdateRequest,
+						}}
 					>
 						<SearchResults
 							DisplayElement={TableHistory}
@@ -180,6 +199,34 @@ const History = ({
 								</Box>
 							}
 						/>
+
+						<Dialog
+							open={historyToDelete !== null}
+							onClose={() => setHistoryToDelete(null)}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{t("pages.history.confirmDelete.title")}
+							</DialogTitle>
+							<DialogContent>
+								<DialogContentText id="alert-dialog-description">
+									{t("pages.history.confirmDelete.description")}
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={() => setHistoryToDelete(null)}>
+									{t("pages.history.confirmDelete.cancel")}
+								</Button>
+								<Button
+									onClick={handleDeleteEntry}
+									autoFocus
+									variant="contained"
+								>
+									{t("pages.history.confirmDelete.confirm")}
+								</Button>
+							</DialogActions>
+						</Dialog>
 					</HistoryContext.Provider>
 				)}
 			</Container>

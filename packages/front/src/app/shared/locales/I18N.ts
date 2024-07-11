@@ -348,6 +348,12 @@ export type Common = {
 			confirm: {
 				delete: string;
 			};
+			confirmDelete: {
+				title: string;
+				description: string;
+				cancel: string;
+				confirm: string;
+			};
 		};
 		alert: {
 			title: string;

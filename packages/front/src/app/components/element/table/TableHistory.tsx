@@ -216,7 +216,7 @@ const TableHistory = ({
 	const language = useLanguageKey();
 	const navigate = useNavigate();
 	const { search, setSearch } = useBibContext();
-	const { handleDeleteEntry } = useContext(HistoryContext);
+	const { handleOpenDeletePopup } = useContext(HistoryContext);
 
 	const [open, setOpen] = useState(false);
 
@@ -406,7 +406,7 @@ const TableHistory = ({
 						className="table-history-box-actions-button"
 						size="small"
 						onClick={() => {
-							handleDeleteEntry(data.id);
+							handleOpenDeletePopup(data.id);
 						}}
 						aria-label={t("components.history.delete", {
 							term: data.event.queries[0].term,

@@ -364,6 +364,12 @@ Cordialement`,
 				delete:
 					"Voulez vous vraiment supprimer tout l'historique (hors alertes) ?",
 			},
+			confirmDelete: {
+				title: "Supprimer une entrée",
+				description: "Etês-vous sûr de vouloir supprimer cette entrée ?",
+				cancel: "Annuler",
+				confirm: "Confirmer",
+			},
 		},
 		alert: {
 			title: "Alertes",
