@@ -17,7 +17,7 @@ import FavouriteList from "./FavouriteList";
 import { useFavourites } from "./useFavourites";
 
 type BooleanFavoriteFilter = Record<
-	FavouriteResourceDataType["source"],
+	Exclude<FavouriteResourceDataType["source"], "shared">,
 	boolean | null
 >;
 

@@ -3,6 +3,7 @@ import {
 	Body,
 	Controller,
 	ForbiddenException,
+	Get,
 	Put,
 	Req,
 	UseGuards,
@@ -18,6 +19,16 @@ export class FrontFavoriteResourcesController {
 	constructor(
 		private readonly frontFavoriteResourcesService: FrontFavoriteResourcesService,
 	) {}
+
+	@Get("revues")
+	async getRevues(@Req() request: Request) {
+		return (
+			await this.frontFavoriteResourcesService.getRevues(request.user.domains)
+		).flatMap((revue) => ({
+			...revue,
+			source: "shared",
+		}));
+	}
 
 	// The userId here is kept for historical reasons, but it is not used.
 	@Put(":userId")

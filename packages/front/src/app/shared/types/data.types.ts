@@ -107,7 +107,14 @@ export type FavouriteResourceDataType = {
 	id: UniqueIdentifier;
 	title: string;
 	url: string;
-	source?: "article" | "publication" | "database" | "metadore" | "personal";
+	source?:
+		| "article"
+		| "publication"
+		| "database"
+		| "metadore"
+		| "personal"
+		// Used for admin defined favorites
+		| "shared";
 	isSuperFavorite?: boolean;
 
 	// Superseeded by source
