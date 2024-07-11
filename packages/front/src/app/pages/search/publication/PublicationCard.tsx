@@ -184,13 +184,15 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 				</Link>
 			</CardContent>
 			<CardActions sx={{ paddingTop: 0 }}>
-				<BookmarkButton
-					className="table-bookmark-button"
-					title={bookmarkTitle}
-					url={href}
-					aria-label={t("components.search.content.bookmark", { title })}
-					source="publication"
-				/>
+				{reconciledFullTextHoldings.length < 2 && (
+					<BookmarkButton
+						className="table-bookmark-button"
+						title={bookmarkTitle}
+						url={href}
+						aria-label={t("components.search.content.bookmark", { title })}
+						source="publication"
+					/>
+				)}
 			</CardActions>
 		</Card>
 	);
