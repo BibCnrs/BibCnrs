@@ -16,6 +16,7 @@ import AlertPaper from "../../element/paper/alert/AlertCard";
 import RenderContent from "../render/RenderContent";
 import RenderNews from "../render/RenderNews";
 import FavouriteCardHome from "./FavouriteCardHome";
+import { useSharedFavourites } from "./useSharedFavourites";
 
 export const LoginHome = () => {
 	const t = useTranslator();
@@ -41,14 +42,15 @@ export const LoginHome = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-	const { data } = useQuery<TestsNewsDataType, any, TestsNewsDataType, any>({
+	const { data: news } = useQuery<TestsNewsDataType>({
 		queryKey: ["news", "home"],
 		queryFn: () => newsHome(user?.domains),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
+
+	const { data: sharedFavourites } = useSharedFavourites();
 
 	// Display favorite only if the user is not legacy and has the setting enabled
 	const displayFavourites = !user?.legacy && user?.settings?.displayFavorites;
@@ -73,12 +75,12 @@ export const LoginHome = () => {
 						aria-label={t("pages.news.title")}
 						color="primary"
 					>
-						{t("pages.favourite.superFavourites")}
+						{superFavouriteResources?.length
+							? t("pages.favourite.superFavourites")
+							: t("pages.favourite.sharedFavourites")}
 					</Typography>
 
-					{superFavouriteResources?.length === 0 ? (
-						<Typography>{t("pages.root.emptyFavorites")}</Typography>
-					) : (
+					{superFavouriteResources?.length ? (
 						<Box
 							display="grid"
 							gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
@@ -88,6 +90,18 @@ export const LoginHome = () => {
 								<FavouriteCardHome key={favourite.id} favourite={favourite} />
 							))}
 						</Box>
+					) : sharedFavourites?.length ? (
+						<Box
+							display="grid"
+							gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
+							gap={6}
+						>
+							{sharedFavourites?.map((favourite) => (
+								<FavouriteCardHome key={favourite.id} favourite={favourite} />
+							))}
+						</Box>
+					) : (
+						<Typography>{t("pages.root.emptyFavorites")}</Typography>
 					)}
 
 					<Box sx={{ textAlign: "right" }}>
@@ -113,7 +127,7 @@ export const LoginHome = () => {
 					>
 						{t("pages.news.title")}
 					</Typography>
-					<RenderNews data={data} />
+					<RenderNews data={news} />
 					<Box sx={{ textAlign: "right" }}>
 						<Button
 							component={Link}

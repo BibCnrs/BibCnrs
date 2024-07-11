@@ -364,6 +364,7 @@ export type Common = {
 			search: string;
 			favourites: string;
 			superFavourites: string;
+			sharedFavourites: string;
 			add: string;
 			pin: string;
 			unpin: string;
@@ -374,6 +375,7 @@ export type Common = {
 			database: string;
 			metadore: string;
 			personal: string;
+			shared: string;
 			reset: string;
 			confirmDelete: {
 				title: string;
