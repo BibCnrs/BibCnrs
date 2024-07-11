@@ -289,6 +289,7 @@ export function useSession() {
 			return;
 		}
 
+		setDisplayUserPopup(false);
 		const response = await fetch(
 			createQuery(`${environment.put.account.hasSeenPopup}/${session.user.id}`),
 			{
@@ -304,8 +305,6 @@ export function useSession() {
 		if (response.status === 401) {
 			throw new Error("Invalid credentials");
 		}
-
-		setDisplayUserPopup(false);
 	}, [session.user, session.status]);
 
 	const updateSearchAlert = useCallback(
