@@ -1,14 +1,4 @@
-import PushPinIcon from "@mui/icons-material/PushPin";
-import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
-import {
-	Box,
-	Card,
-	CardActions,
-	CardContent,
-	Chip,
-	Link,
-	Tooltip,
-} from "@mui/material";
+import { Box, Card, CardContent, Chip, Link, Tooltip } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useTranslator } from "../../../shared/locales/I18N";
 
