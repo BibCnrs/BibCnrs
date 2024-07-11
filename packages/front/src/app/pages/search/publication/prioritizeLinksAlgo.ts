@@ -138,6 +138,14 @@ function compareStartDates(coverage1, coverage2) {
 	return createDate(coverage1).getTime() === createDate(coverage2).getTime();
 }
 
+function getStartDate(coverage) {
+	return new Date(
+		Number.parseInt(coverage.start.year),
+		Number.parseInt(coverage.start.month) - 1,
+		Number.parseInt(coverage.start.day),
+	);
+}
+
 function linkHasEndCouverture(link: Link): boolean {
 	return link.coverage.some((coverage) => coverage.end);
 }
@@ -217,7 +225,23 @@ function compareEndCouvertureWhenCouvertureDifferent(
 		// return link with smallest embargo
 		const embargo1 = parseValueEmbargo(firstLink.embargo);
 		const embargo2 = parseValueEmbargo(secondLink.embargo);
-		return embargo1 < embargo2 ? [firstLink] : [secondLink];
+
+		const sameStartDate = compareStartDates(
+			firstLink.coverage[0],
+			secondLink.coverage[0],
+		);
+
+		if (sameStartDate) {
+			return embargo1 < embargo2 ? [firstLink] : [secondLink];
+		}
+
+		const firstStartDate = getStartDate(firstLink.coverage[0]);
+		const secondStartDate = getStartDate(secondLink.coverage[0]);
+
+		// Si firstStartDate est le plus ancien, on retourne firstLink. Sinon les deux
+		return firstStartDate.getTime() < secondStartDate.getTime()
+			? [firstLink]
+			: [firstLink, secondLink];
 	}
 
 	// Step I.2.4
@@ -237,7 +261,22 @@ function compareEndCouvertureWhenCouvertureDifferent(
 			dateLink.embargo,
 		);
 
-		return embargoDate > date ? [embargoLink] : [dateLink];
+		const sameStartDate = compareStartDates(
+			firstLink.coverage[0],
+			secondLink.coverage[0],
+		);
+
+		if (sameStartDate) {
+			return embargoDate > date ? [embargoLink] : [dateLink];
+		}
+
+		const firstStartDate = getStartDate(firstLink.coverage[0]);
+		const secondStartDate = getStartDate(secondLink.coverage[0]);
+
+		// Si firstStartDate est le plus ancien, on retourne firstLink. Sinon les deux
+		return firstStartDate.getTime() < secondStartDate.getTime()
+			? [firstLink]
+			: [firstLink, secondLink];
 	}
 
 	// Step I.2.5
@@ -250,7 +289,23 @@ function compareEndCouvertureWhenCouvertureDifferent(
 			secondLink.coverage[0],
 			secondLink.embargo,
 		);
-		return firstDate > secondDate ? [firstLink] : [secondLink];
+
+		const sameStartDate = compareStartDates(
+			firstLink.coverage[0],
+			secondLink.coverage[0],
+		);
+
+		if (sameStartDate) {
+			return firstDate > secondDate ? [firstLink] : [secondLink];
+		}
+
+		const firstStartDate = getStartDate(firstLink.coverage[0]);
+		const secondStartDate = getStartDate(secondLink.coverage[0]);
+
+		// Si firstStartDate est le plus ancien, on retourne firstLink. Sinon les deux
+		return firstStartDate.getTime() < secondStartDate.getTime()
+			? [firstLink]
+			: [firstLink, secondLink];
 	}
 }
 
