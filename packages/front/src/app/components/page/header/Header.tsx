@@ -3,6 +3,8 @@ import { Stack, useTheme } from "@mui/system";
 import { memo } from "react";
 import BibCNRSLightLogo from "/logos/BIB_LIGHT.svg";
 import CNRSLightLogo from "/logos/CNRS_LIGHT.svg";
+import BibCNRSDarkLogo from "/logos/bibcnrs.png";
+import CNRSDarkLogo from "/logos/cnrs.png";
 import { useBibContext } from "../../../context/BibContext";
 import {
 	RouteFaq,
@@ -43,23 +45,27 @@ const Header = () => {
 					<Stack direction="row" alignItems="flex-end" gap="60px">
 						<CustomLink to={RouteRoot}>
 							<img
-								src={CNRSLightLogo}
+								src={
+									theme.palette.mode === "dark" ? CNRSDarkLogo : CNRSLightLogo
+								}
 								alt="CNRS Logo"
 								style={{
 									maxWidth: "60px",
 									height: "auto",
-									filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
 								}}
 							/>
 						</CustomLink>
 						<CustomLink to={RouteRoot}>
 							<img
-								src={BibCNRSLightLogo}
+								src={
+									theme.palette.mode === "dark"
+										? BibCNRSDarkLogo
+										: BibCNRSLightLogo
+								}
 								alt="BibCNRS Logo"
 								style={{
 									maxWidth: "60px",
 									height: "auto",
-									filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
 								}}
 							/>
 						</CustomLink>
