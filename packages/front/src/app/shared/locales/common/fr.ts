@@ -388,7 +388,6 @@ Cordialement`,
 			database: "Plateforme",
 			metadore: "Données de recherche",
 			personal: "Ressource personnelle",
-			unknown: "Inconnu",
 			reset: "Réinitialiser la recherche",
 			emptyFavorites: "Aucun favoris n'a été trouvé pour cette catégorie.",
 			confirmDelete: {
