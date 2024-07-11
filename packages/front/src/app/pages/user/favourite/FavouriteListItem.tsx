@@ -17,6 +17,7 @@ import { Stack, styled } from "@mui/system";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import { useFavourites } from "./useFavourites";
+
 type FavouriteListItemProps = {
 	favourite: FavouriteResourceDataType;
 	setFavouriteToDelete: (favourite: FavouriteResourceDataType) => void;
@@ -126,7 +127,9 @@ function FavouriteListItem({
 				}}
 			>
 				<Stack direction="column" spacing={1}>
-					{favourite.source === "personal" || favourite.personal ? (
+					{!favourite.source ||
+					favourite.source === "personal" ||
+					favourite.personal ? (
 						<Chip
 							label={t("pages.favourite.personal")}
 							color="secondary"
@@ -139,7 +142,7 @@ function FavouriteListItem({
 						/>
 					) : (
 						<Chip
-							label={t(`pages.favourite.${favourite.source || "unknown"}`)}
+							label={t(`pages.favourite.${favourite.source}`)}
 							color="default"
 							size="small"
 							sx={{

@@ -387,7 +387,6 @@ Sincerely`,
 			database: "Plateform",
 			metadore: "Research data ",
 			personal: "Personal resource",
-			unknown: "Unknown",
 			reset: "Reset filters",
 			confirmDelete: {
 				title: "Delete a favourite",
