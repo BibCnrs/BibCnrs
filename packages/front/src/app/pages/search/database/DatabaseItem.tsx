@@ -38,7 +38,12 @@ export function DatabaseItem(props: DatabaseItemProps) {
 							justifyContent="space-between"
 							gap={1}
 						>
-							<Link fontWeight={700} href={props.url}>
+							<Link
+								fontWeight={700}
+								href={props.url}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								{props.name}
 							</Link>
 							{user && (
