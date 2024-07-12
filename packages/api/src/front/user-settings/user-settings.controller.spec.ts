@@ -38,6 +38,7 @@ describe("UserSettingsController", () => {
 					defaultSearchMode: "article",
 					defaultLanguage: "fr",
 					defaultTheme: "light",
+					hasSeenPopup: true,
 				}),
 			).toStrictEqual({
 				displayFavorites: false,
@@ -45,6 +46,7 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "fr",
 				defaultTheme: "light",
+				hasSeenPopup: true,
 			});
 		});
 	});
