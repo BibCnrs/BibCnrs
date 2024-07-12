@@ -18,9 +18,4 @@ export class UserSettingsController {
 	) {
 		return this.userSettingsService.updateUserSettings(id, body);
 	}
-
-	@Patch("/has-seen-popup/:id")
-	async updateHasSeenPopup(@Param("id") id: number) {
-		return this.userSettingsService.updateHasSeenPopup(id);
-	}
 }

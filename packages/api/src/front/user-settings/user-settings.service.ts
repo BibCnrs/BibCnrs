@@ -30,22 +30,9 @@ export class UserSettingsService {
 				defaultSearchMode: true,
 				defaultLanguage: true,
 				defaultTheme: true,
+				hasSeenPopup: true,
 			},
 			data: body,
-			where: {
-				id: id,
-			},
-		});
-	}
-
-	async updateHasSeenPopup(id: number) {
-		return await this.prismaService.janus_account.update({
-			select: {
-				hasSeenPopup: true,
-			},
-			data: {
-				hasSeenPopup: true,
-			},
 			where: {
 				id: id,
 			},
