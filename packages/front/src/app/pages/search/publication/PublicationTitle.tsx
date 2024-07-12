@@ -205,7 +205,8 @@ export function PublicationTitle({
 					<Diamond />
 				</Box>
 			) : null}
-			{publication.title} [{publication.type}] - {titleCoverage}
+			{publication.title} [{publication.type}]{" "}
+			{titleCoverage && ` - ${titleCoverage}`}
 		</Link>
 	);
 }
