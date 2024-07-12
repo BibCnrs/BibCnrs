@@ -7,5 +7,6 @@ export type UpdateUserSettingsDto = Partial<
 		| "defaultSearchMode"
 		| "defaultLanguage"
 		| "defaultTheme"
+		| "hasSeenPopup"
 	>
 >;

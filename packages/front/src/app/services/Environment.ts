@@ -43,7 +43,6 @@ export const environment = {
 			settings: "/front/user-settings",
 			favourite: "/front/favourite_resources",
 			searchAlert: "/ebsco/search-alert",
-			hasSeenPopup: "/front/user-settings/has-seen-popup",
 		},
 	},
 	delete: {
