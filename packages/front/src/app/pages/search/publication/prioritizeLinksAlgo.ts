@@ -200,9 +200,23 @@ function compareEndCouvertureWhenCouvertureDifferent(
 	) {
 		const presentLink = findPresentLink(firstLink, secondLink);
 		const embargoLink = findEmbargoLink(firstLink, secondLink);
-		return compareStartDates(presentLink.coverage[0], embargoLink.coverage[0])
+
+		const sameStartDate = compareStartDates(
+			presentLink.coverage[0],
+			embargoLink.coverage[0],
+		);
+
+		if (sameStartDate) {
+			return [presentLink];
+		}
+
+		const presentStartDate = getStartDate(presentLink.coverage[0]);
+		const embargoStartDate = getStartDate(embargoLink.coverage[0]);
+
+		// Si presentStartDate est le plus ancien, on retourne presentLink. Sinon les deux
+		return presentStartDate.getTime() < embargoStartDate.getTime()
 			? [presentLink]
-			: [firstLink, secondLink];
+			: [presentLink, embargoLink];
 	}
 
 	// Step I.2.2
@@ -212,9 +226,22 @@ function compareEndCouvertureWhenCouvertureDifferent(
 	) {
 		const presentLink = findPresentLink(firstLink, secondLink);
 		const dateLink = findDateLink(firstLink, secondLink);
-		return compareStartDates(presentLink.coverage[0], dateLink.coverage[0])
+		const sameStartDate = compareStartDates(
+			presentLink.coverage[0],
+			dateLink.coverage[0],
+		);
+
+		if (sameStartDate) {
+			return [presentLink];
+		}
+
+		const presentStartDate = getStartDate(presentLink.coverage[0]);
+		const dateStartDate = getStartDate(dateLink.coverage[0]);
+
+		// Si presentStartDate est le plus ancien, on retourne presentLink. Sinon les deux
+		return presentStartDate.getTime() < dateStartDate.getTime()
 			? [presentLink]
-			: [firstLink, secondLink];
+			: [presentLink, dateLink];
 	}
 
 	// Step I.2.3
