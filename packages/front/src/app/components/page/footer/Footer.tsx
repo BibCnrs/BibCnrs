@@ -47,7 +47,10 @@ const Footer = () => {
 						alt="CNRS RF logo"
 						style={{
 							width: 200,
-							filter: theme.palette.mode === "dark" ? "invert(1)" : "none",
+							filter:
+								theme.palette.mode === "dark"
+									? "grayscale(1) invert(1)"
+									: "none",
 						}}
 					/>
 				</Link>

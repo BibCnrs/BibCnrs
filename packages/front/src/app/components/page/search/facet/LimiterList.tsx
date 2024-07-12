@@ -11,8 +11,10 @@ type LimiterListProps = {
 	activeLimiters?: FacetRequired["limiters"];
 	halFacet?: FacetEntry;
 	halActive?: boolean;
+	arxivFacet?: FacetEntry;
+	arxivActive?: boolean;
 	onLimitersChange: (value: FacetRequired["limiters"]) => void;
-	onHalChange: ({ provider }: { provider: FacetEntry[] }) => void;
+	onPrioritizedFacetChange: ({ provider }: { provider: FacetEntry[] }) => void;
 };
 
 export default function LimiterList({
@@ -20,8 +22,10 @@ export default function LimiterList({
 	activeLimiters,
 	halFacet,
 	halActive,
+	arxivFacet,
+	arxivActive,
 	onLimitersChange,
-	onHalChange,
+	onPrioritizedFacetChange,
 }: LimiterListProps) {
 	const { trackEvent } = useMatomo();
 
@@ -66,15 +70,29 @@ export default function LimiterList({
 	const handleHalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		trackEvent("Facet", "hal", event.target.checked ? "on" : "off");
 		if (event.target.checked) {
-			return onHalChange({
+			return onPrioritizedFacetChange({
 				provider: [halFacet],
 			});
 		}
 
-		return onHalChange({
+		return onPrioritizedFacetChange({
 			provider: [],
 		});
 	};
+
+	const handleArxivChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		trackEvent("Facet", "arXiv", event.target.checked ? "on" : "off");
+		if (event.target.checked) {
+			return onPrioritizedFacetChange({
+				provider: [arxivFacet],
+			});
+		}
+
+		return onPrioritizedFacetChange({
+			provider: [],
+		});
+	};
+
 	const handleDateRange = useCallback(
 		(key: "from" | "to", value: number) => {
 			// if value.length < 4, it means the user is typing the year
@@ -124,6 +142,20 @@ export default function LimiterList({
 						/>
 					}
 					label="HAL"
+				/>
+			)}
+			{arxivFacet && (
+				<FormControlLabel
+					key={"arXiv"}
+					control={
+						<Checkbox
+							checked={arxivActive}
+							onChange={handleArxivChange}
+							inputProps={{ "aria-label": "controlled" }}
+							size="small"
+						/>
+					}
+					label="arXiv"
 				/>
 			)}
 			<FacetTextType

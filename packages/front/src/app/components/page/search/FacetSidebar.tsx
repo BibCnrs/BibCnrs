@@ -42,7 +42,7 @@ export default function ({
 		[active.limiters, onChange],
 	);
 
-	const handleHalChange = useCallback(
+	const handlePrioritizedFacetChange = useCallback(
 		(facets: FacetSidebarProps<FacetRequired>["active"]["facets"]) => {
 			onChange({
 				limiters: active.limiters,
@@ -63,6 +63,19 @@ export default function ({
 		[active.facets, halFacet],
 	);
 
+	const arxivFacet = useMemo(
+		() => available.facets?.provider?.find((facet) => facet.name === "arXiv"),
+		[available.facets],
+	);
+
+	const arxivActive = useMemo(
+		() =>
+			active.facets?.provider?.some(
+				(facet) => facet?.name === arxivFacet?.name,
+			),
+		[active.facets, arxivFacet],
+	);
+
 	return (
 		<Stack gap={1}>
 			<Typography variant="h5" color="text" fontWeight="bold">
@@ -76,7 +89,9 @@ export default function ({
 				onLimitersChange={handleLimiterChange}
 				halFacet={halFacet}
 				halActive={halActive}
-				onHalChange={handleHalChange}
+				arxivFacet={arxivFacet}
+				arxivActive={arxivActive}
+				onPrioritizedFacetChange={handlePrioritizedFacetChange}
 			/>
 			{/* Facet */}
 			<FacetList
