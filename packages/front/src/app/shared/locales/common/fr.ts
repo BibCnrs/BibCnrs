@@ -300,7 +300,7 @@ Cordialement`,
 			oa: "Accès Ouvert",
 			anonymousMessage: "Connectez-vous pour accéder à toutes les plateformes.",
 			searchDatabase: "Rechercher une plateforme",
-			platform_zero: "Aucune platforme",
+			platform_zero: "Aucune plateforme",
 			platform_one: "Une plateforme",
 			platform_other: "{{ count }} plateformes",
 			filters: {
