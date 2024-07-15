@@ -26,6 +26,7 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "auto",
 				defaultTheme: "auto",
+				articleLinkType: "oa",
 				hasSeenPopup: false,
 			});
 		});
@@ -35,6 +36,7 @@ describe("UserSettingsController", () => {
 				await userSettingsController.updateUserSettings(1, {
 					displayFavorites: false,
 					displayTestNews: false,
+					articleLinkType: "fullText",
 					defaultSearchMode: "article",
 					defaultLanguage: "fr",
 					defaultTheme: "light",
@@ -43,6 +45,7 @@ describe("UserSettingsController", () => {
 			).toStrictEqual({
 				displayFavorites: false,
 				displayTestNews: false,
+				articleLinkType: "fullText",
 				defaultSearchMode: "article",
 				defaultLanguage: "fr",
 				defaultTheme: "light",

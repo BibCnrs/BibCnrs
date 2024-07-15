@@ -6,6 +6,7 @@ export class JanusAccountUpdateDto
 			janus_account,
 			| "id"
 			| "displayFavorites"
+			| "articleLinkType"
 			| "displayTestNews"
 			| "defaultSearchMode"
 			| "defaultLanguage"
