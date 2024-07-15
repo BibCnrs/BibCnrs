@@ -49,14 +49,13 @@ export function PublicationTitle({
 		setAnchorEl(null);
 	};
 
+	const isOpenAccessLink = (holding: PublicationHolding) =>
+		!holding.url.toLowerCase().includes("bib.cnrs.fr");
+
 	const openPoper = Boolean(anchorEl);
 
 	const href = reconciledFullTextHoldings[0].url;
-	const isOpenAccess = reconciledFullTextHoldings.some(
-		(holding) =>
-			holding.name.toLowerCase().includes("open access") ||
-			holding.name.toLowerCase().includes("full text from eric"),
-	);
+	const isOpenAccess = reconciledFullTextHoldings.every(isOpenAccessLink);
 
 	if (!isOpenAccess && !user) {
 		return (
@@ -132,40 +131,44 @@ export function PublicationTitle({
 					}}
 				>
 					<Stack spacing={2} p={2}>
-						{reconciledFullTextHoldings.map((value) => (
-							<Stack
-								key={value.name}
-								sx={{
-									flexDirection: "row",
-									gap: 2,
-									alignItems: "center",
-								}}
-							>
-								<Link
-									href={
-										isOpenAccess && user
-											? proxifyOAPublication(value.url, search.domain)
-											: value.url
-									}
-									target="_blank"
-									rel="noreferrer noopener nofollow"
-									onClick={(e) => {
-										e.stopPropagation();
+						{reconciledFullTextHoldings.map((value) => {
+							const isOpenAccess = isOpenAccessLink(value);
+							return (
+								<Stack
+									key={value.name}
+									sx={{
+										flexDirection: "row",
+										gap: 2,
+										alignItems: "center",
 									}}
-									sx={{ textDecoration: "none" }}
 								>
-									{value.name} - {getCoverage(value.coverage)}
-								</Link>
-								{user ? (
-									<BookmarkButton
-										className="table-bookmark-button"
-										title={`${value.name} - ${getCoverage(value.coverage)}`}
-										url={value.url}
-										source="publication"
-									/>
-								) : null}
-							</Stack>
-						))}
+									<Link
+										href={
+											isOpenAccess && user
+												? proxifyOAPublication(value.url, search.domain)
+												: value.url
+										}
+										target="_blank"
+										rel="noreferrer noopener nofollow"
+										onClick={(e) => {
+											e.stopPropagation();
+										}}
+										sx={{ textDecoration: "none" }}
+									>
+										{value.name} - {getCoverage(value.coverage)}
+									</Link>
+									{isOpenAccess && <OpenAccess />}
+									{user ? (
+										<BookmarkButton
+											className="table-bookmark-button"
+											title={`${value.name} - ${getCoverage(value.coverage)}`}
+											url={value.url}
+											source="publication"
+										/>
+									) : null}
+								</Stack>
+							);
+						})}
 					</Stack>
 				</Popover>
 			</>

@@ -6,6 +6,7 @@ import {
 	Grid,
 	IconButton,
 	Stack,
+	Tooltip,
 	Typography,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
@@ -409,18 +410,20 @@ const ArticlePage = () => {
 				value={articleQuery}
 				onSearch={handleSearch}
 				secondaryAction={
-					<IconButton
-						onClick={openAdvancedSearch}
-						sx={{
-							display: {
-								xs: "none",
-								md: "flex",
-							},
-						}}
-						aria-label={t("components.advancedSearch.modalTitle")}
-					>
-						<ManageSearchIcon />
-					</IconButton>
+					<Tooltip arrow title={t("components.advancedSearch.modalTitle")}>
+						<IconButton
+							onClick={openAdvancedSearch}
+							sx={{
+								display: {
+									xs: "none",
+									md: "flex",
+								},
+							}}
+							aria-label={t("components.advancedSearch.modalTitle")}
+						>
+							<ManageSearchIcon />
+						</IconButton>
+					</Tooltip>
 				}
 			>
 				<ChipFacet
