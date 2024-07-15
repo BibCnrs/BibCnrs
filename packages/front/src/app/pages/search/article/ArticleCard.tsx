@@ -35,14 +35,22 @@ function ArticleId({ id }: { id: number }) {
 export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const t = useTranslator();
 	const [getterArticle, _] = useState(new ArticleContentGetter(article, null));
-	const { search } = useBibContext();
+	const {
+		search,
+		session: { user },
+	} = useBibContext();
 
 	const title = getterArticle.getTitle();
 	const authors = getterArticle.getAuthors();
 	const doi = getterArticle.getDOI();
 	const source = getterArticle.getSource();
-	const href = getterArticle.proxify(getterArticle.getHref(), search.domain);
-	const openAccess = getterArticle.isOpenAccess();
+	const href = getterArticle.proxify(
+		getterArticle.getHref(user?.settings?.articleLinkType === "fullText"),
+		search.domain,
+	);
+	const openAccess = getterArticle.isOpenAccess(
+		user?.settings?.articleLinkType === "fullText",
+	);
 
 	return (
 		<Card

@@ -124,6 +124,7 @@ export type FavouriteResourceDataType = {
 export type UserSettingsDataType = {
 	displayFavorites: boolean;
 	displayTestNews: boolean;
+	articleLinkType: "oa" | "fullText";
 	defaultSearchMode: "article" | "journal" | "platform" | "searchData";
 	defaultLanguage: "auto" | "fr" | "en";
 	defaultTheme: "auto" | "light" | "dark";

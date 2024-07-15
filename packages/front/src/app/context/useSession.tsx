@@ -61,9 +61,11 @@ const getStorageTheme = (): ThemeType => {
 const DEFAULT_USER_SETTINGS: UserSettingsType = {
 	displayFavorites: true,
 	displayTestNews: true,
+	articleLinkType: "oa",
 	defaultLanguage: "auto",
 	defaultTheme: "auto",
 	defaultSearchMode: "article",
+	hasSeenPopup: false,
 };
 
 export function useSession() {

@@ -422,6 +422,10 @@ Sincerely`,
 				journal: "Journal",
 				platform: "Platform",
 				searchData: "Research data",
+				descriptionArticleLinkType:
+					"Which kind of article would you like to showcase?",
+				oa: "Open Access",
+				fullText: "Full Text",
 			},
 			generalSection: {
 				title: "General",

@@ -14,7 +14,10 @@ import { ArticleTitle } from "./ArticleTitle";
 
 export const ArticleSidebar = ({ article }) => {
 	const t = useTranslator();
-	const { search } = useBibContext();
+	const {
+		search,
+		session: { user },
+	} = useBibContext();
 	const [getterArticle, setGetterArticle] = useState(
 		new ArticleContentGetter(article, null),
 	);
@@ -101,7 +104,12 @@ export const ArticleSidebar = ({ article }) => {
 					<BookmarkButton
 						className="table-bookmark-button"
 						title={getterArticle.getTitle()}
-						url={getterArticle.proxify(getterArticle.getHref(), search.domain)}
+						url={getterArticle.proxify(
+							getterArticle.getHref(
+								user?.settings?.articleLinkType === "fullText",
+							),
+							search.domain,
+						)}
 						aria-label={t("components.search.content.bookmark", {
 							title: getterArticle.getTitle(),
 						})}
@@ -110,8 +118,15 @@ export const ArticleSidebar = ({ article }) => {
 				</Stack>
 				<ArticleTitle
 					title={getterArticle.getTitle()}
-					href={getterArticle.proxify(getterArticle.getHref(), search.domain)}
-					openAccess={getterArticle.isOpenAccess()}
+					href={getterArticle.proxify(
+						getterArticle.getHref(
+							user?.settings?.articleLinkType === "fullText",
+						),
+						search.domain,
+					)}
+					openAccess={getterArticle.isOpenAccess(
+						user?.settings?.articleLinkType === "fullText",
+					)}
 					type={getterArticle.getType()}
 				/>
 
