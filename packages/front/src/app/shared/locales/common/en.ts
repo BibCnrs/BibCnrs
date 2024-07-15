@@ -73,7 +73,7 @@ const en: Common = {
 		},
 		nav: {
 			article: "Article",
-			database: "Platforms",
+			database: "Platform",
 			publication: "Journal, book",
 			researchData: "Research data",
 		},
