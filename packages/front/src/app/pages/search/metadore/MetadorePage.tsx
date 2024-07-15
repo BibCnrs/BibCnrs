@@ -38,6 +38,7 @@ const MetadorePage = () => {
 	const { search, setSearch } = useBibContext();
 
 	const [selectedMetadore, setSelectedMetadore] = useState(null);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const { data, isFetching, isLoading, isError, error } = useQuery<
 		MetadoreDataType,
@@ -130,6 +131,20 @@ const MetadorePage = () => {
 		updatePageQueryUrl(RouteMetadore, navigate, param);
 	}, [navigate, search]);
 
+	useEffect(() => {
+		if (selectedMetadore) {
+			setIsDrawerOpen(true);
+		}
+	}, [selectedMetadore]);
+
+	const handleDrawerClose = () => {
+		setIsDrawerOpen(false);
+		// Wait for the drawer to close before resetting the selected publication
+		setTimeout(() => {
+			setSelectedMetadore(null);
+		}, 195);
+	};
+
 	const handleField = (
 		_: MouseEvent<HTMLElement>,
 		field: string | null,
@@ -219,7 +234,7 @@ const MetadorePage = () => {
 							<>
 								<MetadorePageHeader totalHits={data?.totalHits ?? 0} />
 
-								{!data.results ? (
+								{!data?.results ? (
 									<Box mt={5}>
 										<Typography variant="h6">
 											{t("components.search.noSearch")}
@@ -252,8 +267,8 @@ const MetadorePage = () => {
 								/>
 								<Drawer
 									anchor="right"
-									open={!!selectedMetadore}
-									onClose={() => setSelectedMetadore(null)}
+									open={isDrawerOpen}
+									onClose={handleDrawerClose}
 								>
 									{selectedMetadore && (
 										<MetadoreSidebar metadore={selectedMetadore} />

@@ -87,6 +87,7 @@ const ArticlePage = () => {
 	const [exports, setExports] = useState<ContextData>([]);
 	const [selectedArticle, setSelectedArticle] = useState(null);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const articleQuery = useMemo(() => {
 		return search.article.query || search.query || "";
@@ -202,6 +203,20 @@ const ArticlePage = () => {
 			serviceCatch(error);
 		}
 	}, [error, isError, serviceCatch]);
+
+	useEffect(() => {
+		if (selectedArticle) {
+			setIsDrawerOpen(true);
+		}
+	}, [selectedArticle]);
+
+	const handleDrawerClose = () => {
+		setIsDrawerOpen(false);
+		// Wait for the drawer to close before resetting the selected publication
+		setTimeout(() => {
+			setSelectedArticle(null);
+		}, 195);
+	};
 
 	const handleChangeDomain = (event, field) => {
 		setSaveHistory(true);
@@ -498,8 +513,8 @@ const ArticlePage = () => {
 								/>
 								<Drawer
 									anchor="right"
-									open={!!selectedArticle}
-									onClose={() => setSelectedArticle(null)}
+									open={isDrawerOpen}
+									onClose={handleDrawerClose}
 								>
 									{selectedArticle && (
 										<ArticleSidebar article={selectedArticle} />
