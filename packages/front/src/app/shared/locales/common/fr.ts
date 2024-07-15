@@ -74,7 +74,7 @@ const fr: Common = {
 		},
 		nav: {
 			article: "Article",
-			database: "Plateformes",
+			database: "Plateforme",
 			publication: "Revue, ouvrage",
 			researchData: "Données de recherche",
 		},
