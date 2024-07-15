@@ -72,27 +72,31 @@ export class EbscoSearchAlertCronService {
 
 		return Promise.all(
 			histories.map(async (history) => {
-				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-				const event = history.event as any;
+				try {
+					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+					const event = history.event as any;
 
-				const query = this.getQueryFromHistory(history);
-				const searchResult =
-					await this.ebscoSearchArticleService.searchArticleRaw(
-						{
-							username: "guest",
-							domains,
-						},
-						query,
-						event.domain,
-					);
+					const query = this.getQueryFromHistory(history);
+					const searchResult =
+						await this.ebscoSearchArticleService.searchArticleRaw(
+							{
+								username: "guest",
+								domains,
+							},
+							query,
+							event.domain,
+						);
 
-				return this.prismaService.$queryRaw`
+					const identifiers = getResultsIdentifiers(searchResult)?.slice?.(3);
+					if (!identifiers) {
+						return Promise.resolve();
+					}
+
+					return this.prismaService.$queryRaw`
             UPDATE history SET 
             has_alert = true, 
             frequence = '1 day',
-            last_results = CAST(${JSON.stringify(
-							getResultsIdentifiers(searchResult).slice(3),
-						)} AS json),
+            last_results = CAST(${JSON.stringify(identifiers)} AS json),
             last_execution = ${new Date(0)},
             nb_results = ${
 							searchResult.SearchResult.Statistics.TotalHits - 3 > 0
@@ -101,6 +105,12 @@ export class EbscoSearchAlertCronService {
 						},
             active = true
             WHERE id = ${history.id}`;
+				} catch (e) {
+					logger.error(
+						`Error while creating test alert for history(id=${history.id}) error="${e}"`,
+					);
+					return Promise.resolve();
+				}
 			}),
 		);
 	}
@@ -562,9 +572,7 @@ export class EbscoSearchAlertCronService {
 							}
 							${
 								oaLink && oaLink.OA === true
-									? `<span style="background-color: #FB9A83; color: #6941EB; padding: 2.5px;">
-										OA
-									</span>`
+									? `<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAYAAAAlBadpAAADGklEQVQ4T5VUTWgTURB+s9s22UURkk2jpVgFEVIs+FPEg/EmevDiwR9EhWKxFRHqDz3UJGo2LUgLtpWi1epBe7GCehHPWhGt9iCFWrxYixRtkoqX7CbNvnHerkk2qUV8p83MfG+++d6XAVZxcLhONX/kjjHAPchYCBibAYRxT7BmFNrmM+5yypWO0RMIs7w1SqD1lZcyBvNQJR1VupLjhVwRnEtozRbHl8hQtZMASYZsjgGrZ4hBO8Qgg5K8V40svHF+/zmG7p9GxBAAZCl40RtNDxVzca2VMRwQF9MFM0osHSqCTT2wn6P1wukodarRVG8lbTOhtXPOb4m4DHDQE00/szubcf91zrCTbjW9qxQfXPhmLBMSr0pmYnARka2hkQbUaLrDBhtx3zCJdJraTqqxdPNysZxIJu7/QPR3EOiOEltsc8CkMuTFvJgiOk/+C7xScWX8r50LRaQ2kHinGOMnaYxwIU706G2lBwh4hp5texltm3piXQNi7iklt/2LSRkYe4O1prk0QUo2OECYJwc8lhCmOWAjmeUQCVXnYlISLKP7xpwCgYObSv3qTmiZNYvjDG7yGL9+9hKrc3YJY89J7QOQ7Q5usaylKQcHo0o0fWIl2uTCh6TLcZGX5eomMHQtjsijIqBU1dRC1/ek+DZ1rY0j7pMkfOWNLPaLGPasDRj53ILTSNIJ7HtEsx52G6TMrjYN+YgaS46Jr+JzARuDjO5/R7PsLAMnfB2csxsl+lK/Gkudd4Op9QQYCd9d5KyVRJglETaKgmyPr5Hn4b39LwIwZIRwTSw1KXJk5S/kgQ0gsREyhZiN37bnkOSwEkm+ti/Q/SHyTJgsO06W/WQDE4HdyC17GUggtQP21WlmJvvV6cKmvLXeXZXrxhZLrKcF8y3p0ySWglf1NDh/DN1/mZ4g4ajIpugdzrrXjb2eLGtIAJ0aiNCTdrs2iTZCT0a+dg4l5pBBEhgG3DuNnuieEk3RZnGtIUcM7RoRvFTcYyW57f1F5X1KLHXF1cBVIWYTRuBLLYC4lQTbTIJ9JgYfFbn6fsFABcRvaVl5WsqstqoAAAAASUVORK5CYII=" alt="OA" style="height: 16px; margin-left: 4px;" />`
 									: ""
 							}
 						</h4>
