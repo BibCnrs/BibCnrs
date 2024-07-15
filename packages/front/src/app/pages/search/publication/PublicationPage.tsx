@@ -81,6 +81,7 @@ const PublicationPage = () => {
 	const [searchByLetter, setSearchByLetter] = useState<string>("");
 	const [seed, setSeed] = useState<number>(0);
 	const [selectedPublication, setSelectedPublication] = useState(null);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
@@ -191,6 +192,20 @@ const PublicationPage = () => {
 
 		updatePageQueryUrl(RoutePublication, navigate, param);
 	}, [navigate, search]);
+
+	useEffect(() => {
+		if (selectedPublication) {
+			setIsDrawerOpen(true);
+		}
+	}, [selectedPublication]);
+
+	const handleDrawerClose = () => {
+		setIsDrawerOpen(false);
+		// Wait for the drawer to close before resetting the selected publication
+		setTimeout(() => {
+			setSelectedPublication(null);
+		}, 195);
+	};
 
 	const performSearch = (value: string | undefined) => {
 		setSearch({
@@ -456,8 +471,8 @@ const PublicationPage = () => {
 								/>
 								<Drawer
 									anchor="right"
-									open={!!selectedPublication}
-									onClose={() => setSelectedPublication(null)}
+									open={isDrawerOpen}
+									onClose={handleDrawerClose}
 								>
 									{selectedPublication && (
 										<PublicationSidebar publication={selectedPublication} />
