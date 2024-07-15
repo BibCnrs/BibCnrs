@@ -37,7 +37,7 @@ export default function FacetList({
 	}
 
 	return (
-		<Stack gap={1}>
+		<Stack gap={2}>
 			{MOST_USED_FACETS.map((facet) => (
 				<FacetSearchList
 					key={facet}

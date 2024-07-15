@@ -78,15 +78,7 @@ export const AnonymousHome = () => {
 				</Box>
 			)}
 
-			<Stack
-				gap={2}
-				sx={{
-					// rewrith min-height for Mui Card component
-					".MuiCard-root": {
-						minHeight: "100%",
-					},
-				}}
-			>
+			<Stack gap={2}>
 				<Typography
 					variant="h6"
 					aria-label={t("pages.resources.title")}

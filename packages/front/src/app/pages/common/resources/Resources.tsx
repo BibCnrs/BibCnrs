@@ -51,6 +51,9 @@ export const DisplayResources = ({
 					role="listitem"
 					aria-label={resource.name_fr}
 					elevation={3}
+					sx={{
+						minHeight: "100%",
+					}}
 				>
 					<CardActionArea
 						component={Link}
