@@ -382,6 +382,7 @@ const PublicationPage = () => {
 									padding: 0,
 									minWidth: "30px",
 									margin: "0 2px",
+									marginBottom: "8px",
 									backgroundColor:
 										search.query === `${searchByLetter}${letter}*`
 											? "secondary.main"
