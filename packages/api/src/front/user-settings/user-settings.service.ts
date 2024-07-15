@@ -11,6 +11,7 @@ export class UserSettingsService {
 			select: {
 				displayFavorites: true,
 				displayTestNews: true,
+				articleLinkType: true,
 				defaultSearchMode: true,
 				defaultLanguage: true,
 				defaultTheme: true,
@@ -27,6 +28,7 @@ export class UserSettingsService {
 			select: {
 				displayFavorites: true,
 				displayTestNews: true,
+				articleLinkType: true,
 				defaultSearchMode: true,
 				defaultLanguage: true,
 				defaultTheme: true,

@@ -324,7 +324,7 @@ export class ArticleContentGetter {
 		return articleLinks;
 	};
 
-	public getHref = (): Url | null => {
+	public getHref = (prioritizeFullText?: boolean): Url | null => {
 		const articleLinks = this.getArticleLinks();
 		if (this.initial.is_linkiq) {
 			return articleLinks.fullTextLinks.at(0);
@@ -337,6 +337,11 @@ export class ArticleContentGetter {
 		const unpaywall = articleLinks.urls.find((d) =>
 			/unpaywalleds/i.test(d.name),
 		);
+
+		if (fullText && prioritizeFullText) {
+			return fullText;
+		}
+
 		if (!unpaywall) {
 			// BUSINESS RULES: For the moment, we consider that an open access link is a link that contains the words "open access" or "Full Text from ERIC"
 			openAccess = articleLinks.fullTextLinks.find((d) =>
@@ -466,8 +471,8 @@ export class ArticleContentGetter {
 		return [];
 	};
 
-	public isOpenAccess = (): boolean => {
-		const href = this.getHref();
+	public isOpenAccess = (prioritizeFullText?: boolean): boolean => {
+		const href = this.getHref(prioritizeFullText);
 		if (!href) {
 			return false;
 		}

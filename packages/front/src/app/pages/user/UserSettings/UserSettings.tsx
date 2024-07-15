@@ -139,6 +139,32 @@ const UserSettings = () => {
 								{t("pages.userSettings.searchSection.searchData")}
 							</ToggleButton>
 						</ToggleButtonGroup>
+
+						<Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+							{t("pages.userSettings.searchSection.descriptionArticleLinkType")}
+						</Typography>
+						<ToggleButtonGroup
+							value={user.settings.articleLinkType}
+							exclusive
+							onChange={handleToggleChange("articleLinkType")}
+							aria-label={t(
+								"pages.userSettings.searchSection.descriptionArticleLinkType",
+							)}
+							color="primary"
+						>
+							<ToggleButton
+								value="oa"
+								aria-label={t("pages.userSettings.searchSection.oa")}
+							>
+								{t("pages.userSettings.searchSection.oa")}
+							</ToggleButton>
+							<ToggleButton
+								value="fullText"
+								aria-label={t("pages.userSettings.searchSection.fullText")}
+							>
+								{t("pages.userSettings.searchSection.fullText")}
+							</ToggleButton>
+						</ToggleButtonGroup>
 					</Box>
 
 					<Box>

@@ -424,6 +424,10 @@ Cordialement`,
 				journal: "Revue",
 				platform: "Plateforme",
 				searchData: "Données de recherche",
+				descriptionArticleLinkType:
+					"Quel type d'article souhaitez-vous en avant ?",
+				oa: "Accès ouvert",
+				fullText: "Éditeur",
 			},
 			generalSection: {
 				title: "Général",

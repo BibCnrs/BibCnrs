@@ -7,6 +7,7 @@ export class CreateJanusAccountDto
 			| "id"
 			| "displayFavorites"
 			| "displayTestNews"
+			| "articleLinkType"
 			| "defaultSearchMode"
 			| "defaultLanguage"
 			| "defaultTheme"

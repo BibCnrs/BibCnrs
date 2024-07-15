@@ -422,6 +422,9 @@ export type Common = {
 				journal: string;
 				platform: string;
 				searchData: string;
+				descriptionArticleLinkType: string;
+				oa: string;
+				fullText: string;
 			};
 			generalSection: {
 				title: string;

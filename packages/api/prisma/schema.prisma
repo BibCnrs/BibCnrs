@@ -178,6 +178,11 @@ enum Theme {
   dark
 }
 
+enum ArticleLinkType {
+  oa
+  fullText
+}
+
 model janus_account {
   id                      Int                       @id(map: "bib_user_pkey") @default(autoincrement())
   primary_institute       Int?
@@ -197,6 +202,7 @@ model janus_account {
   unit                    unit?                     @relation(fields: [primary_unit], references: [id], onUpdate: NoAction, map: "bib_user_primary_unit_fkey")
   displayFavorites        Boolean                   @default(true)
   displayTestNews         Boolean                   @default(true)
+  articleLinkType         ArticleLinkType           @default(oa)
   defaultSearchMode       SearchMode                @default(article)
   defaultLanguage         Language                  @default(auto)
   defaultTheme            Theme                     @default(auto)
@@ -391,17 +397,17 @@ model content_management {
   enable     Boolean   @default(true)
   order      Int?
   media_id   Int?
-  media      medias?                @relation(fields: [media_id], references: [id])
+  media      medias?   @relation(fields: [media_id], references: [id])
 }
 
 model medias {
-  id         Int          @id @default(autoincrement())
-  name       String       @db.VarChar(255)
-  file_name  String       @db.VarChar(255)
-  file       String
-  url        String
-  created_at DateTime     @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  tests_news tests_news[]
+  id                 Int                  @id @default(autoincrement())
+  name               String               @db.VarChar(255)
+  file_name          String               @db.VarChar(255)
+  file               String
+  url                String
+  created_at         DateTime             @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  tests_news         tests_news[]
   content_management content_management[]
 }
 

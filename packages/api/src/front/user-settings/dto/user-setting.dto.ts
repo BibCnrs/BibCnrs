@@ -4,6 +4,7 @@ export type UpdateUserSettingsDto = Partial<
 		janus_account,
 		| "displayFavorites"
 		| "displayTestNews"
+		| "articleLinkType"
 		| "defaultSearchMode"
 		| "defaultLanguage"
 		| "defaultTheme"
