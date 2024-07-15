@@ -21,6 +21,7 @@ const buttonStyles: SxProps<Theme> = {
 	width: "200px",
 	textTransform: "none",
 	fontWeight: "900",
+	fontSize: "1rem",
 	":hover": {
 		backgroundColor: (theme) => theme.palette.secondary.main,
 		color: (theme) => theme.palette.secondary.contrastText,

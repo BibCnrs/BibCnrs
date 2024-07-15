@@ -101,8 +101,8 @@ export default function FilterTab({
 					return null;
 				}
 				return (
-					<Stack key={section}>
-						<FormLabel component="legend">
+					<Stack key={section} mb={1}>
+						<FormLabel component="legend" sx={{ fontWeight: 700 }}>
 							{t(`pages.database.filters.${section}`)}
 						</FormLabel>
 						{filters

@@ -36,7 +36,7 @@ export default function FacetDateRange({
 	};
 
 	return (
-		<Stack gap={0.5}>
+		<Stack gap={0.5} mt={1} mb={1}>
 			<FormLabel component="legend">
 				{t("components.facet.date", { from, to })}
 			</FormLabel>
