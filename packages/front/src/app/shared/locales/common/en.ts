@@ -108,7 +108,7 @@ const en: Common = {
 				present: "Present",
 				links: 'Access to "{{ title }}" article',
 				pdf: "Pdf access",
-				seeMore: "See more",
+				seeMore: "See more >",
 				seeMoreAbout: "See more about {{ title }}",
 				abstract: "Abstract",
 				contributors: "Contributors",
