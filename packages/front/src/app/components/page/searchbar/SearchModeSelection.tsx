@@ -18,7 +18,7 @@ const buttonStyles: SxProps<Theme> = {
 	color: (theme) => theme.palette.text.primary,
 	paddingX: "20px",
 	borderRadius: "20px",
-	width: "200px",
+	width: "220px",
 	textTransform: "none",
 	fontWeight: "900",
 	fontSize: "1rem",
