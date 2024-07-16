@@ -443,7 +443,7 @@ export function getPrioritizedLink(links: Link[]): Link[] {
 			}
 		} else {
 			currentLink = selectedLinks[1];
-			nextLink = links[i + 2];
+			nextLink = links[i + 1];
 			// Check if the first selected link exists in the prioritizedLinks array before pushing
 			if (!prioritizedLinks.includes(selectedLinks[0])) {
 				prioritizedLinks.push(selectedLinks[0]);
