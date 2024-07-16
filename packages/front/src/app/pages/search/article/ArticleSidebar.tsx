@@ -280,7 +280,6 @@ export const ArticleSidebar = ({ article }) => {
 						</Typography>
 						<Stack gap={1}>
 							{allLinks.map((value) => {
-								console.log("value", value);
 								const link = getterArticle.proxify(
 									{ url: value.url, name: value.name },
 									search.domain,

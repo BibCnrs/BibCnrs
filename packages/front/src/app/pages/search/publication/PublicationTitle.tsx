@@ -156,7 +156,10 @@ export function PublicationTitle({
 										}}
 										sx={{ textDecoration: "none" }}
 									>
-										{value.name} - {getCoverage(value.coverage)}
+										{value.name} - {getCoverage(value.coverage)}{" "}
+										{value.embargo
+											? `(embargo: ${value.embargo.value} ${value.embargo.unit})`
+											: null}
 									</Link>
 									{isOpenAccess && <OpenAccess />}
 									{user ? (
