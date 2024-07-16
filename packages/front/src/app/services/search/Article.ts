@@ -173,6 +173,10 @@ export class ArticleContentGetter {
 		this.retrieve = retrieve;
 	}
 
+	public isRetrieve() {
+		return this.retrieve !== null;
+	}
+
 	public getTitle = (): string | null => {
 		const retrieveObj = this.getEntry("Title");
 		const retrieve = this.getString(retrieveObj);

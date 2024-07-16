@@ -6,10 +6,11 @@ import {
 	Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import ExportArticleCheckbox from "../../../components/element/button/ExportArticleCheckbox";
 import { useBibContext } from "../../../context/BibContext";
+import { createQuery, environment } from "../../../services/Environment";
 import { ArticleContentGetter } from "../../../services/search/Article";
 import { useTranslator } from "../../../shared/locales/I18N";
 import { ArticleTitle } from "./ArticleTitle";
@@ -34,23 +35,52 @@ function ArticleId({ id }: { id: number }) {
 
 export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const t = useTranslator();
-	const [getterArticle, _] = useState(new ArticleContentGetter(article, null));
+	const [getterArticle, setArticleGetter] = useState(
+		new ArticleContentGetter(article, null),
+	);
 	const {
 		search,
 		session: { user },
 	} = useBibContext();
 
+	const [href, setHref] = useState<string | null>(null);
+
 	const title = getterArticle.getTitle();
 	const authors = getterArticle.getAuthors();
 	const doi = getterArticle.getDOI();
 	const source = getterArticle.getSource();
-	const href = getterArticle.proxify(
-		getterArticle.getHref(user?.settings?.articleLinkType === "fullText"),
-		search.domain,
-	);
 	const openAccess = getterArticle.isOpenAccess(
 		user?.settings?.articleLinkType === "fullText",
 	);
+
+	useEffect(() => {
+		const resultHref = getterArticle.getHref(
+			user?.settings?.articleLinkType === "fullText",
+		);
+		if (resultHref) {
+			setHref(getterArticle.proxify(resultHref, search.domain));
+			return;
+		}
+
+		if (getterArticle.isRetrieve()) {
+			return;
+		}
+
+		// Try to retrieve article link from the server
+		void fetch(
+			createQuery(
+				`${environment.get.retrieve.article.replace("{domain}", search.domain)}?dbid=${getterArticle.getDBID()}&an=${getterArticle.getAN()}`,
+			),
+		)
+			.then((response) => (response.ok ? response.json() : null))
+			.then((data) => {
+				if (!data) {
+					return;
+				}
+
+				setArticleGetter(new ArticleContentGetter(article, data));
+			});
+	}, [article, getterArticle, search.domain, user?.settings?.articleLinkType]);
 
 	return (
 		<Card

@@ -18,6 +18,10 @@ function proxifyOAPublication(url: string, domain: string) {
 	)}&sid=oa&domaine=${domain}&doi=null`;
 }
 
+export function isOpenAccessLink(holding: PublicationHolding) {
+	return !holding.url.toLowerCase().includes("bib.cnrs.fr");
+}
+
 export function PublicationTitle({
 	reconciledFullTextHoldings,
 	titleCoverage,
@@ -48,9 +52,6 @@ export function PublicationTitle({
 		event.preventDefault();
 		setAnchorEl(null);
 	};
-
-	const isOpenAccessLink = (holding: PublicationHolding) =>
-		!holding.url.toLowerCase().includes("bib.cnrs.fr");
 
 	const openPoper = Boolean(anchorEl);
 
