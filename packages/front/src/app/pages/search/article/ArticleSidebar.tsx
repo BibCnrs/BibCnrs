@@ -73,6 +73,12 @@ export const ArticleSidebar = ({ article }) => {
 			].includes(item.label),
 	);
 
+	const articleLinks = getterArticle.getArticleLinks();
+	const allLinks = [
+		...articleLinks.fullTextLinks,
+		...articleLinks.pdfLinks,
+		...articleLinks.urls,
+	];
 	return (
 		<Box
 			display="grid"
@@ -267,16 +273,14 @@ export const ArticleSidebar = ({ article }) => {
 					</Stack>
 				)}
 
-				{getterArticle.getArticleLinks() && (
+				{articleLinks && (
 					<Stack gap={1}>
 						<Typography variant="subtitle1" fontWeight="bold">
 							{t("components.search.content.AccessLink")}
 						</Typography>
 						<Stack gap={1}>
-							{[
-								...getterArticle.getArticleLinks().fullTextLinks,
-								...getterArticle.getArticleLinks().urls,
-							].map((value) => {
+							{allLinks.map((value) => {
+								console.log("value", value);
 								const link = getterArticle.proxify(
 									{ url: value.url, name: value.name },
 									search.domain,

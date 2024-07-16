@@ -1,8 +1,7 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import { Container, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import ColoredPaper from "../../../components/element/paper/colored/ColoredPaper";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/search/ChipFacet";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
@@ -156,9 +155,9 @@ const Database = () => {
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				<Stack gap={2}>
 					{!user && (
-						<ColoredPaper id="database-anonymous" elevation={3} border>
+						<Alert variant="outlined" severity="info">
 							{t("pages.database.anonymousMessage")}
-						</ColoredPaper>
+						</Alert>
 					)}
 
 					<Box

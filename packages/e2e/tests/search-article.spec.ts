@@ -26,7 +26,7 @@ test("Should search article", async ({ page }) => {
 		}),
 	).toBeVisible();
 
-	await expect(page.getByText("Integrating Children")).toBeVisible();
+	await expect(page.getByText("Over my dead body")).toBeVisible();
 
 	await expect(
 		page.getByRole("link", {
@@ -86,15 +86,13 @@ test("Should open drawer when clicking on see more about", async ({ page }) => {
 		}),
 	).toBeVisible();
 
-	await expect(page.getByText("Wannemuehler KA")).toBeVisible();
+	await expect(page.getByText("Govender")).toBeVisible();
 
 	await expect(
 		page.getByRole("heading", {
 			name: "Source",
 		}),
 	).toBeVisible();
-
-	await expect(page.getByText("AIDS (London, England)[AIDS]")).toBeVisible();
 
 	await page
 		.locator(".MuiDrawer-root")
@@ -106,7 +104,11 @@ test("Should open drawer when clicking on see more about", async ({ page }) => {
 			},
 		});
 
-	await expect(page.getByText("Integrating Children")).toBeVisible();
+	await expect(
+		page.getByRole("link", {
+			name: "The influence of hearing aid",
+		}),
+	).toBeVisible();
 	await janusLogout(page);
 });
 

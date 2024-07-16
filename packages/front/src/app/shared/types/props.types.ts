@@ -2,7 +2,6 @@ import type { Property } from "csstype";
 import type {
 	ElementType,
 	MouseEvent,
-	MouseEventHandler,
 	PropsWithChildren,
 	PropsWithoutRef,
 	ReactNode,
@@ -67,17 +66,6 @@ export type AuthenticationProps = PropsWithoutRef<{
 }>;
 
 export type ProtectedRouteProps = HaveReactChildren;
-
-export type ColoredPaperProps = PropsWithChildren<{
-	id?: string;
-	className?: string;
-	color?: Property.Color | undefined;
-	border?: boolean;
-	onClick?: () => void;
-	onMouseOver?: MouseEventHandler<HTMLDivElement>;
-	onMouseOut?: MouseEventHandler<HTMLDivElement>;
-	elevation?: number;
-}>;
 
 export type TestsNewsProps = PropsWithoutRef<{
 	data: TestsNewsDataType | undefined;

@@ -339,7 +339,7 @@ Sincerely`,
 		},
 		licences: {
 			title: "Licences",
-			empty: "No licences was founds.",
+			empty: "No licence was found.",
 			pdf: "PDF link:",
 		},
 		privacy: {
