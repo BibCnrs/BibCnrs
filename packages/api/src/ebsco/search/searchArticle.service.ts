@@ -212,24 +212,29 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async getUrlFromUnpaywall(unpaywallUrl, domain) {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	async getUrlFromUnpaywall(unpaywallUrl: any, domain: any) {
 		try {
 			const doi = unpaywallUrl
 				.replace("https://api.unpaywall.org/v2/doi=", "")
 				.replace("?email=jjoly@ebsco.com", "");
 			const query = `{GetByDOI(dois:["${doi}"]){is_oa, best_oa_location{ url_for_pdf }}}`;
 
-			const response = await this.http.request(
-				`${this.ebsco.ezUnpaywallUrl}/api/graphql?sid=bibapi`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"x-api-key": `${this.ebsco.ezUnpaywallKey}`,
-					},
-					data: JSON.stringify({ query: query }),
+			const response = await this.http.request<{
+				data: {
+					GetByDOI: {
+						is_oa: boolean;
+						best_oa_location: { url_for_pdf: string };
+					}[];
+				};
+			}>(`${this.ebsco.ezUnpaywallUrl}/api/graphql?sid=bibapi`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"x-api-key": `${this.ebsco.ezUnpaywallKey}`,
 				},
-			);
+				data: JSON.stringify({ query: query }),
+			});
 
 			if (response.status !== 200) {
 				throw new Error("Unpaywall error");
@@ -237,8 +242,8 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 			const result = response.data;
 
-			const is_oa = result.data.GetByDOI?.[0]?.is_oa;
-			const url = result.data.GetByDOI?.[0]?.best_oa_location?.url_for_pdf;
+			const is_oa = result.data?.GetByDOI?.[0]?.is_oa;
+			const url = result.data?.GetByDOI?.[0]?.best_oa_location?.url_for_pdf;
 			if (is_oa && url) {
 				const urlEncoded = encodeURIComponent(url);
 				return `${this.ebsco.apiEndpoint}/ebsco/oa?sid=unpaywall&doi=${doi}&url=${urlEncoded}&domaine=${domain}`;
