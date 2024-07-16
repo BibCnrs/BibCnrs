@@ -3,7 +3,7 @@ import { Stack } from "@mui/system";
 import { useCallback, useMemo } from "react";
 import { useMatomo } from "../../../../shared/matomo";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
-import FacetTextType from "./FacetCheckBox";
+import FacetCheckBox from "./FacetCheckBox";
 import FacetDateRange from "./FacetDateRange";
 
 type LimiterListProps = {
@@ -120,12 +120,12 @@ export default function LimiterList({
 
 	return (
 		<Stack>
-			<FacetTextType
+			<FacetCheckBox
 				field="fullText"
 				checked={!!activeLimiters?.fullText}
 				onChange={handleLimiterChange}
 			/>
-			<FacetTextType
+			<FacetCheckBox
 				field="openAccess"
 				checked={!!activeLimiters?.openAccess}
 				onChange={handleLimiterChange}
@@ -158,7 +158,7 @@ export default function LimiterList({
 					label="arXiv"
 				/>
 			)}
-			<FacetTextType
+			<FacetCheckBox
 				field="reviewed"
 				checked={!!activeLimiters?.reviewed}
 				onChange={handleLimiterChange}
