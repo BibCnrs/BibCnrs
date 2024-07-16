@@ -13,7 +13,7 @@ import type {
 	PublicationCoverageDataType,
 	PublicationHolding,
 } from "../../../shared/types/data.types";
-import { PublicationTitle } from "./PublicationTitle";
+import { PublicationTitle, isOpenAccessLink } from "./PublicationTitle";
 import { getPrioritizedLink } from "./prioritizeLinksAlgo";
 
 function PublicationId({ id }: { id: number }) {
@@ -92,6 +92,7 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 		return null;
 	}
 
+	const isOpenAccess = reconciledFullTextHoldings.every(isOpenAccessLink);
 	const href = reconciledFullTextHoldings[0].url;
 	const bookmarkTitle = `${title} - ${reconciledFullTextHoldings[0].name}`;
 
@@ -111,7 +112,7 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 	};
 
 	const handleSelectedItem = () => {
-		if (!user) {
+		if (!isOpenAccess && !user) {
 			return showLoginModal();
 		}
 
