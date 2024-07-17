@@ -58,6 +58,9 @@ export const lightTheme: ThemeOptions = {
 					":hover": {
 						backgroundColor: lightThemePalette.info.light,
 					},
+					"& a": {
+						color: lightThemePalette.text.primary,
+					},
 				},
 			},
 		},

@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, FormHelperText } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -19,7 +19,7 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 	const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 	const { addFavourite } = useFavourites();
 
-	const [formError, setFormError] = useState(false);
+	const [formError, setFormError] = useState<string[]>([]);
 	const [title, setTitle] = useState("");
 	const [url, setUrl] = useState("");
 
@@ -28,20 +28,24 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 	};
 
 	const handleSave = () => {
-		if (!title || title === "") {
-			setFormError(true);
-			return;
+		const errors: string[] = [];
+		if (!title) {
+			errors.push("title");
 		}
 
-		if (!url || url === "") {
-			setFormError(true);
-			return;
+		if (!url) {
+			errors.push("url");
+		} else {
+			try {
+				new URL(url);
+			} catch (e) {
+				errors.push("url");
+			}
 		}
 
-		try {
-			new URL(url);
-		} catch (e) {
-			setFormError(true);
+		setFormError(errors);
+
+		if (errors.length) {
 			return;
 		}
 
@@ -67,25 +71,35 @@ const PersonalBookmark = ({ open, onClose }: DialogProps) => {
 	};
 
 	return (
-		<Dialog fullScreen={fullScreen} open={open}>
+		<Dialog fullScreen={fullScreen} open={open} fullWidth maxWidth="xs">
 			<DialogTitle>{t("components.dialog.title.bookmark")}</DialogTitle>
 			<DialogContent>
-				<FormControl sx={{ m: 1, minWidth: 240 }}>
+				<FormControl fullWidth>
 					<TextField
 						value={title}
 						onChange={handleFormChange("title")}
-						error={formError}
+						error={formError.includes("title")}
 						label={t("components.dialog.fields.title")}
 						size="small"
 					/>
+					{formError.includes("title") && (
+						<FormHelperText error={true}>
+							{t("components.dialog.fields.invalidTitle")}
+						</FormHelperText>
+					)}
 					<TextField
 						sx={{ marginTop: "20px" }}
 						value={url}
 						onChange={handleFormChange("url")}
-						error={formError}
+						error={formError.includes("url")}
 						label={t("components.dialog.fields.url")}
 						size="small"
 					/>
+					{formError.includes("url") && (
+						<FormHelperText error={true}>
+							{t("components.dialog.fields.invalidUrl")}
+						</FormHelperText>
+					)}
 				</FormControl>
 			</DialogContent>
 			<DialogActions>

@@ -1,7 +1,7 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useTranslator } from "../../../../shared/locales/I18N";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
 import FacetSearchList from "./FacetSearchList";
@@ -21,6 +21,8 @@ export default function FacetList({
 	onChange,
 }: FacetFacetsProps) {
 	const t = useTranslator();
+
+	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
 
 	const handleFacetChange = useCallback(
 		(values: FacetEntry[], key: string) => {
@@ -56,7 +58,11 @@ export default function FacetList({
 					border: 0,
 					margin: 0,
 					padding: 0,
+					"&.Mui-expanded": {
+						marginTop: 0,
+					},
 				}}
+				onChange={(_, expanded) => setIsMoreFacetOpen(expanded)}
 			>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
@@ -64,9 +70,17 @@ export default function FacetList({
 						border: 0,
 						margin: 0,
 						padding: 0,
+						"&.Mui-expanded": {
+							minHeight: "48px",
+						},
+						"&.Mui-expanded .MuiAccordionSummary-content": {
+							margin: "12px 0",
+						},
 					}}
 				>
-					{t("components.facet.more")}
+					{isMoreFacetOpen
+						? t("components.facet.less")
+						: t("components.facet.more")}
 				</AccordionSummary>
 				<AccordionDetails
 					sx={{

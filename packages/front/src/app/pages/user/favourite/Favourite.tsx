@@ -163,6 +163,7 @@ const Favourite = () => {
 									mt: 2,
 								}}
 								onClick={resetSearch}
+								size="small"
 							>
 								{t("pages.favourite.reset")}
 							</Button>
@@ -172,7 +173,7 @@ const Favourite = () => {
 					<Grid item xs={12} md={8} lg={9}>
 						<Stack gap={2}>
 							<Stack gap={1}>
-								<Typography variant="h6" fontWeight="bold">
+								<Typography variant="h6" fontWeight="bold" color="primary">
 									{t("pages.favourite.superFavourites")}
 								</Typography>
 
@@ -192,6 +193,7 @@ const Favourite = () => {
 										justifyContent: "space-between",
 										alignItems: "center",
 									}}
+									color="primary"
 								>
 									{t("pages.favourite.favourites")}
 									<Button

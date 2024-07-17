@@ -35,7 +35,7 @@ export class EzTicketController {
 				.split(",")[0]
 				.split("-")[0];
 
-			return language === "fr" ? language : "en";
+			return language.startsWith("fr") ? "fr" : "en";
 		} catch (error) {
 			return "en";
 		}

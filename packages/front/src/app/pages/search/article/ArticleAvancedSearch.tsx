@@ -91,6 +91,8 @@ export default function ArticleAdvancedSearch({
 				<DialogActions
 					sx={{
 						justifyContent: "space-between",
+						paddingX: 3,
+						paddingY: 2,
 					}}
 				>
 					<Button
