@@ -22,7 +22,7 @@ test("Should delete history entry", async ({ page }) => {
 	await goToHistory(page);
 
 	expect(page.getByText("Le Cun").first()).toBeVisible();
-	expect(page.getByText("46,405").first()).toBeVisible();
+	expect(page.getByText("46 405").first()).toBeVisible();
 
 	await page.getByRole("button", { name: "Supprimer l'entrée Le Cun" }).click();
 	await page.getByRole("button", { name: "Confirmer" }).click();
@@ -50,7 +50,7 @@ test("Should perform search", async ({ page }) => {
 	await goToHistory(page);
 
 	expect(page.getByText("Jeff Dean").first()).toBeVisible();
-	expect(page.getByText("46,405").first()).toBeVisible();
+	expect(page.getByText("46 405").first()).toBeVisible();
 
 	await page
 		.getByRole("button", { name: "Lancer la recherche Jeff Dean" })

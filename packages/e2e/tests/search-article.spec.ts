@@ -174,7 +174,7 @@ test("Should add history entry", async ({ page }) => {
 	await goToHistory(page);
 
 	expect(page.getByText("turing").first()).toBeVisible();
-	expect(page.getByText("46,405").first()).toBeVisible();
+	expect(page.getByText("46 405").first()).toBeVisible();
 
 	await janusLogout(page);
 });
