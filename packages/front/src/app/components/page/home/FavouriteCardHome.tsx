@@ -23,9 +23,7 @@ const FavouriteCardHome = ({ favourite }) => {
 				}}
 			>
 				<Stack direction="column" spacing={1}>
-					{!favourite.source ||
-					favourite.source === "personal" ||
-					favourite.personal ? (
+					{favourite.source === "personal" || favourite.personal ? (
 						<Chip
 							label={t("pages.favourite.personal")}
 							color="secondary"
@@ -38,7 +36,7 @@ const FavouriteCardHome = ({ favourite }) => {
 						/>
 					) : (
 						<Chip
-							label={t(`pages.favourite.${favourite.source}`)}
+							label={t(`pages.favourite.${favourite.source ?? "unknown"}`)}
 							color="default"
 							size="small"
 							sx={{
