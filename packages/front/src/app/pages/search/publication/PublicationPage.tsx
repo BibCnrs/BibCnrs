@@ -79,6 +79,8 @@ const PublicationPage = () => {
 	const facetsCleaner = useFacetsCleaner<PublicationParam>();
 	const { search, setSearch } = useBibContext();
 	const [searchByLetter, setSearchByLetter] = useState<string>("");
+	const [searchByLetterL2, setSearchByLetterL2] = useState<string>("");
+	const [searchByNumber, setSearchByNumber] = useState<string>("");
 	const [seed, setSeed] = useState<number>(0);
 	const [selectedPublication, setSelectedPublication] = useState(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -239,15 +241,21 @@ const PublicationPage = () => {
 	};
 
 	const handleSearchByLetterL1 = (letter: string) => {
+		setSearchByNumber("");
 		setSearchByLetter(letter);
 		performLetterSearch(`${letter}*`);
 	};
 	const handleSearchByLetterL2 = (letter: string) => {
+		setSearchByNumber("");
+		setSearchByLetterL2(letter);
 		performLetterSearch(`${letter}*`);
 	};
 
 	const handleSearchByNumber = () => {
 		setSearchByLetter("");
+		setSearchByNumber(
+			"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*",
+		);
 		performLetterSearch(
 			"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*",
 		);
@@ -360,6 +368,7 @@ const PublicationPage = () => {
 								margin: "0 2px",
 								backgroundColor:
 									searchByLetter === letter ? "secondary.main" : "primary.main",
+								color: searchByLetter === letter ? "black" : "white",
 							}}
 							key={letter}
 							onClick={() => {
@@ -377,10 +386,15 @@ const PublicationPage = () => {
 							minWidth: "30px",
 							margin: "0 2px",
 							backgroundColor:
-								search.query ===
+								searchByNumber ===
 								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
 									? "secondary.main"
 									: "primary.main",
+							color:
+								searchByNumber ===
+								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+									? "black"
+									: "white",
 						}}
 						onClick={handleSearchByNumber}
 					>
@@ -399,10 +413,14 @@ const PublicationPage = () => {
 									margin: "0 2px",
 									marginBottom: "8px",
 									backgroundColor:
-										search.query === `${searchByLetter}${letter}*`
+										searchByLetterL2 === `${searchByLetter}${letter}`
 											? "secondary.main"
 											: "primary.main",
 									fontFamily: "monospace",
+									color:
+										searchByLetterL2 === `${searchByLetter}${letter}`
+											? "black"
+											: "white",
 								}}
 								key={`${searchByLetter}${letter}`}
 								onClick={() =>
