@@ -43,16 +43,16 @@ services:
 
   # Application portal
   front:
-    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:latest
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}
 
   # Application back office
   admin:
-    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:latest
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}
     restart: always
 
   # Application api
   api:
-    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:latest
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:${BIBAPI_VERSION}
     volumes:
       - ./../storage/uploads:/app/packages/api/uploads
       - ./../storage/logs:/app/packages/api/logs
