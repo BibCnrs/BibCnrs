@@ -134,6 +134,9 @@ const Database = () => {
 	}, [querySearch]);
 
 	const handleSearchChange = (value) => {
+		if (!value) {
+			return setNameFilter("");
+		}
 		setNameFilter(value.toLocaleUpperCase());
 	};
 
@@ -145,6 +148,7 @@ const Database = () => {
 				value={query.get("q") || search.query}
 				onSearch={handleSearchChange}
 				disableAutocomplete
+				disableSearchButton
 			>
 				<ChipFacet
 					value={search.domain}
