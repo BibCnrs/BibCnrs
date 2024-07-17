@@ -368,7 +368,7 @@ const PublicationPage = () => {
 								margin: "0 2px",
 								backgroundColor:
 									searchByLetter === letter ? "secondary.main" : "white",
-								color: searchByLetter === letter ? "black" : "black",
+								color: "black",
 								"&:hover": {
 									backgroundColor:
 										searchByNumber === letter ? "secondary.main" : "white",
