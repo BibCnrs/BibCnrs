@@ -66,7 +66,9 @@ const en: Common = {
 			},
 			fields: {
 				title: "Title",
+				invalidTitle: "Title is required",
 				url: "URL",
+				invalidUrl: "URL is required and must start with http:// or https://",
 			},
 			cancel: "Cancel",
 			save: "Save",
@@ -180,6 +182,7 @@ const en: Common = {
 			reset: "Reset your filters",
 			type: "Type of publication",
 			more: "More filters",
+			less: "Less filters",
 			chips: {
 				title: "Title",
 				description: "Description",
@@ -391,6 +394,7 @@ Sincerely`,
 			personal: "Personal resource",
 			shared: "Shared resource",
 			reset: "Reset filters",
+			unknown: "Favourite resource",
 			confirmDelete: {
 				title: "Delete a favourite",
 				description: "Do you really want to delete this favourite?",

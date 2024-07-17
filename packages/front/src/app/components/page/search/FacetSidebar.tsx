@@ -99,17 +99,7 @@ export default function ({
 				activeFacets={active.facets}
 				onChange={handleFacetChange}
 			/>
-			<Button
-				color="error"
-				size="small"
-				variant="text"
-				onClick={onReset}
-				sx={{
-					width: "auto",
-					textTransform: "none",
-					justifyContent: "flex-start",
-				}}
-			>
+			<Button color="error" size="small" variant="text" onClick={onReset}>
 				{t("components.facet.reset")}
 			</Button>
 		</Stack>

@@ -127,9 +127,7 @@ function FavouriteListItem({
 				}}
 			>
 				<Stack direction="column" spacing={1}>
-					{!favourite.source ||
-					favourite.source === "personal" ||
-					favourite.personal ? (
+					{favourite.source === "personal" || favourite.personal ? (
 						<Chip
 							label={t("pages.favourite.personal")}
 							color="secondary"
@@ -142,7 +140,7 @@ function FavouriteListItem({
 						/>
 					) : (
 						<Chip
-							label={t(`pages.favourite.${favourite.source}`)}
+							label={t(`pages.favourite.${favourite.source ?? "unknown"}`)}
 							color="default"
 							size="small"
 							sx={{
@@ -205,6 +203,7 @@ function FavouriteListItem({
 							: "pages.favourite.pin",
 						{ url: favourite.url },
 					)}
+					color="primary"
 				>
 					{favourite.isSuperFavorite ? (
 						<PushPinIcon />

@@ -12,7 +12,14 @@ export const PublicationPageHeader = ({
 	const t = useTranslator();
 	const language = useLanguageKey();
 	return (
-		<Stack direction="row" alignItems="center" justifyContent="space-between">
+		<Stack
+			direction="row"
+			alignItems="center"
+			justifyContent="space-between"
+			sx={{
+				height: "42px",
+			}}
+		>
 			<Typography fontWeight="bold">
 				{new Intl.NumberFormat(language === "fr" ? "fr-FR" : "en-US").format(
 					totalHits,

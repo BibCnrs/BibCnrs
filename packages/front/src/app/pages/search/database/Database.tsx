@@ -176,7 +176,7 @@ const Database = () => {
 							/>
 						</Box>
 						<Stack gap={2}>
-							<Typography>
+							<Typography fontWeight={700}>
 								{t("pages.database.platform", {
 									count: filteredDatabases.length,
 								})}

@@ -68,6 +68,9 @@ const fr: Common = {
 			fields: {
 				title: "Titre",
 				url: "URL",
+				invalidTitle: "Le titre est requis",
+				invalidUrl:
+					"L'URL est requise et doit commencer par http:// ou https://",
 			},
 			cancel: "Annuler",
 			save: "Enregistrer",
@@ -181,6 +184,7 @@ const fr: Common = {
 			reset: "Réinitialiser vos filtres",
 			type: "Type de publication",
 			more: "Plus de filtres",
+			less: "Moins de filtres",
 			chips: {
 				title: "Titre",
 				description: "Description",
@@ -392,6 +396,7 @@ Cordialement`,
 			personal: "Ressource personnelle",
 			shared: "Ressource partagée",
 			reset: "Réinitialiser la recherche",
+			unknown: "Ressource favorite",
 			emptyFavorites: "Aucun favoris n'a été trouvé pour cette catégorie.",
 			confirmDelete: {
 				title: "Supprimer un favori",

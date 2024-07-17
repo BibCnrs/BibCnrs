@@ -367,8 +367,12 @@ const PublicationPage = () => {
 								minWidth: "30px",
 								margin: "0 2px",
 								backgroundColor:
-									searchByLetter === letter ? "secondary.main" : "primary.main",
-								color: searchByLetter === letter ? "black" : "white",
+									searchByLetter === letter ? "secondary.main" : "white",
+								color: searchByLetter === letter ? "black" : "black",
+								"&:hover": {
+									backgroundColor:
+										searchByNumber === letter ? "secondary.main" : "white",
+								},
 							}}
 							key={letter}
 							onClick={() => {
@@ -389,12 +393,15 @@ const PublicationPage = () => {
 								searchByNumber ===
 								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
 									? "secondary.main"
-									: "primary.main",
-							color:
-								searchByNumber ===
-								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
-									? "black"
 									: "white",
+							color: "black",
+							"&:hover": {
+								backgroundColor:
+									searchByNumber ===
+									"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+										? "secondary.main"
+										: "white",
+							},
 						}}
 						onClick={handleSearchByNumber}
 					>
@@ -411,16 +418,18 @@ const PublicationPage = () => {
 									padding: 0,
 									minWidth: "30px",
 									margin: "0 2px",
-									marginBottom: "8px",
 									backgroundColor:
 										searchByLetterL2 === `${searchByLetter}${letter}`
 											? "secondary.main"
-											: "primary.main",
-									fontFamily: "monospace",
-									color:
-										searchByLetterL2 === `${searchByLetter}${letter}`
-											? "black"
 											: "white",
+									fontFamily: "monospace",
+									color: "black",
+									"&:hover": {
+										backgroundColor:
+											searchByLetterL2 === `${searchByLetter}${letter}`
+												? "secondary.main"
+												: "white",
+									},
 								}}
 								key={`${searchByLetter}${letter}`}
 								onClick={() =>

@@ -78,7 +78,9 @@ export type Common = {
 			};
 			fields: {
 				title: string;
+				invalidTitle: string;
 				url: string;
+				invalidUrl: string;
 			};
 			cancel: string;
 			save: string;
@@ -192,6 +194,7 @@ export type Common = {
 			reset: string;
 			type: string;
 			more: string;
+			less: string;
 			chips: {
 				title: string;
 				description: string;
@@ -376,6 +379,7 @@ export type Common = {
 			metadore: string;
 			personal: string;
 			shared: string;
+			unknown: string;
 			reset: string;
 			confirmDelete: {
 				title: string;
@@ -483,7 +487,7 @@ export const useTranslator = (): TFunction => {
 
 export const useLanguageKey = (): string => {
 	const { i18n } = useFullTranslator();
-	return i18n.language;
+	return i18n.language.startsWith("fr") ? "fr" : "en";
 };
 
 export const supportedLanguages: SupportedLanguages = [
