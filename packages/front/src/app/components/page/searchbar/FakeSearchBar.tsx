@@ -10,7 +10,7 @@ export const FakeSearchBar = ({ title }: { title: string }) => {
 			sx={{
 				backgroundImage: "url(/img/SEARCH_BANNER.png)",
 				backgroundSize: "contain",
-				minHeight: "200px",
+				minHeight: "250px",
 				display: "flex",
 			}}
 		>

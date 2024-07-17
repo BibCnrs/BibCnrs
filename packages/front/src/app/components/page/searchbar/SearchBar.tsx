@@ -113,7 +113,7 @@ const SearchBar = ({
 			sx={{
 				backgroundImage: "url(/img/SEARCH_BANNER.png)",
 				backgroundSize: "contain",
-				minHeight: "200px",
+				minHeight: "250px",
 			}}
 			alignItems="center"
 			justifyContent="center"
@@ -137,8 +137,8 @@ const SearchBar = ({
 				sx={{
 					display: "flex",
 					flexDirection: "column",
-					mt: 0,
-					mb: 0,
+					mt: 2,
+					mb: 2,
 					gap: 1,
 					alignItems: "center",
 				}}
