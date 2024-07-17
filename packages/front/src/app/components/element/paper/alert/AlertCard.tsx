@@ -56,7 +56,11 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 					<img
 						src={content.media?.url}
 						alt="about"
-						style={{ width: "100%", maxWidth: "300px", borderRadius: "6px" }}
+						style={{
+							maxHeight: "100px",
+							maxWidth: "200px",
+							borderRadius: "6px",
+						}}
 					/>
 				) : (
 					<WarningIcon color="error" />
