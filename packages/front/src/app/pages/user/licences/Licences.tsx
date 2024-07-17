@@ -13,7 +13,7 @@ import type {
 } from "../../../shared/types/data.types";
 
 const buttonStyles: SxProps<Theme> = {
-	color: (theme) => theme.palette.text.primary,
+	color: "black",
 	paddingX: "20px",
 	borderRadius: "20px",
 	width: "200px",
