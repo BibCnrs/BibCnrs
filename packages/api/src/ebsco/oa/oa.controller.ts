@@ -135,15 +135,16 @@ export class EbscoOaController {
 		}
 
 		if (user_id && typeof user_id === "string") {
-			const janusUser = await this.janusAccountService.findOneByUid(user_id);
+			const numericUserId = Number.parseInt(user_id, 10);
+			const janusUser =
+				await this.janusAccountService.findOneById(numericUserId);
 			if (janusUser) {
 				await this.logJanusUser(janusUser, url, sid, domaine, doi);
 				return res.redirect(url);
 			}
 
-			const inistUser = await this.inistAccountService.findOneById(
-				Number.parseInt(user_id, 10),
-			);
+			const inistUser =
+				await this.inistAccountService.findOneById(numericUserId);
 			if (inistUser) {
 				await this.logInistUser(inistUser, url, sid, domaine, doi);
 			}
