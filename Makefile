@@ -29,7 +29,8 @@ env-mkdirs:								## Create storage directories
 		../storage/backups \
 		../storage/logs \
 		../storage/postgresql \
-		../storage/uploads
+		../storage/uploads \
+		../shibboleth/log
 
 env-copy: env-mkdirs					## Copy env files if they don't exist
 	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env || true
@@ -319,40 +320,3 @@ clear-history-dev:								## Clear search history entries older than 2 months in
 clear_history:									## Clear search history entries older than 2 months in production mode
 	docker exec bibcnrs-api \
 		yarn workspace @bibcnrs/api run command:cleanOldHistoryEntries
-
-
-# This is temporary, this can be removed once the new architecture is in place
-draft-build-api:
-	docker build \
-		-f ./packages/api/Dockerfile \
-		--build-arg http_proxy \
-		--build-arg https_proxy \
-		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:latest' \
-		.
-
-draft-build-front:
-	docker build \
-		-f ./packages/front/Dockerfile \
-		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:latest' \
-		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
-		--build-arg MATOMO_TRACKER_URL=$(MATOMO_TRACKER_URL) \
-		--build-arg MATOMO_SCRIPT_URL=$(MATOMO_SCRIPT_URL) \
-		--build-arg MATOMO_SITE_ID=$(MATOMO_SITE_ID) \
-		.
-
-draft-build-admin:
-	docker build \
-		-f ./packages/admin/Dockerfile \
-		-t 'vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:latest' \
-		--build-arg BIBAPI_HOST=$(BIBAPI_HOST) \
-		.
-
-draft-build: draft-build-api draft-build-front draft-build-admin
-
-draft-start: draft-build env-mkdirs
-	cp -n docker-compose.prod.env.sample docker-compose.draft.env
-	docker compose --env-file docker-compose.draft.env -f docker-compose.draft.yml up
-
-draft-stop: env-mkdirs
-	cp -n docker-compose.prod.env.sample docker-compose.draft.env
-	docker compose --env-file docker-compose.draft.env -f docker-compose.draft.yml down
