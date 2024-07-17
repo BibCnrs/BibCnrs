@@ -35,10 +35,24 @@ export default function FacetDateRange({
 		}
 	};
 
+	const handleBlur: typeof handleDateRange = (field, value) => {
+		handleDateRange(
+			field,
+			Number.isNaN(value)
+				? field === "from"
+					? initialFrom
+					: initialTo
+				: value,
+		);
+	};
+
 	return (
 		<Stack gap={0.5} mt={1} mb={1}>
 			<FormLabel component="legend">
-				{t("components.facet.date", { from, to })}
+				{t("components.facet.date", {
+					from: Number.isNaN(from) ? "" : from,
+					to: Number.isNaN(to) ? "" : to,
+				})}
 			</FormLabel>
 
 			<Stack gap={1} direction="row" alignItems="center">
@@ -49,7 +63,7 @@ export default function FacetDateRange({
 					size="small"
 					value={from}
 					onChange={(event) => setFrom(Number.parseInt(event.target.value, 10))}
-					onBlur={() => handleDateRange("from", from)}
+					onBlur={() => handleBlur("from", from)}
 					onKeyUp={(event) => handleEnter("from", event.key)}
 				/>
 				<Typography>{t("components.facet.to")}</Typography>
@@ -60,7 +74,7 @@ export default function FacetDateRange({
 					size="small"
 					value={to}
 					onChange={(event) => setTo(Number.parseInt(event.target.value, 10))}
-					onBlur={() => handleDateRange("to", to)}
+					onBlur={() => handleBlur("to", to)}
 					onKeyUp={(event) => handleEnter("to", event.key)}
 				/>
 			</Stack>
