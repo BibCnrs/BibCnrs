@@ -427,7 +427,7 @@ Sincerely`,
 				platform: "Platform",
 				searchData: "Research data",
 				descriptionArticleLinkType:
-					"Which kind of article would you like to showcase?",
+					"Which link would you like to showcase by result?",
 				oa: "Open Access",
 				fullText: "Full Text",
 			},
