@@ -1,4 +1,5 @@
 import {
+	Button,
 	Checkbox,
 	FormControlLabel,
 	FormGroup,
@@ -11,7 +12,7 @@ import type {
 	DatabaseItemProps,
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
-import type { INITIAL_FILTER } from "./filters";
+import { INITIAL_FILTER } from "./filters";
 
 export default function FilterTab({
 	setFilters,
@@ -87,6 +88,10 @@ export default function FilterTab({
 		];
 	};
 
+	const resetSearch = () => {
+		setFilters(INITIAL_FILTER);
+	};
+
 	return (
 		<FormGroup sx={{ position: "sticky", top: 0 }}>
 			<Typography variant="h6" fontWeight="bold">
@@ -124,6 +129,16 @@ export default function FilterTab({
 					</Stack>
 				);
 			})}
+			<Button
+				color="error"
+				sx={{
+					mt: 2,
+				}}
+				onClick={resetSearch}
+				size="small"
+			>
+				{t("pages.favourite.reset")}
+			</Button>
 		</FormGroup>
 	);
 }

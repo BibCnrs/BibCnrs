@@ -430,7 +430,7 @@ Cordialement`,
 				platform: "Plateforme",
 				searchData: "Données de recherche",
 				descriptionArticleLinkType:
-					"Quel type d'article souhaitez-vous en avant ?",
+					"Quel lien souhaitez-vous mettre en avant par résultat ?",
 				oa: "Accès ouvert",
 				fullText: "Éditeur",
 			},
