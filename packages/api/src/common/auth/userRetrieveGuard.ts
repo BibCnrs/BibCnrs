@@ -24,6 +24,8 @@ export class UserRetrieveGuard implements CanActivate {
 	): Promise<boolean> {
 		const request = context.switchToHttp().getRequest<Request>();
 		const token = this.extractTokenFromCookie(request);
+		// biome-ignore lint/style/useTemplate: <explanation>
+		console.log("token" + token);
 		if (!token) {
 			return true;
 		}

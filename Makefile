@@ -242,7 +242,7 @@ prod-init-db: env-mkdirs				## Initialize the database with seed data in product
 	docker compose -f docker-compose.prod.yml run --rm bibcnrs-api yarn workspace @bibcnrs/api run prisma migrate resolve --applied 0_init
 
 save-db: ## create postgres dump for prod database in backups directory with given name or default to current date
-	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
+	docker exec bibcnrs-db-1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD pg_dump --username $$POSTGRES_USER $$POSTGRES_DB > /backups/$(shell date +%Y_%m_%d_%H_%M_%S).sql'
 
 _pre_restore_db:
 	docker compose -f docker-compose.prod.yml stop
@@ -251,10 +251,10 @@ _pre_restore_db:
 _post_restore_db:
 	docker compose -f docker-compose.prod.yml stop
 
-_restore_db: save-db
-	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
-	docker exec bibcnrs-api-postgres bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
-	docker exec bibcnrs-api-postgres bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@bibcnrs-api-postgres:5432/$$POSTGRES_DB'
+_restore_db: 
+	docker exec bibcnrs-db-1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
+	docker exec bibcnrs-db-1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
+	docker exec bibcnrs-db-1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@bibcnrs-db-1:5432/$$POSTGRES_DB'
 
 restore-db:  ## restore a given dump to the postgres database list all dump if none specified
 ifdef COMMAND_ARGS

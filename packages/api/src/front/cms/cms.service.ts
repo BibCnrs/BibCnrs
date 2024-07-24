@@ -66,7 +66,7 @@ export class FrontCmsService {
 				},
 			],
 		});
-
+		console.log("cms getContent");
 		return cms.map((content) => this.mapCMSMedia(content));
 	}
 }
