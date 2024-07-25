@@ -66,6 +66,7 @@ export class FrontCmsService {
 				},
 			],
 		});
+		
 		return cms.map((content) => this.mapCMSMedia(content));
 	}
 }
