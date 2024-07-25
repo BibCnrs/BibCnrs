@@ -7,7 +7,6 @@ export class EbscoDomainService {
 	constructor(private prismaService: PrismaService) {}
 
 	async getCommunities(where: Prisma.communityWhereInput = {}) {
-		console.log("EbscoDomainService");
 		return this.prismaService.community.findMany({
 			where,
 		});
