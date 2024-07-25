@@ -251,7 +251,7 @@ _pre_restore_db:
 _post_restore_db:
 	docker compose -f docker-compose.prod.yml stop
 
-_restore_db: save-db
+_restore_db: 
 	docker exec bibcnrs-db-1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD dropdb --username $$POSTGRES_USER $$POSTGRES_DB'
 	docker exec bibcnrs-db-1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
 	docker exec bibcnrs-db-1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@bibcnrs-db-1:5432/$$POSTGRES_DB'
