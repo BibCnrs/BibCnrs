@@ -19,7 +19,7 @@ export class AuthService {
 			origin,
 			exp: Math.ceil(Date.now() / 1000) + this.authConfig.expiresIn,
 		};
-		
+
 		return {
 			cookieToken: jwt.sign(tokenData, this.authConfig.cookieSecret, {
 				algorithm: JWT_ALG,
