@@ -28,9 +28,13 @@ export const database = async (
 				return {
 					...value,
 					// eslint-disable-next-line camelcase
-					url_fr: `https://${domain}.bib.cnrs.fr/login?url=${value.url_fr}`,
+					url_fr: `https://${domain}.bib.cnrs.fr/login?qurl=${encodeURIComponent(
+						value.url_fr,
+					)}`,
 					// eslint-disable-next-line camelcase
-					url_en: `https://${domain}.bib.cnrs.fr/login?url=${value.url_en}`,
+					url_en: `https://${domain}.bib.cnrs.fr/login?qurl=${encodeURIComponent(
+						value.url_en,
+					)}`,
 				};
 			}
 			return {
