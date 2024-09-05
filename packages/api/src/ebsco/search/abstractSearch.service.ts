@@ -259,7 +259,7 @@ export class AbstractEbscoSearchService {
 			query.queries.push({
 				boolean: "AND",
 				field: null,
-				term: "LO system.a2731812 OR LO system.a01000000280100001094 OR LO system.a6255937OR OR LN edsdoj OR LN edsdob OR LN edsgso OR LN edsper OR LN edsgal OR LN edseur OR IS edsairFT OR LN edshal",
+				term: "LO system.a2731812 OR LO system.a01000000280100001094 OR LO system.a6255937OR OR LN edsdoj OR LN edsdob OR LN edsgso OR LN edsper OR LN edsgal OR LN edseur OR IS edsairFT OR LN edshal OR LN edsarx",
 			});
 		}
 
