@@ -27,9 +27,9 @@ services:
       DOCKER_HOST_IP: ${DOCKER_HOST_IP}
     working_dir: /var/www/html
     volumes:
-      - ./../shibboleth/log:/var/log/shibboleth/
+      - ./../storage/shibboleth/log:/var/log/shibboleth/
       - ./../storage/shibboleth/shibboleth:/etc/shibboleth/
-      - ./../storage/shibboleth/shibboleth/apache2/sites-available:/etc/apache2/sites-available
+      - ./../storage/shibboleth/apache2/sites-available:/etc/apache2/sites-available
       - /etc/ssl/certs:/etc/ssl/certs/
       - /etc/ssl/private:/etc/ssl/private/
     restart: always
