@@ -13,7 +13,22 @@ http {
         server_tokens           off;
         include                 /etc/nginx/mime.types;
 
-        location ~ ^/(Shibboleth.sso|api/ebsco/login_renater|shibboleth-sp)/ {
+
+        location ^/Shibboleth.sso/ {
+            proxy_pass          http://shibboleth:80/;
+            proxy_redirect      off;
+            proxy_set_header    Host $host;
+            break;
+        }
+
+        location ^/shibboleth-sp/ {
+            proxy_pass          http://shibboleth:80/;
+            proxy_redirect      off;
+            proxy_set_header    Host $host;
+            break;
+        }
+
+        location ^/api/ebsco/login_renater/ {
             proxy_pass          http://shibboleth:80/;
             proxy_redirect      off;
             proxy_set_header    Host $host;
