@@ -28,9 +28,8 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./../shibboleth/log:/var/log/shibboleth/
-      - ./packages/shibboleth/shibboleth/:/etc/shibboleth/
-      - ./packages/shibboleth/shibboleth/ssl:/etc/shibboleth/ssl
-      - ./packages/shibboleth/apache2/sites-available:/etc/apache2/sites-available
+      - ./../storage/shibboleth/:/etc/shibboleth/
+      - ./../storage/shibboleth/shibboleth/apache2/sites-available:/etc/apache2/sites-available
       - /etc/ssl/certs:/etc/ssl/certs/
       - /etc/ssl/private:/etc/ssl/private/
     restart: always
