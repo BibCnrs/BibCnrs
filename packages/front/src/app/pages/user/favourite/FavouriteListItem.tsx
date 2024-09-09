@@ -133,6 +133,9 @@ function FavouriteListItem({
 							sx={{
 								paddingTop: 0,
 								cursor: "grab",
+								":hover:active": {
+									cursor: "grabbing",
+								},
 							}}
 							{...attributes}
 							{...listeners}
