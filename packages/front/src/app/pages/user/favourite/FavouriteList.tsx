@@ -10,6 +10,7 @@ import {
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import {
 	SortableContext,
+	arrayMove,
 	rectSortingStrategy,
 	sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
@@ -23,7 +24,7 @@ import {
 	DialogTitle,
 	Typography,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 import FavouriteListItem from "./FavouriteListItem";
@@ -49,6 +50,13 @@ function FavouriteList({
 		[favourites],
 	);
 
+	const [localeFavourites, setLocaleFavourites] =
+		useState<FavouriteResourceDataType[]>(favourites);
+
+	useEffect(() => {
+		setLocaleFavourites(favourites);
+	}, [favourites]);
+
 	const { removeFavourite } = useFavourites();
 
 	const sensors = useSensors(
@@ -68,6 +76,9 @@ function FavouriteList({
 		if (over && active.id !== over.id) {
 			const oldIndex = identifiers.indexOf(active.id);
 			const newIndex = identifiers.indexOf(over.id);
+			// reorder favourites locally to avoid async lag
+			setLocaleFavourites(arrayMove(localeFavourites, oldIndex, newIndex));
+			// trigger the async operation
 			handleMove(oldIndex, newIndex);
 		}
 	};
@@ -77,7 +88,7 @@ function FavouriteList({
 		setFavouriteToDelete(null);
 	};
 
-	if (favourites.length === 0) {
+	if (localeFavourites.length === 0) {
 		return (
 			<Typography
 				variant="h6"
@@ -115,7 +126,7 @@ function FavouriteList({
 					strategy={rectSortingStrategy}
 					disabled={hasFilter}
 				>
-					{favourites.map((favourite) => (
+					{localeFavourites.map((favourite) => (
 						<FavouriteListItem
 							key={favourite.id}
 							favourite={favourite}
