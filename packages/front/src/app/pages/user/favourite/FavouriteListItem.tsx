@@ -1,6 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS as DndCSS } from "@dnd-kit/utilities";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import {
@@ -102,10 +103,8 @@ function FavouriteListItem({
 
 	return (
 		<Card
-			ref={setNodeRef}
 			elevation={3}
 			sx={{
-				cursor: hasFilter ? "default" : "grab",
 				transform: DndCSS.Transform.toString(transform),
 				transition,
 				display: "flex",
@@ -115,8 +114,6 @@ function FavouriteListItem({
 					backgroundColor: hasFilter ? "#fff" : undefined,
 				},
 			}}
-			{...attributes}
-			{...listeners}
 			role="listitem"
 			aria-label={favourite.url}
 		>
@@ -127,29 +124,45 @@ function FavouriteListItem({
 				}}
 			>
 				<Stack direction="column" spacing={1}>
-					{favourite.source === "personal" || favourite.personal ? (
-						<Chip
-							label={t("pages.favourite.personal")}
-							color="secondary"
-							size="small"
+					<Stack direction="row">
+						<IconButton
+							disabled={hasFilter}
+							ref={setNodeRef}
+							disableRipple
+							edge="start"
 							sx={{
-								fontWeight: 700,
-								textTransform: "uppercase",
-								width: "fit-content",
+								paddingTop: 0,
+								cursor: "grab",
 							}}
-						/>
-					) : (
-						<Chip
-							label={t(`pages.favourite.${favourite.source ?? "unknown"}`)}
-							color="default"
-							size="small"
-							sx={{
-								fontWeight: 700,
-								textTransform: "uppercase",
-								width: "fit-content",
-							}}
-						/>
-					)}
+							{...attributes}
+							{...listeners}
+						>
+							<DragIndicator />
+						</IconButton>
+						{favourite.source === "personal" || favourite.personal ? (
+							<Chip
+								label={t("pages.favourite.personal")}
+								color="secondary"
+								size="small"
+								sx={{
+									fontWeight: 700,
+									textTransform: "uppercase",
+									width: "fit-content",
+								}}
+							/>
+						) : (
+							<Chip
+								label={t(`pages.favourite.${favourite.source ?? "unknown"}`)}
+								color="default"
+								size="small"
+								sx={{
+									fontWeight: 700,
+									textTransform: "uppercase",
+									width: "fit-content",
+								}}
+							/>
+						)}
+					</Stack>
 
 					<Tooltip
 						enterDelay={500}
