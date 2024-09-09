@@ -13,10 +13,9 @@ services:
       - front
       - admin
       - api
-      - rp
+      - shibboleth
 
-  # rp
-  rp:
+  shibboleth:
     image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/shibboleth-sp3:2.0
     environment:
       http_proxy: ${http_proxy}
@@ -28,9 +27,9 @@ services:
     working_dir: /var/www/html
     volumes:
         - ./../shibboleth/log:/var/log/shibboleth/
-        - ./packages/rp/shibboleth/:/etc/shibboleth/
-        - ./packages/rp/shibboleth/ssl:/etc/shibboleth/ssl
-        - ./packages/rp/apache2/sites-available:/etc/apache2/sites-available
+        - ./packages/shibboleth/shibboleth/:/etc/shibboleth/
+        - ./packages/shibboleth/shibboleth/ssl:/etc/shibboleth/ssl
+        - ./packages/shibboleth/apache2/sites-available:/etc/apache2/sites-available
     restart: always
 
   # Content delivery
