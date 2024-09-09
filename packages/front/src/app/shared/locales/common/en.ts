@@ -211,6 +211,7 @@ const en: Common = {
 				open: "Access",
 				delete: "Delete",
 			},
+			handler: "Move {{ title }}",
 		},
 		news: {
 			from: "From ",

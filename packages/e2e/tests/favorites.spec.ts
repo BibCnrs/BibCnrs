@@ -34,6 +34,7 @@ test("Reorder favorites", async ({ page }) => {
 	const bib = () => page.getByRole("listitem", { name: /bib.cnrs.fr/i });
 	const bibIndex = () =>
 		bib().evaluate((el) => [...el.parentElement.children].indexOf(el));
+	const bibHandler = () => page.getByLabel("Déplacer BIB CNRS");
 
 	const ins2i = () =>
 		page.getByRole("listitem", { name: /www.ins2i.cnrs.fr/i });
@@ -51,12 +52,7 @@ test("Reorder favorites", async ({ page }) => {
 
 	{
 		const response = page.waitForResponse("/api/front/favourite_resources/1");
-		await bib().dragTo(ins2i(), {
-			sourcePosition: {
-				x: 1,
-				y: 1,
-			},
-		});
+		await bibHandler().dragTo(ins2i());
 		await response;
 	}
 
@@ -68,12 +64,7 @@ test("Reorder favorites", async ({ page }) => {
 
 	{
 		const response = page.waitForResponse("/api/front/favourite_resources/1");
-		await bib().dragTo(ins2i(), {
-			sourcePosition: {
-				x: 1,
-				y: 1,
-			},
-		});
+		await bibHandler().dragTo(ins2i());
 		await response;
 	}
 

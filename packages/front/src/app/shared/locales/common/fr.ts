@@ -213,6 +213,7 @@ const fr: Common = {
 				open: "Accéder",
 				delete: "Supprimer",
 			},
+			handler: "Déplacer {{ title }}",
 		},
 		news: {
 			from: "Du ",

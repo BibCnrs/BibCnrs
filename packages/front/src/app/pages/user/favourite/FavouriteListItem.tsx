@@ -130,6 +130,9 @@ function FavouriteListItem({
 							ref={setNodeRef}
 							disableRipple
 							edge="start"
+							aria-label={t("components.dnd.handler", {
+								title: favourite.title,
+							})}
 							sx={{
 								paddingTop: 0,
 								cursor: "grab",
