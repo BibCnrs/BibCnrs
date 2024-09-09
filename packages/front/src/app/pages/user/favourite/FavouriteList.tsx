@@ -77,77 +77,78 @@ function FavouriteList({
 		setFavouriteToDelete(null);
 	};
 
-	return (
-		<DndContext
-			sensors={sensors}
-			onDragEnd={handleDragEnd}
-			collisionDetection={closestCenter}
-			modifiers={[restrictToWindowEdges]}
-		>
-			<SortableContext
-				items={identifiers}
-				strategy={rectSortingStrategy}
-				disabled={hasFilter}
+	if (favourites.length === 0) {
+		return (
+			<Typography
+				variant="h6"
+				component="h1"
+				sx={{
+					color: "text.disabled",
+				}}
 			>
-				{favourites.length === 0 ? (
-					<Typography
-						variant="h6"
-						component="h1"
-						sx={{
-							color: "text.disabled",
-						}}
-					>
-						{t("pages.favourite.emptyFavorites")}
-					</Typography>
-				) : (
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: {
-								xs: "repeat(1, 1fr)",
-								md: "repeat(2, 1fr)",
-								lg: "repeat(3, 1fr)",
-							},
-							gridAutoRows: "1fr",
-							gap: 2,
-						}}
-					>
-						{favourites.map((favourite) => (
-							<FavouriteListItem
-								key={favourite.id}
-								favourite={favourite}
-								setFavouriteToDelete={setFavouriteToDelete}
-								hasFilter={hasFilter}
-							/>
-						))}
+				{t("pages.favourite.emptyFavorites")}
+			</Typography>
+		);
+	}
 
-						<Dialog
-							open={favouriteToDelete !== null}
-							onClose={() => setFavouriteToDelete(null)}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{t("pages.favourite.confirmDelete.title")}
-							</DialogTitle>
-							<DialogContent>
-								<DialogContentText id="alert-dialog-description">
-									{t("pages.favourite.confirmDelete.description")}
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={() => setFavouriteToDelete(null)}>
-									{t("pages.favourite.confirmDelete.cancel")}
-								</Button>
-								<Button onClick={handleDelete} autoFocus variant="contained">
-									{t("pages.favourite.confirmDelete.confirm")}
-								</Button>
-							</DialogActions>
-						</Dialog>
-					</Box>
-				)}
-			</SortableContext>
-		</DndContext>
+	return (
+		<Box
+			sx={{
+				display: "grid",
+				gridTemplateColumns: {
+					xs: "repeat(1, 1fr)",
+					md: "repeat(2, 1fr)",
+					lg: "repeat(3, 1fr)",
+				},
+				gridAutoRows: "1fr",
+				gap: 2,
+			}}
+		>
+			<DndContext
+				sensors={sensors}
+				onDragEnd={handleDragEnd}
+				collisionDetection={closestCenter}
+				modifiers={[restrictToWindowEdges]}
+			>
+				<SortableContext
+					items={identifiers}
+					strategy={rectSortingStrategy}
+					disabled={hasFilter}
+				>
+					{favourites.map((favourite) => (
+						<FavouriteListItem
+							key={favourite.id}
+							favourite={favourite}
+							setFavouriteToDelete={setFavouriteToDelete}
+							hasFilter={hasFilter}
+						/>
+					))}
+				</SortableContext>
+			</DndContext>
+			<Dialog
+				open={favouriteToDelete !== null}
+				onClose={() => setFavouriteToDelete(null)}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{t("pages.favourite.confirmDelete.title")}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						{t("pages.favourite.confirmDelete.description")}
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={() => setFavouriteToDelete(null)}>
+						{t("pages.favourite.confirmDelete.cancel")}
+					</Button>
+					<Button onClick={handleDelete} autoFocus variant="contained">
+						{t("pages.favourite.confirmDelete.confirm")}
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</Box>
 	);
 }
 
