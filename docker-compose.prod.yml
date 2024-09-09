@@ -32,6 +32,8 @@ services:
         - ./packages/shibboleth/shibboleth/ssl:/etc/shibboleth/ssl
         - ./packages/shibboleth/apache2/sites-available:/etc/apache2/sites-available
     restart: always
+    depends_on:
+      - api
 
   # Content delivery
   cdn:
