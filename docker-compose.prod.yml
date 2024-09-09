@@ -22,8 +22,8 @@ services:
       http_proxy: ${http_proxy}
       https_proxy: ${https_proxy}
       APPLI_APACHE_SERVERNAME: ${APPLI_APACHE_SERVERNAME}
-      APPLI_APACHE_SERVERADMIN: ${APPLI_APACHE_SERVERNAME}
-      APPLI_APACHE_LOGLEVEL: ${APPLI_APACHE_SERVERNAME}
+      APPLI_APACHE_SERVERADMIN: ${APPLI_APACHE_SERVERADMIN}
+      APPLI_APACHE_LOGLEVEL: ${APPLI_APACHE_LOGLEVEL}
       DOCKER_HOST_IP: ${DOCKER_HOST_IP}
     working_dir: /var/www/html
     volumes:
