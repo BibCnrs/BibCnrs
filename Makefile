@@ -30,7 +30,8 @@ env-mkdirs:								## Create storage directories
 		../storage/logs \
 		../storage/postgresql \
 		../storage/uploads \
-		../shibboleth/log
+		../storage/shibboleth/log \
+		../storage/ingress
 
 env-copy: env-mkdirs					## Copy env files if they don't exist
 	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env || true
