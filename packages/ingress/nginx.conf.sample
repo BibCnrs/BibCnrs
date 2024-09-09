@@ -14,7 +14,8 @@ http {
         include                 /etc/nginx/mime.types;
 
         location ~ ^/(Shibboleth.sso|api/ebsco/login_renater|shibboleth-sp)/ {
-            proxy_pass          http://shibboleth:80;
+            ssl_trusted_certificate /etc/ssl/certs/<ssl_certificate.pem>;
+            proxy_pass          http://shibboleth:443;
             proxy_redirect      off;
             proxy_set_header    Host $host;
             break;
