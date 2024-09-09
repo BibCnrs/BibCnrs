@@ -3,11 +3,15 @@ events {
 
 http {
     server {
-        # TODO: ssl
-        listen          80;
-        server_tokens   off;
-        
-        include         /etc/nginx/mime.types;
+        listen                  443;
+        server_name             <domain>;
+        ssl_certificate         /etc/ssl/certs/<ssl_certificate.pem>;
+        ssl_certificate_key     /etc/ssl/private/<ssl_certificate_key.key>;
+        ssl_protocols           TLSv1.2 TLSv1.3;
+        ssl_ciphers             HIGH:!aNULL:!MD5;
+
+        server_tokens           off;
+        include                 /etc/nginx/mime.types;
 
         location ~ ^/(Shibboleth.sso|api/ebsco/login_renater|shibboleth-sp)/ {
             proxy_pass          http://shibboleth:80/;
