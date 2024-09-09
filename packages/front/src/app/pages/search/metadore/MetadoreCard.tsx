@@ -7,7 +7,8 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useBibContext } from "../../../context/BibContext";
+import { useTranslator } from "../../../shared/locales/I18N";
 import type { MetadoreResultTitleType } from "../../../shared/types/data.types";
 import { MetadoreTitle } from "./MetadoreTitle";
 
@@ -42,10 +43,10 @@ const getTitle = (
 
 export const MetadoreCard = ({ metadore, setSelectedMetadore }) => {
 	const t = useTranslator();
-	const languageKey = useLanguageKey();
+	const { language } = useBibContext();
 
 	// Get translated title and description if available
-	const title = getTitle(metadore.titles, languageKey);
+	const title = getTitle(metadore.titles, language);
 	const bookmarkTitle = `${metadore.type} - ${title}`;
 
 	const handleSelectedItem = () => {

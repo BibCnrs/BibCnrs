@@ -10,8 +10,9 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { SyntheticEvent } from "react";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
+import { useBibContext } from "../../../context/BibContext";
 import { faq } from "../../../services/common/CMS";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useTranslator } from "../../../shared/locales/I18N";
 import { useMatomo } from "../../../shared/matomo";
 import type {
 	CMSDataType,
@@ -20,7 +21,7 @@ import type {
 
 const FaqEntry = ({ data }: { data: CMSDataType }) => {
 	const { trackEvent } = useMatomo();
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 
 	const handleChange = (_: SyntheticEvent, expanded: boolean) => {
 		if (expanded) {

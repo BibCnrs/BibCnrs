@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useBibContext } from "../../../context/BibContext";
 import { HistoryContext } from "../../../pages/user/history/History";
 import { RouteArticle, updatePageQueryUrl } from "../../../shared/Routes";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useTranslator } from "../../../shared/locales/I18N";
 import type {
 	ArticleFacetsKeyDataType,
 	HistoryEntryDataType,
@@ -213,9 +213,8 @@ const TableHistory = ({
 	first,
 }: SearchResultsElementProps<HistoryEntryDataType>) => {
 	const t = useTranslator();
-	const language = useLanguageKey();
 	const navigate = useNavigate();
-	const { search, setSearch } = useBibContext();
+	const { language, search, setSearch } = useBibContext();
 	const { handleOpenDeletePopup } = useContext(HistoryContext);
 
 	const [open, setOpen] = useState(false);

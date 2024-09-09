@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useBibContext } from "../../../context/BibContext";
+import { useTranslator } from "../../../shared/locales/I18N";
 
 type PublicationPageHeaderProps = {
 	totalHits: number;
@@ -10,7 +11,7 @@ export const PublicationPageHeader = ({
 	totalHits,
 }: PublicationPageHeaderProps) => {
 	const t = useTranslator();
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 	return (
 		<Stack
 			direction="row"

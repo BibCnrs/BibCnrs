@@ -486,11 +486,6 @@ export const useTranslator = (): TFunction => {
 	return t;
 };
 
-export const useLanguageKey = (): string => {
-	const { i18n } = useFullTranslator();
-	return i18n.language.startsWith("fr") ? "fr" : "en";
-};
-
 export const supportedLanguages: SupportedLanguages = [
 	{ key: "fr", label: "FR - Français" },
 	{ key: "en", label: "EN - English" },

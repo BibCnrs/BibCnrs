@@ -9,7 +9,7 @@ import {
 import { Box, Stack } from "@mui/system";
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useLanguageKey } from "../../../shared/locales/I18N";
+import { useBibContext } from "../../../context/BibContext";
 import type { TestsNewsProps } from "../../../shared/types/props.types";
 import { Empty } from "../../shared/Empty";
 
@@ -19,7 +19,7 @@ import { Empty } from "../../shared/Empty";
  * @param domain
  */
 const RenderNews = ({ data }: TestsNewsProps) => {
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 
 	const filteredData = useMemo(() => {
 		if (!data) {

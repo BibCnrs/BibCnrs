@@ -3,11 +3,12 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import type { MouseEvent } from "react";
-import { memo, useState } from "react";
+import { useState } from "react";
+import { useBibContext } from "../../../../context/BibContext";
+import { useSettingsUpdate } from "../../../../pages/user/UserSettings/useSettingsUpdate";
 import {
 	supportedLanguages,
 	useFullTranslator,
-	useLanguageKey,
 } from "../../../../shared/locales/I18N";
 import type { SupportedLanguageKeys } from "../../../../shared/types/types";
 
@@ -17,7 +18,8 @@ import type { SupportedLanguageKeys } from "../../../../shared/types/types";
  */
 const LocaleButton = () => {
 	const { i18n } = useFullTranslator();
-	const languageKey = useLanguageKey();
+	const { language } = useBibContext();
+	const { handleToggleChange } = useSettingsUpdate();
 
 	// Anchor used to display or not the drop-down menu
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -30,9 +32,7 @@ const LocaleButton = () => {
 
 	// Change lang if a language was chosen, and close the drop-down menu
 	const handleClose = (key: SupportedLanguageKeys) => {
-		if (supportedLanguages.find((value) => value.key === key)) {
-			i18n.changeLanguage(key).then();
-		}
+		handleToggleChange("defaultLanguage")(null, key);
 		setAnchorEl(null);
 	};
 
@@ -57,7 +57,7 @@ const LocaleButton = () => {
 				>
 					<TranslateIcon fontSize="small" />
 				</div>
-				<div>{languageKey.split("-", 2)[0].toUpperCase()}</div>
+				<div>{language.toUpperCase()}</div>
 			</Button>
 			<Menu
 				id="basic-menu"
@@ -95,4 +95,4 @@ const LocaleButton = () => {
 	);
 };
 
-export default memo(LocaleButton);
+export default LocaleButton;

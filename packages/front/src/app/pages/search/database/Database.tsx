@@ -13,7 +13,7 @@ import {
 	useFacetsDomainHandler,
 	useServicesCatch,
 } from "../../../shared/hook";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useTranslator } from "../../../shared/locales/I18N";
 import { useMatomo } from "../../../shared/matomo";
 import type {
 	DatabaseDataType,
@@ -27,6 +27,7 @@ import { INITIAL_FILTER } from "./filters";
 
 const Database = () => {
 	const {
+		language,
 		session: { user },
 		search,
 	} = useBibContext();
@@ -34,7 +35,6 @@ const Database = () => {
 	const serviceCatch = useServicesCatch();
 	const [filters, setFilters] = useState(INITIAL_FILTER);
 	const t = useTranslator();
-	const language = useLanguageKey();
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();

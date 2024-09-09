@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 import { memo } from "react";
-import { useLanguageKey } from "../../../shared/locales/I18N";
+import { useBibContext } from "../../../context/BibContext";
 import type { RenderContentProps } from "../../../shared/types/props.types";
 import PageDate from "../../element/PageDate";
 import PageTitle from "../../internal/PageTitle";
@@ -26,7 +26,7 @@ const RenderContent = ({
 	t,
 	Container,
 }: RenderContentProps) => {
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 
 	// Returns an empty page when data is empty,
 	// this empty page contains only the page title.

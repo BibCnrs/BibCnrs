@@ -6,7 +6,7 @@ import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
 import { licences } from "../../../services/user/Licences";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useTranslator } from "../../../shared/locales/I18N";
 import type {
 	LicenceDataType,
 	LicencesDataType,
@@ -32,9 +32,9 @@ const buttonStyles: SxProps<Theme> = {
 const Licences = () => {
 	const t = useTranslator();
 	const {
+		language,
 		session: { user },
 	} = useBibContext();
-	const language = useLanguageKey();
 	const [activeLicences, setActiveLicences] = useState<
 		LicenceDataType | undefined
 	>(undefined);
