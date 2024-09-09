@@ -87,7 +87,7 @@ function FavouriteListItem({
 		useFavourites();
 
 	const { attributes, listeners, setNodeRef, transform, transition } =
-		useSortable({ id: favourite.id });
+		useSortable({ id: favourite.id, animateLayoutChanges: () => false });
 
 	if (!favourite) {
 		return null;
