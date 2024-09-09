@@ -148,7 +148,6 @@ const Database = () => {
 				value={query.get("q") || search.query}
 				onSearch={handleSearchChange}
 				disableAutocomplete
-				disableSearchButton
 			>
 				<ChipFacet
 					value={search.domain}
