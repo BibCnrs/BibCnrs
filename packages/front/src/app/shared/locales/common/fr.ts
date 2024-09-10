@@ -198,8 +198,8 @@ const fr: Common = {
 			alert: "Ajouter une alerte pour la recherche {{ term }}",
 		},
 		icon: {
-			openAccess: "Accès gratuit au contenu de la revue",
-			complete: "Texte intégral",
+			openAccess: "Plateforme en accès ouvert intégral",
+			complete: "Accès à 100% du contenu de la plateforme",
 			diamond:
 				"Publication en Accès Ouvert gratuit pour les auteurs et les lecteurs",
 			withEmbargo:

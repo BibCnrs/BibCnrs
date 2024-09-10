@@ -196,10 +196,10 @@ const en: Common = {
 			alert: "Add search alert for {{ term }}",
 		},
 		icon: {
-			openAccess: "Free access to the journal's content",
+			openAccess: "Full open access platform",
 			diamond:
 				"Open Access publication, free of charge for authors and readers",
-			complete: "Full text",
+			complete: "Access to 100% of platform content",
 			withEmbargo:
 				"Presence of an embargo for the majority of titles on the platform (generally 1 year)",
 			tooltip: {
