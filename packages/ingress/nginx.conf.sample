@@ -1,0 +1,59 @@
+events {
+}
+
+http {
+    server {
+        listen                  443 ssl;
+        server_name             <domain>;
+        ssl_certificate         /etc/ssl/certs/<ssl_certificate.pem>;
+        ssl_certificate_key     /etc/ssl/private/<ssl_certificate_key.key>;
+        ssl_trusted_certificate /etc/ssl/certs/<ssl_certificate.pem>;
+        ssl_protocols           TLSv1.2 TLSv1.3;
+        ssl_ciphers             HIGH:!aNULL:!MD5;
+
+        server_tokens           off;
+        include                 /etc/nginx/mime.types;
+
+        location ~ ^/(Shibboleth.sso|api/ebsco/login_renater|shibboleth-sp)/ {
+            proxy_pass          https://shibboleth:443;
+            proxy_redirect      off;
+            proxy_set_header    Host $host;
+            break;
+        }
+
+        location /api {
+            rewrite             ^/api(/.*)$             $1      break;
+            proxy_pass          http://api:3000/;
+            proxy_redirect      off;
+            proxy_set_header    Host $host;
+            client_max_body_size 100M;
+            break;
+        }
+
+        location /admin {
+            proxy_pass          http://admin:80/;
+            proxy_redirect      off;
+            proxy_set_header    Host        $host;
+            proxy_set_header    Upgrade     $http_upgrade;
+            proxy_set_header    Connection  "Upgrade";
+            break;
+        }
+
+        location /files {
+            proxy_pass          http://cdn:80/;
+            proxy_redirect      off;
+            proxy_set_header    Host        $host;
+            proxy_set_header    Upgrade     $http_upgrade;
+            proxy_set_header    Connection  "Upgrade";
+            break;
+        }
+
+        location / {
+            proxy_pass          http://front:80/;
+            proxy_redirect      off;
+            proxy_set_header    Host        $host;
+            proxy_set_header    Upgrade     $http_upgrade;
+            proxy_set_header    Connection  "Upgrade";
+        }
+    }
+}

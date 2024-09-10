@@ -29,7 +29,9 @@ env-mkdirs:								## Create storage directories
 		../storage/backups \
 		../storage/logs \
 		../storage/postgresql \
-		../storage/uploads
+		../storage/uploads \
+		../storage/shibboleth/log \
+		../storage/ingress
 
 env-copy: env-mkdirs					## Copy env files if they don't exist
 	@cp -n docker-compose.dev.env.sample 	docker-compose.dev.env || true

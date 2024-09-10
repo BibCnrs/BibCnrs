@@ -1,42 +1,61 @@
-version: "3.5"
-
 services:
-  # Application portal
-  bibcnrs-front:
-    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}
-    container_name: bibcnrs-front
-    ports:
-      - "8080:8080"
-    networks:
-      - bib_frontend_network
-
-  # Application back office
-  bibcnrs-admin:
-    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}
-    container_name: bibcnrs-admin
-    ports:
-      - "8081:8081"
-    restart: always
-    networks:
-      - bib_frontend_network
-
-  # Content delivery
-  bibcnrs-content-delivery:
-    container_name: bibcnrs-content-delivery
-    image: nginx:1.25-alpine
+  # Ingress
+  ingress:
+    image: nginx:1.27.0-alpine
     restart: always
     volumes:
-      - ${CDN_CONFIG_FILE:-./../storage/nginx/content-delivery.nginx.conf}:/etc/nginx/conf.d/default.conf
-      - ./../storage/uploads:/usr/share/nginx/html
+      - ../storage/ingress/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/ssl/certs:/etc/ssl/certs/
+      - /etc/ssl/private:/etc/ssl/private/
     ports:
-      - "8082:8082"
-    networks:
-      - bib_frontend_network
+      - 8443:443
+    depends_on:
+      - cdn
+      - front
+      - admin
+      - api
+      - shibboleth
+
+  shibboleth:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/shibboleth-sp3:2.0
+    environment:
+      http_proxy: ${http_proxy}
+      https_proxy: ${https_proxy}
+      APPLI_APACHE_SERVERNAME: ${APPLI_APACHE_SERVERNAME}
+      APPLI_APACHE_SERVERADMIN: ${APPLI_APACHE_SERVERADMIN}
+      APPLI_APACHE_LOGLEVEL: ${APPLI_APACHE_LOGLEVEL}
+      DOCKER_HOST_IP: ${DOCKER_HOST_IP}
+    working_dir: /var/www/html
+    volumes:
+      - ./../storage/shibboleth/log:/var/log/shibboleth/
+      - ./../storage/shibboleth/shibboleth:/etc/shibboleth/
+      - ./../storage/shibboleth/apache2/sites-available:/etc/apache2/sites-available
+      - /etc/ssl/certs:/etc/ssl/certs/
+      - /etc/ssl/private:/etc/ssl/private/
+    restart: always
+    depends_on:
+      - api
+
+  # Content delivery
+  cdn:
+    image: nginx:1.27.0-alpine
+    restart: always
+    volumes:
+      - ./../storage/cdn/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./../storage/uploads:/usr/share/nginx/html:ro
+
+  # Application portal
+  front:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/front:${BIBFRONT_VERSION}
+
+  # Application back office
+  admin:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/admin:${BIBADMIN_VERSION}
+    restart: always
 
   # Application api
-  bibcnrs-api:
+  api:
     image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:${BIBAPI_VERSION}
-    container_name: bibcnrs-api
     volumes:
       - ./../storage/uploads:/app/packages/api/uploads
       - ./../storage/logs:/app/packages/api/logs
@@ -60,13 +79,13 @@ services:
       MAIL_SERVER_PORT: ${MAIL_SERVER_PORT}
       EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
       EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@bibcnrs-api-postgres:5432/${POSTGRES_DB}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       METADORE_URL: ${METADORE_URL}
       METADORE_API_KEY: ${METADORE_API_KEY}
       DOAJ_URL: ${DOAJ_URL}
       # Database host is the name of the database services
-      POSTGRES_HOST: bibcnrs-api-postgres
-      REDIS_HOST: bibcnrs-api-redis
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
       MAIL_FROM: bibcnrs@bib.cnrs.fr
       MAIL_TO: assistance-portail@inist.fr
       BIB_UPLOADS_DIR: /app/packages/api/uploads
@@ -81,18 +100,13 @@ services:
       LINKIQ_API_INC: ${LINKIQ_API_INC}
       LINKIQ_API_INSU: ${LINKIQ_API_INSU}
     restart: always
-    ports:
-      - "3000:3000"
     depends_on:
-      - bibcnrs-api-redis
-      - bibcnrs-api-postgres
-    networks:
-      - bib_backend_network
-      - bib_frontend_network
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
-  # Application database
-  bibcnrs-api-postgres:
-    container_name: bibcnrs-api-postgres
+  postgres:
     image: postgres:16.3
     restart: always
     environment:
@@ -100,26 +114,15 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./../storage/backups:/backups
       - ./../storage/postgresql:/var/lib/postgresql/data/pgdata
-    ports:
-      - "60000:5432"
-    networks:
-      - bib_backend_network
 
-  # Cache database
-  bibcnrs-api-redis:
-    container_name: bibcnrs-api-redis
+  redis:
     image: redis:7.2.5
     restart: always
-    networks:
-      - bib_backend_network
-
-networks:
-  bib_backend_network:
-    driver: bridge
-    name: bib_backend_network
-  bib_frontend_network:
-    driver: bridge
-    name: bib_frontend_network
