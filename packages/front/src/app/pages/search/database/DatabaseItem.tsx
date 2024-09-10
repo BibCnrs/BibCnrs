@@ -1,6 +1,5 @@
 import InfoIcon from "@mui/icons-material/InfoOutlined";
 import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
-import { fontSize } from "@mui/system";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
 import { useBibContext } from "../../../context/BibContext";
