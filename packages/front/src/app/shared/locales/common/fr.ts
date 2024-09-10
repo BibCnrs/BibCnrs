@@ -37,7 +37,7 @@ const fr: Common = {
 				bookmark: "Mes Favoris",
 				notifications: "Mes Alertes",
 				legacy: "Vous n'êtes pas connecté au niveau individuel",
-				settings: "Paramètres",
+				settings: "Mes Paramètres",
 			},
 		},
 		authentication: {

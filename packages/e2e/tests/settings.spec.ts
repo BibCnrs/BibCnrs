@@ -5,7 +5,7 @@ test("Go To seetings page", async ({ page }) => {
 	await janusLogin(page);
 
 	await page.getByRole("button", { name: "Profil" }).click();
-	await page.getByLabel("Paramètres").click();
+	await page.getByLabel("Mes Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
 	await expect(
@@ -39,7 +39,7 @@ test("Change language", async ({ page }) => {
 	await janusLogin(page);
 
 	await page.getByRole("button", { name: "Profil" }).click();
-	await page.getByLabel("Paramètres").click();
+	await page.getByLabel("Mes Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
 	await expect(
