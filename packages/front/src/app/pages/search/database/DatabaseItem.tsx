@@ -2,12 +2,19 @@ import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
 import { useBibContext } from "../../../context/BibContext";
+import { useMatomo } from "../../../shared/matomo";
 import type { DatabaseItemProps } from "../../../shared/types/data.types";
 
 export function DatabaseItem(props: DatabaseItemProps) {
 	const {
 		session: { user },
 	} = useBibContext();
+	const { trackEvent } = useMatomo();
+
+	const handleClick = () => {
+		trackEvent("Database", "click", props.name, props.id);
+	};
+
 	return (
 		<Tooltip
 			title={props.text}
@@ -43,6 +50,7 @@ export function DatabaseItem(props: DatabaseItemProps) {
 								href={props.url}
 								target="_blank"
 								rel="noopener noreferrer"
+								onClick={handleClick}
 							>
 								{props.name}
 							</Link>
