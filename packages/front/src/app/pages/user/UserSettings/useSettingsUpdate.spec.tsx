@@ -2,7 +2,7 @@ import * as ReactQuery from "@tanstack/react-query";
 import { renderHook } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 import { MemoryRouter } from "react-router-dom";
-import { beforeAll, expect, it, vi } from "vitest";
+import { expect, it } from "vitest";
 import { mockInistLogin } from "../../../../test/mockInistLogin";
 import { mockJanusLogin } from "../../../../test/mockJanusLogin";
 import { BibContextProvider, useBibContext } from "../../../context/BibContext";
@@ -21,10 +21,6 @@ function wrapperFactory({ children }: { children: React.ReactNode }) {
 		</MemoryRouter>
 	);
 }
-
-beforeAll(async () => {
-	vi.restoreAllMocks();
-});
 
 it("should update default language for anonymous user", () => {
 	const { result, rerender } = renderHook(
@@ -100,7 +96,7 @@ it("should update default language for inist user", async () => {
 });
 
 it("should update default language for janus user", async () => {
-	const user = mockJanusLogin();
+	const user = mockJanusLogin({ defaultLanguage: "auto" });
 
 	const { result, rerender } = renderHook(
 		() => ({
@@ -120,10 +116,10 @@ it("should update default language for janus user", async () => {
 		...user,
 		fetch: false,
 	});
-	expect(result.current.bibContext.language).toBe("en");
 	expect(result.current.bibContext.session.user.settings.defaultLanguage).toBe(
 		"auto",
 	);
+	expect(result.current.bibContext.language).toBe("en");
 
 	await result.current.settingsUpdate.handleToggleChange("defaultLanguage")(
 		null,

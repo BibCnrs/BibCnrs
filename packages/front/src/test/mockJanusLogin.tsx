@@ -5,7 +5,9 @@ import {
 } from "../app/context/useSession";
 import type { SessionUserDataType } from "../app/shared/types/data.types";
 
-export function mockJanusLogin() {
+export function mockJanusLogin(
+	defaultSettings: Partial<SessionUserDataType["settings"]> = {},
+) {
 	persistentStorage?.setItem(JANUS_STORAGE_KEY, "true");
 
 	const user: SessionUserDataType = {
@@ -24,10 +26,11 @@ export function mockJanusLogin() {
 			displayFavorites: true,
 			displayTestNews: true,
 			hasSeenPopup: false,
+			...defaultSettings,
 		},
 	};
 
-	vi.spyOn(global, "fetch")
+	vi.spyOn(globalThis, "fetch")
 		.mockImplementationOnce(() => {
 			return Promise.resolve({
 				ok: true,

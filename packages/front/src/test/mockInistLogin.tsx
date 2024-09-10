@@ -12,7 +12,7 @@ export function mockInistLogin() {
 		origin: "inist",
 	};
 
-	vi.spyOn(global, "fetch").mockImplementation(() => {
+	vi.spyOn(globalThis, "fetch").mockImplementation(() => {
 		return Promise.resolve({
 			ok: true,
 			status: 200,
