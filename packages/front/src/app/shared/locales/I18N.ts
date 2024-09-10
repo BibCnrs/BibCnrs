@@ -222,6 +222,7 @@ export type Common = {
 				open: string;
 				delete: string;
 			};
+			handler: string;
 		};
 		news: {
 			from: string;
