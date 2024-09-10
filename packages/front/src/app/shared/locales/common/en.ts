@@ -205,7 +205,7 @@ const en: Common = {
 			tooltip: {
 				complete: "100%",
 				diamond: "diamond",
-				openAccess: "open lock",
+				openAccess: "lock",
 				withEmbargo: "clock",
 			},
 		},

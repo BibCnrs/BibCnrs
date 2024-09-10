@@ -207,7 +207,7 @@ const fr: Common = {
 			tooltip: {
 				complete: "100%",
 				diamond: "diamant",
-				openAccess: "verrou ouvert",
+				openAccess: "cadenas",
 				withEmbargo: "horloge",
 			},
 		},

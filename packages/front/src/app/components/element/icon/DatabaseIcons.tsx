@@ -19,11 +19,7 @@ const DatabaseIcons = ({
 				height: "1em",
 			}}
 		>
-			{oa ? (
-				<OpenAccess className="database-icon-oa" />
-			) : (
-				<div className="database-icon-oa" />
-			)}
+			{oa && <OpenAccess />}
 
 			{is_completed && <CompleteIcon />}
 			{!without_embargo && <EmbargoIcon />}

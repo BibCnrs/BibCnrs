@@ -7,12 +7,25 @@ import {
 	Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
+import { CompleteIcon } from "../../../components/element/icon/CompleteIcon";
+import OpenAccess from "../../../components/element/icon/OpenAccess";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
 	DatabaseItemProps,
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import { INITIAL_FILTER } from "./filters";
+
+export const getFilterIcon = (filterName: string) => {
+	switch (filterName) {
+		case "oa":
+			return <OpenAccess />;
+		case "is_completed":
+			return <CompleteIcon />;
+		default:
+			return null;
+	}
+};
 
 export default function FilterTab({
 	setFilters,
@@ -119,7 +132,19 @@ export default function FilterTab({
 											disabled={getLabelCount(filter) === 0}
 										/>
 									}
-									label={`${getLabel(filter)} (${getLabelCount(filter)})`}
+									label={
+										<Stack
+											direction="row"
+											alignItems="center"
+											gap={1}
+											sx={{ fontSize: "0.8em" }}
+										>
+											{getFilterIcon(filter.props)}
+											<Typography
+												sx={{ fontSize: "1rem" }}
+											>{`${getLabel(filter)} (${getLabelCount(filter)})`}</Typography>
+										</Stack>
+									}
 								/>
 							))}
 					</Stack>
