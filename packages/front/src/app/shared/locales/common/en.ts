@@ -199,7 +199,15 @@ const en: Common = {
 			openAccess: "Free access to the journal's content",
 			diamond:
 				"Open Access publication, free of charge for authors and readers",
-			notComplete: "Partial access to the platform",
+			complete: "Full text",
+			withEmbargo:
+				"Presence of an embargo for the majority of titles on the platform (generally 1 year)",
+			tooltip: {
+				complete: "100%",
+				diamond: "diamond",
+				openAccess: "open lock",
+				withEmbargo: "clock",
+			},
 		},
 		button: {
 			favourite: {

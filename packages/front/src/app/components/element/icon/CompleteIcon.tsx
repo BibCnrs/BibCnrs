@@ -5,15 +5,15 @@ export function CompleteIcon() {
 	const t = useTranslator();
 	return (
 		<Tooltip
-			title={t("components.icon.notComplete")}
+			title={t("components.icon.complete")}
 			placement="top"
 			arrow
-			aria-label={t("components.icon.notComplete")}
+			aria-label={t("components.icon.complete")}
 		>
 			<img
 				style={{ width: "34px", height: "32.4px" }}
 				src="/icons/completed.svg"
-				alt="Complete"
+				alt={t("components.icon.tooltip.complete")}
 			/>
 		</Tooltip>
 	);

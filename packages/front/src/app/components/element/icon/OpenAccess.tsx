@@ -10,7 +10,7 @@ const OpenAccess = ({ className }: { className?: string }) => {
 				className={className}
 				style={{ width: "14px", height: "22.4px" }}
 				src="/icons/open_access.svg"
-				alt="Open access icon"
+				alt={t("components.icon.tooltip.openAccess")}
 			/>
 		</Tooltip>
 	);

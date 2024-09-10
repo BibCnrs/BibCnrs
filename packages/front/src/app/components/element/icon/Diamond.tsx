@@ -10,7 +10,7 @@ const Diamond = ({ className }: { className?: string }) => {
 				className={className}
 				style={{ height: "19px" }}
 				src="/icons/diamond.svg"
-				alt="Diamond icon"
+				alt={t("components.icon.tooltip.diamond")}
 			/>
 		</Tooltip>
 	);

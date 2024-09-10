@@ -199,9 +199,17 @@ const fr: Common = {
 		},
 		icon: {
 			openAccess: "Accès gratuit au contenu de la revue",
-			notComplete: "Accès à la platforme partiel",
+			complete: "Texte intégral",
 			diamond:
 				"Publication en Accès Ouvert gratuit pour les auteurs et les lecteurs",
+			withEmbargo:
+				"Présence d'un embargo pour la majorité des titres de la plateforme (en général 1 an)",
+			tooltip: {
+				complete: "100%",
+				diamond: "diamant",
+				openAccess: "verrou ouvert",
+				withEmbargo: "horloge",
+			},
 		},
 		button: {
 			favourite: {
