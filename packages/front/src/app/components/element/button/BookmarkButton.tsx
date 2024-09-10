@@ -10,6 +10,7 @@ import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 
 const AnimatedIconButton = styled(IconButton)`
+  padding: 0;
   &.animate {
     animation: bounce 0.3s;
   }

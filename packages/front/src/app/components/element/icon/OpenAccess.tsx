@@ -8,7 +8,7 @@ const OpenAccess = ({ className }: { className?: string }) => {
 		<Tooltip title={t("components.icon.openAccess")} placement="top" arrow>
 			<img
 				className={className}
-				style={{ width: "14px", height: "22.4px" }}
+				style={{ height: "1em" }}
 				src="/icons/open_access.svg"
 				alt={t("components.icon.tooltip.openAccess")}
 			/>

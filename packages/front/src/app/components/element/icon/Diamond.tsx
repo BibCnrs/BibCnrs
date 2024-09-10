@@ -8,7 +8,7 @@ const Diamond = ({ className }: { className?: string }) => {
 		<Tooltip title={t("components.icon.diamond")} placement="top" arrow>
 			<img
 				className={className}
-				style={{ height: "19px" }}
+				style={{ height: "1em" }}
 				src="/icons/diamond.svg"
 				alt={t("components.icon.tooltip.diamond")}
 			/>

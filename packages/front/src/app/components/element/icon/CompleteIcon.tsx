@@ -11,7 +11,7 @@ export function CompleteIcon() {
 			aria-label={t("components.icon.complete")}
 		>
 			<img
-				style={{ width: "34px", height: "32.4px" }}
+				style={{ height: "1em" }}
 				src="/icons/completed.svg"
 				alt={t("components.icon.tooltip.complete")}
 			/>

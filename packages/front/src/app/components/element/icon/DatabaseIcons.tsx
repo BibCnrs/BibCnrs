@@ -16,7 +16,7 @@ const DatabaseIcons = ({
 			direction="row"
 			alignItems="center"
 			sx={{
-				height: "32px",
+				height: "1em",
 			}}
 		>
 			{oa ? (

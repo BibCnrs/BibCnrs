@@ -39,23 +39,20 @@ export function DatabaseItem(props: DatabaseItemProps) {
 							justifyContent: "space-between",
 						}}
 					>
+						<Link
+							fontWeight={700}
+							href={props.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							onClick={handleClick}
+						>
+							{props.name}
+						</Link>
 						<Stack
 							direction="row"
-							alignItems="center"
 							justifyContent="space-between"
-							gap={1}
+							alignItems="center"
 						>
-							<Link
-								fontWeight={700}
-								href={props.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								onClick={handleClick}
-							>
-								{props.name}
-							</Link>
-						</Stack>
-						<Stack direction="row" justifyContent="space-between">
 							<DatabaseIcons {...props} />
 							{user && (
 								<BookmarkButton

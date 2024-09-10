@@ -11,7 +11,7 @@ export function EmbargoIcon() {
 			aria-label={t("components.icon.withEmbargo")}
 		>
 			<img
-				style={{ height: "22.4px" }}
+				style={{ height: "1em" }}
 				src="/icons/horloge.svg"
 				alt={t("components.icon.tooltip.withEmbargo")}
 			/>
