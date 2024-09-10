@@ -75,7 +75,9 @@ const Favourite = () => {
 	};
 
 	const hasFilter = useMemo(() => {
-		return Object.values(filters).some((filter) => filter != null);
+		return Object.values(filters).some(
+			(filter) => filter != null && filter !== "",
+		);
 	}, [filters]);
 
 	useEffect(() => {
@@ -88,6 +90,15 @@ const Favourite = () => {
 		}
 	}, [filters]);
 
+	const _filterByTitle = useCallback(
+		(title: string) => {
+			return (
+				filters.title != null && !title.toLowerCase().includes(filters.title)
+			);
+		},
+		[filters.title],
+	);
+
 	const filterFavoriteResource = useCallback(
 		(resources: FavouriteResourceDataType[]) => {
 			if (!hasFilter) {
@@ -95,10 +106,7 @@ const Favourite = () => {
 			}
 
 			return resources.filter((favourite) => {
-				if (
-					filters.title != null &&
-					!favourite.title.toLowerCase().includes(filters.title)
-				) {
+				if (_filterByTitle(favourite.title)) {
 					return false;
 				}
 
@@ -114,7 +122,7 @@ const Favourite = () => {
 				);
 			});
 		},
-		[filters, hasFilter],
+		[filters, hasFilter, _filterByTitle],
 	);
 
 	const filteredFavouriteResources = filterFavoriteResource(favouriteResources);
@@ -146,17 +154,28 @@ const Favourite = () => {
 								{t("pages.favourite.filters.title")}
 							</Typography>
 
-							{BOOLEAN_FILTERS.map((key) => (
-								<FormControlLabel
-									key={key}
-									control={<Checkbox checked={filters[key] === true} />}
-									label={t(`pages.favourite.filters.${key}`, {
-										count: allFavourites.filter(({ source }) => source === key)
-											.length,
-									})}
-									onChange={() => handleFilter(key)}
-								/>
-							))}
+							{BOOLEAN_FILTERS.map((key) => {
+								const count = allFavourites.filter(
+									({ title, source }) =>
+										source === key && !_filterByTitle(title),
+								).length;
+
+								return (
+									<FormControlLabel
+										key={key}
+										control={
+											<Checkbox
+												checked={filters[key] === true}
+												disabled={count === 0}
+											/>
+										}
+										label={t(`pages.favourite.filters.${key}`, {
+											count,
+										})}
+										onChange={() => handleFilter(key)}
+									/>
+								);
+							})}
 							<Button
 								color="error"
 								sx={{
