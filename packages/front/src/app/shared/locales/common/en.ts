@@ -37,7 +37,7 @@ const en: Common = {
 				bookmark: "My Bookmark",
 				notifications: "My Alerts",
 				legacy: "You are not logged on at the individual level",
-				settings: "Settings",
+				settings: "My Settings",
 			},
 		},
 		authentication: {

@@ -76,7 +76,7 @@ test("Show / Hide test news on home page", async ({ page }) => {
 	).toBeVisible();
 
 	await page.getByRole("button", { name: "Profil" }).click();
-	await page.getByLabel("Paramètres").click();
+	await page.getByLabel("Mes Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
 	await page.getByLabel("Actualités").first().click();
@@ -89,7 +89,7 @@ test("Show / Hide test news on home page", async ({ page }) => {
 	).not.toBeVisible();
 
 	await page.getByRole("button", { name: "Profil" }).click();
-	await page.getByLabel("Paramètres").click();
+	await page.getByLabel("Mes Paramètres").click();
 	await page.locator(".MuiBackdrop-root").click();
 
 	await page.getByLabel("Actualités").first().click();
