@@ -60,7 +60,14 @@ const UserButton = () => {
 	const options: ReactElement[] = [];
 	// Add username button
 	options.push(
-		<MenuItem key="username">
+		<MenuItem
+			sx={{
+				"&:hover": { backgroundColor: "white" },
+				cursor: "default",
+			}}
+			disableRipple
+			key="username"
+		>
 			<ListItemIcon>
 				<Avatar sx={{ width: 24, height: 24 }} />
 			</ListItemIcon>
