@@ -1,7 +1,7 @@
 import { Tooltip } from "@mui/material";
 import { useTranslator } from "../../../shared/locales/I18N";
 
-export function NotCompleteIcon() {
+export function CompleteIcon() {
 	const t = useTranslator();
 	return (
 		<Tooltip
@@ -12,8 +12,8 @@ export function NotCompleteIcon() {
 		>
 			<img
 				style={{ width: "34px", height: "32.4px" }}
-				src="/icons/not_completed.svg"
-				alt="Open access icon"
+				src="/icons/completed.svg"
+				alt="Complete"
 			/>
 		</Tooltip>
 	);

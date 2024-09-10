@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import { memo } from "react";
 import type { DatabaseItemProps } from "../../../shared/types/data.types";
-import { NotCompleteIcon } from "./NotCompleteIcon";
+import { CompleteIcon } from "./CompleteIcon";
 import OpenAccess from "./OpenAccess";
 
 const DatabaseIcons = ({ oa, is_completed }: DatabaseItemProps) => {
@@ -20,7 +20,7 @@ const DatabaseIcons = ({ oa, is_completed }: DatabaseItemProps) => {
 				<div className="database-icon-oa" />
 			)}
 
-			{!is_completed && <NotCompleteIcon />}
+			{is_completed && <CompleteIcon />}
 		</Stack>
 	);
 };
