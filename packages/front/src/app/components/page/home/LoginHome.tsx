@@ -60,7 +60,7 @@ export const LoginHome = () => {
 	const displayTestNews = user?.legacy || user?.settings?.displayTestNews;
 
 	return (
-		<Stack gap={4}>
+		<Stack gap={1.5}>
 			<RenderContent
 				data={alertData}
 				page="root"
@@ -84,7 +84,7 @@ export const LoginHome = () => {
 						<Box
 							display="grid"
 							gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr 1fr" }}
-							gap={6}
+							gap="1em"
 						>
 							{superFavouriteResources?.map((favourite) => (
 								<FavouriteCardHome key={favourite.id} favourite={favourite} />
