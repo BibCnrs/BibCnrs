@@ -20,7 +20,7 @@ test("Should search publication", async ({ page }) => {
 	);
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Revue, ouvrage" }).click();
+	await page.getByRole("link", { name: "Revues, ouvrages" }).click();
 
 	await page.getByPlaceholder(/Rechercher des titres de revues/i).fill("maths");
 	await page
@@ -53,7 +53,7 @@ test("Should open drawer when clicking on see more about", async ({ page }) => {
 	await janusLogin(page);
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Revue, ouvrage" }).click();
+	await page.getByRole("link", { name: "Revues, ouvrages" }).click();
 
 	await page.getByPlaceholder(/Rechercher des titres de revues/i).fill("maths");
 	await page
@@ -115,7 +115,7 @@ test("Add favorite", async ({ page }) => {
 	await janusLogin(page);
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Revue, ouvrage" }).click();
+	await page.getByRole("link", { name: "Revues, ouvrages" }).click();
 	await page.getByPlaceholder(/Rechercher des titres de revues/i).fill("maths");
 	await page
 		.getByPlaceholder(/Rechercher des titres de revues/i)

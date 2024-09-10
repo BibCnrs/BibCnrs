@@ -76,9 +76,9 @@ const fr: Common = {
 			save: "Enregistrer",
 		},
 		nav: {
-			article: "Article",
-			database: "Plateforme",
-			publication: "Revue, ouvrage",
+			article: "Articles",
+			database: "Plateformes",
+			publication: "Revues, ouvrages",
 			researchData: "Données de recherche",
 		},
 		search: {
@@ -325,7 +325,7 @@ Cordialement`,
 			},
 		},
 		publication: {
-			title: "Revue, ouvrage",
+			title: "Revues, ouvrages",
 			searchBar: "Rechercher des titres de revues, de livres...",
 		},
 		legal: {

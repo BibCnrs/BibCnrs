@@ -15,7 +15,7 @@ test("Should search article", async ({ page }) => {
 	});
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Article" }).click();
+	await page.getByRole("link", { name: "Articles" }).click();
 	await page.getByRole("button", { name: /Connectez-vous /i }).click();
 	await page.getByPlaceholder(/Rechercher des articles/i).fill("AIDS");
 	await page.getByPlaceholder(/Rechercher des articles/i).press("Enter");
@@ -47,7 +47,7 @@ test("Should open drawer when clicking on see more about", async ({ page }) => {
 	});
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Article" }).click();
+	await page.getByRole("link", { name: "Articles" }).click();
 	await page.getByRole("button", { name: /Connectez-vous /i }).click();
 	await page.getByPlaceholder(/Rechercher des articles/i).fill("AIDS");
 	await page.getByPlaceholder(/Rechercher des articles/i).press("Enter");
@@ -122,7 +122,7 @@ test("Add favorite", async ({ page }) => {
 	});
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Article" }).click();
+	await page.getByRole("link", { name: "Articles" }).click();
 	await page.getByRole("button", { name: /Connectez-vous /i }).click();
 	await page.getByPlaceholder(/Rechercher des articles/i).fill("AIDS");
 	await page.getByPlaceholder(/Rechercher des articles/i).press("Enter");
@@ -166,7 +166,7 @@ test("Should add history entry", async ({ page }) => {
 	});
 
 	await page.goto("/");
-	await page.getByRole("link", { name: "Article" }).click();
+	await page.getByRole("link", { name: "Articles" }).click();
 	await page.getByRole("button", { name: /Connectez-vous /i }).click();
 	await page.getByPlaceholder(/Rechercher des articles/i).fill("turing");
 	await page.getByPlaceholder(/Rechercher des articles/i).press("Enter");
