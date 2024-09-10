@@ -229,14 +229,8 @@ start: env-mkdirs						## Start stack in production mode
 stop:									## Stop stack in production mode
 	docker compose -f docker-compose.prod.yml down
 
-start-prod: stop-dev					## Start stack in production mode with local env
-	docker compose \
-		--env-file docker-compose.prod.env \
-		-f docker-compose.prod.yml \
-		up
-
 deploy-dev:
-	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4  && git pull && make build && make stop start && docker restart bibrp_rp_1'
+	 ssh bibcnrs@vdbibcnrs-ext.inist.fr 'cd ~/bibcnrs-v4 && git fetch --prune && git checkout main && git reset --hard origin/main && make build && make stop start'
 
 prod-init-db: env-mkdirs				## Initialize the database with seed data in production
 	docker compose -f docker-compose.prod.yml up -d --wait bibcnrs-api-postgres
