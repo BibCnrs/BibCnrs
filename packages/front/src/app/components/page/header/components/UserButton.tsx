@@ -62,7 +62,7 @@ const UserButton = () => {
 	options.push(
 		<MenuItem
 			sx={{
-				"&:hover": { backgroundColor: "white" },
+				"&:hover": { backgroundColor: "inherit" },
 				cursor: "default",
 			}}
 			disableRipple
