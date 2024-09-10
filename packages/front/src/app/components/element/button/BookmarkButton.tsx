@@ -89,9 +89,18 @@ const BookmarkButton = ({ title, url, source }: BookmarkButtonProps) => {
 				aria-label={t("components.button.favourite.tooltip", { title })}
 			>
 				{inBookmark ? (
-					<FavoriteIcon color="primary" />
+					<FavoriteIcon
+						sx={{
+							fontSize: "1.2em",
+						}}
+						color="primary"
+					/>
 				) : (
-					<FavoriteBorderOutlined />
+					<FavoriteBorderOutlined
+						sx={{
+							fontSize: "1.2em",
+						}}
+					/>
 				)}
 			</AnimatedIconButton>
 		</Tooltip>

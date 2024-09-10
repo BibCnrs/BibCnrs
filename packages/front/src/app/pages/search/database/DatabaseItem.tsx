@@ -1,5 +1,6 @@
 import InfoIcon from "@mui/icons-material/InfoOutlined";
 import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
+import { fontSize } from "@mui/system";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
 import { useBibContext } from "../../../context/BibContext";
@@ -38,6 +39,13 @@ export function DatabaseItem(props: DatabaseItemProps) {
 						href={props.url}
 						target="_blank"
 						rel="noopener noreferrer"
+						sx={{
+							textOverflow: "ellipsis",
+							textWrap: "nowrap",
+							overflow: "hidden",
+							display: "inline-block",
+							width: "100%",
+						}}
 						onClick={handleClick}
 					>
 						{props.name}
@@ -48,9 +56,9 @@ export function DatabaseItem(props: DatabaseItemProps) {
 						alignItems="center"
 					>
 						<DatabaseIcons {...props} />
-						<Stack direction="row" alignItems="center">
+						<Stack direction="row" alignItems="center" gap={1}>
 							<Tooltip title={props.text} arrow>
-								<InfoIcon color="action" />
+								<InfoIcon sx={{ fontSize: "1.2em" }} color="action" />
 							</Tooltip>
 							{user && (
 								<BookmarkButton
