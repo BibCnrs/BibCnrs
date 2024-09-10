@@ -54,6 +54,9 @@ export function DatabaseItem(props: DatabaseItemProps) {
 							>
 								{props.name}
 							</Link>
+						</Stack>
+						<Stack direction="row" justifyContent="space-between">
+							<DatabaseIcons {...props} />
 							{user && (
 								<BookmarkButton
 									className="database-icon-favourite"
@@ -63,7 +66,6 @@ export function DatabaseItem(props: DatabaseItemProps) {
 								/>
 							)}
 						</Stack>
-						<DatabaseIcons {...props} />
 					</Stack>
 				</CardContent>
 			</Card>
