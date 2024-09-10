@@ -67,10 +67,10 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 
 	const language = useMemo(() => {
 		if (
-			session.session.user &&
+			session.session.user?.origin === "janus" &&
 			session.session.user.settings.defaultLanguage !== "auto"
 		) {
-			return session.session?.user?.settings?.defaultLanguage;
+			return session.session.user.settings.defaultLanguage;
 		}
 		return i18n.language.startsWith("fr") ? "fr" : "en";
 	}, [session, i18n]);
