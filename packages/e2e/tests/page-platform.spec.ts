@@ -9,7 +9,7 @@ test("list platforms", async ({ page }) => {
 
 	await page.goto("/database");
 
-	const databases = page.getByLabel("Plateformes", { exact: true });
+	const databases = page.getByLabel("Plateformes");
 	await expect(databases).toBeVisible({
 		timeout: 10000,
 	});
@@ -24,9 +24,9 @@ test("list platforms", async ({ page }) => {
 			itemNode.getByRole("link", { name: item.label }),
 		).toBeVisible();
 
-		if (!item.isComplete) {
+		if (item.isComplete) {
 			await expect(
-				itemNode.getByLabel("Accès à la platforme partiel"),
+				itemNode.getByLabel("Accès à 100% du contenu de la plateforme"),
 			).toBeVisible();
 		}
 	}
@@ -72,9 +72,9 @@ test("filter platforms ", async ({ page }) => {
 			itemNode.getByRole("link", { name: item.label }),
 		).toBeVisible();
 
-		if (!item.isComplete) {
+		if (item.isComplete) {
 			await expect(
-				itemNode.getByLabel("Accès à la platforme partiel"),
+				itemNode.getByLabel("Accès à 100% du contenu de la plateforme"),
 			).toBeVisible();
 		}
 	}
