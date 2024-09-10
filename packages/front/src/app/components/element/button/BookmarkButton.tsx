@@ -1,5 +1,5 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
+import FavoriteBorderOutlined from "@mui/icons-material/FavoriteBorderOutlined";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/system";
@@ -88,7 +88,11 @@ const BookmarkButton = ({ title, url, source }: BookmarkButtonProps) => {
 				size="small"
 				aria-label={t("components.button.favourite.tooltip", { title })}
 			>
-				{inBookmark ? <FavoriteIcon color="primary" /> : <FavoriteOutlined />}
+				{inBookmark ? (
+					<FavoriteIcon color="primary" />
+				) : (
+					<FavoriteBorderOutlined />
+				)}
 			</AnimatedIconButton>
 		</Tooltip>
 	);

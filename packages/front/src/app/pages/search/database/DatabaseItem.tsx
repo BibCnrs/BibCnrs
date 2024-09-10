@@ -1,12 +1,5 @@
 import InfoIcon from "@mui/icons-material/InfoOutlined";
-import {
-	Card,
-	CardContent,
-	IconButton,
-	Link,
-	Stack,
-	Tooltip,
-} from "@mui/material";
+import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
 import { useBibContext } from "../../../context/BibContext";
@@ -57,7 +50,7 @@ export function DatabaseItem(props: DatabaseItemProps) {
 						<DatabaseIcons {...props} />
 						<Stack direction="row" alignItems="center">
 							<Tooltip title={props.text} arrow>
-								<InfoIcon />
+								<InfoIcon color="action" />
 							</Tooltip>
 							{user && (
 								<BookmarkButton
