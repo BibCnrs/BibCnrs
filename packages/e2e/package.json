@@ -1,8 +1,8 @@
 {
 	"name": "@bibcnrs/e2e",
 	"dependencies": {
-		"@playwright/test": "^1.45.1",
-		"@types/node": "^20.14.10"
+		"@playwright/test": "^1.47.0",
+		"@types/node": "^20.16.5"
 	},
 	"scripts": {
 		"test": "playwright test",

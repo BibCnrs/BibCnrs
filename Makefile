@@ -18,6 +18,7 @@ help:						## Show this help
 
 install: 								## Install all dependencies for all packages
 	yarn install
+	yarn workspace @bibcnrs/e2e run playwright install
 	yarn workspace @bibcnrs/api prisma generate
 
 install-immutable: 						## Install all dependencies for all packages
