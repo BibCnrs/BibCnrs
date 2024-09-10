@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createQuery, environment } from "../services/Environment";
 import { updateFavourite } from "../services/user/Favourite";
@@ -31,10 +31,10 @@ type LegacyLoginForm = { username: string; password: string };
 const LOADING_USER: BibSession = { status: "loading", user: null };
 const LOGGED_OUT_USER: BibSession = { status: "loggedOut", user: null };
 
-const persistentStorage = window?.localStorage;
+export const persistentStorage = window?.localStorage;
 
 const STORAGE_KEY = "user";
-const JANUS_STORAGE_KEY = "janus_callback";
+export const JANUS_STORAGE_KEY = "janus_callback";
 
 const getSystemTheme = (): ThemeType => {
 	const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -104,9 +104,9 @@ export function useSession() {
 		[_setupLanguageAndTheme],
 	);
 
-	const _janusLogin = useCallback(() => {
+	const _janusLogin = useCallback(async () => {
 		setSession(LOADING_USER);
-		void fetch(createQuery(environment.post.account.user), {
+		return fetch(createQuery(environment.post.account.user), {
 			method: "POST",
 			credentials: "include",
 			headers: {
@@ -123,26 +123,31 @@ export function useSession() {
 			.then((user) => {
 				_loginUser({ ...user, fetch: false, legacy: false });
 			})
+			.then(() => ({ ok: true }))
 			.catch((res) => {
 				// This fixes the dual request on getLogin in dev mode
 				if (res.status !== 409) {
 					setSession(LOGGED_OUT_USER);
 				}
+				return { ok: false };
 			})
 			.finally(() => {
 				persistentStorage?.removeItem(JANUS_STORAGE_KEY);
 			});
 	}, [_loginUser]);
 
-	const _storageLogin = useCallback(() => {
+	const _storageLogin = useCallback(async () => {
 		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
-			return;
+			return Promise.resolve({
+				ok: true,
+			});
 		}
+
 		const userJson = persistentStorage?.getItem(STORAGE_KEY);
 		if (userJson) {
 			const user = JSON.parse(userJson) as SessionUserDataType;
 			// We ensure that user token is not expired here
-			fetch(
+			return fetch(
 				createQuery(environment.get.account.licences, {
 					domains: (user.domains ?? []).join(","),
 				}),
@@ -162,18 +167,24 @@ export function useSession() {
 						},
 					});
 				})
-				.catch(() => logout());
-		} else {
-			setSession(LOGGED_OUT_USER);
+				.then(() => ({
+					ok: true,
+				}))
+				.catch(async () => logout());
 		}
+
+		setSession(LOGGED_OUT_USER);
+		return Promise.resolve({
+			ok: true,
+		});
 	}, []);
 
-	useEffect(() => {
+	const _loginStatus = useMemo(async () => {
 		if (persistentStorage?.getItem(JANUS_STORAGE_KEY)) {
-			_janusLogin();
-		} else {
-			_storageLogin();
+			return _janusLogin();
 		}
+
+		return _storageLogin();
 	}, [_janusLogin, _storageLogin]);
 
 	const loginToJanus = useCallback(() => {
@@ -229,24 +240,26 @@ export function useSession() {
 		[session, _loginUser],
 	);
 
-	const logout = useCallback(() => {
+	const logout = useCallback(async () => {
 		setSession(LOADING_USER);
-		void fetch(createQuery(environment.post.account.logout), {
+		return fetch(createQuery(environment.post.account.logout), {
 			method: "POST",
 			credentials: "include",
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-		}).finally(() => {
-			navigate("/", {
-				unstable_flushSync: true,
+		})
+			.then(() => ({ ok: true }))
+			.finally(() => {
+				navigate("/", {
+					unstable_flushSync: true,
+				});
+				setTimeout(() => {
+					persistentStorage?.removeItem(STORAGE_KEY);
+					setSession(LOGGED_OUT_USER);
+				}, 0);
 			});
-			setTimeout(() => {
-				persistentStorage?.removeItem(STORAGE_KEY);
-				setSession(LOGGED_OUT_USER);
-			}, 0);
-		});
 	}, [navigate]);
 
 	const updateFavouriteResources = useCallback(
@@ -351,5 +364,10 @@ export function useSession() {
 		setTheme,
 		displayUserPopup: session.user?.settings?.hasSeenPopup === false,
 		closeUserPopup,
+
+		/**
+		 * @deprecated This is internal for testing, do not use it in production code
+		 */
+		_loginStatus,
 	};
 }

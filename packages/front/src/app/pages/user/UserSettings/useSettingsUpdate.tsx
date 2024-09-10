@@ -30,30 +30,37 @@ export const useSettingsUpdate = () => {
 	});
 
 	const handleSwitchChange = useCallback<
-		(event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void
+		(
+			event: React.ChangeEvent<HTMLInputElement>,
+			checked: boolean,
+		) => Promise<void>
 	>(
-		(event) => {
+		async (event) => {
 			if (user?.origin !== "janus") {
 				return;
 			}
 
-			mutation.mutate({
+			await mutation.mutateAsync({
 				userId: user.id,
 				[event.target.name]: event.target.checked,
 			});
+
 			trackEvent(
 				"UserSettings",
 				event.target.name,
 				event.target.checked ? "on" : "off",
 			);
 		},
-		[user?.id, user?.origin, mutation.mutate, trackEvent],
+		[user?.id, user?.origin, mutation.mutateAsync, trackEvent],
 	);
 
 	const handleToggleChange = useCallback<
 		(
 			property: keyof typeof user.settings,
-		) => (event: React.MouseEvent<HTMLElement>, value: string | null) => void
+		) => (
+			event: React.MouseEvent<HTMLElement>,
+			value: string | null,
+		) => Promise<void>
 	>(
 		(property: keyof typeof user.settings) => async (_, newToggleValue) => {
 			if (newToggleValue === null) return;
@@ -74,7 +81,7 @@ export const useSettingsUpdate = () => {
 				return;
 			}
 
-			mutation.mutate({
+			await mutation.mutateAsync({
 				userId: user.id,
 				[property]: newToggleValue,
 			});
@@ -84,7 +91,7 @@ export const useSettingsUpdate = () => {
 		[
 			user?.id,
 			user?.origin,
-			mutation.mutate,
+			mutation.mutateAsync,
 			i18n.changeLanguage,
 			setTheme,
 			trackEvent,
