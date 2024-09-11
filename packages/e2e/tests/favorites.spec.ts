@@ -171,3 +171,26 @@ test("Show / Hide favorites on home page", async ({ page }) => {
 
 	await janusLogout(page);
 });
+
+test("Filter items", async ({ page }) => {
+	const cnrs = () => page.getByRole("listitem", { name: /www.cnrs.fr/i });
+	const ins2i = () =>
+		page.getByRole("listitem", { name: /www.ins2i.cnrs.fr/i });
+
+	await janusLogin(page);
+	await goToFavorites(page);
+	await expect(cnrs()).toBeVisible();
+	await expect(ins2i()).toBeVisible();
+
+	await page.getByPlaceholder("Rechercher dans mes favoris").fill("CNRS");
+	await page.getByPlaceholder("Rechercher dans mes favoris").press("Enter");
+	await expect(cnrs()).toBeVisible();
+	await expect(ins2i()).not.toBeVisible();
+
+	await page.getByPlaceholder("Rechercher dans mes favoris").fill("");
+	await page.getByPlaceholder("Rechercher dans mes favoris").press("Enter");
+	await expect(cnrs()).toBeVisible();
+	await expect(ins2i()).toBeVisible();
+
+	await janusLogout(page);
+});
