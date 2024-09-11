@@ -303,12 +303,16 @@ export type Common = {
 		};
 		database: {
 			title: string;
+			name: string;
 			oa: string;
+			is_completed: string;
+			embargo: string;
 			anonymousMessage: string;
 			searchDatabase: string;
 			platform_zero: string;
 			platform_one: string;
 			platform_other: string;
+			noResult: string;
 			filters: {
 				title: string;
 				default: string;
@@ -440,6 +444,9 @@ export type Common = {
 				descriptionArticleLinkType: string;
 				oa: string;
 				fullText: string;
+				platformView: string;
+				platformViewCard: string;
+				platformViewList: string;
 			};
 			generalSection: {
 				title: string;

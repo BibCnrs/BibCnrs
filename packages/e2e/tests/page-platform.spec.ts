@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { janusLogin, janusLogout } from "../page-objects/login";
+import { goToSettings } from "../page-objects/settings";
 
-test("list platforms", async ({ page }) => {
+test("list platforms as cards", async ({ page }) => {
 	const ITEMS = [
 		{ label: "ADS / NASA (Harvard)", isComplete: false },
 		{ label: "HAL", isComplete: true },
@@ -32,7 +34,7 @@ test("list platforms", async ({ page }) => {
 	}
 });
 
-test("filter platforms ", async ({ page }) => {
+test("filter platforms as cards", async ({ page }) => {
 	const ITEMS = [
 		{ label: "ADS / NASA (Harvard)", isComplete: false },
 		{ label: "HAL", isComplete: true },
@@ -78,6 +80,69 @@ test("filter platforms ", async ({ page }) => {
 			).toBeVisible();
 		}
 	}
+});
+
+test("list platforms as datagrid", async ({ page }) => {
+	const ITEMS = [
+		{ label: "ADS / NASA (Harvard)" },
+		{ label: "HAL" },
+		{ label: "Open Dissertations" },
+	];
+
+	await janusLogin(page);
+
+	await goToSettings(page);
+	await page.getByRole("button", { name: "Liste" }).click();
+
+	await page.goto("/database");
+
+	for (const item of ITEMS) {
+		await expect(page.getByRole("link", { name: item.label })).toBeVisible();
+	}
+
+	await goToSettings(page);
+	await page.getByRole("button", { name: "Vignettes" }).click();
+
+	await janusLogout(page);
+});
+
+test("filter platforms as datagrid", async ({ page }) => {
+	const ITEMS = [{ label: "ADS / NASA (Harvard)" }, { label: "HAL" }];
+
+	await janusLogin(page);
+	await goToSettings(page);
+	await page.getByRole("button", { name: "Liste" }).click();
+
+	await page.goto("/database");
+
+	const filter = page.getByRole("combobox", {
+		name: "Recherche",
+	});
+
+	await expect(filter).toBeVisible({
+		timeout: 10000,
+	});
+
+	const searchButton = page.getByRole("search");
+	await expect(searchButton).toBeVisible({
+		timeout: 10000,
+	});
+
+	await filter.fill("HA");
+	await searchButton.click();
+
+	for (const item of ITEMS) {
+		await expect(page.getByRole("link", { name: item.label })).toBeVisible();
+	}
+
+	await expect(
+		page.getByRole("link", { name: "Open Dissertations" }),
+	).not.toBeVisible();
+
+	await goToSettings(page);
+	await page.getByRole("button", { name: "Vignettes" }).click();
+
+	await janusLogout(page);
 });
 
 test("filter platforms updates filters result", async ({ page }) => {

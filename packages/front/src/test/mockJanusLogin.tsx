@@ -25,6 +25,7 @@ export function mockJanusLogin(
 			defaultTheme: "auto",
 			displayFavorites: true,
 			displayTestNews: true,
+			platformView: "card",
 			hasSeenPopup: false,
 			...defaultSettings,
 		},

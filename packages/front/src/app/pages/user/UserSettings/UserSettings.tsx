@@ -127,6 +127,34 @@ const UserSettings = () => {
 								{t("pages.userSettings.searchSection.fullText")}
 							</ToggleButton>
 						</ToggleButtonGroup>
+
+						<Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+							{t("pages.userSettings.searchSection.platformView")}
+						</Typography>
+						<ToggleButtonGroup
+							value={user.settings.platformView}
+							exclusive
+							onChange={handleToggleChange("platformView")}
+							aria-label={t("pages.userSettings.searchSection.platformView")}
+							color="primary"
+						>
+							<ToggleButton
+								value="card"
+								aria-label={t(
+									"pages.userSettings.searchSection.platformViewCard",
+								)}
+							>
+								{t("pages.userSettings.searchSection.platformViewCard")}
+							</ToggleButton>
+							<ToggleButton
+								value="list"
+								aria-label={t(
+									"pages.userSettings.searchSection.platformViewList",
+								)}
+							>
+								{t("pages.userSettings.searchSection.platformViewList")}
+							</ToggleButton>
+						</ToggleButtonGroup>
 					</Box>
 
 					<Box>

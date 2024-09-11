@@ -11,6 +11,7 @@ export class JanusAccountUpdateDto
 			| "defaultSearchMode"
 			| "defaultLanguage"
 			| "defaultTheme"
+			| "platformView"
 		>
 {
 	primary_institute: number | null;

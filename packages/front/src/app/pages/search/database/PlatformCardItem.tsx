@@ -6,7 +6,7 @@ import { useBibContext } from "../../../context/BibContext";
 import { useMatomo } from "../../../shared/matomo";
 import type { DatabaseItemProps } from "../../../shared/types/data.types";
 
-export function DatabaseItem(props: DatabaseItemProps) {
+export function PlatformCardItem(props: DatabaseItemProps) {
 	const {
 		session: { user },
 	} = useBibContext();
