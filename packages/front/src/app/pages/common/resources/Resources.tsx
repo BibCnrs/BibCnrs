@@ -4,8 +4,9 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { Empty } from "../../../components/shared/Empty";
+import { useBibContext } from "../../../context/BibContext";
 import { resources } from "../../../services/common/Resources";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useTranslator } from "../../../shared/locales/I18N";
 import { useMatomo } from "../../../shared/matomo";
 import type {
 	ResourceDataType,
@@ -16,7 +17,7 @@ export const DisplayResources = ({
 	data,
 }: { data: ResourcesDataType | undefined }) => {
 	const { trackEvent } = useMatomo();
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 
 	if (!data || data.length === 0) {
 		return <Empty />;

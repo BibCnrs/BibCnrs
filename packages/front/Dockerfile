@@ -9,7 +9,7 @@ COPY package.json                       /app/package.json
 COPY yarn.lock                          /app/yarn.lock
 COPY .yarnrc.yml                        /app/.yarnrc.yml
 COPY .yarn/releases                     /app/.yarn/releases
-COPY packages/front/package.json    /app/packages/front/package.json
+COPY packages/front/package.json        /app/packages/front/package.json
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ FROM base AS sources
 ENV NODE_ENV=production
 
 COPY --chown=node:node  tsconfig.json           ./tsconfig.json
-COPY --chown=node:node  packages/front/     ./packages/front/
+COPY --chown=node:node  packages/front/         ./packages/front/
 
 RUN yarn workspaces focus @bibcnrs/front
 
@@ -49,6 +49,7 @@ FROM nginx:1.25-alpine
 
 RUN rm -rf /usr/share/nginx/html/*
 ADD ./packages/front/nginx.conf             /etc/nginx/conf.d/default.conf
-COPY --from=prod-builder     /app/packages/front/dist  /usr/share/nginx/html
+
+COPY --from=prod-builder     /app/packages/front/dist       /usr/share/nginx/html
 
 EXPOSE 80

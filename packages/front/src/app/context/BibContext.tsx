@@ -9,9 +9,10 @@ import {
 	createContext,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from "react";
-import { useLanguageKey } from "../shared/locales/I18N";
+import { useFullTranslator } from "../shared/locales/I18N";
 import type { SearchContextType, ThemeType } from "../shared/types/types";
 import { AdvancedSearchProvider } from "./AdvancedSearchContext";
 import {
@@ -26,6 +27,7 @@ import { lightTheme } from "./themes/light";
 import { useSession } from "./useSession";
 
 type BibContextType = {
+	language: "fr" | "en";
 	displayAuthenticationModal: boolean;
 	theme: ThemeType;
 	setTheme: (value: ThemeType) => void;
@@ -43,7 +45,7 @@ type BibContextProviderProps = {
 
 export function BibContextProvider({ children }: BibContextProviderProps) {
 	const session = useSession();
-	const language = useLanguageKey();
+	const { i18n } = useFullTranslator();
 	const [displayAuthenticationModal, setDisplayAuthenticationModal] =
 		useState(false);
 
@@ -63,22 +65,28 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		setDisplayAuthenticationModal(false);
 	};
 
-	/**
-	 * Function used to return a Material UI language object
-	 * @returns - Material UI language
-	 *            - Default: French
-	 */
-	const getLocale = () => {
+	const language = useMemo(() => {
+		if (
+			session.session.user?.origin === "janus" &&
+			session.session.user.settings.defaultLanguage !== "auto"
+		) {
+			return session.session.user.settings.defaultLanguage;
+		}
+		return i18n.language.startsWith("fr") ? "fr" : "en";
+	}, [session, i18n]);
+
+	const locale = useMemo(() => {
 		if (language === "en") {
 			return enUS;
 		}
 		return frFR;
-	};
+	}, [language]);
 
 	// Create Material UI theme
-	const muiTheme = createTheme(
-		session.theme === "light" ? lightTheme : darkTheme,
-		getLocale(),
+	const muiTheme = useMemo(
+		() =>
+			createTheme(session.theme === "light" ? lightTheme : darkTheme, locale),
+		[session.theme, locale],
 	);
 
 	useEffect(() => {
@@ -102,6 +110,7 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		<BibContext.Provider
 			value={{
 				...session,
+				language,
 				displayAuthenticationModal,
 				search,
 				setSearch,

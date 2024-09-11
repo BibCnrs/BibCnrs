@@ -2,14 +2,14 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { Card, CardContent } from "@mui/material";
 import { Box } from "@mui/system";
 import { memo } from "react";
-import { useLanguageKey } from "../../../../shared/locales/I18N";
+import { useBibContext } from "../../../../context/BibContext";
 import type { CMSResultDataType } from "../../../../shared/types/data.types";
 /**
  * Paper component used to display alert
  * @param children - Alert content
  */
 const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 	if (!data || data.length < 1) {
 		return null;
 	}

@@ -2,6 +2,7 @@ import Switch from "@mui/material/Switch";
 import styled from "@mui/material/styles/styled";
 import type { ChangeEvent } from "react";
 import { useBibContext } from "../../../../context/BibContext";
+import { useSettingsUpdate } from "../../../../pages/user/UserSettings/useSettingsUpdate";
 
 // Style from https://mui.com/material-ui/react-switch/
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -55,17 +56,18 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
  * Button used to handle theme change
  */
 const ThemeButton = () => {
-	const { theme, setTheme } = useBibContext();
+	const { theme } = useBibContext();
+	const { handleToggleChange } = useSettingsUpdate();
+
 	/**
 	 * Function used to handle switch action
 	 * @param event - Button event used to access the state of the button
 	 */
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		if (event.target.checked) {
-			setTheme("dark");
-		} else {
-			setTheme("light");
-		}
+		handleToggleChange("defaultTheme")(
+			null,
+			event.target.checked ? "dark" : "light",
+		);
 	};
 
 	return (

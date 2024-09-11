@@ -7,7 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Stack } from "@mui/system";
 import { type ChangeEvent, useContext } from "react";
-import { useLanguageKey, useTranslator } from "../../../shared/locales/I18N";
+import { useBibContext } from "../../../context/BibContext";
+import { useTranslator } from "../../../shared/locales/I18N";
 import { ArticleContext } from "./ArticlePage";
 
 type ArticlePageHeaderProps = {
@@ -29,7 +30,7 @@ export const ArticlePageHeader = ({
 	handleOrderChange,
 }: ArticlePageHeaderProps) => {
 	const t = useTranslator();
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 	const { exports } = useContext(ArticleContext);
 	return (
 		<Stack direction="row" alignItems="center" justifyContent="space-between">

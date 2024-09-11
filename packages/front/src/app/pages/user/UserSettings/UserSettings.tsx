@@ -6,56 +6,18 @@ import {
 	Typography,
 } from "@mui/material";
 import { Box, Container, Stack } from "@mui/system";
-import { useMutation } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
-import { updateSettings } from "../../../services/user/UserSettings";
 import { useTranslator } from "../../../shared/locales/I18N";
-import { useMatomo } from "../../../shared/matomo";
-import type { UserSettingsDataType } from "../../../shared/types/data.types";
+import { useSettingsUpdate } from "./useSettingsUpdate";
 
 const UserSettings = () => {
 	const {
 		session: { user },
-		updateUserSettings,
 	} = useBibContext();
+	const { handleSwitchChange, handleToggleChange } = useSettingsUpdate();
 	const t = useTranslator();
-	const { trackEvent } = useMatomo();
-
-	const mutation = useMutation({
-		mutationFn: updateSettings,
-		onSuccess: (data: UserSettingsDataType) => {
-			updateUserSettings(data);
-		},
-		onError: (error) => {
-			console.error(error);
-		},
-	});
-
-	const handleSwitchChange = (event) => {
-		mutation.mutate({
-			userId: user.id,
-			[event.target.name]: event.target.checked,
-		});
-		trackEvent(
-			"UserSettings",
-			event.target.name,
-			event.target.checked ? "on" : "off",
-		);
-	};
-
-	const handleToggleChange =
-		(property: keyof typeof user.settings) => (_, newToggleValue) => {
-			if (newToggleValue === null) return;
-
-			mutation.mutate({
-				userId: user.id,
-				[property]: newToggleValue,
-			});
-
-			trackEvent("UserSettings", property, newToggleValue);
-		};
 
 	return (
 		<>

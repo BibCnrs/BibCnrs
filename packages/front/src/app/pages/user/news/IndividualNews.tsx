@@ -8,7 +8,6 @@ import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
 import { newsById } from "../../../services/user/TestsNews";
-import { useLanguageKey } from "../../../shared/locales/I18N";
 import type {
 	TestNewDataType,
 	TestNewUrlDataType,
@@ -17,7 +16,7 @@ import Error404 from "../../errors/Error404";
 
 const IndividualNews = () => {
 	const params = useParams();
-	const language = useLanguageKey();
+	const { language } = useBibContext();
 
 	const id = useMemo(() => {
 		if (params.id) {
