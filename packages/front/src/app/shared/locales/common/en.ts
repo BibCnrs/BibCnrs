@@ -145,7 +145,9 @@ const en: Common = {
 		advancedSearch: {
 			modalTitle: "Advanced Search",
 			add: "Add item below",
+			addGroup: "Add group below",
 			remove: "Remove this item",
+			removeGroup: "Remove this group",
 			search: "Search",
 			operator: "Operator",
 			and: "AND",

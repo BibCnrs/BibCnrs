@@ -433,7 +433,6 @@ const ArticlePage = () => {
 						>
 							<Button
 								onClick={openAdvancedSearch}
-								aria-label={t("components.advancedSearch.modalTitle")}
 								color="info"
 								sx={{
 									textWrap: "nowrap",
