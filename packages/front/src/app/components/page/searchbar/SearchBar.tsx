@@ -60,6 +60,14 @@ const SearchBar = ({
 
 	const debounceValue = useDebounce(value, 375);
 
+	useEffect(() => {
+		if (!disableAutocomplete) {
+			return;
+		}
+		const timeoutId = setTimeout(() => onSearch(value), 500);
+		return () => clearTimeout(timeoutId);
+	}, [onSearch, value, disableAutocomplete]);
+
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const { data } = useQuery<string[], any, string[], any>({
 		queryKey: ["search-bar", debounceValue],
@@ -162,6 +170,7 @@ const SearchBar = ({
 						inputValue={value}
 						value={autocompleteValue}
 						onChange={handleAutocompleteChange}
+						onBlur={() => onSearch(value)}
 						onInputChange={handleChange}
 						onKeyDown={inputKeyDown}
 						renderInput={(params) => (
