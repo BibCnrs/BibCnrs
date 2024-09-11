@@ -16,15 +16,9 @@ import type {
 } from "../../../shared/types/data.types";
 import { INITIAL_FILTER } from "./filters";
 
-export const getFilterIcon = (filterName: string) => {
-	switch (filterName) {
-		case "oa":
-			return <OpenAccess />;
-		case "is_completed":
-			return <CompleteIcon />;
-		default:
-			return null;
-	}
+const iconPerFilter = {
+	oa: <OpenAccess />,
+	is_completed: <CompleteIcon />,
 };
 
 export default function FilterTab({
@@ -139,7 +133,7 @@ export default function FilterTab({
 											gap={1}
 											sx={{ fontSize: "0.8em" }}
 										>
-											{getFilterIcon(filter.props)}
+											{iconPerFilter[filter.props]}
 											<Typography
 												sx={{ fontSize: "1rem" }}
 											>{`${getLabel(filter)} (${getLabelCount(filter)})`}</Typography>
