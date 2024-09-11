@@ -369,7 +369,7 @@ Sincerely`,
 			},
 			tooltip: {
 				delete:
-					"Do you really want to delete all the history (excluding alerts)?",
+					"This action will delete all your history, except for your alerts",
 			},
 			confirmDelete: {
 				title: "Delete a history",

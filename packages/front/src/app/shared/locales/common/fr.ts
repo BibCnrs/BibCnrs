@@ -372,7 +372,7 @@ Cordialement`,
 			},
 			tooltip: {
 				delete:
-					"Voulez vous vraiment supprimer tout l'historique (hors alertes) ?",
+					"Cette action supprimera tout votre historique, à l'exception de vos alertes",
 			},
 			confirmDelete: {
 				title: "Supprimer une entrée",
