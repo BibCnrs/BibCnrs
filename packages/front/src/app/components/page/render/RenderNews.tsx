@@ -6,7 +6,7 @@ import {
 	Chip,
 	Typography,
 } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { Box, Stack, useTheme } from "@mui/system";
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useBibContext } from "../../../context/BibContext";
@@ -20,6 +20,7 @@ import { Empty } from "../../shared/Empty";
  */
 const RenderNews = ({ data }: TestsNewsProps) => {
 	const { language } = useBibContext();
+	const theme = useTheme();
 
 	const filteredData = useMemo(() => {
 		if (!data) {
@@ -78,6 +79,14 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 								display: "flex",
 								justifyContent: "space-between",
 								flexDirection: "column",
+								backgroundColor:
+									data.page === "tests"
+										? theme.palette.secondary.main
+										: "inherit",
+								color:
+									data.page === "tests"
+										? theme.palette.common.black
+										: "inherit",
 							}}
 						>
 							<Stack spacing={1}>
@@ -85,12 +94,13 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 									{data.page === "tests" && (
 										<Chip
 											label="Test"
-											size="small"
+											size="medium"
 											variant="filled"
-											color="secondary"
 											sx={{
 												fontWeight: 700,
 												textTransform: "uppercase",
+												backgroundColor: theme.palette.common.white,
+												color: theme.palette.common.black,
 											}}
 										/>
 									)}
@@ -103,7 +113,7 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 									{language === "en" ? data.name_en : data.name_fr}
 								</Typography>
 							</Stack>
-							<Typography color="textSecondary">
+							<Typography>
 								{new Date(data.from).toLocaleDateString()}
 							</Typography>
 						</CardContent>

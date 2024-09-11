@@ -55,5 +55,12 @@ export const darkTheme: ThemeOptions = {
 				root: muiCardContentTheme,
 			},
 		},
+		MuiChip: {
+			styleOverrides: {
+				root: {
+					fontSize: "1em",
+				},
+			},
+		},
 	},
 };

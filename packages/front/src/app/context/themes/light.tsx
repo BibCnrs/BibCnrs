@@ -76,5 +76,12 @@ export const lightTheme: ThemeOptions = {
 				},
 			},
 		},
+		MuiChip: {
+			styleOverrides: {
+				root: {
+					fontSize: "1em",
+				},
+			},
+		},
 	},
 };
