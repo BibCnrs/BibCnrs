@@ -170,6 +170,7 @@ const SearchBar = ({
 						inputValue={value}
 						value={autocompleteValue}
 						onChange={handleAutocompleteChange}
+						onBlur={() => onSearch(value)}
 						onInputChange={handleChange}
 						onKeyDown={inputKeyDown}
 						renderInput={(params) => (
