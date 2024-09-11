@@ -11,7 +11,7 @@ import type {
 	PublicationRetrieveDataType,
 } from "../../../shared/types/data.types";
 import { PublicationTitle } from "./PublicationTitle";
-import { getPrioritizedLink } from "./prioritizeLinksAlgo";
+import { getPrioritizedLink } from "./prioritizeLinks";
 
 export const PublicationSidebar = ({ publication }) => {
 	const t = useTranslator();

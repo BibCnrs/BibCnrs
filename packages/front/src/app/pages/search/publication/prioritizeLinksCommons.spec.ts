@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 import {
-	type Link,
 	calculateCoverageEndWithEmbargo,
 	compareEndCouvertureWhenCouvertureDifferent,
 	compareEndCouvertureWhenCouvertureIsSame,
@@ -8,128 +7,22 @@ import {
 	findDateLink,
 	findEmbargoLink,
 	findPresentLink,
-	getPrioritizedLink,
+	haveAllLinksSameCoverageEnd,
 	isCoverageIdentical,
 	isDateLink,
 	isPresentLink,
 	isPresentLinkWithEmbargo,
 	linkHasEndCouverture,
 	parseValueEmbargo,
-} from "./prioritizeLinksAlgo";
-
-// Sample data for testing
-const linkPresentWithEmbargo_one: Link = {
-	url: "http://example.com/1",
-	name: "Link 1",
-	isCurrent: true,
-	embargo: {
-		value: 6,
-		unit: "Month",
-	},
-	coverage: [
-		{
-			start: {
-				month: "01",
-				day: "01",
-				year: "2020",
-			},
-			end: {
-				month: "12",
-				day: "31",
-				year: "9999",
-			},
-		},
-	],
-};
-
-const linkPresentWithEmbargo_two: Link = {
-	url: "http://example.com/2",
-	name: "Link 2",
-	isCurrent: true,
-	embargo: {
-		value: 6,
-		unit: "Month",
-	},
-	coverage: [
-		{
-			start: {
-				month: "01",
-				day: "01",
-				year: "2020",
-			},
-			end: {
-				month: "12",
-				day: "31",
-				year: "9999",
-			},
-		},
-	],
-};
-
-const linkPast: Link = {
-	url: "http://example.com/3",
-	name: "Link 3",
-	isCurrent: true,
-	embargo: null,
-	coverage: [
-		{
-			start: {
-				month: "01",
-				day: "01",
-				year: "2020",
-			},
-			end: {
-				month: "12",
-				day: "31",
-				year: "2021",
-			},
-		},
-	],
-};
-
-const linkPastWithEmbargo: Link = {
-	url: "http://example.com/4",
-	name: "Link 4",
-	isCurrent: true,
-	embargo: {
-		value: 1,
-		unit: "Year",
-	},
-	coverage: [
-		{
-			start: {
-				month: "01",
-				day: "01",
-				year: "2020",
-			},
-			end: {
-				month: "12",
-				day: "31",
-				year: "2025",
-			},
-		},
-	],
-};
-
-const linkPresent: Link = {
-	url: "http://example.com/4",
-	name: "Link 4",
-	isCurrent: true,
-	coverage: [
-		{
-			start: {
-				month: "01",
-				day: "01",
-				year: "2023",
-			},
-			end: {
-				month: "12",
-				day: "31",
-				year: "9999",
-			},
-		},
-	],
-};
+} from "./prioritizeLinksCommons";
+import {
+	linkPast,
+	linkPastWithEmbargo,
+	linkPresent,
+	linkPresentWithEmbargo_doaj,
+	linkPresentWithEmbargo_one,
+	linkPresentWithEmbargo_two,
+} from "./prioritizeLinksCommons.testdata";
 
 describe("Utility Functions", () => {
 	test("calculateCoverageEndWithEmbargo without embargo", () => {
@@ -224,23 +117,18 @@ describe("Main Logic", () => {
 		);
 		expect(result).toContain(linkPresentWithEmbargo_one);
 	});
+});
 
-	test("getPrioritizedLink", () => {
-		const links = [
+test("haveAllLinksSameCoverageEnd", () => {
+	expect(haveAllLinksSameCoverageEnd([])).toBe(true);
+	expect(haveAllLinksSameCoverageEnd([linkPresent])).toBe(true);
+	expect(haveAllLinksSameCoverageEnd([linkPresent, linkPresent])).toBe(true);
+	expect(
+		haveAllLinksSameCoverageEnd([
 			linkPresentWithEmbargo_one,
 			linkPresentWithEmbargo_two,
-			linkPast,
-		];
-		const result = getPrioritizedLink(links);
-		expect(result).toContain(linkPresentWithEmbargo_one);
-		expect(result).not.toContain(linkPast);
-		expect(result).not.toContain(linkPresentWithEmbargo_two);
-	});
-
-	test("getPrioritizedLink with two links", () => {
-		const links = [linkPresent, linkPast];
-		const result = getPrioritizedLink(links);
-		expect(result).toContain(linkPresent);
-		expect(result).toContain(linkPast);
-	});
+			linkPresentWithEmbargo_doaj,
+		]),
+	).toBe(true);
+	expect(haveAllLinksSameCoverageEnd([linkPresent, linkPast])).toBe(false);
 });

@@ -14,7 +14,7 @@ import type {
 	PublicationHolding,
 } from "../../../shared/types/data.types";
 import { PublicationTitle, isOpenAccessLink } from "./PublicationTitle";
-import { getPrioritizedLink } from "./prioritizeLinksAlgo";
+import { getPrioritizedLink } from "./prioritizeLinks";
 
 function PublicationId({ id }: { id: number }) {
 	return (
