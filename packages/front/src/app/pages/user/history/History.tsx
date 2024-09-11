@@ -7,6 +7,7 @@ import {
 	DialogContentText,
 	DialogTitle,
 	LinearProgress,
+	Tooltip,
 	Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
@@ -177,24 +178,26 @@ const History = ({
 											{t("pages.history.buttons.disable")}
 										</Button>
 									) : (
-										<Button
-											color="secondary"
-											variant="contained"
-											onClick={handleDelete}
-											sx={{
-												borderRadius: "20px",
-												fontWeight: "bold",
-												":hover": {
-													backgroundColor: (theme) =>
-														theme.palette.background.default,
-													color: (theme) => theme.palette.text.primary,
-													boxShadow: (theme) =>
-														`inset 0 0 0 2px ${theme.palette.secondary.main}`,
-												},
-											}}
-										>
-											{t("pages.history.buttons.delete")}
-										</Button>
+										<Tooltip title={t("pages.history.tooltip.delete")}>
+											<Button
+												color="secondary"
+												variant="contained"
+												onClick={handleDelete}
+												sx={{
+													borderRadius: "20px",
+													fontWeight: "bold",
+													":hover": {
+														backgroundColor: (theme) =>
+															theme.palette.background.default,
+														color: (theme) => theme.palette.text.primary,
+														boxShadow: (theme) =>
+															`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+													},
+												}}
+											>
+												{t("pages.history.buttons.delete")}
+											</Button>
+										</Tooltip>
 									)}
 								</Box>
 							}

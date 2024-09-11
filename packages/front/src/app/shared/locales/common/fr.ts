@@ -370,6 +370,10 @@ Cordialement`,
 				delete:
 					"Voulez vous vraiment supprimer tout l'historique (hors alertes) ?",
 			},
+			tooltip: {
+				delete:
+					"Cette action supprimera tout votre historique, à l'exception de vos alertes",
+			},
 			confirmDelete: {
 				title: "Supprimer une entrée",
 				description: "Etês-vous sûr de vouloir supprimer cette entrée ?",

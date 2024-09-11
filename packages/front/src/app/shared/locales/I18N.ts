@@ -353,6 +353,9 @@ export type Common = {
 			confirm: {
 				delete: string;
 			};
+			tooltip: {
+				delete: string;
+			};
 			confirmDelete: {
 				title: string;
 				description: string;

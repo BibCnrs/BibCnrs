@@ -367,6 +367,10 @@ Sincerely`,
 				delete:
 					"Do you really want to delete all the history (excluding alerts)?",
 			},
+			tooltip: {
+				delete:
+					"This action will delete all your history, except for your alerts",
+			},
 			confirmDelete: {
 				title: "Delete a history",
 				description: "Do you really want to delete this history?",
