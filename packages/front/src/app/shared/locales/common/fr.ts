@@ -147,7 +147,9 @@ const fr: Common = {
 		advancedSearch: {
 			modalTitle: "Recherche avancée",
 			add: "Ajouter un élément",
+			addGroup: "Ajouter un groupe",
 			remove: "Retirer cet élément",
+			removeGroup: "Retirer ce groupe",
 			search: "Rechercher",
 			operator: "Operateur",
 			and: "ET",

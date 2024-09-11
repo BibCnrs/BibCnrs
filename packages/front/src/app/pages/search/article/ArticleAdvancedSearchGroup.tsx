@@ -92,13 +92,17 @@ export default function ArticleAdvancedSearchGroup({
 				))}
 			</Stack>
 
-			<IconButton onClick={() => addGroup(group)}>
+			<IconButton
+				onClick={() => addGroup(group)}
+				aria-label={t("components.advancedSearch.addGroup")}
+			>
 				<AddIcon />
 			</IconButton>
 
 			<IconButton
 				disabled={!hasRemoveButton}
 				onClick={() => removeGroup(group)}
+				aria-label={t("components.advancedSearch.removeGroup")}
 			>
 				<RemoveIcon />
 			</IconButton>

@@ -107,10 +107,17 @@ export default function ArticleAdvancedSearchItem({
 				}}
 				size="small"
 			/>
-			<IconButton onClick={onAdd}>
+			<IconButton
+				aria-label={t("components.advancedSearch.add")}
+				onClick={onAdd}
+			>
 				<AddIcon />
 			</IconButton>
-			<IconButton disabled={!hasRemoveButton} onClick={onRemove}>
+			<IconButton
+				disabled={!hasRemoveButton}
+				onClick={onRemove}
+				aria-label={t("components.advancedSearch.remove")}
+			>
 				<RemoveIcon />
 			</IconButton>
 		</Stack>

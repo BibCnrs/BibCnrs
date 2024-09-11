@@ -157,7 +157,9 @@ export type Common = {
 		advancedSearch: {
 			modalTitle: string;
 			add: string;
+			addGroup: string;
 			remove: string;
+			removeGroup: string;
 			search: string;
 			operator: string;
 			and: string;

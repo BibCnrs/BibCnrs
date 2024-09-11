@@ -1,10 +1,10 @@
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import {
 	Box,
+	Button,
 	Container,
 	Drawer,
 	Grid,
-	IconButton,
 	Stack,
 	Tooltip,
 	Typography,
@@ -426,18 +426,26 @@ const ArticlePage = () => {
 				onSearch={handleSearch}
 				secondaryAction={
 					<Tooltip arrow title={t("components.advancedSearch.modalTitle")}>
-						<IconButton
-							onClick={openAdvancedSearch}
-							sx={{
-								display: {
-									xs: "none",
-									md: "flex",
-								},
-							}}
-							aria-label={t("components.advancedSearch.modalTitle")}
+						<Stack
+							direction="row"
+							alignItems="center"
+							sx={{ marginRight: "1em" }}
 						>
-							<ManageSearchIcon />
-						</IconButton>
+							<Button
+								onClick={openAdvancedSearch}
+								color="info"
+								sx={{
+									textWrap: "nowrap",
+									fontWeight: 700,
+									fontSize: "1em",
+									textTransform: "none",
+								}}
+								autoCapitalize="false"
+							>
+								<ManageSearchIcon />
+								{t("components.advancedSearch.modalTitle")}
+							</Button>
+						</Stack>
 					</Tooltip>
 				}
 			>

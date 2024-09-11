@@ -23,7 +23,7 @@ const darkThemePalette = {
 		light: "#F35B5B4D",
 	},
 	info: {
-		main: "#2A323C",
+		main: "#ffffff",
 		light: "#2A323C",
 	},
 } satisfies ThemeOptions["palette"];
