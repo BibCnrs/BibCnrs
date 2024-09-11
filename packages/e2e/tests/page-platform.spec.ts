@@ -79,3 +79,36 @@ test("filter platforms ", async ({ page }) => {
 		}
 	}
 });
+
+test("filter platforms updates filters result", async ({ page }) => {
+	await page.goto("/database");
+
+	const filter = page.getByRole("combobox", {
+		name: "Recherche",
+	});
+
+	await expect(filter).toBeVisible({
+		timeout: 10000,
+	});
+
+	const databases = page.getByLabel("Plateformes", { exact: true });
+	await expect(databases).toBeVisible({
+		timeout: 10000,
+	});
+
+	const searchButton = page.getByRole("search");
+	await expect(searchButton).toBeVisible({
+		timeout: 10000,
+	});
+
+	await filter.fill("ADS");
+	await searchButton.click();
+
+	await expect(databases.locator("[role=listitem]")).toHaveCount(1);
+
+	await expect(page.getByLabel("Accès Ouvert (1)")).toBeVisible();
+	await expect(page.getByLabel("Accès Ouvert (1)")).not.toBeDisabled();
+
+	await expect(page.getByLabel("Complétude: 100% (0)")).toBeVisible();
+	await expect(page.getByLabel("Complétude: 100% (0)")).toBeDisabled();
+});

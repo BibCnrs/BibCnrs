@@ -102,18 +102,13 @@ export default function FilterTab({
 					(item) => item.section === section && getLabelCount(item) > 0,
 				);
 
-				if (filteredItems.length === 0) {
-					return null;
-				}
 				return (
 					<Stack key={section} mb={1}>
 						<FormLabel component="legend" sx={{ fontWeight: 700 }}>
 							{t(`pages.database.filters.${section}`)}
 						</FormLabel>
 						{filters
-							.filter(
-								(item) => item.section === section && getLabelCount(item) > 0,
-							)
+							.filter((item) => item.section === section)
 							.map((filter, index) => (
 								<FormControlLabel
 									key={`${filter.props}-${index}`}
@@ -121,6 +116,7 @@ export default function FilterTab({
 										<Checkbox
 											checked={filter.value}
 											onChange={() => handleChange(filter)}
+											disabled={getLabelCount(filter) === 0}
 										/>
 									}
 									label={`${getLabel(filter)} (${getLabelCount(filter)})`}
