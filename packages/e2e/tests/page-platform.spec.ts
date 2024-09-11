@@ -106,9 +106,9 @@ test("filter platforms updates filters result", async ({ page }) => {
 
 	await expect(databases.locator("[role=listitem]")).toHaveCount(1);
 
-	await expect(page.getByLabel("Accès Ouvert (1)")).toBeVisible();
-	await expect(page.getByLabel("Accès Ouvert (1)")).not.toBeDisabled();
+	await expect(page.getByLabel("Ouvert (1)")).toBeVisible();
+	await expect(page.getByLabel("Ouvert (1)")).not.toBeDisabled();
 
-	await expect(page.getByLabel("Complétude: 100% (0)")).toBeVisible();
-	await expect(page.getByLabel("Complétude: 100% (0)")).toBeDisabled();
+	await expect(page.getByLabel("Complet (0)")).toBeVisible();
+	await expect(page.getByLabel("Complet (0)")).toBeDisabled();
 });
