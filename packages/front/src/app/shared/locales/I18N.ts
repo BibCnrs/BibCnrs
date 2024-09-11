@@ -209,8 +209,15 @@ export type Common = {
 		};
 		icon: {
 			openAccess: string;
-			notComplete: string;
+			complete: string;
 			diamond: string;
+			withEmbargo: string;
+			tooltip: {
+				openAccess: string;
+				complete: string;
+				diamond: string;
+				withEmbargo: string;
+			};
 		};
 		button: {
 			favourite: {

@@ -1,5 +1,5 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
+import FavoriteBorderOutlined from "@mui/icons-material/FavoriteBorderOutlined";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/system";
@@ -10,6 +10,7 @@ import { useTranslator } from "../../../shared/locales/I18N";
 import type { FavouriteResourceDataType } from "../../../shared/types/data.types";
 
 const AnimatedIconButton = styled(IconButton)`
+  padding: 0;
   &.animate {
     animation: bounce 0.3s;
   }
@@ -87,7 +88,20 @@ const BookmarkButton = ({ title, url, source }: BookmarkButtonProps) => {
 				size="small"
 				aria-label={t("components.button.favourite.tooltip", { title })}
 			>
-				{inBookmark ? <FavoriteIcon color="primary" /> : <FavoriteOutlined />}
+				{inBookmark ? (
+					<FavoriteIcon
+						sx={{
+							fontSize: "1.2em",
+						}}
+						color="primary"
+					/>
+				) : (
+					<FavoriteBorderOutlined
+						sx={{
+							fontSize: "1.2em",
+						}}
+					/>
+				)}
 			</AnimatedIconButton>
 		</Tooltip>
 	);

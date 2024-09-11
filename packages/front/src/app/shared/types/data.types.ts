@@ -89,6 +89,7 @@ export type DatabaseItemProps = DatabaseEntryDataType & {
 	name: string;
 	url: string;
 	text: string;
+	without_embargo: boolean;
 };
 
 export type DatabaseDataType = DatabaseEntryDataType[];

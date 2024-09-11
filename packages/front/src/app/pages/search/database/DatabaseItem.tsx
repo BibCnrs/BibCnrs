@@ -1,3 +1,4 @@
+import InfoIcon from "@mui/icons-material/InfoOutlined";
 import { Card, CardContent, Link, Stack, Tooltip } from "@mui/material";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import DatabaseIcons from "../../../components/element/icon/DatabaseIcons";
@@ -16,44 +17,48 @@ export function DatabaseItem(props: DatabaseItemProps) {
 	};
 
 	return (
-		<Tooltip
-			title={props.text}
-			arrow
-			enterDelay={1000}
-			enterNextDelay={1000}
-			leaveDelay={200}
-		>
-			<Card role="listitem" aria-label={props.name} elevation={3}>
-				<CardContent
+		<Card role="listitem" aria-label={props.name} elevation={3}>
+			<CardContent
+				sx={{
+					"&:last-child": {
+						paddingBottom: 2,
+						height: "100%",
+					},
+				}}
+			>
+				<Stack
+					gap={1}
 					sx={{
-						"&:last-child": {
-							paddingBottom: 2,
-							height: "100%",
-						},
+						height: "100%",
+						justifyContent: "space-between",
 					}}
 				>
-					<Stack
-						gap={1}
+					<Link
+						fontWeight={700}
+						href={props.url}
+						target="_blank"
+						rel="noopener noreferrer"
 						sx={{
-							height: "100%",
-							justifyContent: "space-between",
+							textOverflow: "ellipsis",
+							textWrap: "nowrap",
+							overflow: "hidden",
+							display: "inline-block",
+							width: "100%",
 						}}
+						onClick={handleClick}
 					>
-						<Stack
-							direction="row"
-							alignItems="center"
-							justifyContent="space-between"
-							gap={1}
-						>
-							<Link
-								fontWeight={700}
-								href={props.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								onClick={handleClick}
-							>
-								{props.name}
-							</Link>
+						{props.name}
+					</Link>
+					<Stack
+						direction="row"
+						justifyContent="space-between"
+						alignItems="center"
+					>
+						<DatabaseIcons {...props} />
+						<Stack direction="row" alignItems="center" gap={1}>
+							<Tooltip title={props.text} arrow>
+								<InfoIcon sx={{ fontSize: "1.2em" }} color="action" />
+							</Tooltip>
 							{user && (
 								<BookmarkButton
 									className="database-icon-favourite"
@@ -63,10 +68,9 @@ export function DatabaseItem(props: DatabaseItemProps) {
 								/>
 							)}
 						</Stack>
-						<DatabaseIcons {...props} />
 					</Stack>
-				</CardContent>
-			</Card>
-		</Tooltip>
+				</Stack>
+			</CardContent>
+		</Card>
 	);
 }

@@ -1,12 +1,6 @@
 export const INITIAL_FILTER = [
 	{ props: "oa", value: false, type: "boolean", section: "default" },
 	{
-		props: "is_text_integral",
-		value: false,
-		type: "boolean",
-		section: "default",
-	},
-	{
 		props: "is_completed",
 		value: false,
 		type: "boolean",
@@ -30,6 +24,12 @@ export const INITIAL_FILTER = [
 		value: false,
 		type: "boolean",
 		section: "document",
+	},
+	{
+		props: "is_text_integral",
+		value: false,
+		type: "boolean",
+		section: "content",
 	},
 	{
 		props: "type",

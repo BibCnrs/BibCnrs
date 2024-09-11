@@ -40,7 +40,7 @@ const Database = () => {
 	const domains = useDomain();
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [databasePerPage, setDatabasePerPage] = useState<number>(50);
+	const [databasePerPage, setDatabasePerPage] = useState<number>(100);
 
 	const [nameFilter, setNameFilter] = useState<string>("");
 
