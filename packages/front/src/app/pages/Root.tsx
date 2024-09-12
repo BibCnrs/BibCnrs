@@ -3,6 +3,7 @@ import { Container } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import { AnonymousHome } from "../components/page/home/AnonymousHome";
 import { LoginHome } from "../components/page/home/LoginHome";
+import ChipFacet from "../components/page/search/ChipFacet";
 import SearchBar from "../components/page/searchbar/SearchBar";
 import { useBibContext } from "../context/BibContext";
 import {
@@ -12,6 +13,7 @@ import {
 	RoutePublication,
 	updatePageQueryUrl,
 } from "../shared/Routes";
+import { useDomain, useFacetsDomainHandler } from "../shared/hook";
 import { useTranslator } from "../shared/locales/I18N";
 
 const ROUTE_SEARCH = {
@@ -22,7 +24,10 @@ const ROUTE_SEARCH = {
 };
 
 const Root = () => {
-	const { session } = useBibContext();
+	const { session, search } = useBibContext();
+
+	const domains = useDomain();
+	const handleDomain = useFacetsDomainHandler();
 
 	const navigate = useNavigate();
 	const t = useTranslator();
@@ -35,6 +40,10 @@ const Root = () => {
 		const { defaultSearchMode } = session.user.settings;
 		const route = ROUTE_SEARCH[defaultSearchMode];
 		return updatePageQueryUrl(route, navigate, { q });
+	};
+
+	const handleChangeDomain = (event, field) => {
+		handleDomain(event, field);
 	};
 
 	if (session.status === "loading") {
@@ -50,7 +59,13 @@ const Root = () => {
 			<SearchBar
 				placeholder={t("pages.article.searchBar")}
 				onSearch={handleSearch}
-			/>
+			>
+				<ChipFacet
+					value={search.domain}
+					values={domains}
+					onChange={handleChangeDomain}
+				/>
+			</SearchBar>
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
 				{!session.user && <AnonymousHome />}
 				{session.user && <LoginHome />}
