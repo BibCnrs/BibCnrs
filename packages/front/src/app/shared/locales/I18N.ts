@@ -411,6 +411,7 @@ export type Common = {
 				database: string;
 				metadore: string;
 				personal: string;
+				noSource: string;
 			};
 		};
 		faq: {

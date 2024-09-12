@@ -253,6 +253,9 @@ _restore_db:
 	docker exec bibcnrs-db-1 bash -c 'PGPASSWORD=$$POSTGRES_PASSWORD createdb --username $$POSTGRES_USER $$POSTGRES_DB' || true
 	docker exec bibcnrs-db-1 bash -c 'psql -f /backups/$(COMMAND_ARGS) postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@bibcnrs-db-1:5432/$$POSTGRES_DB'
 
+connect-db: ## Allow to connect to psql instance
+	docker exec -it bibcnrs-db-1 bash -c 'psql postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@bibcnrs-db-1:5432/$$POSTGRES_DB'
+
 restore-db:  ## restore a given dump to the postgres database list all dump if none specified
 ifdef COMMAND_ARGS
 	@make _pre_restore_db

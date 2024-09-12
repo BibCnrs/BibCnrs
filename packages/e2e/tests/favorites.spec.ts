@@ -174,23 +174,51 @@ test("Show / Hide favorites on home page", async ({ page }) => {
 
 test("Filter items", async ({ page }) => {
 	const cnrs = () => page.getByRole("listitem", { name: /www.cnrs.fr/i });
+	const bibcnrs = () => page.getByRole("listitem", { name: /bib.cnrs.fr/i });
 	const ins2i = () =>
 		page.getByRole("listitem", { name: /www.ins2i.cnrs.fr/i });
+	const wikipedia = () => page.getByRole("listitem", { name: /wikipedia.fr/i });
 
 	await janusLogin(page);
 	await goToFavorites(page);
 	await expect(cnrs()).toBeVisible();
+	await expect(bibcnrs()).toBeVisible();
 	await expect(ins2i()).toBeVisible();
+	await expect(wikipedia()).toBeVisible();
 
 	await page.getByPlaceholder("Rechercher dans mes favoris").fill("CNRS");
 	await page.getByPlaceholder("Rechercher dans mes favoris").press("Enter");
 	await expect(cnrs()).toBeVisible();
+	await expect(bibcnrs()).toBeVisible();
+	await expect(wikipedia()).not.toBeVisible();
+	await expect(ins2i()).not.toBeVisible();
+	await expect(page.getByText("Ressources favorites (0)")).toBeDisabled();
+
+	await page.getByText("Revues, ouvrages (1)").click();
+	await expect(cnrs()).toBeVisible();
+	await expect(wikipedia()).not.toBeVisible();
+	await expect(bibcnrs()).not.toBeVisible();
 	await expect(ins2i()).not.toBeVisible();
 
+	await page.getByText("Revues, ouvrages (1)").click();
 	await page.getByPlaceholder("Rechercher dans mes favoris").fill("");
 	await page.getByPlaceholder("Rechercher dans mes favoris").press("Enter");
 	await expect(cnrs()).toBeVisible();
 	await expect(ins2i()).toBeVisible();
+	await expect(bibcnrs()).toBeVisible();
+	await expect(ins2i()).toBeVisible();
+
+	await page.getByText("Ressources favorites (1)").click();
+	await expect(cnrs()).not.toBeVisible();
+	await expect(bibcnrs()).not.toBeVisible();
+	await expect(ins2i()).not.toBeVisible();
+	await expect(wikipedia()).toBeVisible();
+
+	await page.getByText("Articles (1)").click();
+	await expect(cnrs()).not.toBeVisible();
+	await expect(bibcnrs()).not.toBeVisible();
+	await expect(ins2i()).toBeVisible();
+	await expect(wikipedia()).toBeVisible();
 
 	await janusLogout(page);
 });

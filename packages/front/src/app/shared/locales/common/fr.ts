@@ -430,6 +430,7 @@ Cordialement`,
 				database: "Plateformes ({{ count }})",
 				metadore: "Données de recherche ({{ count }})",
 				personal: "Ressources personnelles ({{ count }})",
+				noSource: "Ressources favorites ({{ count }})",
 			},
 		},
 		userSettings: {

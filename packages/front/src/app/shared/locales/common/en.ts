@@ -427,6 +427,7 @@ Sincerely`,
 				database: "Platforms ({{ count }})",
 				metadore: "Research data ({{ count }})",
 				personal: "Personal resources ({{ count }})",
+				noSource: "Favourite resources ({{ count }})",
 			},
 		},
 		userSettings: {

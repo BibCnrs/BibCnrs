@@ -17,11 +17,14 @@ import FavouriteList from "./FavouriteList";
 import { useFavourites } from "./useFavourites";
 
 type BooleanFavoriteFilter = Record<
-	Exclude<FavouriteResourceDataType["source"], "shared">,
+	Exclude<FavouriteResourceDataType["source"], "shared"> | "noSource",
 	boolean | null
 >;
 
-type FavouriteFilter = { title: string | null } & BooleanFavoriteFilter;
+type FavouriteFilter = {
+	title: string | null;
+	noSource: boolean;
+} & BooleanFavoriteFilter;
 
 const BOOLEAN_FILTERS: (keyof BooleanFavoriteFilter)[] = [
 	"article",
@@ -29,6 +32,7 @@ const BOOLEAN_FILTERS: (keyof BooleanFavoriteFilter)[] = [
 	"database",
 	"metadore",
 	"personal",
+	"noSource",
 ];
 
 const INITIAL_FILTERS: FavouriteFilter = {
@@ -38,6 +42,7 @@ const INITIAL_FILTERS: FavouriteFilter = {
 	database: null,
 	metadore: null,
 	personal: null,
+	noSource: null,
 };
 
 const Favourite = () => {
@@ -117,8 +122,9 @@ const Favourite = () => {
 					return true;
 				}
 
-				return activeBooleanFilters.some(
-					(filter) => favourite.source === filter,
+				return (
+					activeBooleanFilters.some((filter) => favourite.source === filter) ||
+					(filters.noSource === true && !favourite.source)
 				);
 			});
 		},
@@ -155,10 +161,16 @@ const Favourite = () => {
 							</Typography>
 
 							{BOOLEAN_FILTERS.map((key) => {
-								const count = allFavourites.filter(
-									({ title, source }) =>
-										source === key && !_filterByTitle(title),
-								).length;
+								const count = allFavourites.filter((favourite) => {
+									if (key === "noSource") {
+										return (
+											!favourite.source && !_filterByTitle(favourite.title)
+										);
+									}
+									return (
+										favourite.source === key && !_filterByTitle(favourite.title)
+									);
+								}).length;
 
 								return (
 									<FormControlLabel
