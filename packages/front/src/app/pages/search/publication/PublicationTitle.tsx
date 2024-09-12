@@ -165,7 +165,7 @@ export function PublicationTitle({
 									{user ? (
 										<BookmarkButton
 											className="table-bookmark-button"
-											title={`${value.name} - ${getCoverage(value.coverage)}`}
+											title={`${publication.title} : ${value.name} - ${getCoverage(value.coverage)}`}
 											url={value.url}
 											source="publication"
 										/>
