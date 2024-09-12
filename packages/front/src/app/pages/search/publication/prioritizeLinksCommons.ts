@@ -27,7 +27,7 @@ export interface Link {
 // ##############
 // ##  Utils  ##
 // ##############
-function calculateCoverageEndWithEmbargo(
+export function calculateCoverageEndWithEmbargo(
 	coverage: Coverage,
 	embargo?: Embargo,
 ): Date {
@@ -51,7 +51,7 @@ function calculateCoverageEndWithEmbargo(
 	return endDate;
 }
 
-function parseValueEmbargo(embargo: Embargo): number {
+export function parseValueEmbargo(embargo: Embargo): number {
 	const value = embargo.value || 0;
 	switch ((embargo.unit || "").toLowerCase()) {
 		case "month":
@@ -63,7 +63,7 @@ function parseValueEmbargo(embargo: Embargo): number {
 	}
 }
 
-function isCoverageIdentical(link_one: Link, link_two: Link): boolean {
+export function isCoverageIdentical(link_one: Link, link_two: Link): boolean {
 	const coverage1 = link_one.coverage[0];
 	const coverage2 = link_two.coverage[0];
 
@@ -79,15 +79,15 @@ function isCoverageIdentical(link_one: Link, link_two: Link): boolean {
 	return endCoverage1.getTime() === endCoverage2.getTime();
 }
 
-function isPresentLink(link: Link): boolean {
+export function isPresentLink(link: Link): boolean {
 	return link.coverage[0].end.year === "9999" && !link.embargo;
 }
 
-function isPresentLinkWithEmbargo(link: Link): boolean {
+export function isPresentLinkWithEmbargo(link: Link): boolean {
 	return link.coverage[0].end.year === "9999" && !!link.embargo;
 }
 
-function isDateLink(link: Link): boolean {
+export function isDateLink(link: Link): boolean {
 	// if date is past
 	if (link.coverage[0].end.year !== "9999" && link.embargo) {
 		const endDate = calculateCoverageEndWithEmbargo(
@@ -100,7 +100,7 @@ function isDateLink(link: Link): boolean {
 	return link.coverage[0].end.year !== "9999" && !link.embargo;
 }
 
-function findPresentLink(firstLink: Link, secondLink: Link): Link {
+export function findPresentLink(firstLink: Link, secondLink: Link): Link {
 	if (isPresentLink(firstLink)) {
 		return firstLink;
 	}
@@ -109,7 +109,7 @@ function findPresentLink(firstLink: Link, secondLink: Link): Link {
 	}
 }
 
-function findEmbargoLink(firstLink: Link, secondLink: Link): Link {
+export function findEmbargoLink(firstLink: Link, secondLink: Link): Link {
 	if (isPresentLinkWithEmbargo(firstLink)) {
 		return firstLink;
 	}
@@ -118,7 +118,7 @@ function findEmbargoLink(firstLink: Link, secondLink: Link): Link {
 	}
 }
 
-function findDateLink(firstLink: Link, secondLink: Link): Link {
+export function findDateLink(firstLink: Link, secondLink: Link): Link {
 	if (isDateLink(firstLink)) {
 		return firstLink;
 	}
@@ -127,7 +127,7 @@ function findDateLink(firstLink: Link, secondLink: Link): Link {
 	}
 }
 
-function compareStartDates(coverage1, coverage2) {
+export function compareStartDates(coverage1, coverage2) {
 	const createDate = (coverage) =>
 		new Date(
 			coverage.start.year,
@@ -138,7 +138,7 @@ function compareStartDates(coverage1, coverage2) {
 	return createDate(coverage1).getTime() === createDate(coverage2).getTime();
 }
 
-function getStartDate(coverage) {
+export function getStartDate(coverage) {
 	return new Date(
 		Number.parseInt(coverage.start.year),
 		Number.parseInt(coverage.start.month) - 1,
@@ -146,7 +146,7 @@ function getStartDate(coverage) {
 	);
 }
 
-function linkHasEndCouverture(link: Link): boolean {
+export function linkHasEndCouverture(link: Link): boolean {
 	return link.coverage.some((coverage) => coverage.end);
 }
 
@@ -156,11 +156,11 @@ function linkHasEndCouverture(link: Link): boolean {
 
 // Step I.1
 // Step I.1.1, I.1.2, I.1.3 are the same. We compare the start of Couverture. If date is same, we return the oldest one. Else we return the first link.
-function compareEndCouvertureWhenCouvertureIsSame(
+export function compareEndCouvertureWhenCouvertureIsSame(
 	firstLink: Link,
 	secondLink: Link,
 ): Link {
-	// Use the compareStartDates function to compare the start dates of the coverages
+	// Use the compareStartDates export function to compare the start dates of the coverages
 	const isStartSame = compareStartDates(
 		firstLink.coverage[0],
 		secondLink.coverage[0],
@@ -189,7 +189,7 @@ function compareEndCouvertureWhenCouvertureIsSame(
 }
 
 // Step I.2
-function compareEndCouvertureWhenCouvertureDifferent(
+export function compareEndCouvertureWhenCouvertureDifferent(
 	firstLink: Link,
 	secondLink: Link,
 ): Link[] {
@@ -336,140 +336,56 @@ function compareEndCouvertureWhenCouvertureDifferent(
 	}
 }
 
-export function getPrioritizedLink(links: Link[]): Link[] {
+export function haveAllLinksSameCoverageEnd(links: Link[]) {
 	if (links.length < 2) {
-		return links;
+		return true;
 	}
 
-	const prioritizedLinks = [];
-	let currentLink = links[0];
-	let nextLink = links[1];
+	for (let i = 0; i < links.length - 1; i++) {
+		const firstLinkCoverageEnd = calculateCoverageEndWithEmbargo(
+			links[i].coverage[0],
+			links[i].embargo,
+		);
+		const secondLinkCoverageEnd = calculateCoverageEndWithEmbargo(
+			links[i + 1].coverage[0],
+			links[i + 1].embargo,
+		);
 
-	for (let i = 1; i < links.length; i++) {
-		let selectedLinks = null;
-		if (!nextLink) {
-			nextLink = links[i + 1];
-			continue;
-		}
-
-		if (!currentLink) {
-			currentLink = nextLink;
-			nextLink = links[i + 1];
-			continue;
-		}
-
-		if (currentLink === nextLink) {
-			nextLink = links[i + 1];
-			continue;
-		}
-
-		// Step I: Compare links based on the end of Couverture (coverage + embargo)
-		if (linkHasEndCouverture(currentLink) && linkHasEndCouverture(nextLink)) {
-			// Step I.1 if link has same Couverture
-			if (isCoverageIdentical(currentLink, nextLink)) {
-				selectedLinks = [
-					compareEndCouvertureWhenCouvertureIsSame(currentLink, nextLink),
-				];
-				// Step I.2 if link has different Couverture
-			} else {
-				selectedLinks = compareEndCouvertureWhenCouvertureDifferent(
-					currentLink,
-					nextLink,
-				);
-			}
-		} else {
-			// Step II: Compare links based on the start of Couverture
-			const startDateComparison = compareStartDates(
-				currentLink.coverage[0],
-				nextLink.coverage[0],
-			);
-
-			if (startDateComparison) {
-				const endDate1 = calculateCoverageEndWithEmbargo(
-					currentLink.coverage[0],
-					currentLink.embargo,
-				);
-				const endDate2 = calculateCoverageEndWithEmbargo(
-					nextLink.coverage[0],
-					nextLink.embargo,
-				);
-
-				// Step II.1.1
-				if (endDate1.getTime() === endDate2.getTime()) {
-					selectedLinks = [currentLink];
-				} else {
-					// Step II.1.2
-					selectedLinks = compareEndCouvertureWhenCouvertureDifferent(
-						currentLink,
-						nextLink,
-					);
-				}
-			} else {
-				// Step II.2
-				const endDate1 = calculateCoverageEndWithEmbargo(
-					currentLink.coverage[0],
-					currentLink.embargo,
-				);
-				const endDate2 = calculateCoverageEndWithEmbargo(
-					nextLink.coverage[0],
-					nextLink.embargo,
-				);
-
-				// Step II.2.1
-				if (endDate1.getTime() === endDate2.getTime()) {
-					selectedLinks = [
-						compareEndCouvertureWhenCouvertureIsSame(currentLink, nextLink),
-					];
-				} else {
-					// Step II.2.2
-					selectedLinks = compareEndCouvertureWhenCouvertureDifferent(
-						currentLink,
-						nextLink,
-					);
-				}
-			}
-		}
-
-		if (selectedLinks.length === 1) {
-			currentLink = selectedLinks[0];
-			nextLink = links[i + 1];
-
-			// Check if the link already exists in the prioritizedLinks array before pushing
-			if (
-				!prioritizedLinks.includes(selectedLinks[0]) &&
-				i === links.length - 1
-			) {
-				prioritizedLinks.push(selectedLinks[0]);
-			}
-		} else {
-			currentLink = selectedLinks[1];
-			nextLink = links[i + 2];
-			// Check if the first selected link exists in the prioritizedLinks array before pushing
-			if (!prioritizedLinks.includes(selectedLinks[0])) {
-				prioritizedLinks.push(selectedLinks[0]);
-			}
-			// Check if the second selected link exists in the prioritizedLinks array before pushing
-			if (!prioritizedLinks.includes(selectedLinks[1])) {
-				prioritizedLinks.push(selectedLinks[1]);
-			}
+		if (firstLinkCoverageEnd.getTime() !== secondLinkCoverageEnd.getTime()) {
+			return false;
 		}
 	}
-	return prioritizedLinks;
+	return true;
 }
 
-// Export the function for testing
-export {
-	calculateCoverageEndWithEmbargo,
-	parseValueEmbargo,
-	isCoverageIdentical,
-	isPresentLink,
-	isPresentLinkWithEmbargo,
-	isDateLink,
-	findPresentLink,
-	findEmbargoLink,
-	findDateLink,
-	compareStartDates,
-	linkHasEndCouverture,
-	compareEndCouvertureWhenCouvertureIsSame,
-	compareEndCouvertureWhenCouvertureDifferent,
-};
+export function haveAllLinksSameCoverage(links: Link[]) {
+	if (links.length < 2) {
+		return true;
+	}
+
+	for (let i = 0; i < links.length - 1; i++) {
+		const firstLinkCoverageEnd = calculateCoverageEndWithEmbargo(
+			links[i].coverage[0],
+			links[i].embargo,
+		);
+		const secondLinkCoverageEnd = calculateCoverageEndWithEmbargo(
+			links[i + 1].coverage[0],
+			links[i + 1].embargo,
+		);
+
+		if (firstLinkCoverageEnd.getTime() !== secondLinkCoverageEnd.getTime()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+export function getCouvertureDuration(link: Link) {
+	const startDate = getStartDate(link.coverage[0]);
+	const endDate = calculateCoverageEndWithEmbargo(
+		link.coverage[0],
+		link.embargo,
+	);
+
+	return endDate.getTime() - startDate.getTime();
+}
