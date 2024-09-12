@@ -110,8 +110,7 @@ export class FrontTestNewsService {
 		const selectedIds = new Set();
 
 		for (const domain of domains) {
-			for (let i = testNewsWithCommunities.length - 1; i >= 0; i--) {
-				const result = testNewsWithCommunities[i];
+			for (const result of testNewsWithCommunities) {
 				if (
 					result.communities.includes(domain) &&
 					!selectedIds.has(result.id)
