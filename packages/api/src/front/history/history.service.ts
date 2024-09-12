@@ -183,12 +183,7 @@ export class FrontHistoryService {
 		return this.findHistory(id);
 	}
 
-	async toggleAllAlerts(userId: string) {
-		const firstUserAlert = await this.getHistory(userId, 1, 0, true);
-		const active =
-			firstUserAlert.histories.length > 0
-				? !firstUserAlert.histories[0].active
-				: true;
+	async updateAlertsSetActive(userId: string, active: boolean) {
 		await this.prismaService.history.updateMany({
 			where: {
 				has_alert: true,

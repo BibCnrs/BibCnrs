@@ -25,9 +25,9 @@ export const updateAlert = async (
 	return json(response);
 };
 
-export const disableSearchAlert = async (historyId: number) => {
+export const toggleSearchAlert = async (historyId: number) => {
 	const response: Response = await fetch(
-		createQuery(`${environment.get.account.disableSearchAlert}/${historyId}`),
+		createQuery(`${environment.get.account.toggleSearchAlert}/${historyId}`),
 		{
 			credentials: "include",
 			headers: {
@@ -40,7 +40,22 @@ export const disableSearchAlert = async (historyId: number) => {
 	return json(response);
 };
 
-export const disableAllSearchAlert = async () => {
+export const enableAllSearchAlerts = async () => {
+	const response: Response = await fetch(
+		createQuery(environment.get.account.enableSearchAlert),
+		{
+			credentials: "include",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		},
+	);
+	throwIfNotOk(response);
+	return json(response);
+};
+
+export const disableAllSearchAlerts = async () => {
 	const response: Response = await fetch(
 		createQuery(environment.get.account.disableSearchAlert),
 		{

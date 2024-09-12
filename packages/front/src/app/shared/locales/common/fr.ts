@@ -378,7 +378,8 @@ Cordialement`,
 			search: "Rechercher dans l'historique",
 			buttons: {
 				delete: "Supprimer l'historique",
-				disable: "Activer/Désactiver toutes les alertes",
+				enableAlerts: "Activer toutes les alertes",
+				disableAlerts: "Désactiver toutes les alertes",
 			},
 			confirm: {
 				delete:

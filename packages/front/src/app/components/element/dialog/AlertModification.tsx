@@ -14,7 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useContext, useState } from "react";
 import { useBibContext } from "../../../context/BibContext";
 import { HistoryContext } from "../../../pages/user/history/History";
-import { disableSearchAlert } from "../../../services/user/SearchAlert";
+import { toggleSearchAlert } from "../../../services/user/SearchAlert";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { AlertModificationProps } from "../../../shared/types/props.types";
 
@@ -41,7 +41,7 @@ const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 		switch (value) {
 			case "disable": {
 				// TODO: Utilisé des await
-				disableSearchAlert(data.id).then(() => {
+				toggleSearchAlert(data.id).then(() => {
 					setBackdropLoading(false);
 					onClose();
 					requestUpdate();
@@ -53,7 +53,7 @@ const AlertModification = ({ data, open, onClose }: AlertModificationProps) => {
 			case "month": {
 				if (!data.active) {
 					// TODO: Utilisé des await
-					disableSearchAlert(data.id).then(() => {
+					toggleSearchAlert(data.id).then(() => {
 						updateSearchAlert(data.id, value).then(() => {
 							setBackdropLoading(false);
 							onClose();
