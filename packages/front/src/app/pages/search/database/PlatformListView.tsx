@@ -57,7 +57,7 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 			renderCell: (params) => {
 				return (
 					<Typography fontSize="1.1em" mt="0.2em">
-						{params.row.is_completed ? <OpenAccess /> : null}
+						{params.row.oa ? <OpenAccess /> : null}
 					</Typography>
 				);
 			},
@@ -83,7 +83,7 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 			align: "center",
 			width: 150,
 			renderCell: (params) => {
-				return params.row.without_embargo ? <EmbargoIcon /> : null;
+				return !params.row.without_embargo ? <EmbargoIcon /> : null;
 			},
 		},
 		{
