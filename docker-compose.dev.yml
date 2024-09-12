@@ -140,6 +140,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=S3cr3t
       - POSTGRES_DB=bibcnrs
+      - PGUSER=postgres
     volumes:
       - ./../storage/postgresql:/var/lib/postgresql/data
       - ./../storage/backups:/backups
