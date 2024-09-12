@@ -1,6 +1,7 @@
 import path from "node:path";
 import { LogLevel, LoggerService } from "@nestjs/common";
 import * as winston from "winston";
+import { default as DailyRotateFile } from "winston-daily-rotate-file";
 
 type Transport = (typeof winston.transports)["File" | "Console"];
 
@@ -26,7 +27,7 @@ export class AbstractLogger implements LoggerService {
 	}
 
 	constructor(
-		transport: Transport,
+		transport: Transport | DailyRotateFile,
 		context?: string,
 		options = { timestamp: true },
 	) {
