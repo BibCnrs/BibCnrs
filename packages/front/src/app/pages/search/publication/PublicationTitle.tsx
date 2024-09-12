@@ -108,7 +108,7 @@ export function PublicationTitle({
 					onClick={(event) => handlePopoverClick(event)}
 				>
 					{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
-					{isOpenAccess ? (
+					{isOpenAccess || publication.isDiamond ? (
 						<Box mr={1} display="inline-block">
 							<OpenAccess />
 						</Box>
@@ -202,7 +202,7 @@ export function PublicationTitle({
 			underline={href ? "hover" : "none"}
 		>
 			{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
-			{isOpenAccess ? (
+			{isOpenAccess || publication.isDiamond ? (
 				<Box mr={1} display="inline-block">
 					<OpenAccess />
 				</Box>
