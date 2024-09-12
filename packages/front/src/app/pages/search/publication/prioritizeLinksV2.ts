@@ -6,82 +6,78 @@ import {
 	haveAllLinksSameCoverageEnd,
 } from "./prioritizeLinksCommons";
 
-function prioritizeLinksWithSameCoverageEnd(links: Link[]) {
-	let prioritizedLink = links[0];
-
-	for (let i = 1; i < links.length; i++) {
-		const firstLinkCoverageDuration = getCouvertureDuration(prioritizedLink);
-		const secondLinkCoverageDuration = getCouvertureDuration(links[i]);
-
-		if (firstLinkCoverageDuration === secondLinkCoverageDuration) {
-			if (prioritizedLink.url.includes("doaj.org")) {
-				continue;
-			}
-
-			if (links[i].url.includes("doaj.org")) {
-				prioritizedLink = links[i];
-				continue;
-			}
-
-			// We return the first link ordered by URL
-			if (prioritizedLink.url.localeCompare(links[i].url) > 0) {
-				prioritizedLink = links[i];
-			}
-
-			continue;
-		}
-
-		if (firstLinkCoverageDuration < secondLinkCoverageDuration) {
-			prioritizedLink = links[i];
-		}
+function getLinkWithGreatestCoverage(
+	firstLink: Link,
+	firstLinkCoverageDuration: number,
+	secondLink: Link,
+	secondLinkCoverageSuration: number,
+) {
+	if (firstLinkCoverageDuration < secondLinkCoverageSuration) {
+		return secondLink;
 	}
 
-	return [prioritizedLink];
+	return firstLink;
 }
 
-function prioritizeLinksWithDifferentCoverageEnd(links: Link[]) {
-	const prioritizedLinks = [links[0]];
+function getPriorityLinkWhenSameCoverageEnd(links: Link[]) {
+	return links.reduce<Link>((prioritizedLink, currentLink) => {
+		const prioritizedLinkCoverageDuration =
+			getCouvertureDuration(prioritizedLink);
+		const currentLinkCoverageDuration = getCouvertureDuration(currentLink);
 
-	outer: for (let i = 1; i < links.length; i++) {
-		const currentLink = links[i];
+		if (prioritizedLinkCoverageDuration !== currentLinkCoverageDuration) {
+			return getLinkWithGreatestCoverage(
+				prioritizedLink,
+				prioritizedLinkCoverageDuration,
+				currentLink,
+				currentLinkCoverageDuration,
+			);
+		}
+
+		if (prioritizedLink.url.includes("doaj.org")) {
+			return prioritizedLink;
+		}
+
+		if (currentLink.url.includes("doaj.org")) {
+			return currentLink;
+		}
+
+		// We return the first link ordered by URL
+		if (prioritizedLink.url.localeCompare(currentLink.url) > 0) {
+			return currentLink;
+		}
+
+		return prioritizedLink;
+	}, links[0]);
+}
+
+function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
+	return links.filter((currentLink, currentLinkIndex, allLinks) => {
 		const currentLinkStartDate = getStartDate(currentLink.coverage[0]);
 		const currentLinkEndDate = calculateCoverageEndWithEmbargo(
 			currentLink.coverage[0],
 			currentLink.embargo,
 		);
 
-		for (let j = 0; j < prioritizedLinks.length; j++) {
-			const currentPrioritizedLink = prioritizedLinks[j];
-			const currentPrioritizedLinkStartDate = getStartDate(
-				currentPrioritizedLink.coverage[0],
-			);
-			const currentPrioritizedLinkEndDate = calculateCoverageEndWithEmbargo(
-				currentPrioritizedLink.coverage[0],
-				currentPrioritizedLink.embargo,
+		// Check if the current link is included in another link
+		return allLinks.some((otherLink, otherLinkIndex) => {
+			const otherLinkStartDate = getStartDate(otherLink.coverage[0]);
+			const otherLinkEndDate = calculateCoverageEndWithEmbargo(
+				otherLink.coverage[0],
+				otherLink.embargo,
 			);
 
-			// Prioritized link includes the current link, skipping
 			if (
-				currentPrioritizedLinkStartDate <= currentLinkStartDate &&
-				currentPrioritizedLinkEndDate >= currentLinkEndDate
+				otherLinkStartDate < currentLinkStartDate &&
+				otherLinkEndDate > currentLinkEndDate
 			) {
-				continue outer;
+				return true;
 			}
 
-			// Current link includes the prioritized link, updating the prioritized link
-			if (
-				currentLinkStartDate <= currentPrioritizedLinkStartDate &&
-				currentLinkEndDate >= currentPrioritizedLinkEndDate
-			) {
-				prioritizedLinks[j] = currentLink;
-				continue outer;
-			}
-		}
-
-		prioritizedLinks.push(currentLink);
-	}
-
-	return prioritizedLinks;
+			// Prioritize first link ordered by index if the coverage is the same
+			return currentLinkIndex > otherLinkIndex;
+		});
+	});
 }
 
 export function getPrioritizedLink_v2(links: Link[]) {
@@ -90,8 +86,8 @@ export function getPrioritizedLink_v2(links: Link[]) {
 	}
 
 	if (haveAllLinksSameCoverageEnd(links)) {
-		return prioritizeLinksWithSameCoverageEnd(links);
+		return [getPriorityLinkWhenSameCoverageEnd(links)];
 	}
 
-	return prioritizeLinksWithDifferentCoverageEnd(links);
+	return getPriorityLinksWhenDifferentCoverageEnd(links);
 }
