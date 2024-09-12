@@ -1,7 +1,7 @@
 import { MenuItem, Pagination, Select } from "@mui/material";
 import { Stack } from "@mui/system";
 
-export function DatabasePagination({
+export function PlatformCardViewPagination({
 	pageCount,
 	currentPage,
 	setCurrentPage,

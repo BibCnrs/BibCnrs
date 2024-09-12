@@ -127,6 +127,7 @@ export type UserSettingsDataType = {
 	displayTestNews: boolean;
 	articleLinkType: "oa" | "fullText";
 	defaultSearchMode: "article" | "journal" | "platform" | "searchData";
+	platformView: "card" | "list";
 	defaultLanguage: "auto" | "fr" | "en";
 	defaultTheme: "auto" | "light" | "dark";
 	hasSeenPopup: boolean;

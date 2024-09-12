@@ -183,6 +183,11 @@ enum ArticleLinkType {
   fullText
 }
 
+enum PlatformView {
+  card
+  list
+}
+
 model janus_account {
   id                      Int                       @id(map: "bib_user_pkey") @default(autoincrement())
   primary_institute       Int?
@@ -206,6 +211,7 @@ model janus_account {
   defaultSearchMode       SearchMode                @default(article)
   defaultLanguage         Language                  @default(auto)
   defaultTheme            Theme                     @default(auto)
+  platformView            PlatformView              @default(card)
   hasSeenPopup            Boolean                   @default(false)
   janus_account_community janus_account_community[]
   janus_account_institute janus_account_institute[]

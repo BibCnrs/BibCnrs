@@ -15,6 +15,7 @@ export class UserSettingsService {
 				defaultSearchMode: true,
 				defaultLanguage: true,
 				defaultTheme: true,
+				platformView: true,
 				hasSeenPopup: true,
 			},
 			where: {
@@ -32,6 +33,7 @@ export class UserSettingsService {
 				defaultSearchMode: true,
 				defaultLanguage: true,
 				defaultTheme: true,
+				platformView: true,
 				hasSeenPopup: true,
 			},
 			data: body,
