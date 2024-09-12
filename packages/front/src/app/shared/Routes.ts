@@ -24,6 +24,7 @@ const Routes = {
 	privacy: "/privacy",
 	about: "/about",
 	legal: "/legal",
+	accessibility: "/accessibility",
 	resources: "/resources",
 	/* Domain route */
 	tests: "/tests",
@@ -127,6 +128,7 @@ export const RoutePrivacy = Routes.privacy;
 export const RouteResources = Routes.resources;
 export const RouteAbout = Routes.about;
 export const RouteLegal = Routes.legal;
+export const RouteAccessibility = Routes.accessibility;
 export const RouteLicences = Routes.licences;
 export const RouteNews = Routes.news;
 export const RouteHistory = Routes.history;

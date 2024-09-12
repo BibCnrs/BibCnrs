@@ -3,7 +3,12 @@ import { Button, Divider, IconButton, Link } from "@mui/material";
 import { Container, Stack, useTheme } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
 import CNRSRFLogo from "/logos/CNRS-RF-Footer.png";
-import { RouteAbout, RouteLegal, RoutePrivacy } from "../../../shared/Routes";
+import {
+	RouteAbout,
+	RouteAccessibility,
+	RouteLegal,
+	RoutePrivacy,
+} from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
 
 const FOOTER_SX = {
@@ -78,6 +83,10 @@ const Footer = () => {
 					<Divider orientation="vertical" flexItem />
 					<Button to={RoutePrivacy} component={RouterLink} sx={FOOTER_SX}>
 						{t("components.footer.privacy")}
+					</Button>
+					<Divider orientation="vertical" flexItem />
+					<Button to={RouteAccessibility} component={RouterLink} sx={FOOTER_SX}>
+						{t("components.footer.accessibility")}
 					</Button>
 				</Stack>
 

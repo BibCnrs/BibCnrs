@@ -235,6 +235,7 @@ const en: Common = {
 			contact: "Contact",
 			legal: "Legal notice",
 			privacy: "Privacy",
+			accessibility: "Accessibility",
 			mail: {
 				subject: "Request for assistance",
 				body: `Hello,
@@ -292,6 +293,9 @@ Sincerely`,
 		},
 		about: {
 			title: "About",
+		},
+		accessibility: {
+			title: "Accessibility",
 		},
 		article: {
 			title: "Article",

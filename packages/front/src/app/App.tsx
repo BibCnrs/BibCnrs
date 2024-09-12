@@ -5,6 +5,7 @@ import Footer from "./components/page/footer/Footer";
 import Header from "./components/page/header/Header";
 import Root from "./pages/Root";
 import About from "./pages/common/about/About";
+import Accessibility from "./pages/common/accessibility/AccessibilityPage";
 import Faq from "./pages/common/faq/Faq";
 import Legal from "./pages/common/legal/Legal";
 import PrivacyPage from "./pages/common/privacy/PrivacyPage";
@@ -22,6 +23,7 @@ import IndividualNews from "./pages/user/news/IndividualNews";
 import News from "./pages/user/news/News";
 import {
 	RouteAbout,
+	RouteAccessibility,
 	RouteAlert,
 	RouteArticle,
 	RouteDatabase,
@@ -126,6 +128,7 @@ const App = () => {
 					{/* Footer route */}
 					<Route path={RouteAbout} element={<About />} />
 					<Route path={RouteLegal} element={<Legal />} />
+					<Route path={RouteAccessibility} element={<Accessibility />} />
 					{/* Error route */}
 					<Route path="*" element={<Error404 />} />
 				</Routes>

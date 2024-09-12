@@ -245,6 +245,7 @@ export type Common = {
 			contact: string;
 			legal: string;
 			privacy: string;
+			accessibility: string;
 			mail: {
 				subject: string;
 				body: string;
@@ -288,6 +289,9 @@ export type Common = {
 			seeMoreFavourites: string;
 			seeMoreNews: string;
 			emptyFavorites: string;
+		};
+		accessibility: {
+			title: string;
 		};
 		article: {
 			title: string;
