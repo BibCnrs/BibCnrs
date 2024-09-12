@@ -192,7 +192,7 @@ test("Filter items", async ({ page }) => {
 	await expect(bibcnrs()).toBeVisible();
 	await expect(wikipedia()).not.toBeVisible();
 	await expect(ins2i()).not.toBeVisible();
-	await expect(page.getByText("Resources favorites (0)")).toBeDisabled();
+	await expect(page.getByText("Ressources favorites (0)")).toBeDisabled();
 
 	await page.getByText("Revues, ouvrages (1)").click();
 	await expect(cnrs()).toBeVisible();
@@ -208,7 +208,7 @@ test("Filter items", async ({ page }) => {
 	await expect(bibcnrs()).toBeVisible();
 	await expect(ins2i()).toBeVisible();
 
-	await page.getByText("Resources favorites (1)").click();
+	await page.getByText("Ressources favorites (1)").click();
 	await expect(cnrs()).not.toBeVisible();
 	await expect(bibcnrs()).not.toBeVisible();
 	await expect(ins2i()).not.toBeVisible();

@@ -266,7 +266,7 @@ const prisma = new PrismaClient();
 						isSuperFavorite: false,
 					},
 					{
-						id: "019049a7-4670-7b88-8883-0c4f977faf17",
+						id: "120049a7-4670-7b88-8883-0c4f977faf28",
 						title: "Wikipedia",
 						url: "https://wikipedia.fr/",
 						isSuperFavorite: false,

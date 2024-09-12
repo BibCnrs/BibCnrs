@@ -136,10 +136,6 @@ const Favourite = () => {
 		superFavouriteResources,
 	);
 
-	const noSourceCount = allFavourites.filter(
-		(favourite) => !favourite.source && !_filterByTitle(favourite.title),
-	).length;
-
 	return (
 		<>
 			<PageTitle page="favourite" />
