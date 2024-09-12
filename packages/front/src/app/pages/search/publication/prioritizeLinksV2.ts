@@ -20,7 +20,7 @@ function getLinkWithGreatestCoverage(
 }
 
 function getPriorityLinkWhenSameCoverageEnd(links: Link[]) {
-	return links.reduce<Link>((prioritizedLink, currentLink) => {
+	const prioritizedLink = links.reduce<Link>((prioritizedLink, currentLink) => {
 		const prioritizedLinkCoverageDuration =
 			getCouvertureDuration(prioritizedLink);
 		const currentLinkCoverageDuration = getCouvertureDuration(currentLink);
@@ -49,9 +49,15 @@ function getPriorityLinkWhenSameCoverageEnd(links: Link[]) {
 
 		return prioritizedLink;
 	}, links[0]);
+
+	return prioritizedLink ? [prioritizedLink] : [];
 }
 
 function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
+	if (links.length < 2) {
+		return links;
+	}
+
 	return links.filter((currentLink, currentLinkIndex, allLinks) => {
 		const currentLinkStartDate = getStartDate(currentLink.coverage[0]);
 		const currentLinkEndDate = calculateCoverageEndWithEmbargo(
@@ -81,13 +87,21 @@ function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
 }
 
 export function getPrioritizedLink_v2(links: Link[]) {
-	if (links.length < 2) {
-		return links;
-	}
-
 	if (haveAllLinksSameCoverageEnd(links)) {
-		return [getPriorityLinkWhenSameCoverageEnd(links)];
+		return getPriorityLinkWhenSameCoverageEnd(links);
 	}
 
 	return getPriorityLinksWhenDifferentCoverageEnd(links);
 }
+
+/**
+ * @deprecated This is for testing purposes only
+ */
+export const _getPriorityLinkWhenSameCoverageEnd =
+	getPriorityLinkWhenSameCoverageEnd;
+
+/**
+ * @deprecated This is for testing purposes only
+ */
+export const _getPriorityLinksWhenDifferentCoverageEnd =
+	getPriorityLinksWhenDifferentCoverageEnd;
