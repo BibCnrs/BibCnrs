@@ -24,14 +24,7 @@ export function usePlatforms() {
 		querySearch || search.query || "",
 	);
 
-	const { data, isLoading, isError } = useQuery<
-		DatabaseDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-		any,
-		DatabaseDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
-		any
-	>({
+	const { data, isLoading, isError } = useQuery<DatabaseDataType>({
 		queryKey: ["database", search.domain],
 		queryFn: () => database(language, search.domain),
 		placeholderData: keepPreviousData,

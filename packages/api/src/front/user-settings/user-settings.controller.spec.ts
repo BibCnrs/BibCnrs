@@ -27,6 +27,7 @@ describe("UserSettingsController", () => {
 				defaultLanguage: "auto",
 				defaultTheme: "auto",
 				articleLinkType: "oa",
+				platformView: "card",
 				hasSeenPopup: false,
 			});
 		});
@@ -40,6 +41,7 @@ describe("UserSettingsController", () => {
 					defaultSearchMode: "article",
 					defaultLanguage: "fr",
 					defaultTheme: "light",
+					platformView: "list",
 					hasSeenPopup: true,
 				}),
 			).toStrictEqual({
@@ -49,6 +51,7 @@ describe("UserSettingsController", () => {
 				defaultSearchMode: "article",
 				defaultLanguage: "fr",
 				defaultTheme: "light",
+				platformView: "list",
 				hasSeenPopup: true,
 			});
 		});

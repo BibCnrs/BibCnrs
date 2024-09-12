@@ -9,5 +9,6 @@ export type UpdateUserSettingsDto = Partial<
 		| "defaultLanguage"
 		| "defaultTheme"
 		| "hasSeenPopup"
+		| "platformView"
 	>
 >;
