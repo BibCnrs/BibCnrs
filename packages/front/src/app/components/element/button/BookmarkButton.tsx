@@ -3,7 +3,7 @@ import FavoriteBorderOutlined from "@mui/icons-material/FavoriteBorderOutlined";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/system";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useBibContext } from "../../../context/BibContext";
 import { useFavourites } from "../../../pages/user/favourite/useFavourites";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -79,6 +79,10 @@ const BookmarkButton = ({ title, url, source }: BookmarkButtonProps) => {
 		setTimeout(() => setAnimate(false), 300);
 	};
 
+	if (user?.origin !== "janus") {
+		return null;
+	}
+
 	return (
 		<Tooltip title={t("components.button.favourite.tooltip", { title })} arrow>
 			<AnimatedIconButton
@@ -107,4 +111,4 @@ const BookmarkButton = ({ title, url, source }: BookmarkButtonProps) => {
 	);
 };
 
-export default memo(BookmarkButton);
+export default BookmarkButton;
