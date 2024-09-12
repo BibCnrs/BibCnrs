@@ -12,7 +12,7 @@ import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 import { EbscoToken } from "../token/token.type";
 
-const logger = new FileLogger("ebsco.log", "EbscoSearchAbstractService");
+const logger = new FileLogger("%DATE%_ebsco.log", "EbscoSearchAbstractService");
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type EbscoQuery = any;

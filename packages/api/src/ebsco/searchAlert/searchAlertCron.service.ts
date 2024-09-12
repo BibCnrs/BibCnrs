@@ -22,7 +22,10 @@ import {
 	parseArticleLinks,
 } from "./searchAlert.utils";
 
-const logger = new FileLogger("alerte.log", "EbscoSearchAlertCronService");
+const logger = new FileLogger(
+	"%DATE%_alerte.log",
+	"EbscoSearchAlertCronService",
+);
 
 @Injectable()
 export class EbscoSearchAlertCronService {

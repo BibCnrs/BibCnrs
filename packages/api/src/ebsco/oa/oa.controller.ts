@@ -21,7 +21,7 @@ import { JanusAccountService } from "../../janus/accounts/accounts.service";
 @Controller("ebsco")
 export class EbscoOaController {
 	private readonly logger = new FileLogger(
-		"bibapi_http.log",
+		"%DATE%_bibapi_http.log",
 		EbscoOaController.name,
 	);
 
