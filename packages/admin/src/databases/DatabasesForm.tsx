@@ -65,9 +65,9 @@ export const DatabasesForm = () => {
 				source="type"
 				fullWidth
 				choices={[
-					{ id: "news", name: "Revue" },
-					{ id: "book", name: "Livre" },
-					{ id: "database", name: "Base de données" },
+					{ id: "news", name: "Revues" },
+					{ id: "book", name: "Livres" },
+					{ id: "database", name: "Bases de données" },
 					{ id: "data", name: "Données" },
 				]}
 			/>
