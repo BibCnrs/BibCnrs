@@ -4,6 +4,40 @@ import { medias, tests_news } from "@prisma/client";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 
+const mapTestNewsCommunities = (testNews) => {
+	if (!testNews) {
+		return null;
+	}
+
+	const { tests_news_community, ...rest } = testNews;
+	return {
+		...rest,
+		communities: tests_news_community.map(({ community }) => community.name),
+	};
+};
+
+// take news ordered by from date from most recent to oldest
+export const getOneNewsPerDomains = (
+	domains: string[],
+	news: {
+		id: string;
+		tests_news_community: { community: { name: string } }[];
+		from: Date;
+	}[],
+) => {
+	const testNewsWithCommunities = news.map(mapTestNewsCommunities);
+
+	return domains
+		.map((domain) => {
+			return testNewsWithCommunities.filter(({ communities, id }) =>
+				communities.includes(domain),
+			)[0];
+		})
+		.filter((news) => !!news)
+		.sort((a, b) => b.from - a.from)
+		.slice(0, 3);
+};
+
 @Injectable()
 export class FrontTestNewsService {
 	private readonly servicesConfig: Config["services"];
@@ -35,18 +69,6 @@ export class FrontTestNewsService {
 							: null,
 					}
 				: null,
-		};
-	}
-
-	private mapTestNewsCommunities(testNews) {
-		if (!testNews) {
-			return null;
-		}
-
-		const { tests_news_community, ...rest } = testNews;
-		return {
-			...rest,
-			communities: tests_news_community.map(({ community }) => community.name),
 		};
 	}
 
@@ -104,24 +126,9 @@ export class FrontTestNewsService {
 	// We return one news per domain in the order of the domains. And we return only 3 results
 	async getTestNewsHome(domains: string[] = []) {
 		const testNews = await this.getTestNews(domains);
-		const testNewsWithCommunities = testNews.map(this.mapTestNewsCommunities);
 
-		const selectedNews = [];
-		const selectedIds = new Set();
-
-		for (const domain of domains) {
-			for (const result of testNewsWithCommunities) {
-				if (
-					result.communities.includes(domain) &&
-					!selectedIds.has(result.id)
-				) {
-					selectedNews.push(result);
-					selectedIds.add(result.id);
-					break;
-				}
-			}
-		}
-		return selectedNews.slice(0, 3);
+		// @ts-expect-error
+		return getOneNewsPerDomains(domains, testNews);
 	}
 
 	async findTestNewsById(id: number) {
