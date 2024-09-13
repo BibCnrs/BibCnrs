@@ -1,5 +1,4 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -123,19 +122,12 @@ const Facets = ({ data }: { data: HistoryEntryFacetsDataType }) => {
 	);
 };
 
-const BellIcon = ({
-	hasAlert,
-	active,
-}: Pick<HistoryEntryDataType, "active" | "hasAlert">) => {
-	if (hasAlert && !active) {
+const BellIcon = ({ active }: Pick<HistoryEntryDataType, "active">) => {
+	if (!active) {
 		return <NotificationsOffIcon />;
 	}
 
-	if (hasAlert && active) {
-		return <NotificationsActiveIcon />;
-	}
-
-	return <NotificationAddIcon />;
+	return <NotificationsActiveIcon />;
 };
 
 const convertFacet = (array: string[]): FacetEntry[] => {
@@ -384,9 +376,9 @@ const TableHistory = ({
 								term: data.event.queries[0].term,
 							})}
 							variant="contained"
-							color={data.hasAlert ? "secondary" : "primary"}
+							color={!data.hasAlert || !data.active ? "primary" : "secondary"}
 						>
-							<BellIcon hasAlert={data.hasAlert} active={data.active} />
+							<BellIcon active={data.hasAlert && data.active} />
 						</Button>
 					</Tooltip>
 
