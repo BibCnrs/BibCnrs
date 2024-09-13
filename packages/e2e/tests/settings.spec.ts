@@ -57,7 +57,7 @@ test("Change language", async ({ page }) => {
 		}),
 	).toBeVisible();
 
-	await page.getByRole("button", { name: "System language" }).click();
+	await page.getByRole("button", { name: "Automatic detection" }).click();
 
 	await expect(
 		page.getByRole("heading", {
