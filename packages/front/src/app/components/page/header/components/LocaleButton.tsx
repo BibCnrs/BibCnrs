@@ -1,4 +1,5 @@
-import TranslateIcon from "@mui/icons-material/Translate";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -46,18 +47,20 @@ const LocaleButton = () => {
 				className="header-button header-button-icon"
 				sx={{
 					color: (theme) => theme.palette.text.primary,
-					paddingBottom: 0,
+					position: "relative",
+					top: 4,
+					paddingBottom: 0.5,
+					paddingTop: 0.5,
+					display: "flex",
+					flexDirection: "row",
+					gap: "4px",
 				}}
 			>
-				<div
-					style={{
-						height: "20px",
-						marginRight: "4px",
-					}}
-				>
-					<TranslateIcon fontSize="small" />
-				</div>
-				<div>{language.toUpperCase()}</div>
+				<LanguageIcon fontSize="small" />
+
+				{language.toUpperCase()}
+
+				<KeyboardArrowDownIcon fontSize="small" />
 			</Button>
 			<Menu
 				id="basic-menu"
