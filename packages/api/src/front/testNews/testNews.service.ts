@@ -38,18 +38,6 @@ export class FrontTestNewsService {
 		};
 	}
 
-	private mapTestNewsCommunities(testNews) {
-		if (!testNews) {
-			return null;
-		}
-
-		const { tests_news_community, ...rest } = testNews;
-		return {
-			...rest,
-			communities: tests_news_community.map(({ community }) => community.name),
-		};
-	}
-
 	async getTestNews(domains: string[] = [], limit: number | null = null) {
 		const testNews = await this.prismaService.tests_news.findMany({
 			take: limit ? limit : 100,
@@ -101,28 +89,9 @@ export class FrontTestNewsService {
 		return testNews.map((news) => this.mapNewsMedia(news));
 	}
 
-	// We return one news per domain in the order of the domains. And we return only 3 results
+	// We return the three most recent news for given domains
 	async getTestNewsHome(domains: string[] = []) {
-		const testNews = await this.getTestNews(domains);
-		const testNewsWithCommunities = testNews.map(this.mapTestNewsCommunities);
-
-		const selectedNews = [];
-		const selectedIds = new Set();
-
-		for (const domain of domains) {
-			for (let i = testNewsWithCommunities.length - 1; i >= 0; i--) {
-				const result = testNewsWithCommunities[i];
-				if (
-					result.communities.includes(domain) &&
-					!selectedIds.has(result.id)
-				) {
-					selectedNews.push(result);
-					selectedIds.add(result.id);
-					break;
-				}
-			}
-		}
-		return selectedNews.slice(0, 3);
+		return this.getTestNews(domains, 3);
 	}
 
 	async findTestNewsById(id: number) {

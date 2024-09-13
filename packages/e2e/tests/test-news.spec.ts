@@ -32,7 +32,7 @@ test("Display news content from the home page", async ({ page }) => {
 		}),
 	).toBeVisible();
 
-	await expect(page.getByText("18/04/2023")).toBeVisible();
+	await expect(page.getByText("18/05/2023")).toBeVisible();
 	await expect(
 		page.getByText(
 			"Nam hendrerit, ipsum sit amet luctus sagittis, nisi dui semper tortor, id sodales nisi turpis vel odio. Nam ut efficitur sapien. Suspendisse justo libero, dapibus in erat vel, ultrices condimentum nisl. Vivamus semper porttitor gravida.",

@@ -157,6 +157,28 @@ describe.sequential("FrontTestNewsController", () => {
 		});
 	});
 
+	describe("getTestNewsHome", () => {
+		it("should return the three most recent article of the given domains", async () => {
+			expect(
+				await ebscoTestNewsController.getTestNewsHome("INSB,INS2I,INSHS"),
+			).toStrictEqual([
+				expect.objectContaining({
+					tests_news_community: [
+						expect.objectContaining({ community: { name: "INSHS" } }),
+					],
+					from: new Date("2022-01-01T00:00:00.000Z"),
+				}),
+				expect.objectContaining({
+					tests_news_community: [
+						expect.objectContaining({ community: { name: "INSHS" } }),
+						expect.objectContaining({ community: { name: "INSB" } }),
+					],
+					from: new Date("2021-01-01T00:00:00.000Z"),
+				}),
+			]);
+		});
+	});
+
 	describe("findTestNewsById", () => {
 		it("should return the last item for news individual page", async () => {
 			expect(await ebscoTestNewsController.findTestNewsById(2)).toStrictEqual(
