@@ -194,7 +194,7 @@ const History = ({
 
 											<Button
 												color="secondary"
-												variant="text"
+												variant="contained"
 												onClick={handleDisableSearchAlerts}
 												sx={{
 													borderRadius: "20px",
