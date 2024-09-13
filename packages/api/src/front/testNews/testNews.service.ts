@@ -4,40 +4,6 @@ import { medias, tests_news } from "@prisma/client";
 import { Config } from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
 
-const mapTestNewsCommunities = (testNews) => {
-	if (!testNews) {
-		return null;
-	}
-
-	const { tests_news_community, ...rest } = testNews;
-	return {
-		...rest,
-		communities: tests_news_community.map(({ community }) => community.name),
-	};
-};
-
-// take news ordered by from date from most recent to oldest
-export const getOneNewsPerDomains = (
-	domains: string[],
-	news: {
-		id: string;
-		tests_news_community: { community: { name: string } }[];
-		from: Date;
-	}[],
-) => {
-	const testNewsWithCommunities = news.map(mapTestNewsCommunities);
-
-	return domains
-		.map((domain) => {
-			return testNewsWithCommunities.filter(({ communities, id }) =>
-				communities.includes(domain),
-			)[0];
-		})
-		.filter((news) => !!news)
-		.sort((a, b) => b.from - a.from)
-		.slice(0, 3);
-};
-
 @Injectable()
 export class FrontTestNewsService {
 	private readonly servicesConfig: Config["services"];
@@ -123,12 +89,9 @@ export class FrontTestNewsService {
 		return testNews.map((news) => this.mapNewsMedia(news));
 	}
 
-	// We return one news per domain in the order of the domains. And we return only 3 results
+	// We return the three most recent news for given domains
 	async getTestNewsHome(domains: string[] = []) {
-		const testNews = await this.getTestNews(domains);
-
-		// @ts-expect-error
-		return getOneNewsPerDomains(domains, testNews);
+		return this.getTestNews(domains, 3);
 	}
 
 	async findTestNewsById(id: number) {

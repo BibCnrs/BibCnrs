@@ -158,16 +158,21 @@ describe.sequential("FrontTestNewsController", () => {
 	});
 
 	describe("getTestNewsHome", () => {
-		it("should return the most recent article for each of the three first domain", async () => {
+		it("should return the three most recent article of the given domains", async () => {
 			expect(
 				await ebscoTestNewsController.getTestNewsHome("INSB,INS2I,INSHS"),
 			).toStrictEqual([
 				expect.objectContaining({
-					communities: ["INSHS"],
+					tests_news_community: [
+						expect.objectContaining({ community: { name: "INSHS" } }),
+					],
 					from: new Date("2022-01-01T00:00:00.000Z"),
 				}),
 				expect.objectContaining({
-					communities: ["INSHS", "INSB"],
+					tests_news_community: [
+						expect.objectContaining({ community: { name: "INSHS" } }),
+						expect.objectContaining({ community: { name: "INSB" } }),
+					],
 					from: new Date("2021-01-01T00:00:00.000Z"),
 				}),
 			]);
