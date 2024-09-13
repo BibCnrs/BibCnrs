@@ -469,7 +469,7 @@ export class EbscoSearchAlertCronService {
 		for (const record of records) {
 			elements.push(await this.getRecordHtml(record, gate, user_id));
 		}
-		return `<div  style="box-sizing: border-box;">
+		return `<div style="box-sizing: border-box;">
         <p>${records.length} nouveau(x) résultat(s) est(sont) disponible(s) concernant votre recherche : </p>
         <dl style="display: flex; flex-direction: column; margin: 0px 20px 20px; padding: 5px 20px 5px 20px;">
             <dt style="font-weight: bold;">Termes recherchés :</dt>
@@ -488,7 +488,22 @@ export class EbscoSearchAlertCronService {
                 ${elements.join("")}
             </tbody>
         </table>
-    </div>`;
+    </div>
+    <div style="box-sizing: border-box;">
+        <a 
+            href="${this.services.frontEndpoint}/account/alert"
+            style="
+                text-decoration: none;
+                background-color: #f8f8f8;
+                box-sizing: border-box;
+                font-family: inherit;
+                font-weight: 500;
+                line-height: 1.1;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-size: 18px;
+                color: #6941EB;">Gérer mes alertes</a>
+	</div>`;
 	}
 
 	async getRecordHtml(record, gate, user_id) {

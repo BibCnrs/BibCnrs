@@ -13,6 +13,7 @@ const configFunction = () => ({
 	},
 	services: {
 		apiEndpoint: process.env.BIBAPI_HOST,
+		frontEndpoint: process.env.BIBFRONT_HOST,
 		bibadmin: process.env.bib_admin_host,
 		contentDelivery: process.env.BIB_CONTENT_DELIVERY_HOST,
 	},

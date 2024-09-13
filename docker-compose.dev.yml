@@ -27,7 +27,8 @@ services:
       - RENATER_FAKE_LOGIN=true
       - DATABASE_URL=postgres://postgres:S3cr3t@db/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
-      - BIBAPI_HOST= http://localhost:3000/api
+      - BIBFRONT_HOST=http://localhost:3000
+      - BIBAPI_HOST=http://localhost:3000/api
       - MAIL_SERVER_HOST=mail
       - MAIL_SERVER_PORT=1025
       - cookie_secret=${cookie_secret}
