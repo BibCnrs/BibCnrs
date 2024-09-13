@@ -1,5 +1,4 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
