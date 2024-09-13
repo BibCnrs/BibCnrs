@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { adminLogin, janusLogin, janusLogout } from "../page-objects/login";
 
 test("Display CMS content on the home page", async ({ page }) => {
 	await page.goto("/");
@@ -43,4 +44,30 @@ test("Display CMS content on the legal notice page", async ({ page }) => {
 			"Etiam vitae pretium turpis. Maecenas tempor velit eget lorem molestie consectetur. Proin elementum consectetur sem, vel hendrerit dui iaculis eu. Sed id odio vitae neque aliquam rutrum sed quis leo.",
 		),
 	).toBeVisible();
+});
+
+test("Content management accessibility", async ({ page }) => {
+	await adminLogin(page);
+	await page.getByText("Gestion de contenu").click();
+	await page.getByText("CRÉER").click();
+	await page.getByText("Accessibilité").click();
+	await page.getByLabel("Ordre").fill("1");
+
+	await page.getByLabel("Nom *").fill("Accessibilité");
+	await page
+		.locator(".tiptap.ProseMirror")
+		.fill("Contenu d'accessibilité, rédigé avec soin depuis l'admin");
+	await page.getByText("ANGLAIS").click();
+	await page.getByLabel("Nom *").fill("Accessibility page from admin");
+	await page.locator(".tiptap.ProseMirror").fill("english accessibility");
+	await page.getByText("ENREGISTRER").click();
+	await expect(page.getByText("Élément créé")).toBeVisible();
+	await janusLogin(page);
+
+	await page.getByText("Accessibilité").click();
+	await page.waitForURL("/accessibility");
+	await expect(
+		page.getByText("Contenu d'accessibilité, rédigé avec soin depuis l'admin"),
+	).toBeVisible();
+	await janusLogout(page);
 });

@@ -7,7 +7,7 @@ import { accessibility } from "../../../services/common/CMS";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { CMSResultDataType } from "../../../shared/types/data.types";
 
-const accessibilityPage = () => {
+const AccessibilityPage = () => {
 	const t = useTranslator();
 
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
@@ -36,4 +36,4 @@ const accessibilityPage = () => {
 	);
 };
 
-export default accessibilityPage;
+export default AccessibilityPage;
