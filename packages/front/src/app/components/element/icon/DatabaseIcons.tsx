@@ -21,7 +21,7 @@ const DatabaseIcons = ({
 		>
 			{oa && <OpenAccess />}
 
-			{is_completed && <CompleteIcon />}
+			{is_completed && <CompleteIcon style={{ height: "0.8em" }} />}
 			{!without_embargo && <EmbargoIcon />}
 		</Stack>
 	);
