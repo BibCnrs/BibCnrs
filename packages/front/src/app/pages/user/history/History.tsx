@@ -7,6 +7,7 @@ import {
 	DialogContentText,
 	DialogTitle,
 	LinearProgress,
+	Stack,
 	Tooltip,
 	Typography,
 } from "@mui/material";
@@ -25,7 +26,10 @@ import {
 	deleteHistoryEntry,
 	history,
 } from "../../../services/user/History";
-import { disableAllSearchAlert } from "../../../services/user/SearchAlert";
+import {
+	disableAllSearchAlerts,
+	enableAllSearchAlerts,
+} from "../../../services/user/SearchAlert";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { HistoryDataType } from "../../../shared/types/data.types";
 
@@ -78,8 +82,17 @@ const History = ({
 		}
 	};
 
-	const handleDisable = () => {
-		disableAllSearchAlert().then(() => {
+	const handleEnableSearchAlerts = () => {
+		enableAllSearchAlerts().then(() => {
+			setArgs({
+				page: 1,
+				perPage: 20,
+				stateIndex: (args.stateIndex ?? 0) + 1,
+			});
+		});
+	};
+	const handleDisableSearchAlerts = () => {
+		disableAllSearchAlerts().then(() => {
 			setArgs({
 				page: 1,
 				perPage: 20,
@@ -159,24 +172,46 @@ const History = ({
 										</Typography>
 									)}
 									{displayOnlyAlert ? (
-										<Button
-											color="secondary"
-											variant="contained"
-											onClick={handleDisable}
-											sx={{
-												borderRadius: "20px",
-												fontWeight: "bold",
-												":hover": {
-													backgroundColor: (theme) =>
-														theme.palette.background.default,
+										<Stack direction="row" spacing={2}>
+											<Button
+												color="secondary"
+												variant="contained"
+												onClick={handleEnableSearchAlerts}
+												sx={{
+													borderRadius: "20px",
+													fontWeight: "bold",
+													":hover": {
+														backgroundColor: (theme) =>
+															theme.palette.background.default,
+														color: (theme) => theme.palette.text.primary,
+														boxShadow: (theme) =>
+															`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+													},
+												}}
+											>
+												{t("pages.history.buttons.enableAlerts")}
+											</Button>
+
+											<Button
+												color="secondary"
+												variant="text"
+												onClick={handleDisableSearchAlerts}
+												sx={{
+													borderRadius: "20px",
+													fontWeight: "bold",
 													color: (theme) => theme.palette.text.primary,
-													boxShadow: (theme) =>
-														`inset 0 0 0 2px ${theme.palette.secondary.main}`,
-												},
-											}}
-										>
-											{t("pages.history.buttons.disable")}
-										</Button>
+													":hover": {
+														backgroundColor: (theme) =>
+															theme.palette.background.default,
+														color: (theme) => theme.palette.text.primary,
+														boxShadow: (theme) =>
+															`inset 0 0 0 2px ${theme.palette.secondary.main}`,
+													},
+												}}
+											>
+												{t("pages.history.buttons.disableAlerts")}
+											</Button>
+										</Stack>
 									) : (
 										<Tooltip title={t("pages.history.tooltip.delete")}>
 											<Button

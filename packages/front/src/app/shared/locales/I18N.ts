@@ -361,7 +361,8 @@ export type Common = {
 			search: string;
 			buttons: {
 				delete: string;
-				disable: string;
+				enableAlerts: string;
+				disableAlerts: string;
 			};
 			confirm: {
 				delete: string;

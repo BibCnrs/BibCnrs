@@ -375,7 +375,8 @@ Sincerely`,
 			search: "Search my history",
 			buttons: {
 				delete: "Delete history",
-				disable: "Enable/disable all alert",
+				enableAlerts: "Enable all alerts",
+				disableAlerts: "Disable all alerts",
 			},
 			confirm: {
 				delete:

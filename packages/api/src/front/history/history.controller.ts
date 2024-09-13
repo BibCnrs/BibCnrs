@@ -65,12 +65,30 @@ export class FrontHistoryController {
 		return this.frontHistoryService.deleteHistory(req.user.id.toString(), id);
 	}
 
-	// Hard to test due in watch mode, skipping tests for now
-	@Get("disable")
-	public async toggleAllAlerts(@Req() req: Request) {
+	@Get("enable")
+	public async enableAllAlerts(@Req() req: Request) {
 		const user = req.user;
 		try {
-			await this.frontHistoryService.toggleAllAlerts(user.id.toString());
+			await this.frontHistoryService.updateAlertsSetActive(
+				user.id.toString(),
+				true,
+			);
+			return { message: "ok" };
+		} catch (e) {
+			throw new InternalServerErrorException({
+				message: e.message,
+			});
+		}
+	}
+
+	@Get("disable")
+	public async disableAllAlerts(@Req() req: Request) {
+		const user = req.user;
+		try {
+			await this.frontHistoryService.updateAlertsSetActive(
+				user.id.toString(),
+				false,
+			);
 			return { message: "ok" };
 		} catch (e) {
 			throw new InternalServerErrorException({
@@ -80,7 +98,7 @@ export class FrontHistoryController {
 	}
 
 	// Hard to test due in watch mode, skipping tests for now
-	@Get("disable/:id")
+	@Get("toggle/:id")
 	public async toggleAlert(
 		@Req() req: Request,
 		@Param("id", ParseIntPipe) id: number,

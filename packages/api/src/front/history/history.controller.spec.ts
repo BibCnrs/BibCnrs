@@ -33,7 +33,7 @@ describe("FrontHistoryController", () => {
 		);
 	});
 
-	describe("root", () => {
+	describe.sequential("root", () => {
 		describe("getHistory", () => {
 			it("should ensure the EbscoAuthGuard is applied to the controller", async () => {
 				const JwtServiceMock = vi.mocked(JwtService);
@@ -193,6 +193,61 @@ describe("FrontHistoryController", () => {
 				).toStrictEqual({
 					histories: [],
 					totalCount: 0,
+				});
+			});
+		});
+
+		describe("enable or disable all alerts", () => {
+			it("should delete history", async () => {
+				const partialHistories = [
+					{
+						user_id: "1",
+						event: { test: "test 1" },
+					},
+				];
+
+				const request = {
+					user: {
+						id: 1,
+					},
+				} as unknown as Request;
+
+				expect(
+					await ebscoHistoryController.getHistory(request, 5, 0, "true"),
+				).toStrictEqual({
+					histories: partialHistories.map((history) =>
+						expect.objectContaining({
+							...history,
+							active: true,
+						}),
+					),
+					totalCount: 1,
+				});
+
+				await ebscoHistoryController.disableAllAlerts(request);
+				expect(
+					await ebscoHistoryController.getHistory(request, 5, 0, "true"),
+				).toStrictEqual({
+					histories: partialHistories.map((history) =>
+						expect.objectContaining({
+							...history,
+							active: false,
+						}),
+					),
+					totalCount: 1,
+				});
+
+				await ebscoHistoryController.enableAllAlerts(request);
+				expect(
+					await ebscoHistoryController.getHistory(request, 5, 0, "true"),
+				).toStrictEqual({
+					histories: partialHistories.map((history) =>
+						expect.objectContaining({
+							...history,
+							active: true,
+						}),
+					),
+					totalCount: 1,
 				});
 			});
 		});

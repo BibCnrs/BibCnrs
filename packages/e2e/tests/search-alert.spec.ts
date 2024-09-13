@@ -89,7 +89,7 @@ test("Disable search alert", async ({ page }) => {
 
 	{
 		const listResponse = page.waitForResponse("/api/front/history?limit=*");
-		const editResponse = page.waitForResponse("/api/front/history/disable/*");
+		const editResponse = page.waitForResponse("/api/front/history/toggle/*");
 		await page.getByRole("button", { name: "Enregistrer" }).click();
 		await editResponse;
 		await listResponse;
