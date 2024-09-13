@@ -194,12 +194,11 @@ const History = ({
 
 											<Button
 												color="secondary"
-												variant="text"
+												variant="contained"
 												onClick={handleDisableSearchAlerts}
 												sx={{
 													borderRadius: "20px",
 													fontWeight: "bold",
-													color: (theme) => theme.palette.text.primary,
 													":hover": {
 														backgroundColor: (theme) =>
 															theme.palette.background.default,
