@@ -41,6 +41,15 @@ export async function inistLogin(page: Page) {
 	await page.locator(".MuiBackdrop-root").click();
 }
 
+export async function adminLogin(page: Page) {
+	await page.goto("/admin");
+	await page.getByLabel("identifiant *").fill("admin");
+	await page.getByLabel("Mot de passe *").fill("secret");
+
+	await page.getByRole("button", { name: "Connexion" }).click();
+	await expect(page.getByText("Bienvenue !")).toBeVisible();
+}
+
 export async function inistLogout(page: Page) {
 	await page.getByRole("button", { name: "Profil" }).click();
 	await page.getByRole("menuitem", { name: "Déconnexion" }).click();

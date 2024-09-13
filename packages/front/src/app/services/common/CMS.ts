@@ -1,7 +1,14 @@
 import type { CMSResultDataType } from "../../shared/types/data.types";
 import { createQuery, environment, json, throwIfNotOk } from "../Environment";
 
-type Pages = "about" | "alert" | "faq" | "home" | "legal" | "privacy";
+type Pages =
+	| "about"
+	| "alert"
+	| "faq"
+	| "home"
+	| "legal"
+	| "privacy"
+	| "accessibility";
 
 const doQuery = async <Page extends Pages>(
 	page: Page,
@@ -31,3 +38,6 @@ export const privacy = (): Promise<CMSResultDataType> => doQuery("privacy");
 export const faq = (): Promise<CMSResultDataType> => doQuery("faq", false);
 
 export const about = (): Promise<CMSResultDataType> => doQuery("about");
+
+export const accessibility = (): Promise<CMSResultDataType> =>
+	doQuery("accessibility");
