@@ -65,6 +65,7 @@ services:
       no_proxy: ${no_proxy}
       NODE_ENV: ${NODE_ENV}
       BIBAPI_HOST: ${BIBAPI_HOST}
+      BIBFRONT_HOST: ${BIBFRONT_HOST}
       bib_admin_host: ${bib_admin_host}
       BIB_CONTENT_DELIVERY_HOST: ${BIB_CONTENT_DELIVERY_HOST}
       ebsco_host: ${ebsco_host}
