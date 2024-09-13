@@ -9,6 +9,7 @@ import {
 import {
 	_getPriorityLinkWhenSameCoverageEnd,
 	_getPriorityLinksWhenDifferentCoverageEnd,
+	_isCoverageIncludedInOtherLink,
 	getPrioritizedLink_v2,
 } from "./prioritizeLinksV2";
 
@@ -52,6 +53,297 @@ describe("getPriorityLinkWhenSameCoverageEnd", () => {
 			linkPresentWithEmbargo_one,
 		]);
 	});
+
+	it("should support links without coverage", () => {
+		const links = [linkPresentWithEmbargo_one, linkPresentWithEmbargo_two];
+		expect(_getPriorityLinkWhenSameCoverageEnd(links)).toStrictEqual([
+			linkPresentWithEmbargo_one,
+		]);
+	});
+});
+
+describe("isCoverageIncludedInOtherLink", () => {
+	it("should return included when other link includes link", () => {
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2001",
+							},
+						},
+					],
+				},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+			),
+		).toBe("included");
+
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1996",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+			),
+		).toBe("included");
+
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1996",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2001",
+							},
+						},
+					],
+				},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+			),
+		).toBe("included");
+	});
+
+	it("should return overlap if link does not have coverage", () => {
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2001",
+							},
+						},
+					],
+				},
+			),
+		).toBe("overlap");
+	});
+
+	it("should return overlap if other link does not have coverage", () => {
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2001",
+							},
+						},
+					],
+				},
+				{},
+			),
+		).toBe("overlap");
+	});
+
+	it("should return same when both have same coverage", () => {
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+			),
+		).toBe("same");
+	});
+
+	it("should return overlap when links overlaps", () => {
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2020",
+							},
+						},
+					],
+				},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1998",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2024",
+							},
+						},
+					],
+				},
+			),
+		).toBe("overlap");
+	});
+
+	it("should return overlap when other link does not include link", () => {
+		expect(
+			_isCoverageIncludedInOtherLink(
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "9999",
+							},
+						},
+					],
+				},
+				{
+					coverage: [
+						{
+							start: {
+								month: "01",
+								day: "01",
+								year: "1995",
+							},
+							end: {
+								month: "12",
+								day: "31",
+								year: "2001",
+							},
+						},
+					],
+				},
+			),
+		).toBe("overlap");
+	});
+
+	it("should return overlap when both do not have coverage", () => {
+		expect(_isCoverageIncludedInOtherLink({}, {})).toBe("overlap");
+	});
 });
 
 describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
@@ -65,26 +357,82 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 		).toStrictEqual([linkPresent]);
 	});
 
-	it("should return a single link which coverage includes each others", () => {
-		const linkPresentWithLesserCoverage = {
-			...linkPresent,
-			coverage: [
-				{
-					...linkPresent.coverage[0],
-					end: {
-						month: "12",
-						day: "31",
-						year: "2025",
+	it("should support links without coverage", () => {
+		const links = [
+			{
+				url: "https://insb.bib.cnrs.fr/login?url=https://www.sciencedirect.com/science/journal/00954470",
+				name: "ScienceDirect Freedom Collection (COUPERIN)",
+				isCurrent: true,
+			},
+			{
+				url: "https://insb.bib.cnrs.fr/login?url=http://www.sciencedirect.com/science/journal/00954470",
+				name: "ScienceDirect - Journals (ISTEX - Licences Nationales PFEDITEUR)",
+				isCurrent: false,
+				coverage: [
+					{
+						start: {
+							month: "01",
+							day: "01",
+							year: "1995",
+						},
+						end: {
+							month: "12",
+							day: "31",
+							year: "2001",
+						},
 					},
-				},
-			],
-		};
-		expect(
-			_getPriorityLinksWhenDifferentCoverageEnd([
-				linkPresentWithLesserCoverage,
-				linkPresent,
-			]),
-		).toStrictEqual([linkPresent]);
+				],
+			},
+		];
+		expect(_getPriorityLinksWhenDifferentCoverageEnd(links)).toStrictEqual(
+			links,
+		);
+	});
+
+	it("should return a single link which coverage includes each others", () => {
+		const links = [
+			{
+				url: "https://insb.bib.cnrs.fr/login?url=https://www.sciencedirect.com/science/journal/00954470",
+				name: "ScienceDirect Freedom Collection (COUPERIN)",
+				isCurrent: true,
+				coverage: [
+					{
+						start: {
+							month: "01",
+							day: "01",
+							year: "1995",
+						},
+						end: {
+							month: "12",
+							day: "31",
+							year: "9999",
+						},
+					},
+				],
+			},
+			{
+				url: "https://insb.bib.cnrs.fr/login?url=http://www.sciencedirect.com/science/journal/00954470",
+				name: "ScienceDirect - Journals (ISTEX - Licences Nationales PFEDITEUR)",
+				isCurrent: false,
+				coverage: [
+					{
+						start: {
+							month: "01",
+							day: "01",
+							year: "1995",
+						},
+						end: {
+							month: "12",
+							day: "31",
+							year: "2001",
+						},
+					},
+				],
+			},
+		];
+		expect(_getPriorityLinksWhenDifferentCoverageEnd(links)).toStrictEqual([
+			links[0],
+		]);
 	});
 
 	it("should return the links that have coverage overlaping", () => {
@@ -92,7 +440,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 			...linkPresent,
 			coverage: [
 				{
-					...linkPresent.coverage[0],
+					start: linkPresent.coverage[0].start,
 					end: {
 						month: "12",
 						day: "31",
@@ -299,5 +647,35 @@ describe("getPrioritizedLink_v2", () => {
 				]),
 			).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
 		});
+	});
+
+	it("should support links without coverage", () => {
+		const links = [
+			{
+				url: "https://insb.bib.cnrs.fr/login?url=https://www.sciencedirect.com/science/journal/00954470",
+				name: "ScienceDirect Freedom Collection (COUPERIN)",
+				isCurrent: true,
+			},
+			{
+				url: "https://insb.bib.cnrs.fr/login?url=http://www.sciencedirect.com/science/journal/00954470",
+				name: "ScienceDirect - Journals (ISTEX - Licences Nationales PFEDITEUR)",
+				isCurrent: false,
+				coverage: [
+					{
+						start: {
+							month: "01",
+							day: "01",
+							year: "1995",
+						},
+						end: {
+							month: "12",
+							day: "31",
+							year: "2001",
+						},
+					},
+				],
+			},
+		];
+		expect(getPrioritizedLink_v2(links)).toStrictEqual(links);
 	});
 });
