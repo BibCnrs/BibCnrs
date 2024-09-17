@@ -19,8 +19,8 @@ services:
   shibboleth:
     image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/shibboleth-sp3:2.0
     environment:
-      http_proxy: ${http_proxy}
-      https_proxy: ${https_proxy}
+      #http_proxy: ${http_proxy}
+      #https_proxy: ${https_proxy}
       APPLI_APACHE_SERVERNAME: ${APPLI_APACHE_SERVERNAME}
       APPLI_APACHE_SERVERADMIN: ${APPLI_APACHE_SERVERADMIN}
       APPLI_APACHE_LOGLEVEL: ${APPLI_APACHE_LOGLEVEL}
@@ -56,6 +56,7 @@ services:
   # Application api
   api:
     image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/api:${BIBAPI_VERSION}
+    container_name: bibcnrs-api
     volumes:
       - ./../storage/uploads:/app/packages/api/uploads
       - ./../storage/logs:/app/packages/api/logs
