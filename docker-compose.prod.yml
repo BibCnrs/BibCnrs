@@ -17,13 +17,13 @@ services:
       - shibboleth
 
   shibboleth:
-    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/shibboleth-sp3:2.0
+    image: vxnexus-registry.intra.inist.fr:8083/shibboleth:latest
     environment:
-      #http_proxy: ${http_proxy}
-      #https_proxy: ${https_proxy}
-      APPLI_APACHE_SERVERNAME: ${APPLI_APACHE_SERVERNAME}
-      APPLI_APACHE_SERVERADMIN: ${APPLI_APACHE_SERVERADMIN}
-      APPLI_APACHE_LOGLEVEL: ${APPLI_APACHE_LOGLEVEL}
+      APACHE_SERVERNAME: ${APACHE_SERVERNAME}
+      APACHE_SERVERADMIN: ${APACHE_SERVERADMIN}
+      APACHE_LOGLEVEL: ${APACHE_LOGLEVEL}
+      SHIBBOLETH_ENTITY_ID: REQUIRENOTUSED
+      SHIBBOLETH_DISCOVERY_URL: REQUIRENOTUSED
       DOCKER_HOST_IP: ${DOCKER_HOST_IP}
     working_dir: /var/www/html
     volumes:
