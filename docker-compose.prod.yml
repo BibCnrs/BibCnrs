@@ -19,8 +19,6 @@ services:
   shibboleth:
     image: vxnexus-registry.intra.inist.fr:8083/shibboleth:latest
     environment:
-      http_proxy: ${http_proxy}
-      https_proxy: ${https_proxy}
       APACHE_SERVERNAME: ${APACHE_SERVERNAME}
       APACHE_SERVERADMIN: ${APACHE_SERVERADMIN}
       APACHE_LOGLEVEL: ${APACHE_LOGLEVEL}
