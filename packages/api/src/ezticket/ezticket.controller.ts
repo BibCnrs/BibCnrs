@@ -133,7 +133,7 @@ export class EzTicketController {
 
 		res.redirect(
 			this.ezProxyService.generateEZTicket(
-				gate,
+				req.query.gate,
 				req.url,
 				ezTicketInfo.username,
 				ezTicketInfo.groups,
