@@ -115,7 +115,7 @@ export class EzTicketController {
 		if (!ezTicketInfo) {
 			res.redirect(
 				`/api/ezticket/login?gate=${encodeURIComponent(
-					gate,
+					req.query.gate,
 				)}&url=${encodeURIComponent(req.url)}`,
 			);
 			return;
