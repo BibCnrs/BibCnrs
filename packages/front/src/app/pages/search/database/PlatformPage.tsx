@@ -12,86 +12,88 @@ import { PlatformListView } from "./PlatformListView";
 import { usePlatforms } from "./usePlatforms";
 
 export function PlatformPage() {
-	const {
-		session: { user },
-		search: { domain },
-	} = useBibContext();
+  const {
+    session: { user },
+    search: { domain },
+  } = useBibContext();
 
-	const {
-		platforms,
-		search,
-		setSearch,
-		filters,
-		setFilters,
-		isLoading,
-		isError,
-	} = usePlatforms();
+  const {
+    platforms,
+    search,
+    setSearch,
+    filters,
+    setFilters,
+    isLoading,
+    isError,
+  } = usePlatforms();
 
-	const t = useTranslator();
+  const t = useTranslator();
 
-	const handleDomain = useFacetsDomainHandler();
-	const domains = useDomain();
+  const handleDomain = useFacetsDomainHandler();
+  const domains = useDomain();
 
-	return (
-		<>
-			<PageTitle page="database" />
-			<SearchBar
-				placeholder={t("pages.researchData.search.bar")}
-				value={search}
-				onSearch={setSearch}
-				disableAutocomplete
-			>
-				<ChipFacet value={domain} values={domains} onChange={handleDomain} />
-			</SearchBar>
-			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-				<Stack gap={2}>
-					{!user && (
-						<Alert variant="outlined" severity="info">
-							{t("pages.database.anonymousMessage")}
-						</Alert>
-					)}
+  return (
+    <>
+      <PageTitle page="database" />
+      <SearchBar
+        placeholder={t("pages.researchData.search.bar")}
+        value={search}
+        onSearch={setSearch}
+        disableAutocomplete
+      >
+        <ChipFacet value={domain} values={domains} onChange={handleDomain} />
+      </SearchBar>
+      <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+        <Stack gap={2}>
+          {!user && (
+            <Alert variant="outlined" severity="info">
+              {t("pages.database.anonymousMessage")}
+            </Alert>
+          )}
 
-					<Box
-						display="grid"
-						gridTemplateColumns={{
-							xs: "1fr",
-							sm: "1fr 4fr",
-						}}
-						gap={3}
-					>
-						<Box>
-							<FilterTab
-								setFilters={setFilters}
-								filters={filters}
-								databases={platforms}
-							/>
-						</Box>
-						<Stack gap={2}>
-							<Typography fontWeight={700}>
-								{t("pages.database.platform", {
-									count: platforms.length,
-								})}
-							</Typography>
+          <Box
+            display="grid"
+            gridTemplateColumns={{
+              xs: "1fr",
+              sm: "1fr 4fr",
+            }}
+            gap={3}
+          >
+            <Box>
+              <FilterTab
+                setFilters={setFilters}
+                filters={filters}
+                databases={platforms}
+              />
+            </Box>
+            <Stack gap={2}>
+              <Typography fontWeight={700}>
+                {t("pages.database.platform", {
+                  count: platforms.length,
+                })}
+              </Typography>
 
-							{isLoading ? (
-								<Stack alignItems="center" spacing={5}>
-									<CircularProgress />
-								</Stack>
-							) : isError ? (
-								<>{/* TODO*/}</>
-							) : platforms.length === 0 ? (
-								<Alert variant="outlined" severity="info">
-									{t("pages.database.noResult")}
-								</Alert>
-							) : user?.settings?.platformView === "list" ? (
-								<PlatformListView platforms={platforms} />
-							) : (
-								<PlatformCardView platforms={platforms} />
-							)}
-						</Stack>
-					</Box>
-				</Stack>
-			</Container>
-		</>
-	);
+              {isLoading ? (
+                <Stack alignItems="center" spacing={5}>
+                  <CircularProgress />
+                </Stack>
+              ) : isError ? (
+                <Alert variant="outlined" severity="error">
+                  {t("pages.database.errorMessage")}
+                </Alert>
+              ) : platforms.length === 0 ? (
+                <Alert variant="outlined" severity="info">
+                  {t("pages.database.noResult")}
+                </Alert>
+              ) : user?.settings?.platformView === "list" ? (
+                <PlatformListView platforms={platforms} />
+              ) : (
+                <PlatformCardView platforms={platforms} />
+              )}
+            </Stack>
+          </Box>
+        </Stack>
+      </Container>
+    </>
+  );
 }

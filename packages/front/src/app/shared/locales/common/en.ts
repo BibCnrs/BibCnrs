@@ -323,6 +323,7 @@ Sincerely`,
 			platform_one: "One plateform",
 			platform_other: "{{ count }} plateforms",
 			noResult: "No result for this search",
+			errorMessage: "An error occurred while loading the page.",
 			filters: {
 				title: "Access",
 				default: "",
