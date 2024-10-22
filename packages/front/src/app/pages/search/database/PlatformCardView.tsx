@@ -34,9 +34,14 @@ export function PlatformCardView({ platforms }: PlatformCardViewProps) {
 				role="list"
 				aria-label={t("pages.database.title")}
 			>
-				{platforms.map((item) => (
-					<PlatformCardItem key={item.id} {...item} />
-				))}
+				{platforms
+					.slice(
+						(currentPage - 1) * databasePerPage,
+						currentPage * databasePerPage,
+					)
+					.map((item) => (
+						<PlatformCardItem key={item.id} {...item} />
+					))}
 			</Box>
 			<PlatformCardViewPagination
 				pageCount={pageCount}

@@ -326,6 +326,7 @@ Cordialement`,
 			platform_one: "Une plateforme",
 			platform_other: "{{ count }} plateformes",
 			noResult: "Pas de résultat pour cette recherche",
+			errorMessage: "une erreur est survenue lors du chargement de la page.",
 			filters: {
 				title: "Accès",
 				default: "",

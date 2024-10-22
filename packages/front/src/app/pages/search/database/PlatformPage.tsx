@@ -78,7 +78,9 @@ export function PlatformPage() {
 									<CircularProgress />
 								</Stack>
 							) : isError ? (
-								<>{/* TODO*/}</>
+								<Alert variant="outlined" severity="error">
+									{t("pages.database.errorMessage")}
+								</Alert>
 							) : platforms.length === 0 ? (
 								<Alert variant="outlined" severity="info">
 									{t("pages.database.noResult")}

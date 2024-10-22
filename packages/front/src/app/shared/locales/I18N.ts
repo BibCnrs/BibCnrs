@@ -319,6 +319,7 @@ export type Common = {
 			platform_one: string;
 			platform_other: string;
 			noResult: string;
+			errorMessage: string;
 			filters: {
 				title: string;
 				default: string;
