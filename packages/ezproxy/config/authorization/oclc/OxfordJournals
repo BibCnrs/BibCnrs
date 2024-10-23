@@ -1,0 +1,17 @@
+Option NoX-Forwarded-For
+Title Oxford Academic (formerly Oxford Journals) (updated 20211214)
+URL https://academic.oup.com/
+HJ https://academic.oup.com
+HJ https://global.oup.com
+HJ https://click.skem1.com
+HJ global.oup.com
+HJ academic.oup.com
+HJ click.skem1.com
+DJ oup.com
+DJ watermark.silverchair.com
+Find domain="//global.oup.com"
+Replace domain="//^sglobal.oup.com^"
+NeverProxy oup3-idp.sams-sigma.com
+NeverProxy oup2-idp.sams-sigma.com
+NeverProxy oup-idp.sams-sigma.com
+Option X-Forwarded-For

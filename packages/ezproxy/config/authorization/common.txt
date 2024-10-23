@@ -1,0 +1,195 @@
+# FOURNISSEURS
+# ============
+
+# Cookie Law (resoud probleme de banniere popup cookie)
+IncludeFile authorization/oclc/cookielaw
+
+# ACS
+IncludeFile authorization/oclc/AmericanChemicalSociety
+
+# Algebraic Geometry
+IncludeFile authorization/other/AlgebraicGeometry
+
+# Annual reviews
+IncludeFile authorization/oclc/AnnualReviews
+
+# ASCE Library
+IncludeFile authorization/other/ASCElibrary
+
+# The Arabidopsis Information Resource
+IncludeFile authorization/oclc/Arabidopsis
+
+# Arxiv
+IncludeFile authorization/other/Arxiv
+
+# Bibliographie Internationale de l Humanisme et de la Renaissance
+IncludeFile authorization/oclc/BIHR
+
+# BMJ LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/BMJJournals
+
+# BREPOLS ONLINE
+IncludeFile authorization/oclc/Brepols
+
+# BRILL LICENCES NATIONALES ISTEX
+# BRILL NEW PAULY LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/BrillOnline
+
+# Cambridge University Press
+IncludeFile authorization/oclc/CambridgeJournalsOnline
+
+# The Cambridge Crystallographic Data Centre
+IncludeFile authorization/other/ccdc
+
+# Cell Press
+IncludeFile authorization/oclc/CellPress
+
+# CLASSIQUES GARNIER EBOOK 2013 LICENCE NATIONALE
+# CLASSIQUES GARNIER NUMERIQUE EBOOK LICENCE NATIONALE
+IncludeFile authorization/other/ClassiquesGarnier
+
+# DE GRUYTER LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/DeGruyterOnline
+
+# DRANT Droits Antiques MISHA
+IncludeFile authorization/other/Drant
+
+# EDP
+IncludeFile authorization/other/EDPSciences
+
+# ELSEVIER ARCH NEGOCIATION NATIONALE
+# ELSEVIER LICENCES NATIONALES ISTEX
+# ELSEVIER MONOS NEGOCIATIONS NATIONALES
+# ELSEVIER NEGOCIATION NATIONALE
+# ELSEVIER EBOOK ARCH NEGOCIATION NATIONALE
+# ELSEVIER EBOOK PRE-2007 NEGOCIATION NATIONALE
+# ELSEVIER EBOOK REFERENCE WORKS 2015 BIBLIOSITES
+# ELSEVIER EBOOK REFERENCE WORKS NEGOCIATION NATIONALE
+# ELSEVIER EI EBOOK ARCH NEGOCIATION NATIONALE
+IncludeFile authorization/oclc/ElsevierHealthJournals
+IncludeFile authorization/oclc/ElsevierScienceDirectAndScopus
+IncludeFile authorization/oclc/ScienceAAAS
+
+# EMERALD LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/EmeraldInsight
+
+# EMS NEGOCIATIONS NATIONALES
+IncludeFile authorization/other/EMSPublishingHouse
+
+# Faculty of 1000
+IncludeFile authorization/oclc/f1000
+
+# GSL
+IncludeFile authorization/other/GeologicalSocietyOfLondon
+
+# HAL
+IncludeFile authorization/other/Hal
+
+# Inspec Analytics
+IncludeFile authorization/oclc/InspecAnalytics
+
+# IOP PUBLISHING LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/InstituteOfPhysics
+
+# Isidore
+IncludeFile authorization/other/Isidore
+
+# Mit Cognet
+IncludeFile authorization/other/MitCognet
+
+# Nature
+IncludeFile authorization/oclc/NaturePublishing
+
+# Numerique Premium
+IncludeFile authorization/other/NumeriquePremium
+
+# OPENEDITION BOOKS EBOOK BIBLIOSITES
+IncludeFile authorization/oclc/OpenEdition
+
+# OVID NEGOCIATIONS NATIONALES
+IncludeFile authorization/oclc/Ovid
+
+# OUP LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/OxfordJournals
+
+# Plosone
+IncludeFile authorization/other/Plosone
+
+# PNAS
+IncludeFile authorization/oclc/ProceedingsOfTheNationalAcademyOfSciences
+
+# Projet Euclid Duke Mathematical Journal
+IncludeFile authorization/other/Projecteuclid
+
+# Proquest
+IncludeFile authorization/oclc/Proquest
+
+# Royal Society Publishing
+IncludeFile authorization/oclc/RoyalSocietyPublishing
+
+# Safari Books Online
+IncludeFile authorization/oclc/SafariBooks
+
+# Scielo
+IncludeFile authorization/other/Scielo
+
+# RSC LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/RoyalSocietyOfChemistry
+
+# SAGE LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/SagePublications
+
+# SPRINGER ARCH NEGOCIATION NATIONALE
+# SPRINGER NEGOCIATIONS NATIONALES
+# SPRINGER ARCH EBOOK LICENCE NATIONALE
+# SPRINGER EBOOK 2015 BIBLIOSITES
+# SPRINGER EBOOK NEGOCIATION NATIONALE
+IncludeFile authorization/oclc/SpringerLink
+
+# Taylor & Francis
+IncludeFile authorization/oclc/TaylorAndFrancisOnline
+
+# UNIVERSITY OF CHICAGO PRESS
+IncludeFile authorization/oclc/UniversityOfChicagoPress
+
+# WILEY LICENCES NATIONALES ISTEX
+IncludeFile authorization/oclc/WileyOnlineLibrary
+
+# BASES DE DONNEES
+# ================
+IncludeFile authorization/other/bdsp
+IncludeFile authorization/oclc/ChadwyckDatabase
+IncludeFile authorization/oclc/Crossref
+IncludeFile authorization/oclc/GaleInfoTrac
+IncludeFile authorization/other/IcsdFiz
+IncludeFile authorization/oclc/InCites
+IncludeFile authorization/oclc/WebOfKnowledge
+
+IncludeFile authorization/oclc/PubMed
+
+# EBSCO PUBLISHING APA
+# =================
+IncludeFile authorization/oclc/EBSCOHost
+
+# FOURNISSEUR INIST
+# =================
+IncludeFile authorization/inist/Inist
+IncludeFile authorization/inist/Istex
+IncludeFile authorization/inist/IstexAPI
+IncludeFile authorization/inist/Panist
+IncludeFile authorization/inist/Refdoc
+IncludeFile authorization/other/Iop
+
+# EBSCO Linksource
+# =================
+IncludeFile authorization/oclc/EBSCOLinkSource
+
+# AUTRES
+# ======
+IncludeFile authorization/other/OclcFirstSearch
+IncludeFile authorization/oclc/Crossref
+IncludeFile authorization/other/DOISystem
+
+# CAMPAGNE DECOUVERTE
+# ===================
+IncludeFile authorization/inist/TestsAll

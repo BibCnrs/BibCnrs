@@ -1,0 +1,30 @@
+Title NRC Research Press
+URL http://www.nrcresearchpress.com/
+HJ https://www.nrcresearchpress.com
+HJ https://nrcresearchpress.com
+HJ nrcresearchpress.com
+HJ www.nrcresearchpress.com
+DJ nrcresearchpress.com
+
+HTTPHeader X-Requested-With
+Option DomainCookieOnly
+Title JSTOR
+URL http://www.jstor.org/
+HJ https://www.jstor.org
+HJ www.jstor.org
+HJ www.jstore.org
+HJ jstor.org
+HJ jstore.org
+HJ links.jstor.org
+HJ mobile.jstor.org
+HJ about.jstor.org
+HJ plants.jstor.org
+HJ uk.jstor.org
+DJ jstor.org
+Option Cookie
+
+Title Springer Nature Experiments (updated 20190531)
+URL https://experiments.springernature.com
+HJ http://experiments.springernature.com
+HJ springernature.com
+DJ springernature.com

@@ -1,0 +1,185 @@
+Option HttpsHyphens
+Option CookiePassThrough
+AnonymousURL -CS +https://app.stradalex.eu/*
+AnonymousURL -CS +https://statics.stradalex.eu/*
+AnonymousURL -CS -Options +https://larbiz-api.larciergroup.com/*
+AnonymousURL -CS -Options +https://dbs.larciergroup.com/*
+Title Strada Lex Europe
+URL https://www.stradalex.eu
+HJ https://www.stradalex.eu
+HJ https://dbs.larciergroup.com
+HJ https://larbiz-api.larciergroup.com
+HJ https://app.stradalex.eu
+HJ https://statics.stradalex.eu
+DJ stradalex.eu
+DJ larciergroup.com
+AnonymousURL -*
+Option Cookie
+
+T INSPEC
+U https://inspec-analytics-app.theiet.org
+HJ https://inspec-analytics-app.theiet.org
+HJ inspec-analytics-app.theiet.org
+DJ theiet.org
+
+T EM Premium
+U https://www.em-premium.com
+HJ https://www.em-premium.com
+HJ www.em-premium.com
+DJ em-premium.com
+
+
+T ICE Virtual Library
+U https://www.icevirtuallibrary.com
+HJ https://www.icevirtuallibrary.com
+HJ www.icevirtuallibrary.com
+DJ icevirtuallibrary.com
+
+T Crystallo Open Database
+U http://www.crystallography.net/cod
+HJ www.crystallography.net
+DJ crystallography.net
+
+T OECD Iligrary
+U https://www.oecd-ilibrary.org
+HJ https://www.oecd-ilibrary.org
+HJ www.oecd-ilibrary.org
+DJ oecd-ilibrary.org
+
+T Dimensions
+HTTPHeader X-CSRF-Token
+HTTPHeader X-Requested-With
+HTTPHeader X-Accel-Redirect
+HTTPHeader X-Sendfile
+U https://app.dimensions.ai/discover/publication
+U https://app.dimensions.ai
+HJ https://app.dimensions.ai
+HJ app.dimensions.ai
+DJ dimensions.ai
+
+T Droz
+U https://www.droz.org
+HJ https://www.droz.org
+HJ www.droz.org
+DJ droz.org
+
+Title Karger Publishers (updated 20171108)
+URL https://www.karger.com
+HJ http://www.karger.com
+HJ content.karger.ch
+HJ content.karger.com
+HJ https://content.karger.com
+HJ https://karger.com
+HJ https://search.karger.com
+HJ https://www.karger.com
+HJ karger.ch
+HJ karger.com
+HJ mag.digitalpc.co.uk
+HJ online.karger.com
+HJ search.karger.com
+HJ www.karger.ch
+HJ www.karger.com
+DJ mag.digitalpc.co.uk
+DJ karger.com
+DJ karger.ch 
+
+PHE www.lexisnexis.com$ www-lexisnexis-com
+PHE www.nexis.com www-nexis-com
+Option CookiePassThrough
+Title LexisNexis
+URL http://www.lexisnexis.com/hottopics/lnacademic
+###U https://advance.lexis.com/?identityprofileid=XT9STJ55727
+U https://www.totalpatentone.com/?identityprofileid=Q6V84X6328
+U https://www.totalpatentone.com/?identityprofileid=FGTX4K63236
+U https://www.totalpatentone.com/?identityprofileid=THC2GH63285
+U https://www.totalpatentone.com/?identityprofileid=9PDCNV63286
+U https://www.totalpatentone.com/?identityprofileid=CKPQ4N63287
+U https://www.totalpatentone.com/?identityprofileid=SQZM4V63288
+U https://www.totalpatentone.com/?identityprofileid=DJCTDS63289
+U https://www.totalpatentone.com/?identityprofileid=3X5NNN63290
+U https://www.totalpatentone.com/?identityprofileid=G34XXV63291
+U https://www.totalpatentone.com/?identityprofileid=C6Q74963292
+HJ www.totalpatentone.com
+DJ totalpatentone.com
+HJ https://www.lexisnexis.com
+DJ lexis-nexis.com
+DJ lexisnexis.com
+HJ advance.lexis.com
+HJ academic.lexisnexis.eu
+HJ academic.lexisnexis.nl
+HJ api.lexisnexis.eu
+DJ lexisnexis.eu
+DJ lexis.com
+DJ lexiscn.com
+DJ cispubs.com
+DJ nexis.com
+DJ lexis-nexis.com
+HJ https://www.lexisnexis.com
+HJ web.lexis-nexis.com
+HJ web.lexisnexis.com
+HJ widgetserver.lexisnexis.nl
+HJ www.lexis-nexis.com
+HJ www.lexisnexis.com
+HJ https://www.lexisnexis.com
+HJ https://www.nexis.com
+HJ https://academic.lexisnexis.nl
+HJ www.lexis.com
+HJ www.lexiscn.com
+HJ w3.lexis.com
+HJ w3.nexis.com
+HJ https://w3.nexis.com
+HJ www.nexis.com
+HJ nexis.com
+HJ companydashboard.lexisnexis.nl
+Option Cookie
+
+T Optics Letters
+U https://www.osapublishing.org/ol/home.cfm
+HJ https://www.osapublishing.org
+HJ www.osapublishing.org
+DJ osapublishing.org
+
+Title ARTstor Digital Library (ADL) (updated 20201204)
+HTTPHeader -request -process X-*
+HTTPHeader -request -process Accept-Encoding
+HTTPHeader -request -process Access-Control-Allow-Origin
+HTTPMethod PUT
+HTTPMethod PATCH
+HTTPMethod OPTIONS
+HTTPMethod DELETE
+AnonymousUrl +.jar
+AnonymousUrl +.class
+AnonymousUrl +.gif
+AnonymousUrl +.jpg
+URL https://library.artstor.org
+HJ library.artstor.org
+HJ https://tsprod.artstor.org
+HJ https://mdxdv.artstor.org
+HJ https://www.artstor.org
+HJ www.artstor.org
+DJ artstor.org
+DJ mdxdv.artstor.org
+Find //tsprod
+Replace https://tsprod
+Find https&#x3A;&#x2F;&#x2F;www.artstor.org
+Replace https&#x3A;&#x2F;&#x2F;^swww.artstor.org^
+Find http&#x3A;&#x2F;&#x2F;library.artstor.org
+Replace http&#x3A;&#x2F;&#x2F;^plibrary.artstor.org^
+NeverProxy tsprod.artstor.org
+NeverProxy kaltura.artstor.org
+NeverProxy kts.artstor.org
+NeverProxy viewer.artstor.org
+NeverProxy viewer2.artstor.org
+NeverProxy library.stanford.edu
+NeverProxy stor.artstor.org
+AnonymousUrl -*
+
+T Droz
+U https://openurl.droz.org
+U https://calvin.droz.org
+U https://humanisme-renaissance.droz.org
+HJ https://calvin.droz.org
+HJ https://humanisme-renaissance.droz.org
+HJ calvin.droz.org
+HJ humanisme-renaissance.droz.org
+DJ droz.org

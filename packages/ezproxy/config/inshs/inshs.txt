@@ -1,0 +1,35 @@
+# FOURNISSEURS
+# ============
+# CAIRN
+# CAIRN INSHS
+# CAIRN EBOOK
+IncludeFile authorization/oclc/Cairn
+
+# ERUDIT
+IncludeFile authorization/other/Erudit
+
+# GALLICA LIBRES
+IncludeFile authorization/other/BNF
+
+# JSTOR
+IncludeFile authorization/oclc/JSTOR
+
+# OPENEDITION
+IncludeFile authorization/oclc/OpenEdition
+
+# PERSEE
+IncludeFile authorization/other/Persee
+
+# PROJECT MUSE
+IncludeFile authorization/oclc/ProjectMuse
+
+# BASES DE DONNEES
+# ================
+IncludeFile authorization/inist/OpenBibArt
+
+# TESTS INSHS
+IncludeFile authorization/inist/TestsInshs
+
+# COMMON
+# ======
+IncludeFile authorization/common.txt

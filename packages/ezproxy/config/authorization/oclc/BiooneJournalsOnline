@@ -1,0 +1,8 @@
+# http://www.oclc.org/support/services/ezproxy/documentation/db/bioone.en.html
+
+#Host 65.245.134.215
+Title BioOne HTTPS 
+URL https://www.bioone.org/
+HJ www.bioone.org
+HJ https://www.bioone.org/
+DJ bioone.org
