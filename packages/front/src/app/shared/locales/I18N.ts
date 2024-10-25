@@ -26,6 +26,7 @@ export type Common = {
 			CollectionLibrary: string;
 			Publisher: string;
 			ContentProvider: string;
+			PublicationType: string;
 		};
 		limiters: {
 			fullText: string;
@@ -195,6 +196,7 @@ export type Common = {
 			provider: string;
 			reset: string;
 			type: string;
+			publicationType: string;
 			more: string;
 			less: string;
 			chips: {

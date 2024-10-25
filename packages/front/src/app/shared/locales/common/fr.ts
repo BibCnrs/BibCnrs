@@ -13,6 +13,7 @@ const fr: Common = {
 			CollectionLibrary: "Collection",
 			Publisher: "Editeur",
 			ContentProvider: "Fournisseur de contenu",
+			PublicationType: "Type de publication",
 		},
 		limiters: {
 			fullText: "Texte intégral",
@@ -185,6 +186,7 @@ const fr: Common = {
 			provider: "Fournisseur de contenu",
 			reset: "Réinitialiser vos filtres",
 			type: "Type de publication",
+			publicationType: "Type de publication",
 			more: "Plus de filtres",
 			less: "Moins de filtres",
 			chips: {

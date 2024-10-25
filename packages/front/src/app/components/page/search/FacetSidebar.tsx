@@ -7,6 +7,7 @@ import type { FacetRequired } from "./facet/Facet.type";
 import FacetList from "./facet/FacetList";
 import LimiterList from "./facet/LimiterList";
 
+
 export type FacetSidebarProps<T extends FacetRequired> = {
 	available: Omit<FacetRequired & T, "orderBy">;
 	active: Omit<FacetRequired & T, "orderBy">;
