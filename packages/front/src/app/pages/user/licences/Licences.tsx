@@ -19,6 +19,7 @@ const buttonStyles: SxProps<Theme> = {
 	width: "200px",
 	textTransform: "none",
 	fontWeight: "900",
+	backgroundColor: "white",
 	":hover": {
 		backgroundColor: (theme) => theme.palette.secondary.main,
 		color: (theme) => theme.palette.secondary.contrastText,
@@ -87,7 +88,7 @@ const Licences = () => {
 									background: (theme) =>
 										activeLicences?.id === value.id
 											? theme.palette.secondary.main
-											: theme.palette.background.default,
+											: "white",
 								}}
 							>
 								{language === "en" ? value.name_en : value.name_fr}
@@ -128,6 +129,7 @@ const Licences = () => {
 											href={`files/${activeLicences.pdf.src}`}
 											target="_blank"
 											rel="noopener noreferrer nofollow"
+											style={{ color: "#6941EB" }}
 										>
 											{activeLicences.pdf.title}
 										</a>
