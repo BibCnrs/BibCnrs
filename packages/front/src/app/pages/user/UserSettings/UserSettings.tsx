@@ -175,9 +175,9 @@ const UserSettings = () => {
 						>
 							<ToggleButton
 								value="auto"
-								aria-label={t("pages.userSettings.generalSection.systemLang")}
+								aria-label={t("pages.userSettings.generalSection.system")}
 							>
-								{t("pages.userSettings.generalSection.systemLang")}
+								{t("pages.userSettings.generalSection.system")}
 							</ToggleButton>
 							<ToggleButton
 								value="fr"
@@ -207,9 +207,9 @@ const UserSettings = () => {
 						>
 							<ToggleButton
 								value="auto"
-								aria-label={t("pages.userSettings.generalSection.systemTheme")}
+								aria-label={t("pages.userSettings.generalSection.systeme")}
 							>
-								{t("pages.userSettings.generalSection.systemTheme")}
+								{t("pages.userSettings.generalSection.system")}
 							</ToggleButton>
 							<ToggleButton
 								value="light"
