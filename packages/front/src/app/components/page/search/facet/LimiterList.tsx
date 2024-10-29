@@ -130,34 +130,36 @@ export default function LimiterList({
 				checked={!!activeLimiters?.openAccess}
 				onChange={handleLimiterChange}
 			/>
-			{halFacet && (
-				<FormControlLabel
-					key={"HAL"}
-					control={
-						<Checkbox
-							checked={halActive}
-							onChange={handleHalChange}
-							inputProps={{ "aria-label": "controlled" }}
-							size="small"
-						/>
-					}
-					label="HAL"
-				/>
-			)}
-			{arxivFacet && (
-				<FormControlLabel
-					key={"arXiv"}
-					control={
-						<Checkbox
-							checked={arxivActive}
-							onChange={handleArxivChange}
-							inputProps={{ "aria-label": "controlled" }}
-							size="small"
-						/>
-					}
-					label="arXiv"
-				/>
-			)}
+			<Stack spacing={0.2} sx={{ pl: 2 }}>
+				{halFacet && (
+					<FormControlLabel
+						key={"HAL"}
+						control={
+							<Checkbox
+								checked={halActive}
+								onChange={handleHalChange}
+								inputProps={{ "aria-label": "controlled" }}
+								size="small"
+							/>
+						}
+						label="HAL"
+					/>
+				)}
+				{arxivFacet && (
+					<FormControlLabel
+						key={"arXiv"}
+						control={
+							<Checkbox
+								checked={arxivActive}
+								onChange={handleArxivChange}
+								inputProps={{ "aria-label": "controlled" }}
+								size="small"
+							/>
+						}
+						label="arXiv"
+					/>
+				)}
+			</Stack>
 			<FacetCheckBox
 				field="reviewed"
 				checked={!!activeLimiters?.reviewed}
