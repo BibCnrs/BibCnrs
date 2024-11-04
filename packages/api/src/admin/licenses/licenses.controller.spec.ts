@@ -116,6 +116,8 @@ describe("LicensesController", () => {
 				common: true,
 				pdf: { title: "title", src: "src" },
 				license_community: [],
+				media_id: 0,
+				media: ""
 			});
 
 			expect(createdLicence).toEqual(
@@ -133,6 +135,8 @@ describe("LicensesController", () => {
 					pdf: { title: "title", src: "src" },
 					name_fr: "updatedName",
 					license_community: [],
+					media_id: 0,
+					media: ""
 				},
 			);
 

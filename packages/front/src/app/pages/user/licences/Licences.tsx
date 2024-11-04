@@ -49,7 +49,11 @@ const Licences = () => {
 		any
 	>({
 		queryKey: ["licences"],
-		queryFn: () => licences(user?.domains),
+		queryFn: async () => {
+			const result = await licences(user?.domains);
+			console.log("fetch", result);
+			return result;
+		},
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60

@@ -156,6 +156,7 @@ export type LicenceDataType = {
 	};
 	enable: boolean;
 	common: boolean;
+	media?: Media;
 };
 
 export type LicencesDataType = LicenceDataType[];

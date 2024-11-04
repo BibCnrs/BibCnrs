@@ -31,12 +31,16 @@ export class LicensesService {
 	}
 
 	async create(createLicenseDto: CreateLicenseDto) {
-		const { license_community: licenseCommunities, ...licenseData } =
-			createLicenseDto;
+		const {
+			license_community: licenseCommunities,
+			media_id,
+			...licenseData
+		} = createLicenseDto;
 
 		const createdLicense = await this.prismaService.license.create({
 			data: licenseData,
 		});
+
 		await this.prismaService.license_community.createMany({
 			data: licenseCommunities.map((community) => ({
 				license_id: createdLicense.id,

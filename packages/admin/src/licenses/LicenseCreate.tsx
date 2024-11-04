@@ -3,6 +3,8 @@ import {
 	Create,
 	FileField,
 	FileInput,
+	ReferenceInput,
+	SelectInput,
 	SimpleForm,
 } from "react-admin";
 import { CreateActions } from "../components/Actions";
@@ -17,13 +19,18 @@ const LicenseCreate = () => {
 		<Create actions={<CreateActions />} redirect="list">
 			<SimpleForm validate={validateLicenceCreation}>
 				<LicenseCommunities />
+				<ReferenceInput
+					label="Média associé"
+					source="media_id"
+					reference="medias"
+				>
+					<SelectInput optionText="name" />
+				</ReferenceInput>
 				<FileInput
 					sx={{ marginTop: 4 }}
-					source="pdf"
-					label="PDF"
-					accept={{ "application/pdf": [".pdf"] }}
-					maxSize={26000000}
-					helperText="Taille maximale 25 Mb"
+					source="file"
+					label="Média à uploader"
+					name="file"
 				>
 					<FileField source="src" title="title" />
 				</FileInput>

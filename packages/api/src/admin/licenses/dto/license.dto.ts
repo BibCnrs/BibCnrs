@@ -1,4 +1,4 @@
-import type { license } from "@prisma/client";
+import type { license, Prisma } from "@prisma/client";
 
 export class CreateLicenseDto implements Omit<license, "id"> {
 	name_fr: string;
@@ -9,6 +9,8 @@ export class CreateLicenseDto implements Omit<license, "id"> {
 	enable: boolean;
 	common: boolean;
 	license_community: { community_id: number }[];
+	media_id: number | null;
+	media: Prisma.JsonValue | null;
 }
 
 export class UpdateLicenseDto extends CreateLicenseDto {
