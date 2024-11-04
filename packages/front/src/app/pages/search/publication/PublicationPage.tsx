@@ -366,12 +366,17 @@ const PublicationPage = () => {
 								padding: 0,
 								minWidth: "30px",
 								margin: "0 2px",
-								backgroundColor:
-									searchByLetter === letter ? "secondary.main" : "white",
-								color: "black",
+								backgroundColor: (theme) =>
+									searchByLetter === letter
+										? theme.palette.secondary.main
+										: theme.palette.info.light,
+								color: (theme) =>
+									searchByLetter === letter ? "black" : theme.palette.info.dark,
 								"&:hover": {
-									backgroundColor:
-										searchByNumber === letter ? "secondary.main" : "white",
+									backgroundColor: (theme) =>
+										searchByNumber === letter
+											? theme.palette.secondary.main
+											: theme.palette.secondary.main,
 								},
 							}}
 							key={letter}
@@ -389,12 +394,16 @@ const PublicationPage = () => {
 							padding: 0,
 							minWidth: "30px",
 							margin: "0 2px",
-							backgroundColor:
+							backgroundColor: (theme) =>
 								searchByNumber ===
 								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
-									? "secondary.main"
-									: "white",
-							color: "black",
+									? theme.palette.secondary.main
+									: theme.palette.info.light,
+							color: (theme) =>
+								searchByNumber ===
+								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+									? "black"
+									: theme.palette.info.dark,
 							"&:hover": {
 								backgroundColor:
 									searchByNumber ===
@@ -418,12 +427,15 @@ const PublicationPage = () => {
 									padding: 0,
 									minWidth: "30px",
 									margin: "0 2px",
-									backgroundColor:
+									backgroundColor: (theme) =>
 										searchByLetterL2 === `${searchByLetter}${letter}`
-											? "secondary.main"
-											: "white",
+											? theme.palette.secondary.main
+											: theme.palette.info.light,
 									fontFamily: "monospace",
-									color: "black",
+									color: (theme) =>
+										searchByLetterL2 === `${searchByLetter}${letter}`
+											? "black"
+											: theme.palette.info.dark,
 									"&:hover": {
 										backgroundColor:
 											searchByLetterL2 === `${searchByLetter}${letter}`

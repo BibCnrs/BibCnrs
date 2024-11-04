@@ -466,8 +466,7 @@ export type Common = {
 				descriptionTheme: string;
 				light: string;
 				dark: string;
-				systemLang: string;
-				systemTheme: string;
+				system: string;
 			};
 		};
 	};
