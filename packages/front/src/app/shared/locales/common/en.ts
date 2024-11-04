@@ -13,7 +13,6 @@ const en: Common = {
 			CollectionLibrary: "Collection",
 			Publisher: "Publisher",
 			ContentProvider: "Content Provider",
-			PublicationType: "Type of publication",
 		},
 		limiters: {
 			fullText: "Full Text",
@@ -175,7 +174,6 @@ const en: Common = {
 			date: "Publication Date ({{from}} - {{to}})",
 			to: "to",
 			source: "Source Type",
-			publicationType: "Type of publication",
 			subject: "Subject",
 			journal: "Publication",
 			language: "Language",

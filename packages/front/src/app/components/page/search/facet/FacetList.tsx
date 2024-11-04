@@ -2,14 +2,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useCallback, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useTranslator } from "../../../../shared/locales/I18N";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
 import FacetSearchList from "./FacetSearchList";
 
 const MOST_USED_FACETS = ["subject", "journal", "source"];
 const LEAST_USED_FACETS = ["language", "publisher", "provider", "collection"];
-const FACETS = ["subject", "publicationType", "publisher"];
 
 type FacetFacetsProps = {
 	facets: FacetRequired["facets"];
@@ -25,11 +23,6 @@ export default function FacetList({
 	const t = useTranslator();
 
 	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
-
-	const location = useLocation();
-	const isPublicationPage = location.pathname.includes("/publication");
-
-	console.log("path", isPublicationPage);
 
 	const handleFacetChange = useCallback(
 		(values: FacetEntry[], key: string) => {
@@ -47,30 +40,17 @@ export default function FacetList({
 
 	return (
 		<Stack gap={2}>
-			{!isPublicationPage &&
-				MOST_USED_FACETS.map((facet) => (
-					<FacetSearchList
-						key={facet}
-						name={facet}
-						options={facets[facet] ?? []}
-						value={activeFacets[facet]}
-						onChange={(values) => {
-							handleFacetChange(values, facet);
-						}}
-					/>
-				))}
-			{isPublicationPage &&
-				FACETS.map((facet) => (
-					<FacetSearchList
-						key={facet}
-						name={facet}
-						options={facets[facet] ?? []}
-						value={activeFacets[facet]}
-						onChange={(values) => {
-							handleFacetChange(values, facet);
-						}}
-					/>
-				))}
+			{MOST_USED_FACETS.map((facet) => (
+				<FacetSearchList
+					key={facet}
+					name={facet}
+					options={facets[facet] ?? []}
+					value={activeFacets[facet]}
+					onChange={(values) => {
+						handleFacetChange(values, facet);
+					}}
+				/>
+			))}
 			<Accordion
 				sx={{
 					background: "none",
@@ -84,44 +64,41 @@ export default function FacetList({
 				}}
 				onChange={(_, expanded) => setIsMoreFacetOpen(expanded)}
 			>
-				{!isPublicationPage && (
-					<AccordionSummary
-						expandIcon={<ExpandMoreIcon />}
-						sx={{
-							border: 0,
-							margin: 0,
-							padding: 0,
-							"&.Mui-expanded": {
-								minHeight: "48px",
-							},
-							"&.Mui-expanded .MuiAccordionSummary-content": {
-								margin: "12px 0",
-							},
-						}}
-					>
-						{isMoreFacetOpen
-							? t("components.facet.less")
-							: t("components.facet.more")}
-					</AccordionSummary>
-				)}
+				<AccordionSummary
+					expandIcon={<ExpandMoreIcon />}
+					sx={{
+						border: 0,
+						margin: 0,
+						padding: 0,
+						"&.Mui-expanded": {
+							minHeight: "48px",
+						},
+						"&.Mui-expanded .MuiAccordionSummary-content": {
+							margin: "12px 0",
+						},
+					}}
+				>
+					{isMoreFacetOpen
+						? t("components.facet.less")
+						: t("components.facet.more")}
+				</AccordionSummary>
 				<AccordionDetails
 					sx={{
 						padding: 0,
 					}}
 				>
 					<Stack gap={1}>
-						{!isPublicationPage &&
-							LEAST_USED_FACETS.map((facet) => (
-								<FacetSearchList
-									key={facet}
-									name={facet}
-									options={facets[facet] ?? []}
-									value={activeFacets[facet]}
-									onChange={(values) => {
-										handleFacetChange(values, facet);
-									}}
-								/>
-							))}
+						{LEAST_USED_FACETS.map((facet) => (
+							<FacetSearchList
+								key={facet}
+								name={facet}
+								options={facets[facet] ?? []}
+								value={activeFacets[facet]}
+								onChange={(values) => {
+									handleFacetChange(values, facet);
+								}}
+							/>
+						))}
 					</Stack>
 				</AccordionDetails>
 			</Accordion>

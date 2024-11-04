@@ -26,10 +26,7 @@ export type PublicationParam = {
 	limiters?: Record<string, any> & {
 		reviewed?: boolean;
 	};
-	facets?: Record<
-		string | "publisher" | "subject" | "publicationType",
-		FacetEntry[]
-	>;
+	facets?: Record<string | "publisher" | "subject" | "type", FacetEntry[]>;
 };
 
 export const publication = async (
@@ -66,9 +63,9 @@ export const publication = async (
 		if (param.facets.subject) {
 			payload.activeFacets.SubjectPubDb = convertFacet(param.facets.subject);
 		}
-		if (param.facets.publicationType) {
+		if (param.facets.type) {
 			payload.activeFacets.TypePublicationPubD = convertFacet(
-				param.facets.publicationType,
+				param.facets.type,
 			);
 		}
 		if (param.facets.publisher) {
