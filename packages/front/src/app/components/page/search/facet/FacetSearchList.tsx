@@ -17,7 +17,6 @@ export default function FacetSearchList({
 	value = [],
 	onChange,
 }: FacetSearchListProps) {
-	console.log("Props reçues:", { name, options, value });
 	const t = useTranslator();
 
 	const handleChange = (_event: SyntheticEvent, value: FacetEntry[]) => {

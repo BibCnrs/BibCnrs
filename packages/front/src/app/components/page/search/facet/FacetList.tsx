@@ -2,7 +2,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useCallback, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useTranslator } from "../../../../shared/locales/I18N";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
 import FacetSearchList from "./FacetSearchList";
@@ -15,21 +14,18 @@ type FacetFacetsProps = {
 	facets: FacetRequired["facets"];
 	activeFacets?: FacetRequired["facets"];
 	onChange: (facets: FacetRequired["facets"]) => void;
+	isPublicationPage: boolean;
 };
 
 export default function FacetList({
 	facets,
 	activeFacets = {},
 	onChange,
+	isPublicationPage,
 }: FacetFacetsProps) {
 	const t = useTranslator();
 
 	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
-
-	const location = useLocation();
-	const isPublicationPage = location.pathname.includes("/publication");
-
-	console.log("path", isPublicationPage);
 
 	const handleFacetChange = useCallback(
 		(values: FacetEntry[], key: string) => {

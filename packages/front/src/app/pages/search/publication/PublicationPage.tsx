@@ -452,6 +452,7 @@ const PublicationPage = () => {
 							active={getActive()}
 							onChange={handleFacets}
 							onReset={handleReset}
+							isPublicationPage={true}
 						/>
 					</Grid>
 
