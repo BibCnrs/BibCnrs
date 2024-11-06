@@ -49,11 +49,7 @@ const Licences = () => {
 		any
 	>({
 		queryKey: ["licences"],
-		queryFn: async () => {
-			const result = await licences(user?.domains);
-			console.log("fetch", result);
-			return result;
-		},
+		queryFn: () => licences(user?.domains),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60
@@ -126,16 +122,18 @@ const Licences = () => {
 												: activeLicences.content_fr,
 									}}
 								/>
-								{activeLicences.pdf ? (
+								{activeLicences ? (
 									<p>
 										{t("pages.licences.pdf")}{" "}
 										<a
-											href={`files/${activeLicences.pdf.src}`}
+											href={activeLicences.media?.url || "#"}
 											target="_blank"
 											rel="noopener noreferrer nofollow"
 											style={{ color: "#6941EB" }}
 										>
-											{activeLicences.pdf.title}
+											{language === "en"
+												? activeLicences.name_en
+												: activeLicences.name_fr}
 										</a>
 									</p>
 								) : null}

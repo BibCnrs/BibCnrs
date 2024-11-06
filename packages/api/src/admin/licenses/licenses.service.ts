@@ -38,7 +38,10 @@ export class LicensesService {
 		} = createLicenseDto;
 
 		const createdLicense = await this.prismaService.license.create({
-			data: licenseData,
+			data: {
+				...licenseData,
+				media: media_id ? { connect: { id: media_id } } : undefined,
+			},
 		});
 
 		await this.prismaService.license_community.createMany({
@@ -76,12 +79,6 @@ export class LicensesService {
 
 		const total = await this.prismaService.license.count({ where: filters });
 
-		for (const license of data) {
-			if (license.pdf && typeof license.pdf === "object") {
-				license.pdf = { ...license.pdf, src: undefined };
-			}
-		}
-
 		return { data, total };
 	}
 
@@ -102,6 +99,7 @@ export class LicensesService {
 		const {
 			license_community: licenseCommunities,
 			id: idLicense,
+			media_id,
 			...licenseData
 		} = updateLicenseDto;
 
@@ -110,6 +108,15 @@ export class LicensesService {
 			where: { id },
 			data: {
 				...licenseData,
+				media: media_id
+					? {
+							connect: {
+								id: media_id,
+							},
+						}
+					: {
+							disconnect: true,
+						},
 			},
 		});
 

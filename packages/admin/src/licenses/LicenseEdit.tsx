@@ -1,19 +1,44 @@
-import { BooleanInput, Edit, SimpleForm, TextInput } from "react-admin";
+import {
+	BooleanInput,
+	Edit,
+	FileField,
+	FileInput,
+	ReferenceInput,
+	SelectInput,
+	SimpleForm,
+} from "react-admin";
 import { EditActions } from "../components/Actions";
 import { MultilingualContentTab } from "../components/MultilingualContentTab";
 import { LicenseCommunities } from "./LicenseCommunities";
+
+const FileComponent = () => {
+	return (
+		<>
+			<ReferenceInput
+				label="Média associé"
+				source="media_id"
+				reference="medias"
+			>
+				<SelectInput optionText="name" />
+			</ReferenceInput>
+			<FileInput
+				sx={{ marginTop: 4 }}
+				source="file"
+				label="Média à uploader"
+				name="file"
+			>
+				<FileField source="src" title="title" />
+			</FileInput>
+		</>
+	);
+};
 
 const LicenseEdit = () => {
 	return (
 		<Edit actions={<EditActions />} redirect="list">
 			<SimpleForm>
 				<LicenseCommunities />
-				<TextInput
-					sx={{ marginTop: 4, width: "100%" }}
-					name="pdf.title"
-					source="pdf.title"
-				/>
-				<TextInput sx={{ width: "100%" }} name="pdf.src" source="pdf.src" />
+				<FileComponent />
 				<BooleanInput
 					label="Actif"
 					source="enable"

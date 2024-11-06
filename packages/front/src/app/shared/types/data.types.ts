@@ -150,10 +150,6 @@ export type LicenceDataType = {
 	name_en: string;
 	content_fr: string;
 	content_en: string;
-	pdf?: {
-		src: string;
-		title: string;
-	};
 	enable: boolean;
 	common: boolean;
 	media?: Media;
