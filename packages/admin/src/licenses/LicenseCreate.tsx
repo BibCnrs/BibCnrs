@@ -14,27 +14,16 @@ import {
 } from "../components/MultilingualContentTab";
 import { LicenseCommunities } from "./LicenseCommunities";
 
-const FileComponent = () => {
-	return (
-		<>
-			<ReferenceInput
-				label="Média associé"
-				source="media_id"
-				reference="medias"
-			>
-				<SelectInput optionText="name" />
-			</ReferenceInput>
-			<FileInput
-				sx={{ marginTop: 4 }}
-				source="file"
-				label="Média à uploader"
-				name="file"
-			>
-				<FileField source="src" title="title" />
-			</FileInput>
-		</>
-	);
-};
+const FileComponent = () => (
+	<>
+		<ReferenceInput label="Média associé" source="media_id" reference="medias">
+			<SelectInput optionText="name" />
+		</ReferenceInput>
+		<FileInput sx={{ marginTop: 4 }} source="file" label="Média à uploader">
+			<FileField source="src" title="title" />
+		</FileInput>
+	</>
+);
 const LicenseCreate = () => {
 	return (
 		<Create actions={<CreateActions />} redirect="list">
