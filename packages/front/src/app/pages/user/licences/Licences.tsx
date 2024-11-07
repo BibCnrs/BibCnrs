@@ -1,7 +1,8 @@
 import { Button, Typography } from "@mui/material";
 import { Box, Container, Stack, type SxProps, type Theme } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
@@ -31,11 +32,19 @@ const buttonStyles: SxProps<Theme> = {
 };
 
 const Licences = () => {
+	const params = useParams();
 	const t = useTranslator();
 	const {
 		language,
 		session: { user },
 	} = useBibContext();
+
+	const id = useMemo(() => {
+		if (params.id) {
+			return Number.parseInt(params.id, 10);
+		}
+		return -1;
+	}, [params.id]);
 	const [activeLicences, setActiveLicences] = useState<
 		LicenceDataType | undefined
 	>(undefined);
@@ -48,7 +57,7 @@ const Licences = () => {
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		any
 	>({
-		queryKey: ["licences"],
+		queryKey: ["licences", id],
 		queryFn: () => licences(user?.domains),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
@@ -125,7 +134,7 @@ const Licences = () => {
 									<p>
 										{t("pages.licences.pdf")}{" "}
 										<a
-											href={`files/${activeLicences.media?.url}`}
+											href={`${activeLicences.media?.url}`}
 											target="_blank"
 											rel="noopener noreferrer nofollow"
 											style={{ color: "#6941EB" }}

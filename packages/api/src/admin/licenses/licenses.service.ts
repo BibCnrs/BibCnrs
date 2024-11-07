@@ -34,6 +34,7 @@ export class LicensesService {
 		const {
 			license_community: licenseCommunities,
 			media_id,
+			media,
 			...licenseData
 		} = createLicenseDto;
 
