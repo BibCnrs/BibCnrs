@@ -40,12 +40,12 @@ const Licences = () => {
 		LicenceDataType | undefined
 	>(undefined);
 
-	const { data, isFetching, isLoading } = useQuery<
+	const { data } = useQuery<
 		LicencesDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		any,
 		LicencesDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		any
 	>({
 		queryKey: ["licences"],
@@ -55,12 +55,11 @@ const Licences = () => {
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (data && data.length > 0) {
 			setActiveLicences(data[0]);
 		}
-	}, [data, isFetching, isLoading]);
+	}, [data]);
 
 	if (!data || data.length === 0) {
 		return <div id="app">{t("pages.licences.empty")}</div>;
@@ -126,10 +125,13 @@ const Licences = () => {
 									<p>
 										{t("pages.licences.pdf")}{" "}
 										<a
-											href={activeLicences.media?.url || "#"}
+											href={`files/${activeLicences.media?.url}`}
 											target="_blank"
 											rel="noopener noreferrer nofollow"
 											style={{ color: "#6941EB" }}
+											onClick={() => {
+												console.log("media", activeLicences.media);
+											}}
 										>
 											{language === "en"
 												? activeLicences.name_en
