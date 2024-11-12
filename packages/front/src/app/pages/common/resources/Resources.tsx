@@ -58,7 +58,7 @@ export const DisplayResources = ({
 				>
 					<CardActionArea
 						component={Link}
-						href={resource.href}
+						href={resource.media?.url}
 						sx={{ height: "100%" }}
 						rel="nofollow noreferrer noopener"
 						target="_blank"

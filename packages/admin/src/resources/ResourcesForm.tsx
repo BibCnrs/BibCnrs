@@ -7,6 +7,16 @@ import {
 	TextInput,
 } from "react-admin";
 
+const FileComponent = () => (
+	<>
+		<ReferenceInput label="Média associé" source="media_id" reference="medias">
+			<SelectInput optionText="name" />
+		</ReferenceInput>
+		<FileInput sx={{ marginTop: 4 }} source="file" label="Média à uploader">
+			<FileField source="src" title="title" />
+		</FileInput>
+	</>
+);
 export const ResourcesForm = () => {
 	return (
 		<>
@@ -17,21 +27,7 @@ export const ResourcesForm = () => {
 				name="enable"
 				defaultValue={true}
 			/>
-			<ReferenceInput
-				label="Média associé"
-				source="media_id"
-				reference="medias"
-			>
-				<SelectInput optionText="name" />
-			</ReferenceInput>
-			<FileInput
-				sx={{ marginTop: 4 }}
-				source="file"
-				label="Média à uploader"
-				name="file"
-			>
-				<FileField source="src" title="title" />
-			</FileInput>
+			<FileComponent />
 			<TextInput
 				label="Titre français"
 				sx={{ width: "100%" }}

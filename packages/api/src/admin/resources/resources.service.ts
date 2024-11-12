@@ -41,23 +41,36 @@ export class ResourcesService {
 		});
 	}
 
-	create(createResourceDto: CreateResourceDto) {
-		return this.prismaService.resources.create({
+	async create(createResourceDto: CreateResourceDto) {
+		const { media_id, media, ...resourceData } = createResourceDto;
+		const createdResource = await this.prismaService.resources.create({
 			data: {
-				...createResourceDto,
+				...resourceData,
+				media: media_id ? { connect: { id: media_id } } : undefined,
 			},
 		});
+		return this.findOne(createdResource.id);
 	}
+	async update(id: number, updateResourceDto: UpdateResourceDto) {
+		const { id: idResources, media_id, ...resourceData } = updateResourceDto;
 
-	update(id: number, updateResourceDto: UpdateResourceDto) {
-		return this.prismaService.resources.update({
-			data: {
-				...updateResourceDto,
-			},
+		await this.prismaService.resources.update({
 			where: { id },
+			data: {
+				...resourceData,
+				media: media_id
+					? {
+							connect: {
+								id: media_id,
+							},
+						}
+					: {
+							disconnect: true,
+						},
+			},
 		});
+		return this.findOne(id);
 	}
-
 	remove(id: number) {
 		return this.prismaService.resources.delete({ where: { id } });
 	}

@@ -1,4 +1,5 @@
-import { Test, type TestingModule } from "@nestjs/testing";
+import { ConfigService } from "@nestjs/config";
+import { Test, TestingModule } from "@nestjs/testing";
 import { beforeEach, describe, expect, it } from "vitest";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FrontResourceController } from "./resource.controller";
@@ -10,7 +11,7 @@ describe("FrontResourcesController", () => {
 	beforeEach(async () => {
 		const ebscoResources: TestingModule = await Test.createTestingModule({
 			controllers: [FrontResourceController],
-			providers: [FrontResourceService, PrismaService],
+			providers: [FrontResourceService, PrismaService, ConfigService],
 		}).compile();
 
 		frontResourcesController = ebscoResources.get<FrontResourceController>(
@@ -24,13 +25,15 @@ describe("FrontResourcesController", () => {
 				expect.objectContaining({
 					name_en: "Bib Preprod",
 					name_fr: "Bib Preprod",
-					href: "https://bib-preprod.inist.fr/",
+					media: null,
+					media_id: null,
 					enable: true,
 				}),
 				expect.objectContaining({
 					name_en: "Bib",
 					name_fr: "Bib",
-					href: "https://bib.cnrs.fr/",
+					media: null,
+					media_id: null,
 					enable: true,
 				}),
 			]);

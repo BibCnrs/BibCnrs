@@ -98,8 +98,8 @@ export type ResourceDataType = {
 	id: number;
 	name_fr: string;
 	name_en: string;
-	href: string;
 	enable: boolean;
+	media?: Media;
 };
 
 export type ResourcesDataType = ResourceDataType[];

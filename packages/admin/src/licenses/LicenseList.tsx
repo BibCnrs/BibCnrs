@@ -88,7 +88,8 @@ const LicenseList = () => (
 				label="resources.licenses.fields.media"
 				source="media_id"
 				reference="medias"
-				link={false} 
+				link={false}
+				emptyText="-"
 			>
 				<TextField source="file_name" emptyText="-" />
 			</ReferenceField>

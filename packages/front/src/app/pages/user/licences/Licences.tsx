@@ -130,7 +130,8 @@ const Licences = () => {
 												: activeLicences.content_fr,
 									}}
 								/>
-								{activeLicences ? (
+								{/* biome-ignore lint/complexity/useOptionalChain: <explanation> */}
+								{activeLicences && activeLicences.media?.url ? (
 									<p>
 										{t("pages.licences.pdf")}{" "}
 										<a

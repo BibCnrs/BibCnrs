@@ -97,7 +97,8 @@ const dataProvider: DataProvider = {
 		if (
 			resource === "news" ||
 			resource === "contentManagement" ||
-			resource === "licenses"
+			resource === "licenses" ||
+			resource === "resources"
 		) {
 			let mediaID = params.data.media_id;
 			if (params.data.file) {
@@ -148,7 +149,8 @@ const dataProvider: DataProvider = {
 		if (
 			resource === "news" ||
 			resource === "contentManagement" ||
-			resource === "licenses"
+			resource === "licenses" ||
+			resource === "resources"
 		) {
 			let mediaID = params.data.media_id;
 			if (params.data.file) {

@@ -205,13 +205,13 @@ const prisma = new PrismaClient();
 			{
 				name_en: "Bib Preprod",
 				name_fr: "Bib Preprod",
-				href: "https://bib-preprod.inist.fr/",
+				media_id: null,
 				enable: true,
 			},
 			{
 				name_en: "Bib",
 				name_fr: "Bib",
-				href: "https://bib.cnrs.fr/",
+				media_id: null,
 				enable: true,
 			},
 		],
