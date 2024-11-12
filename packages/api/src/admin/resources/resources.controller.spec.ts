@@ -92,14 +92,17 @@ describe("ResourcesController", () => {
 				}),
 			);
 
-			const updatedResource = await resourcesController.update(createdResource.id, {
-				name_fr: "updatedResource",
-				name_en: "updatedResource",
-				media: "http://random-update",
-				enable: true,
-				media_id: null,
-				id: 0
-			});
+			const updatedResource = await resourcesController.update(
+				createdResource.id,
+				{
+					name_fr: "updatedResource",
+					name_en: "updatedResource",
+					media: "http://random-update",
+					enable: true,
+					media_id: null,
+					id: 0,
+				},
+			);
 
 			expect(updatedResource).toEqual(
 				expect.objectContaining({
