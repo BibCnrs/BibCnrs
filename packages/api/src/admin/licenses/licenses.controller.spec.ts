@@ -72,7 +72,7 @@ describe("LicensesController", () => {
 				content_en: "<p>Framework of use</p>",
 				enable: true,
 				common: false,
-				pdf: null,
+				media_id: null,
 				license_community: [
 					{
 						license_id: 1,
@@ -114,10 +114,8 @@ describe("LicensesController", () => {
 				content_en: "<p>License Test</p>",
 				enable: true,
 				common: true,
-				pdf: { title: "title", src: "src" },
 				license_community: [],
 				media_id: 0,
-				media: ""
 			});
 
 			expect(createdLicence).toEqual(
@@ -132,11 +130,9 @@ describe("LicensesController", () => {
 				createdLicence.id,
 				{
 					...createdLicence,
-					pdf: { title: "title", src: "src" },
 					name_fr: "updatedName",
 					license_community: [],
 					media_id: 0,
-					media: ""
 				},
 			);
 
