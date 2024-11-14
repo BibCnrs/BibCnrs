@@ -12,6 +12,7 @@ export type FacetSidebarProps<T extends FacetRequired> = {
 	active: Omit<FacetRequired & T, "orderBy">;
 	onChange: (values: Omit<FacetRequired & T, "orderBy">) => void;
 	onReset: () => void;
+	isPublicationPage: boolean;
 };
 
 export default function ({
@@ -19,6 +20,7 @@ export default function ({
 	active,
 	onChange,
 	onReset,
+	isPublicationPage,
 }: FacetSidebarProps<FacetRequired>) {
 	const t = useTranslator();
 
@@ -98,6 +100,7 @@ export default function ({
 				facets={available.facets}
 				activeFacets={active.facets}
 				onChange={handleFacetChange}
+				isPublicationPage={isPublicationPage}
 			/>
 			<Button color="error" size="small" variant="text" onClick={onReset}>
 				{t("components.facet.reset")}

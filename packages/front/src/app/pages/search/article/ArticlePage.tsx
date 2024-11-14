@@ -465,6 +465,7 @@ const ArticlePage = () => {
 							active={getActive()}
 							onChange={handleFacets}
 							onReset={handleReset}
+							isPublicationPage={false}
 						/>
 					</Grid>
 

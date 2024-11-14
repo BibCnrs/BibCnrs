@@ -19,7 +19,7 @@ export default function FacetSearchList({
 }: FacetSearchListProps) {
 	const t = useTranslator();
 
-	const handleChange = (event: SyntheticEvent, value: FacetEntry[]) => {
+	const handleChange = (_event: SyntheticEvent, value: FacetEntry[]) => {
 		onChange(value);
 	};
 
