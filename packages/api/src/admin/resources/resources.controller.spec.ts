@@ -69,6 +69,7 @@ describe("ResourcesController", () => {
 				name_fr: "Bib",
 				enable: true,
 				media_id: null,
+				media: null,
 			});
 		});
 
@@ -78,7 +79,7 @@ describe("ResourcesController", () => {
 			const createdResource = await resourcesController.create({
 				name_fr: randomResource,
 				name_en: randomResource,
-				media: "http://random-create",
+				media: { url: "http://random-create" },
 				enable: true,
 				media_id: null,
 			});
@@ -88,7 +89,6 @@ describe("ResourcesController", () => {
 					name_fr: randomResource,
 					name_en: randomResource,
 					enable: true,
-					media_id: null,
 				}),
 			);
 
@@ -97,7 +97,7 @@ describe("ResourcesController", () => {
 				{
 					name_fr: "updatedResource",
 					name_en: "updatedResource",
-					media: "http://random-update",
+					media: { url: "http://random-create" },
 					enable: true,
 					media_id: null,
 					id: 0,

@@ -22,16 +22,18 @@ export class FrontResourceService {
 		if (!resources) {
 			return null;
 		}
+		const media = resources.media
+			? {
+					...resources.media,
+					url: resources.media.url
+						? `${this.servicesConfig.contentDelivery}${resources.media.url}`
+						: null,
+				}
+			: { url: null };
+
 		return {
 			...resources,
-			media: resources.media
-				? {
-						...resources.media,
-						url: resources.media.url
-							? `${this.servicesConfig.contentDelivery}${resources.media.url}`
-							: null,
-					}
-				: null,
+			media,
 		};
 	}
 

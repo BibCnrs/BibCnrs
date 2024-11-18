@@ -23,16 +23,18 @@ describe("FrontResourcesController", () => {
 		it("should return resources", async () => {
 			expect(await frontResourcesController.getResources()).toStrictEqual([
 				expect.objectContaining({
+					id: 1,
 					name_en: "Bib Preprod",
 					name_fr: "Bib Preprod",
-					media: null,
+					media: { url: null },
 					media_id: null,
 					enable: true,
 				}),
 				expect.objectContaining({
+					id: 2,
 					name_en: "Bib",
 					name_fr: "Bib",
-					media: null,
+					media: { url: null },
 					media_id: null,
 					enable: true,
 				}),

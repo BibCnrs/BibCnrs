@@ -205,13 +205,11 @@ const prisma = new PrismaClient();
 			{
 				name_en: "Bib Preprod",
 				name_fr: "Bib Preprod",
-				media_id: null,
 				enable: true,
 			},
 			{
 				name_en: "Bib",
 				name_fr: "Bib",
-				media_id: null,
 				enable: true,
 			},
 		],
