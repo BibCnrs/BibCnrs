@@ -199,6 +199,40 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Medias
+	await prisma.medias.createMany({
+		data: [
+			{
+				id: 1,
+				name: "media1",
+				file_name: "media1.png",
+				file: "/app/packages/api/uploads/2024/1/1/media1.png",
+				url: "/2024/1/1/media1.png",
+			},
+			{
+				id: 2,
+				name: "media2",
+				file_name: "media2.png",
+				file: "/app/packages/api/uploads/2024/1/1/media2.png",
+				url: "/2024/1/1/media2.png",
+			},
+			{
+				id: 100,
+				name: "bib",
+				file_name: "bib.pdf",
+				file: "/app/packages/api/uploads/2024/1/1/bib.pdf",
+				url: "/2024/1/1/bibcnrs.pdf",
+			},
+			{
+				id: 101,
+				name: "preprod",
+				file_name: "preprod.pdf",
+				file: "/app/packages/api/uploads/2024/1/1/preprod.pdf",
+				url: "/2024/1/1/preprod.pdf",
+			},
+		],
+	});
+
 	// Resources
 	await prisma.resources.createMany({
 		data: [
@@ -206,11 +240,13 @@ const prisma = new PrismaClient();
 				name_en: "Bib Preprod",
 				name_fr: "Bib Preprod",
 				enable: true,
+				media_id: 101,
 			},
 			{
 				name_en: "Bib",
 				name_fr: "Bib",
 				enable: true,
+				media_id: 100,
 			},
 		],
 	});
@@ -402,24 +438,6 @@ const prisma = new PrismaClient();
 			{
 				inist_account_id: 1,
 				unit_id: 1,
-			},
-		],
-	});
-
-	// Medias
-	await prisma.medias.createMany({
-		data: [
-			{
-				name: "media1",
-				file_name: "media1.png",
-				file: "/app/packages/api/uploads/2024/1/1/media1.png",
-				url: "/2024/1/1/media1.png",
-			},
-			{
-				name: "media2",
-				file_name: "media2.png",
-				file: "/app/packages/api/uploads/2024/1/1/media2.png",
-				url: "/2024/1/1/media2.png",
 			},
 		],
 	});

@@ -48,14 +48,14 @@ describe("ResourcesController", () => {
 						name_en: "Bib Preprod",
 						name_fr: "Bib Preprod",
 						enable: true,
-						media_id: null,
+						media_id: 101,
 					}),
 					expect.objectContaining({
 						id: 2,
 						name_en: "Bib",
 						name_fr: "Bib",
 						enable: true,
-						media_id: null,
+						media_id: 100,
 					}),
 				]),
 			);
@@ -68,8 +68,7 @@ describe("ResourcesController", () => {
 				name_en: "Bib",
 				name_fr: "Bib",
 				enable: true,
-				media_id: null,
-				media: null,
+				media_id: 100,
 			});
 		});
 

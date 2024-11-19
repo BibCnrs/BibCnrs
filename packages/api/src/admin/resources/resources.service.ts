@@ -38,9 +38,6 @@ export class ResourcesService {
 	findOne(id: number): Promise<Partial<resources>> {
 		return this.prismaService.resources.findUnique({
 			where: { id },
-			include: {
-				media: true,
-			},
 		});
 	}
 
