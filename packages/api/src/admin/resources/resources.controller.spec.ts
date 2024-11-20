@@ -47,15 +47,15 @@ describe("ResourcesController", () => {
 						id: 1,
 						name_en: "Bib Preprod",
 						name_fr: "Bib Preprod",
-						href: "https://bib-preprod.inist.fr/",
 						enable: true,
+						media_id: 101,
 					}),
 					expect.objectContaining({
 						id: 2,
 						name_en: "Bib",
 						name_fr: "Bib",
-						href: "https://bib.cnrs.fr/",
 						enable: true,
+						media_id: 100,
 					}),
 				]),
 			);
@@ -67,8 +67,8 @@ describe("ResourcesController", () => {
 				id: 2,
 				name_en: "Bib",
 				name_fr: "Bib",
-				href: "https://bib.cnrs.fr/",
 				enable: true,
+				media_id: 100,
 			});
 		});
 
@@ -78,15 +78,15 @@ describe("ResourcesController", () => {
 			const createdResource = await resourcesController.create({
 				name_fr: randomResource,
 				name_en: randomResource,
-				href: "http://random-create",
+				media: { url: "http://random-create" },
 				enable: true,
+				media_id: null,
 			});
 
 			expect(createdResource).toEqual(
 				expect.objectContaining({
 					name_fr: randomResource,
 					name_en: randomResource,
-					href: "http://random-create",
 					enable: true,
 				}),
 			);
@@ -94,10 +94,12 @@ describe("ResourcesController", () => {
 			const updatedResource = await resourcesController.update(
 				createdResource.id,
 				{
-					...createdResource,
 					name_fr: "updatedResource",
 					name_en: "updatedResource",
-					href: "http://random-update",
+					media: { url: "http://random-create" },
+					enable: true,
+					media_id: null,
+					id: 0,
 				},
 			);
 
@@ -105,7 +107,7 @@ describe("ResourcesController", () => {
 				expect.objectContaining({
 					name_fr: "updatedResource",
 					name_en: "updatedResource",
-					href: "http://random-update",
+					enable: true,
 				}),
 			);
 

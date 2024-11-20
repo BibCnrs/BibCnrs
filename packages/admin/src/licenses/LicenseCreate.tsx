@@ -3,6 +3,8 @@ import {
 	Create,
 	FileField,
 	FileInput,
+	ReferenceInput,
+	SelectInput,
 	SimpleForm,
 } from "react-admin";
 import { CreateActions } from "../components/Actions";
@@ -12,21 +14,22 @@ import {
 } from "../components/MultilingualContentTab";
 import { LicenseCommunities } from "./LicenseCommunities";
 
+const FileComponent = () => (
+	<>
+		<ReferenceInput label="Média associé" source="media_id" reference="medias">
+			<SelectInput optionText="name" />
+		</ReferenceInput>
+		<FileInput sx={{ marginTop: 4 }} source="file" label="Média à uploader">
+			<FileField source="src" title="title" />
+		</FileInput>
+	</>
+);
 const LicenseCreate = () => {
 	return (
 		<Create actions={<CreateActions />} redirect="list">
 			<SimpleForm validate={validateLicenceCreation}>
 				<LicenseCommunities />
-				<FileInput
-					sx={{ marginTop: 4 }}
-					source="pdf"
-					label="PDF"
-					accept={{ "application/pdf": [".pdf"] }}
-					maxSize={26000000}
-					helperText="Taille maximale 25 Mb"
-				>
-					<FileField source="src" title="title" />
-				</FileInput>
+				<FileComponent />
 				<BooleanInput
 					label="Actif"
 					source="enable"

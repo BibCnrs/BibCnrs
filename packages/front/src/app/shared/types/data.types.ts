@@ -98,8 +98,8 @@ export type ResourceDataType = {
 	id: number;
 	name_fr: string;
 	name_en: string;
-	href: string;
 	enable: boolean;
+	media?: Media;
 };
 
 export type ResourcesDataType = ResourceDataType[];
@@ -150,12 +150,9 @@ export type LicenceDataType = {
 	name_en: string;
 	content_fr: string;
 	content_en: string;
-	pdf?: {
-		src: string;
-		title: string;
-	};
 	enable: boolean;
 	common: boolean;
+	media?: Media;
 };
 
 export type LicencesDataType = LicenceDataType[];

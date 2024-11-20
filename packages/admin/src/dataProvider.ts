@@ -94,7 +94,12 @@ const dataProvider: DataProvider = {
 		}));
 	},
 	update: async (resource, params) => {
-		if (resource === "news" || resource === "contentManagement") {
+		if (
+			resource === "news" ||
+			resource === "contentManagement" ||
+			resource === "licenses" ||
+			resource === "resources"
+		) {
 			let mediaID = params.data.media_id;
 			if (params.data.file) {
 				const file = await uploadFile(
@@ -136,26 +141,17 @@ const dataProvider: DataProvider = {
 		});
 	},
 	create: async (resource, params) => {
-		if (resource === "licenses" && params.data?.pdf?.src) {
-			const file = await uploadFile(
-				params.data.pdf.title,
-				params.data.pdf.rawFile,
-			);
-			return jsonServerDataProvider.create(resource, {
-				...params,
-				data: {
-					...params.data,
-					pdf: { src: file.url, title: file.name },
-				},
-			});
-		}
-
 		if (resource === "medias") {
 			const file = await uploadFile(params.data.name, params.data.file.rawFile);
 			return { data: { ...file } };
 		}
 
-		if (resource === "news" || resource === "contentManagement") {
+		if (
+			resource === "news" ||
+			resource === "contentManagement" ||
+			resource === "licenses" ||
+			resource === "resources"
+		) {
 			let mediaID = params.data.media_id;
 			if (params.data.file) {
 				const file = await uploadFile(

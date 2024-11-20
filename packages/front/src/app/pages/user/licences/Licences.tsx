@@ -1,7 +1,8 @@
 import { Button, Typography } from "@mui/material";
 import { Box, Container, Stack, type SxProps, type Theme } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
@@ -31,36 +32,43 @@ const buttonStyles: SxProps<Theme> = {
 };
 
 const Licences = () => {
+	const params = useParams();
 	const t = useTranslator();
 	const {
 		language,
 		session: { user },
 	} = useBibContext();
+
+	const id = useMemo(() => {
+		if (params.id) {
+			return Number.parseInt(params.id, 10);
+		}
+		return -1;
+	}, [params.id]);
 	const [activeLicences, setActiveLicences] = useState<
 		LicenceDataType | undefined
 	>(undefined);
 
-	const { data, isFetching, isLoading } = useQuery<
+	const { data } = useQuery<
 		LicencesDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		any,
 		LicencesDataType,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		any
 	>({
-		queryKey: ["licences"],
+		queryKey: ["licences", id],
 		queryFn: () => licences(user?.domains),
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (data && data.length > 0) {
 			setActiveLicences(data[0]);
 		}
-	}, [data, isFetching, isLoading]);
+	}, [data]);
 
 	if (!data || data.length === 0) {
 		return <div id="app">{t("pages.licences.empty")}</div>;
@@ -122,16 +130,22 @@ const Licences = () => {
 												: activeLicences.content_fr,
 									}}
 								/>
-								{activeLicences.pdf ? (
+								{/* biome-ignore lint/complexity/useOptionalChain: <explanation> */}
+								{activeLicences && activeLicences.media?.url ? (
 									<p>
 										{t("pages.licences.pdf")}{" "}
 										<a
-											href={`files/${activeLicences.pdf.src}`}
+											href={`${activeLicences.media?.url}`}
 											target="_blank"
 											rel="noopener noreferrer nofollow"
 											style={{ color: "#6941EB" }}
+											onClick={() => {
+												console.log("media", activeLicences.media);
+											}}
 										>
-											{activeLicences.pdf.title}
+											{language === "en"
+												? activeLicences.name_en
+												: activeLicences.name_fr}
 										</a>
 									</p>
 								) : null}

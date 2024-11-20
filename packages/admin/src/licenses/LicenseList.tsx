@@ -14,6 +14,7 @@ import {
 	EditButton,
 	FunctionField,
 	List,
+	ReferenceField,
 	ReferenceInput,
 	SingleFieldList,
 	TextField,
@@ -83,12 +84,15 @@ const LicenseList = () => (
 	<List perPage={10} pagination={<CustomPagination />} filters={LicenseFilter}>
 		<Datagrid bulkActionButtons={<BulkActionLicensesButtons />}>
 			<LinkEdit source="name_fr" label="resources.licenses.fields.name" />
-			<TextField
-				source="pdf.title"
-				label="resources.licenses.fields.pdf"
+			<ReferenceField
+				label="resources.licenses.fields.media"
+				source="media_id"
+				reference="medias"
+				link={false}
 				emptyText="-"
-				sortable={false}
-			/>
+			>
+				<TextField source="file_name" emptyText="-" />
+			</ReferenceField>
 			<ArrayField
 				source="license_community"
 				label="resources.licenses.fields.communities"

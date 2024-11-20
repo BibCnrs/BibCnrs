@@ -374,10 +374,11 @@ model license {
   name_en           String              @db.VarChar(255)
   content_fr        String
   content_en        String
-  pdf               Json?               @db.Json
   enable            Boolean             @default(true)
   common            Boolean?            @default(false)
   license_community license_community[] @relation("license_communityTolicense")
+  media_id          Int?
+  media             medias?             @relation(fields: [media_id], references: [id])
 }
 
 model license_community {
@@ -415,14 +416,17 @@ model medias {
   created_at         DateTime             @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   tests_news         tests_news[]
   content_management content_management[]
+  license            license[]
+  resources          resources[]
 }
 
 model resources {
-  id      Int     @id @default(autoincrement())
-  name_fr String  @db.VarChar(255)
-  name_en String  @db.VarChar(255)
-  href    String
-  enable  Boolean @default(true)
+  id       Int     @id @default(autoincrement())
+  name_fr  String  @db.VarChar(255)
+  name_en  String  @db.VarChar(255)
+  enable   Boolean @default(true)
+  media_id Int?
+  media    medias? @relation(fields: [media_id], references: [id])
 }
 
 model tests_news {

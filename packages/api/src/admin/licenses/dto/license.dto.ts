@@ -5,10 +5,15 @@ export class CreateLicenseDto implements Omit<license, "id"> {
 	name_en: string;
 	content_fr: string;
 	content_en: string;
-	pdf: { title: string; src: string };
 	enable: boolean;
 	common: boolean;
 	license_community: { community_id: number }[];
+	media_id: number | null;
+	media?: {
+		name: string;
+		url: string;
+		file: string;
+	};
 }
 
 export class UpdateLicenseDto extends CreateLicenseDto {
