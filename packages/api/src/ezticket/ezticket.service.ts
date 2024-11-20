@@ -147,7 +147,7 @@ export class EzTicketService {
 		);
 		const EzTicketTicket = encodeURIComponent(`${hash}${packet}`);
 
-		return `http://${gate}/login?user=${encodeURIComponent(
+		return `https://${gate}/login?user=${encodeURIComponent(
 			username,
 		)}&ticket=${EzTicketTicket}&url=${encodeURIComponent(url)}`;
 	}

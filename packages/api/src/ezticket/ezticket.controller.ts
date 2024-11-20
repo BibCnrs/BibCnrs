@@ -60,6 +60,7 @@ export class EzTicketController {
 
 	@Post("login")
 	async postLogin(
+		@Req() req: Request,
 		@Res({ passthrough: true }) res: Response,
 		@Body() { username, password }: LoginDto,
 	) {
@@ -87,7 +88,11 @@ export class EzTicketController {
 			httpOnly: true,
 		});
 
-		return res.redirect("/ezticket");
+		res.redirect(
+			`/api/ezticket?gate=${encodeURIComponent(
+				req.query.gate.toString(),
+			)}&url=${encodeURIComponent(req.query.url.toString())}`,
+		);
 	}
 
 	@Get()
