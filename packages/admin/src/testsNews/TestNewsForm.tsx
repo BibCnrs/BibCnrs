@@ -1,12 +1,12 @@
 import Stack from "@mui/material/Stack";
 import {
 	ArrayInput,
+	AutocompleteInput,
 	BooleanInput,
 	DateInput,
 	FileField,
 	FileInput,
 	ReferenceInput,
-	SelectInput,
 	SimpleForm,
 	SimpleFormIterator,
 	TextInput,
@@ -23,7 +23,13 @@ const FileComponent = () => {
 				source="media_id"
 				reference="medias"
 			>
-				<SelectInput optionText="name" />
+				<AutocompleteInput
+					filterToQuery={(searchText) => ({
+						name: searchText,
+					})}
+					optionText="name"
+					fullWidth
+				/>
 			</ReferenceInput>
 			<FileInput
 				sx={{ marginTop: 4 }}
