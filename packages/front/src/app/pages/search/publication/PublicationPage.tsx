@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/search/ChipFacet";
-import FacetSidebar, {
-	type FacetSidebarProps,
-} from "../../../components/page/search/FacetSidebar";
+import type { FacetSidebarProps } from "../../../components/page/search/FacetSidebar";
+import FacetSidebar from "../../../components/page/search/FacetSidebar";
 import PaginationComponent from "../../../components/page/search/PaginationComponent";
 import type { SearchResultsArgsProps } from "../../../components/page/search/SearchResults";
 import type { FacetEntry } from "../../../components/page/search/facet/Facet.type";
@@ -328,7 +327,7 @@ const PublicationPage = () => {
 						available.facets.subject = values;
 						break;
 					case "TypePublicationPubD":
-						available.facets.type = values;
+						available.facets.publicationType = values;
 						break;
 				}
 			});
@@ -465,6 +464,7 @@ const PublicationPage = () => {
 							active={getActive()}
 							onChange={handleFacets}
 							onReset={handleReset}
+							isPublicationPage={true}
 						/>
 					</Grid>
 

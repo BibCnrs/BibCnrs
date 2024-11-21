@@ -15,6 +15,7 @@ import { Request, Response } from "express";
 import { LOGIN_COOKIE_NAME } from "../common/auth/auth.const";
 import { AuthGuard } from "../common/auth/auth.guard";
 import { AuthService } from "../common/auth/auth.service";
+import { UserRetrieveGuard } from "../common/auth/userRetrieveGuard";
 import { InistAccountService } from "../inist/accounts/accounts.service";
 import { LoginDto } from "../inist/auth/dto/login";
 import { EzTicketService } from "./ezticket.service";
@@ -59,6 +60,7 @@ export class EzTicketController {
 
 	@Post("login")
 	async postLogin(
+		@Req() req: Request,
 		@Res({ passthrough: true }) res: Response,
 		@Body() { username, password }: LoginDto,
 	) {
@@ -86,10 +88,27 @@ export class EzTicketController {
 			httpOnly: true,
 		});
 
-		return res.redirect("/ezticket");
+		res.redirect(
+			`/api/ezticket?gate=${encodeURIComponent(
+				req.query.gate.toString(),
+			)}&url=${encodeURIComponent(req.query.url.toString())}`,
+		);
 	}
 
 	@Get()
+	@UseGuards(UserRetrieveGuard)
+	async getEzTicket(@Req() req: Request, @Res() res: Response) {
+		if (!req.user) {
+			res.redirect(
+				`/api/ezticket/login?gate=${encodeURIComponent(
+					req.query.gate.toString(),
+				)}&url=${encodeURIComponent(req.query.url.toString())}`,
+			);
+			return;
+		}
+		this.generateTicket(req, res);
+	}
+
 	@UseGuards(AuthGuard)
 	async generateTicket(@Req() req: Request, @Res() res: Response) {
 		const language = this.getLanguageFromRequest(req);
@@ -116,7 +135,7 @@ export class EzTicketController {
 			res.redirect(
 				`/api/ezticket/login?gate=${encodeURIComponent(
 					req.query.gate,
-				)}&url=${encodeURIComponent(req.url)}`,
+				)}&url=${encodeURIComponent(req.query.url.toString())}`,
 			);
 			return;
 		}
@@ -134,7 +153,7 @@ export class EzTicketController {
 		res.redirect(
 			this.ezProxyService.generateEZTicket(
 				req.query.gate,
-				req.url,
+				req.query.url.toString(),
 				ezTicketInfo.username,
 				ezTicketInfo.groups,
 			),

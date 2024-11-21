@@ -14,7 +14,7 @@ import { LicenseCommunities } from "./LicenseCommunities";
 const FileComponent = () => (
 	<>
 		<ReferenceInput label="Média associé" source="media_id" reference="medias">
-			<AutocompleteInput
+      <AutocompleteInput
 				filterToQuery={(searchText) => ({
 					name: searchText,
 				})}
