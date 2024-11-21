@@ -1,16 +1,22 @@
 import {
+	AutocompleteInput,
 	BooleanInput,
 	FileField,
 	FileInput,
 	ReferenceInput,
-	SelectInput,
 	TextInput,
 } from "react-admin";
 
 const FileComponent = () => (
 	<>
 		<ReferenceInput label="Média associé" source="media_id" reference="medias">
-			<SelectInput optionText="name" />
+			<AutocompleteInput
+				filterToQuery={(searchText) => ({
+					name: searchText,
+				})}
+				optionText="name"
+				fullWidth
+			/>
 		</ReferenceInput>
 		<FileInput sx={{ marginTop: 4 }} source="file" label="Média à uploader">
 			<FileField source="src" title="title" />
