@@ -32,7 +32,7 @@ test("Should build search query", async ({ page }) => {
 	await expect(
 		page.getByPlaceholder("Rechercher des articles, des"),
 	).toHaveValue(
-		"((AU Yann Le Cun) AND (TI propagation)) AND ((AU Jeff Dean) AND (TI neural network))",
+		"((AU Yann N0 Le N0 Cun) AND (TI propagation)) AND ((AU Jeff N0 Dean) AND (TI neural network))",
 	);
 	await janusLogout(page);
 });
