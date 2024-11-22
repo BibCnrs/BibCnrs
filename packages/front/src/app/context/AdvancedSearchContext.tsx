@@ -87,18 +87,25 @@ function useAdvancedSearch() {
 		return groups
 			.map((group) => {
 				const items = group.items
-					.map((item) => ({ ...item, value: item.value.trim() }))
+					.map((item) => ({
+						...item,
+						value: item.value.trim(),
+					}))
 					.filter((item) => item.value !== "");
 
 				if (!items.length) {
 					return null;
 				}
 
-				return `${group.operator ?? ""} (${items
-					.map(({ operator, field, value }) => {
-						return `${operator ?? ""} (${field} ${value.trim()})`.trim();
-					})
-					.join(" ")})`.trim();
+				const transformedItems = items.map(({ operator, field, value }) => {
+					if (field === "AU") {
+						value = addN0Operator(value);
+					}
+
+					return `${operator ?? ""} (${field} ${value.trim()})`.trim();
+				});
+
+				return `${group.operator ?? ""} (${transformedItems.join(" ")})`.trim();
 			})
 			.filter((query) => query)
 			.join(" ")
@@ -303,4 +310,11 @@ export function useAdvancedSearchContext() {
 		);
 	}
 	return context;
+}
+function addN0Operator(value: string): string {
+	if (!value) {
+		return value;
+	}
+	const words = value.split(/\s+/);
+	return words.join(" N0 ");
 }
