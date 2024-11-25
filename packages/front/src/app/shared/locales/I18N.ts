@@ -264,7 +264,7 @@ export type Common = {
 			INSHS: string;
 			INS2I: string;
 			INSU: string;
-			REAXYS: string;
+			VERIF: string;
 		};
 		empty: {
 			message: string;
