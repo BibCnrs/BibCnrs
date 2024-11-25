@@ -24,7 +24,6 @@ services:
       APACHE_LOGLEVEL: ${APACHE_LOGLEVEL}
       SHIBBOLETH_ENTITY_ID: REQUIRENOTUSED
       SHIBBOLETH_DISCOVERY_URL: REQUIRENOTUSED
-      DOCKER_HOST_IP: ${DOCKER_HOST_IP}
     working_dir: /var/www/html
     volumes:
       - ./../storage/shibboleth/log:/var/log/shibboleth/
@@ -144,7 +143,7 @@ services:
       - "192.168.128.201:80:80"
       - "192.168.128.201:443:443"
     env_file:
-      - ./../storage/ezproxy/env/in2p3.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -160,7 +159,7 @@ services:
       - "192.168.128.202:80:80"
       - "192.168.128.202:443:443"
     env_file:
-      - ./../storage/ezproxy/env/inc.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -177,7 +176,7 @@ services:
       - "192.168.128.203:80:80"
       - "192.168.128.203:443:443"
     env_file:
-      - ./../storage/ezproxy/env/inee.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -194,7 +193,7 @@ services:
       - "192.168.128.204:80:80"
       - "192.168.128.204:443:443"
     env_file:
-      - ./../storage/ezproxy/env/inp.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -211,7 +210,7 @@ services:
        - "192.168.128.205:80:80"
        - "192.168.128.205:443:443"
     env_file:
-       - ./../storage/ezproxy/env/ins2i.env
+       - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -228,7 +227,7 @@ services:
       - "192.168.128.206:80:80"
       - "192.168.128.206:443:443"
     env_file:
-      - ./../storage/ezproxy/env/insb.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -245,7 +244,7 @@ services:
       - "192.168.128.207:80:80"
       - "192.168.128.207:443:443"
     env_file:
-      - ./../storage/ezproxy/env/inshs.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -262,7 +261,7 @@ services:
       - "192.168.128.208:80:80"
       - "192.168.128.208:443:443"
     env_file:
-      - ./../storage/ezproxy/env/insis.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -279,7 +278,7 @@ services:
       - "192.168.128.208:80:80"
       - "192.168.128.208:443:443"
     env_file:
-      - ./../storage/ezproxy/env/insmi.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
@@ -296,7 +295,7 @@ services:
       - "192.168.128.209:80:80"
       - "192.168.128.209:443:443"
     env_file:
-      - ./../storage/ezproxy/env/insu.env
+      - ./packages/ezproxy/env/env.dist
     volumes:
       - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
       - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
