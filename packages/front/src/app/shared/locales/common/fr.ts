@@ -263,7 +263,6 @@ Cordialement`,
 			INSHS: "Sciences Humaines & Sociales",
 			INS2I: "Sciences Informatiques",
 			INSU: "Terre & Univers",
-			REAXYS: "REAXYS",
 			VERIF: "Verif",
 		},
 		empty: {

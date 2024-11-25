@@ -261,7 +261,6 @@ Sincerely`,
 			INSHS: "Humanities & Social Sciences",
 			INS2I: "Informatics",
 			INSU: "Earth & Space",
-			REAXYS: "REAXYS",
 			VERIF: "Verif",
 		},
 		empty: {
