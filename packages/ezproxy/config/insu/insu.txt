@@ -1,0 +1,52 @@
+# FOURNISSEURS
+# ============
+
+# Acsess Digital Library
+IncludeFile authorization/oclc/AcsessDigitalLibrary
+
+# ADS CDS
+IncludeFile authorization/other/AdsCds
+
+# AMS
+IncludeFile authorization/other/AmericanMeteorologicalSociety
+
+# BRGM
+IncludeFile authorization/other/BRGM
+
+# COPERNICUS
+IncludeFile authorization/other/CopernicusPublications
+
+IncludeFile authorization/oclc/JSTOR
+
+# GALLICA LIBRES
+IncludeFile authorization/other/BNF
+
+# GSW
+IncludeFile authorization/oclc/GeoScienceWorld
+
+IncludeFile authorization/oclc/AmericanPhysiologySociety
+
+# LIBRES
+IncludeFile authorization/other/IntegratedOceanDrillingProgramManagementInternational
+IncludeFile authorization/other/IstitutoNazionalediGeofisicaEVulcanologia
+IncludeFile authorization/other/LeBureauCentralSismologiqueFrancais
+IncludeFile authorization/other/TerraScientificPublishingCompany
+
+# LIEBERT
+IncludeFile authorization/oclc/Liebert
+
+# OUP
+IncludeFile authorization/oclc/OxfordJournals
+
+# Sciencemag
+IncludeFile authorization/oclc/ScienceAAAS
+
+# BASES DE DONNEES
+# ================
+
+# TESTS INSU
+IncludeFile authorization/inist/TestsInsu
+
+# COMMON
+# ======
+IncludeFile authorization/common.txt

@@ -24,7 +24,6 @@ services:
       APACHE_LOGLEVEL: ${APACHE_LOGLEVEL}
       SHIBBOLETH_ENTITY_ID: REQUIRENOTUSED
       SHIBBOLETH_DISCOVERY_URL: REQUIRENOTUSED
-      DOCKER_HOST_IP: ${DOCKER_HOST_IP}
     working_dir: /var/www/html
     volumes:
       - ./../storage/shibboleth/log:/var/log/shibboleth/
@@ -131,3 +130,173 @@ services:
   redis:
     image: redis:7.2.5
     restart: always
+
+  in2p3:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_in2p3
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.201:80:80"
+      - "192.168.128.201:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+  inc:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_inc
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.202:80:80"
+      - "192.168.128.202:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  inee:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_inee
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.203:80:80"
+      - "192.168.128.203:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  inp:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_inp
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.204:80:80"
+      - "192.168.128.204:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  ins2i:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_ins2i
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+       - 80
+       - 443
+       - 2048
+       - "192.168.128.205:80:80"
+       - "192.168.128.205:443:443"
+    env_file:
+       - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  insb:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_insb
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.206:80:80"
+      - "192.168.128.206:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  inshs:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_inshs
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.207:80:80"
+      - "192.168.128.207:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  insis:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_insis
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.208:80:80"
+      - "192.168.128.208:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  insmi:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_insmi
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.208:80:80"
+      - "192.168.128.208:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+
+  insu:
+    image: vxnexus-registry.intra.inist.fr:8083/bibcnrs/bibezproxy:7.3.8
+    container_name: bibezproxy_insu
+    hostname: ${GATE_SUFFIX}
+    restart: unless-stopped
+    ports:
+      - 80
+      - 443
+      - 2048
+      - "192.168.128.209:80:80"
+      - "192.168.128.209:443:443"
+    env_file:
+      - ./packages/ezproxy/env/env.dist
+    volumes:
+      - ./../storage/ezproxy/config:./config:/usr/local/ezproxy/config
+      - ./../storage/ezproxy/logs:/usr/local/ezproxy/logs
+

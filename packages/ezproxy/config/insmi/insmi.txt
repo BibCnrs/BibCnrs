@@ -1,0 +1,15 @@
+# FOURNISSEURS
+# ============
+
+# BASES DE DONNEES
+# ================
+
+# AAAS
+IncludeFile authorization/oclc/ScienceAAAS
+
+# TESTS INSMI
+IncludeFile authorization/inist/TestsInsmi
+
+# COMMON
+# ======
+IncludeFile authorization/common.txt

@@ -1,0 +1,17 @@
+# http://www.oclc.org/support/services/ezproxy/documentation/db/Royal_Society_Chemistry.en.html
+
+T Royal Society of Chemistry
+U http://pubs.rsc.org/
+HJ ebook.rsc.org
+HJ https://pubs.rsc.org
+HJ https://rsc.org
+HJ https://www.rsc.org
+HJ pubs.rsc.org
+HJ www.rsc.org
+HJ xlink.rsc.org
+DJ rsc.org
+
+T RSC ChemSpider
+U http://www.chemspider.com/#
+HJ www.chemspider.com
+DJ chemspider.com

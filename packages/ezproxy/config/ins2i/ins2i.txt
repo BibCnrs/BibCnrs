@@ -1,0 +1,26 @@
+# FOURNISSEURS
+# ============
+# AAAS
+IncludeFile authorization/oclc/ScienceAAAS
+
+# ACM
+IncludeFile authorization/oclc/AcmDigitalLibrary
+
+# IOS PRESS
+IncludeFile authorization/oclc/IOSPress
+
+# JSTOR
+IncludeFile authorization/oclc/JSTOR
+
+# OUP
+IncludeFile authorization/oclc/OxfordJournals
+
+# BASES DE DONNEES
+# ================
+
+# TESTS IN2I
+IncludeFile authorization/inist/TestsIns2i
+
+# COMMON
+# ======
+IncludeFile authorization/common.txt
