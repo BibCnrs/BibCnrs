@@ -49,12 +49,20 @@ const convertImageToBase64 = (file: File) => {
 
 const jsonServerDataProvider = jsonServerProvider(apiUrl, httpClient);
 
+const urls = async (name: string, url: string) => {
+	const formData = new FormData();
+	formData.append("name", name);
+	formData.append("url", url);
+
+	return await fetch("/medias/url");
+};
+
 const uploadFile = async (name: string, file: File) => {
 	const formData = new FormData();
 	formData.append("name", name);
 	formData.append("file", file);
 
-	return await fetch(`${apiUrl}/medias`, {
+	return await fetch(`${apiUrl}/medias/file`, {
 		method: "POST",
 		body: formData,
 		headers: {
@@ -140,12 +148,32 @@ const dataProvider: DataProvider = {
 			},
 		});
 	},
+
+	createUrl: async (resource, params) => {
+		if (resource === "medias") {
+			console.log(params.data);
+			const url = await urls(params.data.name, params.data.url);
+			console.log(url);
+			return { data: url };
+		}
+	},
+
 	create: async (resource, params) => {
 		if (resource === "medias") {
-			const file = await uploadFile(params.data.name, params.data.file.rawFile);
-			return { data: { ...file } };
-		}
+			if (params.data.url) {
+				return dataProvider.createUrl(resource, params);
+			}
 
+			if (params.data.file !== null) {
+				console.log(params.data);
+				const file = await uploadFile(
+					params.data.name,
+					params.data.file.rawFile,
+				);
+				console.log(file);
+				return { data: { ...file } };
+			}
+		}
 		if (
 			resource === "news" ||
 			resource === "contentManagement" ||

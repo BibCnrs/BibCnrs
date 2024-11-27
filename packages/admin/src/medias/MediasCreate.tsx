@@ -8,16 +8,16 @@ import {
 } from "react-admin";
 import { CreateActions } from "../components/Actions";
 
-// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function validate(values: any) {
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const errors: any = {};
 	if (!values.name) {
 		errors.name = "ra.validation.required";
 	}
 
-	if (!values.file) {
-		errors.file = "ra.validation.required";
+	if (!values.file && !values.url) {
+		errors.url = "ra.validation.required";
 	}
 
 	return errors;
@@ -33,11 +33,13 @@ export default function MediasCreate() {
 					validate={required()}
 					name="name"
 				/>
+
+				<TextInput source="url" label="URL du Média" name="url" />
+
 				<FileInput
 					sx={{ marginTop: 4 }}
 					source="file"
 					label="Fichier"
-					validate={required()}
 					name="file"
 				>
 					<FileField source="src" title="title" />

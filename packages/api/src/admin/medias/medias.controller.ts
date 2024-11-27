@@ -37,7 +37,7 @@ export class MediasController {
 			this.configService.get<Config["services"]>("services");
 	}
 
-	@Post()
+	@Post("/file")
 	@UseInterceptors(
 		FileInterceptor("file", {
 			storage: diskStorage({
@@ -75,6 +75,18 @@ export class MediasController {
 		};
 
 		return this.mediasService.create(media);
+	}
+
+	@Post("/url")
+	async createUrl(@Body() createMediaDto: CreateMediaDto) {
+		const data = await this.mediasService.createUrl(createMediaDto);
+		if (!data) {
+			throw new HttpException(
+				"INTERNAL SERVER ERROR",
+				HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
+		return data;
 	}
 
 	@Get()

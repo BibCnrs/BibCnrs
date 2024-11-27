@@ -23,8 +23,12 @@ export const DisplayResources = ({
 		return <Empty />;
 	}
 
-	// sort resources by name in alphabetical order
-	data.sort((a, b) => {
+	const id = 5;
+	const ressourceId = data.find((resource) => resource.id === id);
+
+	const otherResources = data.filter((resource) => resource.id !== id);
+
+	otherResources.sort((a, b) => {
 		if (language === "en") {
 			return a.name_en.localeCompare(b.name_en);
 		}
@@ -46,15 +50,13 @@ export const DisplayResources = ({
 			}}
 			gap={2}
 		>
-			{data.map((resource) => (
+			{otherResources.map((resource) => (
 				<Card
 					key={resource.id}
 					role="listitem"
 					aria-label={resource.name_fr}
 					elevation={3}
-					sx={{
-						minHeight: "100%",
-					}}
+					sx={{ minHeight: "100%" }}
 				>
 					<CardActionArea
 						component={Link}
@@ -77,6 +79,41 @@ export const DisplayResources = ({
 					</CardActionArea>
 				</Card>
 			))}
+
+			{ressourceId && (
+				<Card
+					key={ressourceId.id}
+					role="listitem"
+					aria-label={ressourceId.name_fr}
+					elevation={3}
+					sx={{
+						minHeight: "100%",
+						backgroundColor: "secondary.main",
+						color: "black",
+						gridColumn: "1",
+					}}
+				>
+					<CardActionArea
+						component={Link}
+						href={ressourceId.media?.url}
+						sx={{ height: "100%" }}
+						rel="nofollow noreferrer noopener"
+						target="_blank"
+						onClick={() => handleResourceClick(ressourceId)}
+					>
+						<CardContent
+							sx={{
+								"&:last-child": {
+									paddingBottom: 2,
+									height: "100%",
+								},
+							}}
+						>
+							{language === "en" ? ressourceId.name_en : ressourceId.name_fr}
+						</CardContent>
+					</CardActionArea>
+				</Card>
+			)}
 		</Box>
 	);
 };
