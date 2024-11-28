@@ -37,7 +37,7 @@ export class MediasController {
 			this.configService.get<Config["services"]>("services");
 	}
 
-	@Post("/file")
+	@Post()
 	@UseInterceptors(
 		FileInterceptor("file", {
 			storage: diskStorage({
@@ -67,6 +67,17 @@ export class MediasController {
 		@UploadedFile() file: Express.Multer.File,
 		@Body() createMediaDto: CreateMediaDto,
 	) {
+		if (!file && createMediaDto.url) {
+			const media = {
+				name: createMediaDto.name,
+				url: createMediaDto.url,
+				file_name: "",
+				file: "",
+				created_at: new Date(),
+			};
+			return this.mediasService.create(media);
+		}
+
 		const media = {
 			...createMediaDto,
 			file_name: file.filename,
@@ -77,27 +88,15 @@ export class MediasController {
 		return this.mediasService.create(media);
 	}
 
-	@Post("/url")
-	async createUrl(@Body() createMediaDto: CreateMediaDto) {
-		const data = await this.mediasService.createUrl(createMediaDto);
-		if (!data) {
-			throw new HttpException(
-				"INTERNAL SERVER ERROR",
-				HttpStatus.INTERNAL_SERVER_ERROR,
-			);
-		}
-		return data;
-	}
-
 	@Get()
 	async findAll(@Query() query: FindAllQueryArgs, @Res() res: Response) {
 		const { data, total } = await this.mediasService.findAll(query);
 		res.header("Content-Range", `${total}`);
 		res.header("Access-Control-Expose-Headers", "Content-Range");
 		return res.send(
-			data.map(({ url, ...rest }) => ({
+			data.map(({ url, file, ...rest }) => ({
 				...rest,
-				url: `${this.servicesConfig.contentDelivery}${url}`,
+				url: file ? `${this.servicesConfig.contentDelivery}${url}` : url,
 			})),
 		);
 	}
@@ -112,9 +111,9 @@ export class MediasController {
 
 		return {
 			...data,
-			url: data.url
+			url: data.file
 				? `${this.servicesConfig.contentDelivery}${data.url}`
-				: null,
+				: data.url || null,
 		};
 	}
 

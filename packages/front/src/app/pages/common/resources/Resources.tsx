@@ -23,10 +23,11 @@ export const DisplayResources = ({
 		return <Empty />;
 	}
 
-	const id = 5;
-	const ressourceId = data.find((resource) => resource.id === id);
+	const ressourceurl = data.find((resource) => resource.media.file === "");
 
-	const otherResources = data.filter((resource) => resource.id !== id);
+	const otherResources = data.filter(
+		(resource) => resource.media.file !== null,
+	);
 
 	otherResources.sort((a, b) => {
 		if (language === "en") {
@@ -80,11 +81,11 @@ export const DisplayResources = ({
 				</Card>
 			))}
 
-			{ressourceId && (
+			{ressourceurl && (
 				<Card
-					key={ressourceId.id}
+					key={ressourceurl.id}
 					role="listitem"
-					aria-label={ressourceId.name_fr}
+					aria-label={ressourceurl.name_fr}
 					elevation={3}
 					sx={{
 						minHeight: "100%",
@@ -95,11 +96,11 @@ export const DisplayResources = ({
 				>
 					<CardActionArea
 						component={Link}
-						href={ressourceId.media?.url}
+						href={ressourceurl.media?.url}
 						sx={{ height: "100%" }}
 						rel="nofollow noreferrer noopener"
 						target="_blank"
-						onClick={() => handleResourceClick(ressourceId)}
+						onClick={() => handleResourceClick(ressourceurl)}
 					>
 						<CardContent
 							sx={{
@@ -109,7 +110,7 @@ export const DisplayResources = ({
 								},
 							}}
 						>
-							{language === "en" ? ressourceId.name_en : ressourceId.name_fr}
+							{language === "en" ? ressourceurl.name_en : ressourceurl.name_fr}
 						</CardContent>
 					</CardActionArea>
 				</Card>

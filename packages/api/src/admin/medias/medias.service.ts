@@ -61,12 +61,6 @@ export class MediasService {
 		});
 	}
 
-	createUrl(createMediaDto: CreateMediaDto) {
-		return this.prismaService.medias.create({
-			data: createMediaDto,
-		});
-	}
-
 	update(id: number, updateMediaDto: UpdateMediaDto) {
 		const { id: _id, url: _url, file: _file, ...rest } = updateMediaDto;
 		return this.prismaService.medias.update({
