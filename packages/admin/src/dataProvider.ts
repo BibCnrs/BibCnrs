@@ -144,12 +144,10 @@ const dataProvider: DataProvider = {
 	create: async (resource, params) => {
 		if (resource === "medias") {
 			if (params.data.url == null) {
-				console.log(params.data);
 				const file = await uploadFile(
 					params.data.name,
 					params.data.file.rawFile,
 				);
-				console.log(file);
 				return { data: { ...file } };
 			}
 		}
