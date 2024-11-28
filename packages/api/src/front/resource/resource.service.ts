@@ -25,9 +25,9 @@ export class FrontResourceService {
 		const media = resources.media
 			? {
 					...resources.media,
-					url: resources.media.url
+					url: resources.media.file
 						? `${this.servicesConfig.contentDelivery}${resources.media.url}`
-						: null,
+						: resources.media.url || null,
 				}
 			: { url: null };
 

@@ -140,12 +140,17 @@ const dataProvider: DataProvider = {
 			},
 		});
 	},
+
 	create: async (resource, params) => {
 		if (resource === "medias") {
-			const file = await uploadFile(params.data.name, params.data.file.rawFile);
-			return { data: { ...file } };
+			if (params.data.url == null) {
+				const file = await uploadFile(
+					params.data.name,
+					params.data.file.rawFile,
+				);
+				return { data: { ...file } };
+			}
 		}
-
 		if (
 			resource === "news" ||
 			resource === "contentManagement" ||

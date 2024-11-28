@@ -67,6 +67,17 @@ export class MediasController {
 		@UploadedFile() file: Express.Multer.File,
 		@Body() createMediaDto: CreateMediaDto,
 	) {
+		if (!file && createMediaDto.url) {
+			const media = {
+				name: createMediaDto.name,
+				url: createMediaDto.url,
+				file_name: "",
+				file: "",
+				created_at: new Date(),
+			};
+			return this.mediasService.create(media);
+		}
+
 		const media = {
 			...createMediaDto,
 			file_name: file.filename,
@@ -83,9 +94,9 @@ export class MediasController {
 		res.header("Content-Range", `${total}`);
 		res.header("Access-Control-Expose-Headers", "Content-Range");
 		return res.send(
-			data.map(({ url, ...rest }) => ({
+			data.map(({ url, file, ...rest }) => ({
 				...rest,
-				url: `${this.servicesConfig.contentDelivery}${url}`,
+				url: file ? `${this.servicesConfig.contentDelivery}${url}` : url,
 			})),
 		);
 	}
@@ -100,9 +111,9 @@ export class MediasController {
 
 		return {
 			...data,
-			url: data.url
+			url: data.file
 				? `${this.servicesConfig.contentDelivery}${data.url}`
-				: null,
+				: data.url || null,
 		};
 	}
 

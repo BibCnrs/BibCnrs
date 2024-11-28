@@ -39,16 +39,30 @@ describe("MediaController", () => {
 					expect.objectContaining({
 						id: 1,
 						name: "media1",
+						created_at: expect.any(Date),
 						file_name: "media1.png",
-						file: "/app/packages/api/uploads/2024/1/1/media1.png",
 						url: "http://localhost:3000/files/2024/1/1/media1.png",
 					}),
 					expect.objectContaining({
 						id: 2,
 						name: "media2",
+						created_at: expect.any(Date),
 						file_name: "media2.png",
-						file: "/app/packages/api/uploads/2024/1/1/media2.png",
 						url: "http://localhost:3000/files/2024/1/1/media2.png",
+					}),
+					expect.objectContaining({
+						id: 100,
+						name: "bib",
+						url: "http://localhost:3000/files/2024/1/1/bibcnrs.pdf",
+						created_at: expect.any(Date),
+						file_name: "bib.pdf",
+					}),
+					expect.objectContaining({
+						id: 101,
+						name: "preprod",
+						url: "http://localhost:3000/files/2024/1/1/preprod.pdf",
+						created_at: expect.any(Date),
+						file_name: "preprod.pdf",
 					}),
 				]),
 			);
