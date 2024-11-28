@@ -1,10 +1,8 @@
 # BibCnrs
 
-<!-- BIB LOGO -->
+<!-- BIB LOGO TODO add link-->
 <p align="center">
-  <img src="
-https://bib.cnrs.fr/wp-content/uploads/2018/04/bibcnrs-logo-visite.png" alt="BibCnrs Logo" width="200" />
-
+  
 This is a monorepo containing several packages for the BibCnrs project. Each package serves a different purpose and can be used independently.
 
 <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
