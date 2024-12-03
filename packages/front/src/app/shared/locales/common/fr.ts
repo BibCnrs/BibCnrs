@@ -446,7 +446,7 @@ Cordialement`,
 			homeSection: {
 				title: "Accueil",
 				description: "Quelles sections souhaitez-vous voir sur l'accueil ?",
-				displayFavorites: "Favoris",
+				displayFavorites: "Favoris épinglés",
 				displayTestNews: "Actualités",
 			},
 			searchSection: {
