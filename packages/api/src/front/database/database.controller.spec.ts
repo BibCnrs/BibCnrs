@@ -1,8 +1,53 @@
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import { Test, type TestingModule } from "@nestjs/testing";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { UserRetrieveGuard } from "../../common/auth/userRetrieveGuard";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FrontDatabaseController } from "./database.controller";
 import { FrontDatabaseService } from "./database.service";
+
+const mockPrismaService = {
+	database: {
+		findMany: vi.fn().mockResolvedValue([
+			{
+				name_fr: "Wiley",
+				text_fr: "Plateforme multidisciplinaire",
+				text_en: "Multidisciplinary platform",
+				url_fr: "https://onlinelibrary.wiley.com/",
+				url_en: "https://onlinelibrary.wiley.com/",
+				name_en: "Wiley",
+				active: true,
+				oa: true,
+				use_proxy: true,
+			},
+			{
+				name_fr: "Springer",
+				text_fr: "Plateforme multidisciplinaire springer",
+				text_en: "Multidisciplinary platform springer",
+				url_fr: "https://link.springer.com/",
+				url_en: "https://link.springer.com/",
+				name_en: "Springer",
+				active: true,
+				oa: false,
+				use_proxy: false,
+			},
+		]),
+	},
+};
+
+const mockJwtService = {
+	sign: vi.fn().mockReturnValue("mocked-jwt-token"),
+	verify: vi.fn().mockReturnValue({ userId: "mocked-user-id" }),
+};
+
+const mockConfigService = {
+	get: vi.fn().mockReturnValue("mocked-config-value"),
+};
+
+const mockUserRetrieveGuard = {
+	canActivate: vi.fn().mockResolvedValue(true),
+};
 
 describe("FrontDatabaseController", () => {
 	let frontDatabaseController: FrontDatabaseController;
@@ -10,7 +55,13 @@ describe("FrontDatabaseController", () => {
 	beforeEach(async () => {
 		const frontDatabase: TestingModule = await Test.createTestingModule({
 			controllers: [FrontDatabaseController],
-			providers: [FrontDatabaseService, PrismaService],
+			providers: [
+				FrontDatabaseService,
+				{ provide: PrismaService, useValue: mockPrismaService },
+				{ provide: JwtService, useValue: mockJwtService },
+				{ provide: ConfigService, useValue: mockConfigService },
+				{ provide: UserRetrieveGuard, useValue: mockUserRetrieveGuard },
+			],
 		}).compile();
 
 		frontDatabaseController = frontDatabase.get<FrontDatabaseController>(
@@ -20,7 +71,11 @@ describe("FrontDatabaseController", () => {
 
 	describe("root", () => {
 		it("should return active databases", async () => {
-			expect(await frontDatabaseController.getDatabases()).toStrictEqual([
+			const result = await frontDatabaseController.getDatabases({
+				user: { userId: "mocked-user-id" },
+			});
+
+			expect(result).toStrictEqual([
 				expect.objectContaining({
 					name_fr: "Wiley",
 					text_fr: "Plateforme multidisciplinaire",

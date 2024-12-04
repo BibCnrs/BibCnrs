@@ -20,6 +20,62 @@ const prisma = new PrismaClient();
 				password: "CDE",
 				profile: "wsapi",
 			},
+			{
+				name: "INC",
+				gate: "INC",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INSB",
+				gate: "INSB",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INEE",
+				gate: "INEE",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INSMI",
+				gate: "INSMI",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INP",
+				gate: "INP",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "IN2P3",
+				gate: "IN2P3",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INSU",
+				gate: "INSU",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
+			{
+				name: "INSIS",
+				gate: "INSIS",
+				user_id: "ABC",
+				password: "CDE",
+				profile: "wsapi",
+			},
 		],
 	});
 
@@ -390,6 +446,131 @@ const prisma = new PrismaClient();
 				is_text_integral: true,
 				without_embargo: false,
 				use_proxy: false,
+			},
+		],
+	});
+
+	await prisma.database_community.createMany({
+		data: [
+			{
+				database_id: 1,
+				community_id: 1,
+			},
+			{
+				database_id: 2,
+				community_id: 1,
+			},
+			{
+				database_id: 3,
+				community_id: 1,
+			},
+			{
+				database_id: 1,
+				community_id: 2,
+			},
+			{
+				database_id: 2,
+				community_id: 2,
+			},
+			{
+				database_id: 3,
+				community_id: 2,
+			},
+			{
+				database_id: 1,
+				community_id: 3,
+			},
+			{
+				database_id: 2,
+				community_id: 3,
+			},
+			{
+				database_id: 3,
+				community_id: 3,
+			},
+			{
+				database_id: 1,
+				community_id: 4,
+			},
+			{
+				database_id: 2,
+				community_id: 4,
+			},
+			{
+				database_id: 3,
+				community_id: 4,
+			},
+			{
+				database_id: 1,
+				community_id: 5,
+			},
+			{
+				database_id: 2,
+				community_id: 5,
+			},
+			{
+				database_id: 3,
+				community_id: 5,
+			},
+			{
+				database_id: 1,
+				community_id: 6,
+			},
+			{
+				database_id: 2,
+				community_id: 6,
+			},
+			{
+				database_id: 3,
+				community_id: 6,
+			},
+			{
+				database_id: 1,
+				community_id: 7,
+			},
+			{
+				database_id: 2,
+				community_id: 7,
+			},
+			{
+				database_id: 3,
+				community_id: 7,
+			},
+			{
+				database_id: 1,
+				community_id: 8,
+			},
+			{
+				database_id: 2,
+				community_id: 8,
+			},
+			{
+				database_id: 3,
+				community_id: 8,
+			},
+			{
+				database_id: 1,
+				community_id: 9,
+			},
+			{
+				database_id: 2,
+				community_id: 9,
+			},
+			{
+				database_id: 3,
+				community_id: 9,
+			},
+			{
+				database_id: 1,
+				community_id: 10,
+			},
+			{
+				database_id: 2,
+				community_id: 10,
+			},
+			{
+				database_id: 3,
+				community_id: 10,
 			},
 		],
 	});

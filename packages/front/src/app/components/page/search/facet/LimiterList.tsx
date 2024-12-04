@@ -15,6 +15,7 @@ type LimiterListProps = {
 	arxivActive?: boolean;
 	onLimitersChange: (value: FacetRequired["limiters"]) => void;
 	onPrioritizedFacetChange: ({ provider }: { provider: FacetEntry[] }) => void;
+	isPublicationPage: boolean;
 };
 
 export default function LimiterList({
@@ -26,6 +27,7 @@ export default function LimiterList({
 	arxivActive,
 	onLimitersChange,
 	onPrioritizedFacetChange,
+	isPublicationPage,
 }: LimiterListProps) {
 	const { trackEvent } = useMatomo();
 
@@ -120,16 +122,20 @@ export default function LimiterList({
 
 	return (
 		<Stack>
-			<FacetCheckBox
-				field="fullText"
-				checked={!!activeLimiters?.fullText}
-				onChange={handleLimiterChange}
-			/>
-			<FacetCheckBox
-				field="openAccess"
-				checked={!!activeLimiters?.openAccess}
-				onChange={handleLimiterChange}
-			/>
+			{!isPublicationPage && (
+				<>
+					<FacetCheckBox
+						field="fullText"
+						checked={!!activeLimiters?.fullText}
+						onChange={handleLimiterChange}
+					/>
+					<FacetCheckBox
+						field="openAccess"
+						checked={!!activeLimiters?.openAccess}
+						onChange={handleLimiterChange}
+					/>
+				</>
+			)}
 			<Stack spacing={0.2} sx={{ pl: 2 }}>
 				{halFacet && (
 					<FormControlLabel

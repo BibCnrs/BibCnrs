@@ -39,7 +39,7 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 			headerName: "",
 			headerAlign: "center",
 			align: "center",
-			width: 150,
+			width: 10,
 			renderCell: ({ row }) => {
 				return (
 					<Tooltip title={row.text} arrow>
@@ -81,7 +81,7 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 			headerName: t("pages.database.embargo"),
 			headerAlign: "center",
 			align: "center",
-			width: 150,
+			width: 100,
 			renderCell: (params) => {
 				return !params.row.without_embargo ? <EmbargoIcon /> : null;
 			},
@@ -91,7 +91,7 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 			headerName: "",
 			headerAlign: "center",
 			align: "center",
-			width: 150,
+			width: 100,
 			renderCell: (params) => {
 				return (
 					<BookmarkButton

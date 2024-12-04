@@ -94,6 +94,7 @@ export default function ({
 				arxivFacet={arxivFacet}
 				arxivActive={arxivActive}
 				onPrioritizedFacetChange={handlePrioritizedFacetChange}
+				isPublicationPage={isPublicationPage}
 			/>
 			{/* Facet */}
 			<FacetList
