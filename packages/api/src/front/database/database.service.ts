@@ -27,7 +27,7 @@ export class FrontDatabaseService {
 		return { ...database, communities: undefined };
 	}
 
-	async getDatabases(where: Prisma.databaseWhereInput) {
+	async getDatabases(where: Prisma.databaseWhereInput, isConnected: boolean) {
 		const databases = await this.prismaService.database.findMany({
 			include: {
 				communities: {
@@ -41,9 +41,18 @@ export class FrontDatabaseService {
 					},
 				},
 			},
-			where,
+			where: {
+				...(isConnected ? {} : { oa: true }),
+				...where,
+			},
 		});
 
-		return databases.map(this.transformCommunities);
+		if (isConnected) {
+			return databases.map(this.transformCommunities);
+		}
+		const filteredDatabases = databases.filter(
+			(database) => database.communities.length === 10,
+		);
+		return filteredDatabases.map(this.transformCommunities);
 	}
 }

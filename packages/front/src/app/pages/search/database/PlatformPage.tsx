@@ -87,14 +87,8 @@ export function PlatformPage() {
 								</Alert>
 							) : user?.settings?.platformView === "list" ? (
 								<PlatformListView platforms={platforms} />
-							) : user?.settings?.platformView === "card" ? (
-								<PlatformCardView platforms={platforms} />
 							) : (
-								<PlatformCardView
-									platforms={platforms.filter(
-										(plateform) => plateform.communities.length === 10,
-									)}
-								/>
+								<PlatformCardView platforms={platforms} />
 							)}
 						</Stack>
 					</Box>
