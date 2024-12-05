@@ -148,7 +148,7 @@ function FavouriteListItem({
 						{favourite.source === "personal" || favourite.personal ? (
 							<Chip
 								label={t("pages.favourite.personal")}
-								color="secondary"
+								color="default"
 								size="small"
 								sx={{
 									fontWeight: 700,
