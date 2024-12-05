@@ -127,6 +127,7 @@ const History = ({
 			<PageTitle page={displayOnlyAlert ? "alert" : "history"} />
 			<SearchBar
 				placeholder={t("pages.history.search")}
+				isPlateformPage={false}
 				onSearch={(search: string) => {
 					setArgs({
 						...args,

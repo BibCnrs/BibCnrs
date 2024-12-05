@@ -424,6 +424,7 @@ const ArticlePage = () => {
 				placeholder={t("pages.article.searchBar")}
 				value={articleQuery}
 				onSearch={handleSearch}
+				isPlateformPage={false}
 				secondaryAction={
 					<Tooltip arrow title={t("components.advancedSearch.modalTitle")}>
 						<Stack

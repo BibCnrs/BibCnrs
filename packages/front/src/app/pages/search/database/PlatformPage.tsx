@@ -40,6 +40,7 @@ export function PlatformPage() {
 				value={search}
 				onSearch={setSearch}
 				disableAutocomplete
+				isPlateformPage={true}
 			>
 				<ChipFacet value={domain} values={domains} onChange={handleDomain} />
 			</SearchBar>

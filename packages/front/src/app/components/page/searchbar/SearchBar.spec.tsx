@@ -19,6 +19,7 @@ describe("SearchBar", () => {
 							placeholder="placeholder"
 							value=""
 							disableAutocomplete
+							isPlateformPage
 						/>
 					</BibContextProvider>
 				</BrowserRouter>
@@ -53,6 +54,7 @@ describe("SearchBar", () => {
 							placeholder="placeholder"
 							value=""
 							disableAutocomplete={false}
+							isPlateformPage
 						/>
 					</BibContextProvider>
 				</BrowserRouter>
@@ -89,6 +91,7 @@ describe("SearchBar", () => {
 							placeholder="placeholder"
 							value=""
 							disableAutocomplete={false}
+							isPlateformPage
 						/>
 					</BibContextProvider>
 				</BrowserRouter>
