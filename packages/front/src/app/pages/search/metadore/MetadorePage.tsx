@@ -198,6 +198,7 @@ const MetadorePage = () => {
 				placeholder={t("pages.researchData.search.bar")}
 				value={query.get("q") || search.query}
 				onSearch={handleSearch}
+				isPlateformPage={false}
 			>
 				<ChipFacet
 					value={search.metadore.field}

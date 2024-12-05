@@ -142,6 +142,7 @@ const Favourite = () => {
 			<SearchBar
 				placeholder={t("pages.favourite.search")}
 				value={filters.title ?? ""}
+				isPlateformPage={false}
 				onSearch={(search: string) =>
 					setFilters((filters) => ({
 						...filters,

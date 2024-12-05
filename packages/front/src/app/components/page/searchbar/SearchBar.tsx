@@ -31,6 +31,7 @@ type SearchBarProps = PropsWithoutRef<{
 	children?: ReactNode;
 	disableAutocomplete?: boolean;
 	disableSearchButton?: boolean;
+	isPlateformPage: boolean;
 }>;
 /**
  * Search bar component used in: "Root", "Article", "Journal, book", "Database" and "Research data"
@@ -45,6 +46,7 @@ const SearchBar = ({
 	secondaryAction,
 	disableAutocomplete,
 	disableSearchButton,
+	isPlateformPage,
 	...props
 }: SearchBarProps) => {
 	const t = useTranslator();
@@ -54,8 +56,9 @@ const SearchBar = ({
 		string | undefined
 	>("");
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		setValue(props.value ?? "");
+		isPlateformPage ? clearOnClick() : setValue(props.value ?? "");
 	}, [props.value]);
 
 	const debounceValue = useDebounce(value, 375);

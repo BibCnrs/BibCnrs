@@ -350,6 +350,7 @@ const PublicationPage = () => {
 				placeholder={t("pages.publication.searchBar")}
 				value={publicationSearch}
 				onSearch={handleSearch}
+				isPlateformPage={false}
 			>
 				<ChipFacet
 					value={search.domain}
