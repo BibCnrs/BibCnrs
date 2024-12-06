@@ -136,6 +136,9 @@ export const UrlSearchInist = (props: Omit<FieldProps, "source">) => {
 	if (!record) {
 		return null;
 	}
+	const handleClick = (event: React.MouseEvent) => {
+		event.stopPropagation();
+	};
 	return (
 		<Link
 			to={{
@@ -144,6 +147,7 @@ export const UrlSearchInist = (props: Omit<FieldProps, "source">) => {
 					main_unit: record.id,
 				})}`,
 			}}
+			onClick={handleClick}
 		>
 			{record.nb_inist_account}
 		</Link>
@@ -156,6 +160,9 @@ export const UrlSearchJanus = (props: Omit<FieldProps, "source">) => {
 	if (!record) {
 		return null;
 	}
+	const handleClick = (event: React.MouseEvent) => {
+		event.stopPropagation();
+	};
 	return (
 		<Link
 			to={{
@@ -164,6 +171,7 @@ export const UrlSearchJanus = (props: Omit<FieldProps, "source">) => {
 					primary_unit: record.id,
 				})}`,
 			}}
+			onClick={handleClick}
 		>
 			{record.nb_janus_account}
 		</Link>
