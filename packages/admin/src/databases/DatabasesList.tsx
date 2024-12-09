@@ -1,11 +1,16 @@
 import jsonExport from "jsonexport/dist";
 import {
+	AutocompleteInput,
 	BooleanField,
+	ChipField,
 	Datagrid,
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
 	type RaRecord,
+	ReferenceArrayField,
+	ReferenceInput,
+	SingleFieldList,
 	TextInput,
 	downloadCSV,
 } from "react-admin";
@@ -16,7 +21,19 @@ import LinkEdit from "../components/LinkEdit";
 import { renameKeys } from "../utils/renameKeys";
 
 const DatabasesFilter = [
-	<TextInput key="match" label="Rechercher" source="match" alwaysOn />,
+	<TextInput key="name_fr" label="Rechercher" source="name_fr" alwaysOn />,
+	<ReferenceInput
+		key="communities.community_id"
+		label="resources.revues.fields.communities"
+		source="communities.community_id"
+		reference="communities"
+	>
+		<AutocompleteInput
+			filterToQuery={(searchText) => ({ name: searchText })}
+			optionText="name"
+			label="resources.revues.fields.communities"
+		/>
+	</ReferenceInput>,
 ];
 
 const exporter = async (
@@ -67,10 +84,16 @@ const DatabasesList = () => (
 				source="use_proxy"
 				label="resources.databases.fields.has_proxy"
 			/>{" "}
-			<BooleanField
-				source="complete"
-				label="resources.databases.fields.complete"
-			/>
+			<ReferenceArrayField
+				label="resources.revues.fields.communities"
+				reference="communities"
+				source="communities"
+				sortable={false}
+			>
+				<SingleFieldList>
+					<ChipField source="name" />
+				</SingleFieldList>
+			</ReferenceArrayField>
 			<EditButton />
 			<DeleteWithConfirmButton />
 		</Datagrid>
