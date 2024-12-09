@@ -1,11 +1,14 @@
 import jsonExport from "jsonexport/dist";
 import {
 	BooleanField,
+	ChipField,
 	Datagrid,
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
 	type RaRecord,
+	ReferenceArrayField,
+	SingleFieldList,
 	TextInput,
 	downloadCSV,
 } from "react-admin";
@@ -67,10 +70,16 @@ const DatabasesList = () => (
 				source="use_proxy"
 				label="resources.databases.fields.has_proxy"
 			/>{" "}
-			<BooleanField
-				source="complete"
-				label="resources.databases.fields.complete"
-			/>
+			<ReferenceArrayField
+				label="resources.revues.fields.communities"
+				reference="communities"
+				source="communities"
+				sortable={false}
+			>
+				<SingleFieldList>
+					<ChipField source="name" />
+				</SingleFieldList>
+			</ReferenceArrayField>
 			<EditButton />
 			<DeleteWithConfirmButton />
 		</Datagrid>

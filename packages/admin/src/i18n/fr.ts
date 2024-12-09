@@ -155,6 +155,7 @@ const i18n = {
 				is_archived: "Archive",
 				without_embargo: "Sans embargo",
 				type: "Type de contenu",
+				complete: "Communautés",
 			},
 		},
 		section_cn: {
