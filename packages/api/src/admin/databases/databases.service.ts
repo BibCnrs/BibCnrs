@@ -24,6 +24,11 @@ export class DatabasesService {
 					{ field: "active", mode: "equals", excludeMatch: true },
 					{ field: "oa", mode: "equals", excludeMatch: true },
 					{ field: "use_proxy", mode: "equals", excludeMatch: true },
+					{
+						field: "communities.community_id",
+						mode: "equals",
+						excludeBatch: true,
+					},
 				])
 			: {};
 	}
@@ -71,28 +76,23 @@ export class DatabasesService {
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
 
-		let data = await this.prismaService.database.findMany({
+		const data = await this.prismaService.database.findMany({
 			skip: offset || 0,
 			take: take || 100,
 			where: filters,
-			orderBy: {
-				[query._sortField]: query._sortDir,
-			},
 			include: {
 				communities: {
 					include: {
-						community: {
-							select: {
-								name: true,
-								id: true,
-							},
-						},
+						community: true,
 					},
 				},
 			},
+			orderBy: {
+				[query._sortField]: query._sortDir,
+			},
 		});
 
-		data = data.map(this.transformCommunities);
+		data.map(this.transformCommunities);
 
 		const total = await this.prismaService.database.count({ where: filters });
 		return { data, total };

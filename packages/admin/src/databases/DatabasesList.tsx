@@ -1,5 +1,6 @@
 import jsonExport from "jsonexport/dist";
 import {
+	AutocompleteInput,
 	BooleanField,
 	ChipField,
 	Datagrid,
@@ -8,6 +9,7 @@ import {
 	List,
 	type RaRecord,
 	ReferenceArrayField,
+	ReferenceInput,
 	SingleFieldList,
 	TextInput,
 	downloadCSV,
@@ -19,7 +21,19 @@ import LinkEdit from "../components/LinkEdit";
 import { renameKeys } from "../utils/renameKeys";
 
 const DatabasesFilter = [
-	<TextInput key="match" label="Rechercher" source="match" alwaysOn />,
+	<TextInput key="name_fr" label="Rechercher" source="name_fr" alwaysOn />,
+	<ReferenceInput
+		key="communities.community_id"
+		label="resources.revues.fields.communities"
+		source="communities.community_id"
+		reference="communities"
+	>
+		<AutocompleteInput
+			filterToQuery={(searchText) => ({ name: searchText })}
+			optionText="name"
+			label="resources.revues.fields.communities"
+		/>
+	</ReferenceInput>,
 ];
 
 const exporter = async (
