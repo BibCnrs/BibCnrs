@@ -1,6 +1,6 @@
-FROM node:22-alpine AS base
+FROM node:23.3-alpine3.21 AS base
 
-RUN apk update && apk upgrade && apk add --no-cache curl
+RUN apk update && apk upgrade && apk add --no-cache curl && apk add openssl
 RUN mkdir -p /app/.yarn
 RUN mkdir -p /app/packages/api
 RUN mkdir -p /app/packages/api/uploads && chown node:node /app/packages/api/uploads
