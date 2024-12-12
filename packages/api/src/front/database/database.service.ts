@@ -59,10 +59,12 @@ export class FrontDatabaseService {
 			},
 		});
 
-		if (!isConnected) {
-			databases.filter((database) => database.communities.length === 10);
+		if (isConnected) {
+			return databases.map(this.transformCommunities);
 		}
-
-		return databases.map(this.transformCommunities);
+		const filteredDatabases = databases.filter(
+			(database) => database.communities.length === 10,
+		);
+		return filteredDatabases.map(this.transformCommunities);
 	}
 }
