@@ -477,6 +477,11 @@ export type Common = {
 		"404": Error;
 		component: string;
 	};
+	consent: {
+		accept: string,
+		decline: string,
+		consent: string,
+	};
 };
 
 i18next

@@ -1,5 +1,4 @@
 import "./App.scss";
-import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/internal/ProtectedRoute";
 import Footer from "./components/page/footer/Footer";
@@ -22,7 +21,6 @@ import History from "./pages/user/history/History";
 import Licences from "./pages/user/licences/Licences";
 import IndividualNews from "./pages/user/news/IndividualNews";
 import News from "./pages/user/news/News";
-import CookieBanner from "./shared/CookiePopup";
 import {
 	RouteAbout,
 	RouteAccessibility,
@@ -42,28 +40,13 @@ import {
 	RouteRoot,
 	RouteUserSettings,
 } from "./shared/Routes";
-import { useInitMatomo } from "./shared/matomo";
+import { ConsentForm, useInitMatomo } from "./shared/matomo";
 
 const App = () => {
-	const [matomoInit, setMatomoInit] = useState(false);
-
-	const handleAccept = () => {
-		setMatomoInit(true);
-	};
-
-	const handleDecline = () => {
-		setMatomoInit(false);
-	};
-
-	useInitMatomo();
-
-	useEffect(() => {
-		if (!matomoInit) {
-			window._paq = [];
-		}
-	}, [matomoInit]);
+	const { isOptedOut } = useInitMatomo();
 	return (
 		<>
+			{!isOptedOut && <ConsentForm />}
 			<Header />
 			<div id="app-container">
 				<Routes>
@@ -150,8 +133,6 @@ const App = () => {
 					<Route path="*" element={<Error404 />} />
 				</Routes>
 			</div>
-			<CookieBanner onAccept={handleAccept} onDecline={handleDecline} />
-
 			<Footer />
 		</>
 	);
