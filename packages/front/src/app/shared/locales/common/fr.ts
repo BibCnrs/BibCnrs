@@ -489,7 +489,8 @@ Cordialement`,
 	consent: {
 		accept: "Accepter",
 		decline: "Refuser",
-		consent: "Nous utilisons des cookies pour améliorer votre expérience sur notre site. Vous pouvez accepter ou refuser leur utilisation.",
+		consent:
+			"Nous utilisons des cookies pour améliorer votre expérience sur notre site. Vous pouvez accepter ou refuser leur utilisation.",
 	},
 };
 

@@ -478,9 +478,9 @@ export type Common = {
 		component: string;
 	};
 	consent: {
-		accept: string,
-		decline: string,
-		consent: string,
+		accept: string;
+		decline: string;
+		consent: string;
 	};
 };
 
