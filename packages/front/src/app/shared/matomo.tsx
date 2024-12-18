@@ -8,25 +8,42 @@ const MATOMO_TRACKER_URL = import.meta.env.VITE_MATOMO_TRACKER_URL;
 const MATOMO_SCRIPT_URL = import.meta.env.VITE_MATOMO_SCRIPT_URL;
 const MATOMO_SITE_ID = import.meta.env.VITE_MATOMO_SITE_ID;
 
-export function useInitMatomo() {
-	const [isOptedOut, setIsOptedOut] = useState(false);
+export function ConsentForm() {
+	const [consent, setConsentGiven] = useState<boolean | null>(null);
+	const [isVisible, setIsVisible] = useState<boolean | null>(null);
 	const location = useLocation();
+	const t = useTranslator();
+
+	useEffect(() => {
+		const consent = document.cookie
+			.split("; ")
+			.find((row) => row.startsWith("consent="));
+
+		if (consent) {
+			setIsVisible(false);
+			const consentValue = consent.split("=")[1];
+			setConsentGiven(consentValue === "true");
+		} else {
+			setIsVisible(true);
+		}
+	}, []);
+
 	useEffect(() => {
 		if (
 			!MATOMO_TRACKER_URL ||
 			!MATOMO_SCRIPT_URL ||
 			window._paq ||
-			isOptedOut
+			isVisible ||
+			!consent
 		) {
 			return;
 		}
-
 		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 		const _paq = (window._paq = window._paq || []);
 		_paq.push(["trackPageView"]);
 		_paq.push(["enableLinkTracking"]);
 		_paq.push(["setTrackerUrl", MATOMO_TRACKER_URL]);
-		_paq.push(["setSiteId", MATOMO_SITE_ID || "1"]);
+		_paq.push(["setSiteId", MATOMO_SITE_ID]);
 
 		const d = document;
 		const g = d.createElement("script");
@@ -34,7 +51,7 @@ export function useInitMatomo() {
 		g.async = true;
 		g.src = MATOMO_SCRIPT_URL;
 		s.parentNode.insertBefore(g, s);
-	}, [isOptedOut]);
+	}, [isVisible, consent]);
 
 	useEffect(() => {
 		window._paq?.push?.([
@@ -45,47 +62,38 @@ export function useInitMatomo() {
 		window._paq?.push?.(["trackPageView"]);
 	}, [location]);
 
-	const toggleOptOut = (optOut: boolean) => {
-		if (optOut) {
-			window._paq?.push?.(["optUserOut"]);
-		} else {
-			window._paq?.push?.(["forgetUserOptOut"]);
-		}
-		setIsOptedOut(optOut);
-	};
-
-	return {
-		isOptedOut,
-		toggleOptOut,
-	};
-}
-
-export function ConsentForm() {
-	const { isOptedOut, toggleOptOut } = useInitMatomo();
-	const [isVisible, setIsVisible] = useState(true);
-	const t = useTranslator();
-
-	useEffect(() => {
-		const session = sessionStorage.getItem("consent");
-		if (session) {
-			setIsVisible(false);
-		}
-	}, []);
-
 	const handleAccept = () => {
-		sessionStorage.setItem("consent", "true");
-		toggleOptOut(false);
+		document.cookie = "consent=true; path=/; max-age=31536000";
+		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+		const _paq = (window._paq = window._paq || []);
+		_paq.push(["trackPageView"]);
+		_paq.push(["enableLinkTracking"]);
+		_paq.push(["setTrackerUrl", MATOMO_TRACKER_URL]);
+		_paq.push(["setSiteId", MATOMO_SITE_ID]);
+
+		const d = document;
+		const g = d.createElement("script");
+		const s = d.getElementsByTagName("script")[0];
+		g.async = true;
+		g.src = MATOMO_SCRIPT_URL;
+		s.parentNode.insertBefore(g, s);
+
+		setConsentGiven(true);
 		setIsVisible(false);
 	};
 
 	const handleDecline = () => {
-		sessionStorage.setItem("consent", "false");
-		toggleOptOut(true);
+		document.cookie = "consent=false; path=/; max-age=31536000";
+		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+		const _paq = (window._paq = window._paq || []);
+		_paq.push(["disableCookies"]);
+		setConsentGiven(false);
 		setIsVisible(false);
 	};
 
-	if (!isVisible) return null;
-
+	if (!isVisible) {
+		return null;
+	}
 	return (
 		<Box
 			id="optout-form"

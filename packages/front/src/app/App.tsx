@@ -40,13 +40,12 @@ import {
 	RouteRoot,
 	RouteUserSettings,
 } from "./shared/Routes";
-import { ConsentForm, useInitMatomo } from "./shared/matomo";
+import { ConsentForm } from "./shared/matomo";
 
 const App = () => {
-	const { isOptedOut } = useInitMatomo();
 	return (
 		<>
-			{!isOptedOut && <ConsentForm />}
+			<ConsentForm />
 			<Header />
 			<div id="app-container">
 				<Routes>
