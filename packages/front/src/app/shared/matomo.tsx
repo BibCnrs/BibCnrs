@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -63,7 +63,7 @@ export function ConsentForm() {
 	}, [location]);
 
 	const handleAccept = () => {
-		document.cookie = "consent=true; path=/; max-age=31536000";
+		document.cookie = "consent=true; path=/; max-age=2592000";
 		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 		const _paq = (window._paq = window._paq || []);
 		_paq.push(["trackPageView"]);
@@ -83,7 +83,7 @@ export function ConsentForm() {
 	};
 
 	const handleDecline = () => {
-		document.cookie = "consent=false; path=/; max-age=31536000";
+		document.cookie = "consent=false; path=/; max-age=2592000";
 		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 		const _paq = (window._paq = window._paq || []);
 		_paq.push(["disableCookies"]);
@@ -103,12 +103,17 @@ export function ConsentForm() {
 				position: "fixed",
 				bottom: 0,
 				width: "100%",
-				background: (theme) => theme.palette.background.default,
+				backgroundColor: (theme) => theme.palette.info.light,
 				boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
 				zIndex: 1000,
 			}}
 		>
-			<Typography variant="h6">{t("consent.consent")}</Typography>
+			<Typography variant="body1">
+				{t("consent.consent")}
+				<Link href="/privacy" sx={{ color: "primary.main" }}>
+					{t("consent.link")}
+				</Link>
+			</Typography>
 
 			<Box
 				sx={{
@@ -123,7 +128,6 @@ export function ConsentForm() {
 					color="primary"
 					onClick={handleAccept}
 					sx={{
-						padding: "10px 20px",
 						borderRadius: "20px",
 						fontWeight: "bold",
 						":hover": {
@@ -141,7 +145,6 @@ export function ConsentForm() {
 					color="primary"
 					onClick={handleDecline}
 					sx={{
-						padding: "10px 20px",
 						borderRadius: "20px",
 						fontWeight: "bold",
 						":hover": {

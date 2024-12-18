@@ -481,6 +481,7 @@ export type Common = {
 		accept: string;
 		decline: string;
 		consent: string;
+		link: string;
 	};
 };
 
