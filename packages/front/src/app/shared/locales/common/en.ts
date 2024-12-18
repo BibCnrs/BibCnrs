@@ -483,6 +483,13 @@ Sincerely`,
 		return: "Go back to home",
 		component: "The component {{name}} have encountered an error",
 	},
+	consent: {
+		accept: "Accept",
+		decline: "Refuse",
+		consent:
+			"We use cookies to improve your experience on our site. You can accept or refuse their use ",
+		link: "Privacy Policy",
+	},
 };
 
 export default en;
