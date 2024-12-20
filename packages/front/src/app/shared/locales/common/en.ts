@@ -487,7 +487,7 @@ Sincerely`,
 		accept: "Accept",
 		decline: "Refuse",
 		consent:
-			"We use cookies to improve your experience on our site. You can accept or refuse their use ",
+			"INIST-CNRS uses cookies to improve your browsing experience on this site. You can accept or decline the use of these cookies below. ",
 		link: "Privacy Policy",
 	},
 };

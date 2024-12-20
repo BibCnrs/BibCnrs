@@ -1,4 +1,3 @@
-import XIcon from "@mui/icons-material/X";
 import { Button, Divider, IconButton, Link } from "@mui/material";
 import { Container, Stack, useTheme } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
@@ -15,6 +14,18 @@ const FOOTER_SX = {
 	color: (theme) => theme.palette.text.primary,
 	textDecoration: "none",
 	textTransform: "none",
+};
+const BlueSkyIcon = () => {
+	return <img src="/public/logos/BlueSkyLogo.png" alt="" />;
+};
+const MastodonIcon = () => {
+	return <img src="/public/logos/MastodonLogo.png" alt="" />;
+};
+const InstagramIcon = () => {
+	return <img src="/public/logos/InstagramLogo.png" alt="" />;
+};
+const LinkedInIcon = () => {
+	return <img src="/public/logos/LinkedinLogo.png" alt="" />;
 };
 
 /**
@@ -98,11 +109,32 @@ const Footer = () => {
 					width="200px"
 				>
 					<IconButton
-						href="https://twitter.com/BibCnrs"
+						href="https://www.linkedin.com/company/inist-cnrs"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
 					>
-						<XIcon />
+						<LinkedInIcon />
+					</IconButton>
+					<IconButton
+						href="https://bsky.app/profile/cnrs-inist.bsky.social"
+						target="_blank"
+						rel="noreferrer noopener nofollow"
+					>
+						<BlueSkyIcon />
+					</IconButton>
+					<IconButton
+						href="https://social.numerique.gouv.fr/@inistcnrs"
+						target="_blank"
+						rel="noreferrer noopener nofollow"
+					>
+						<MastodonIcon />
+					</IconButton>
+					<IconButton
+						href=" https://www.instagram.com/inist_cnrs/ "
+						target="_blank"
+						rel="noreferrer noopener nofollow"
+					>
+						<InstagramIcon />
 					</IconButton>
 				</Stack>
 			</Container>
