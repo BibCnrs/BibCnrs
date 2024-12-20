@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { DatabaseWithCommunities, DatabaseWithDomains } from "./database.type";
 
@@ -27,7 +26,7 @@ export class FrontDatabaseService {
 		return { ...database, communities: undefined };
 	}
 
-	async getDatabases(where: Prisma.databaseWhereInput, isConnected: boolean) {
+	async getDatabases(domains: string[], isConnected: boolean) {
 		const databases = await this.prismaService.database.findMany({
 			include: {
 				communities: {
@@ -43,7 +42,20 @@ export class FrontDatabaseService {
 			},
 			where: {
 				...(isConnected ? {} : { oa: true }),
-				...where,
+				AND: {
+					active: true,
+					communities: domains?.length
+						? {
+								some: {
+									community: {
+										name: {
+											in: domains,
+										},
+									},
+								},
+							}
+						: undefined,
+				},
 			},
 		});
 

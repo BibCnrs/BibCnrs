@@ -56,10 +56,11 @@ const SearchBar = ({
 		string | undefined
 	>("");
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		isPlateformPage ? clearOnClick() : setValue(props.value ?? "");
-	}, [props.value]);
+		if (!isPlateformPage) {
+			setValue(props.value ?? "");
+		}
+	}, [props.value, isPlateformPage]);
 
 	const debounceValue = useDebounce(value, 375);
 

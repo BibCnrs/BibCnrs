@@ -9,8 +9,9 @@ export class FrontDatabaseController {
 	@Get()
 	@UseGuards(UserRetrieveGuard)
 	async getDatabases(@Req() req) {
+		const domains = req.user ? req.user?.domains : [];
 		return this.frontDatabaseService.getDatabases(
-			{ active: true },
+			domains,
 			// biome-ignore lint/complexity/noUselessTernary: <explanation>
 			req.user ? true : false,
 		);
