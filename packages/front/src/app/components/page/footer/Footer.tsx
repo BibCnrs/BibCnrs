@@ -16,16 +16,16 @@ const FOOTER_SX = {
 	textTransform: "none",
 };
 const BlueSkyIcon = () => {
-	return <img src="/public/logos/BlueSkyLogo.png" alt="" />;
+	return <img src="/logos/BlueSkyLogo.png" alt="" />;
 };
 const MastodonIcon = () => {
-	return <img src="/public/logos/MastodonLogo.png" alt="" />;
+	return <img src="/logos/MastodonLogo.png" alt="" />;
 };
 const InstagramIcon = () => {
-	return <img src="/public/logos/InstagramLogo.png" alt="" />;
+	return <img src="/logos/InstagramLogo.png" alt="" />;
 };
 const LinkedInIcon = () => {
-	return <img src="/public/logos/LinkedinLogo.png" alt="" />;
+	return <img src="/logos/LinkedinLogo.png" alt="" />;
 };
 
 /**
