@@ -16,16 +16,16 @@ const FOOTER_SX = {
 	textTransform: "none",
 };
 const BlueSkyIcon = () => {
-	return <img src="/public/logos/BlueSkyLogo.png" alt="BlueSky Logo" />;
+	return <img src="/public/logos/BlueSkyLogo.png" alt="" />;
 };
 const MastodonIcon = () => {
-	return <img src="/public/logos/MastodonLogo.png" alt="Mastodon Logo" />;
+	return <img src="/public/logos/MastodonLogo.png" alt="" />;
 };
 const InstagramIcon = () => {
-	return <img src="/public/logos/InstagramLogo.png" alt="Instagram Logo" />;
+	return <img src="/public/logos/InstagramLogo.png" alt="" />;
 };
 const LinkedInIcon = () => {
-	return <img src="/public/logos/LinkedinLogo.png" alt="LinkedIn Logo" />;
+	return <img src="/public/logos/LinkedinLogo.png" alt="" />;
 };
 
 /**
@@ -109,13 +109,6 @@ const Footer = () => {
 					width="200px"
 				>
 					<IconButton
-						href=" https://www.instagram.com/inist_cnrs/ "
-						target="_blank"
-						rel="noreferrer noopener nofollow"
-					>
-						<InstagramIcon />
-					</IconButton>
-					<IconButton
 						href="https://www.linkedin.com/company/inist-cnrs"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
@@ -135,6 +128,13 @@ const Footer = () => {
 						rel="noreferrer noopener nofollow"
 					>
 						<MastodonIcon />
+					</IconButton>
+					<IconButton
+						href=" https://www.instagram.com/inist_cnrs/ "
+						target="_blank"
+						rel="noreferrer noopener nofollow"
+					>
+						<InstagramIcon />
 					</IconButton>
 				</Stack>
 			</Container>
