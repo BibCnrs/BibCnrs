@@ -117,6 +117,7 @@ export class JanusAuthController {
 				code: renaterHeader.ou,
 			});
 		}
+		const dateHeader = request.headers["shib-authentication-instant"];
 
 		const unit = renaterHeader.ou
 			? await this.unitsService.findOneByCode(renaterHeader.ou)
@@ -128,9 +129,12 @@ export class JanusAuthController {
 			firstname: this.decode(renaterHeader.givenname),
 			mail: this.decode(renaterHeader.mail),
 			cnrs: renaterHeader.o === "CNRS",
-			last_connexion: renaterHeader["shib-authentication-instant"],
 			primary_institute: institute?.id,
 			primary_unit: unit?.id,
+			last_connexion:
+				dateHeader && typeof dateHeader === "string"
+					? new Date(dateHeader)
+					: new Date(),
 		});
 
 		const user = await this.janusAccountService.findOneByUid(renaterHeader.uid);
@@ -188,7 +192,6 @@ export class JanusAuthController {
 		const userSettings = await this.userSettingsService.getUserSettings(
 			user.id,
 		);
-
 		await this.redis.delAsync(user.shib);
 		return {
 			id: user.id,
