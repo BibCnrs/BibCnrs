@@ -21,7 +21,10 @@ export const database = async (
 			return nameA.localeCompare(nameB, language);
 		})
 		.filter((value) => {
-			return value.domains.includes(domain ?? "") || value.oa;
+			return (
+				value.domains.includes(domain ?? "") ||
+				(value.oa && value.domains.length === 10)
+			);
 		})
 		.map((value) => {
 			if (value.use_proxy) {
