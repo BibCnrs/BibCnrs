@@ -78,6 +78,7 @@ export class JanusAuthController {
 					ou: request.header("ou"),
 					uid: request.header("uid") ?? "",
 					displayname: request.header("displayname"),
+					refscientificoffice: request.header("refscientificoffice"),
 				};
 
 		if (renaterHeader.displayname && !renaterHeader.givenname) {
