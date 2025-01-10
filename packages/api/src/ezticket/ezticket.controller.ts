@@ -45,7 +45,7 @@ export class EzTicketController {
 	@Get("bibcnrs.png")
 	async getBibCnrs(@Res() res: Response) {
 		const file = fs.createReadStream(
-			path.join(process.cwd(), "dist/ezproxy/bibcnrs.png"),
+			path.join(process.cwd(), "dist/ezticket/bibcnrs.png"),
 		);
 		res.header("Content-Type", "image/png");
 		file.pipe(res);

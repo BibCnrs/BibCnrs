@@ -481,7 +481,7 @@ Cordialement`,
 	error: {
 		"404": {
 			title: "404 - Page non trouvée",
-			message: "La page acutelle n'a pas étais trouvé.",
+			message: "La page actuelle n'a pas été trouvée.",
 		},
 		return: "Retourner à l’accueil ",
 		component: "Le composant {{name}} a rencontré une erreur",
