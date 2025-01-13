@@ -14,13 +14,13 @@ import { UnitsService } from "../../admin/units/units.service";
 import { AuthGuard } from "../../common/auth/auth.guard";
 import { TokenPayload } from "../../common/auth/auth.type";
 import { UserRetrieveGuard } from "../../common/auth/userRetrieveGuard";
-import { FileLogger } from "../../common/logger/FileLogger";
+import { OAFileLogger } from "../../common/logger/FileLogger";
 import { InistAccountService } from "../../inist/accounts/accounts.service";
 import { JanusAccountService } from "../../janus/accounts/accounts.service";
 
 @Controller("ebsco")
 export class EbscoOaController {
-	private readonly logger = new FileLogger(
+	private readonly logger = new OAFileLogger(
 		"%DATE%_bibapi_http.log",
 		EbscoOaController.name,
 	);
@@ -42,18 +42,18 @@ export class EbscoOaController {
 		I: string | null,
 		OU: string | null,
 	) {
-		this.logger.log(
-			`open access: ${JSON.stringify({
-				sid,
-				domain,
-				doi,
-				login,
-				O,
-				I,
-				OU,
-				url,
-			})}`,
-		);
+		this.logger.log({
+			message: "open access",
+			timestamp: new Date().toISOString(),
+			sid,
+			domain,
+			doi,
+			login,
+			O,
+			I,
+			OU,
+			url,
+		});
 	}
 
 	private async logJanusUser(

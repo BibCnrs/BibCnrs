@@ -48,10 +48,17 @@ export class AbstractLogger implements LoggerService {
 		if (!this.logLevels.has(level)) {
 			return;
 		}
-		this.logger.log(
-			level === "log" ? "info" : level,
-			`${this.options.timestamp ? `${new Date().toISOString()}` : ""}\t[${this.context ?? "Nest"}]\t${message} ${optionalParams?.join(",")}`,
-		);
+		if (this.context === "EbscoOaController") {
+			this.logger.log({
+				level: level === "log" ? "info" : level,
+				...message,
+			});
+		} else {
+			this.logger.log(
+				level === "log" ? "info" : level,
+				`${this.options.timestamp ? `${new Date().toISOString()}` : ""}\t[${this.context ?? "Nest"}]\t${message} ${optionalParams?.join(",")}`,
+			);
+		}
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>

@@ -16,3 +16,16 @@ export class FileLogger extends AbstractLogger {
 		);
 	}
 }
+
+export class OAFileLogger extends AbstractLogger {
+	constructor(file: string, context?: string) {
+		super(
+			new DailyRotateFile({
+				filename: path.join(LOG_DIRECTORY, file),
+				format: winston.format.json(),
+				maxFiles: MAX_LOG_FILE_COUNT,
+			}),
+			context,
+		);
+	}
+}
