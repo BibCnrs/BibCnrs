@@ -33,6 +33,7 @@ const FAKE_LOGIN_HEADER = {
 	mail: "developer@marmelab.com",
 	o: "CNRS",
 	uid: "tester.10",
+	ou: "TEST",
 };
 
 @Controller("ebsco")
@@ -114,7 +115,7 @@ export class JanusAuthController {
 			name,
 		);
 		if (renaterHeader.ou) {
-			this.unitsService.upsertOneByCode({
+			await this.unitsService.upsertOneByCode({
 				code: renaterHeader.ou,
 			});
 		}
