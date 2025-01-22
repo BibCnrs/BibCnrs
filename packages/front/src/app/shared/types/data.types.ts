@@ -202,7 +202,8 @@ export type ArticleFacetsKeyDataType =
 	| "Language"
 	| "Publisher"
 	| "SourceType"
-	| "SubjectEDS";
+	| "SubjectEDS"
+	| "AffiliationAuthor";
 
 export type PublicationFacetsKeyDataType =
 	| "PublisherPubDb"

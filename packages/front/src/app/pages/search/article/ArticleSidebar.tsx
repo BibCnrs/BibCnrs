@@ -70,6 +70,7 @@ export const ArticleSidebar = ({ article }) => {
 				"Abstract",
 				"Access URL",
 				"Page Count",
+				"Affiliation Author",
 			].includes(item.label),
 	);
 

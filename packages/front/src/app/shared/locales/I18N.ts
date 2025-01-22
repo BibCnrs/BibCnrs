@@ -27,6 +27,7 @@ export type Common = {
 			Publisher: string;
 			ContentProvider: string;
 			PublicationType: string;
+			affiliation: string;
 		};
 		limiters: {
 			fullText: string;
@@ -145,6 +146,8 @@ export type Common = {
 				Author: string;
 				Category: string;
 				AccessLink: string;
+				affiliation: string;
+				publisher: string;
 				alert: {
 					active: {
 						day: string;
@@ -177,6 +180,7 @@ export type Common = {
 			source: string;
 			humanQuery: string;
 			reset: string;
+			affiliation: string;
 		};
 		facet: {
 			title: string;
@@ -205,6 +209,7 @@ export type Common = {
 				subject: string;
 				doi: string;
 			};
+			affiliation: string;
 		};
 		history: {
 			delete: string;

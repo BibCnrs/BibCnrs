@@ -23,6 +23,7 @@ export const FIELDS = {
 	AB: "abstract",
 	TI: "title",
 	SO: "source",
+	AD: "affiliation",
 } as const;
 
 export type Operator = keyof typeof OPERATORS;

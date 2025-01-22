@@ -14,6 +14,7 @@ const en: Common = {
 			Publisher: "Publisher",
 			ContentProvider: "Content Provider",
 			PublicationType: "Type of publication",
+			affiliation: "Affiliation",
 		},
 		limiters: {
 			fullText: "Full Text",
@@ -133,6 +134,8 @@ const en: Common = {
 				Author: "Author",
 				Category: "Category",
 				AccessLink: "Access to the document",
+				affiliation: "Affiliation Author",
+				publisher: "Publisher",
 				alert: {
 					active: {
 						day: "Daily",
@@ -165,6 +168,7 @@ const en: Common = {
 			source: "Source title",
 			humanQuery: "How will the query be executed?",
 			reset: "Reset",
+			affiliation: "Affiliation Author",
 		},
 		facet: {
 			title: "Filter",
@@ -193,6 +197,7 @@ const en: Common = {
 				subject: "Subject",
 				doi: "DOI",
 			},
+			affiliation: "Affiliation",
 		},
 		history: {
 			delete: "Delete entry {{ term }}",
