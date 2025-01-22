@@ -7,11 +7,15 @@ import { MAX_LOG_FILE_COUNT } from "./AppLogger";
 export class FileLogger extends AbstractLogger {
 	constructor(file: string, context?: string) {
 		super(
-			new DailyRotateFile({
-				filename: path.join(LOG_DIRECTORY, file),
-				format: winston.format.simple(),
-				maxFiles: MAX_LOG_FILE_COUNT,
-			}),
+			process.env.NODE_ENV === "production"
+				? new DailyRotateFile({
+						filename: path.join(LOG_DIRECTORY, file),
+						format: winston.format.simple(),
+						maxFiles: MAX_LOG_FILE_COUNT,
+					})
+				: new winston.transports.Console({
+						format: winston.format.simple(),
+					}),
 			context,
 		);
 	}
@@ -20,11 +24,15 @@ export class FileLogger extends AbstractLogger {
 export class OAFileLogger extends AbstractLogger {
 	constructor(file: string, context?: string) {
 		super(
-			new DailyRotateFile({
-				filename: path.join(LOG_DIRECTORY, file),
-				format: winston.format.json(),
-				maxFiles: MAX_LOG_FILE_COUNT,
-			}),
+			process.env.NODE_ENV === "production"
+				? new DailyRotateFile({
+						filename: path.join(LOG_DIRECTORY, file),
+						format: winston.format.json(),
+						maxFiles: MAX_LOG_FILE_COUNT,
+					})
+				: new winston.transports.Console({
+						format: winston.format.json(),
+					}),
 			context,
 		);
 	}

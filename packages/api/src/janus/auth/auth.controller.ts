@@ -33,7 +33,8 @@ const FAKE_LOGIN_HEADER = {
 	mail: "developer@marmelab.com",
 	o: "CNRS",
 	uid: "tester.10",
-	ou: "TEST",
+	ou: "UAR76",
+	refscientificoffice: "TEST->test",
 };
 
 @Controller("ebsco")

@@ -30,6 +30,12 @@ export class InstitutesService {
 		return query._page ? (Number.parseInt(query._page) - 1) * take : 0;
 	}
 
+	async findOneByCode(code: string): Promise<institute | null> {
+		return this.prismaService.institute.findUnique({
+			where: { code },
+		});
+	}
+
 	async findAll(query: FindAllQueryArgs): Promise<{
 		data: Partial<institute & { communities?: number[] }>[];
 		total: number;
@@ -79,7 +85,7 @@ export class InstitutesService {
 		if (!code) {
 			return null;
 		}
-		const institute = this.prismaService.institute.findFirst({
+		const institute = await this.prismaService.institute.findFirst({
 			where: {
 				code,
 			},
