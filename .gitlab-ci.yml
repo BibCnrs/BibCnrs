@@ -36,13 +36,8 @@ typecheck:
 
 test: 
   stage: test
+  image: ubuntu
   <<: *before_script
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
   timeout: 10m
   script:
     - make install-immutable
