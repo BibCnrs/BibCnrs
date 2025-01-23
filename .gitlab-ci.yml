@@ -32,7 +32,7 @@ typecheck:
   <<: *before_script
   timeout: 10m
   script:
-    - make type-check
+    - make typecheck
 
 test: 
   stage: test
