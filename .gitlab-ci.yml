@@ -49,13 +49,12 @@ test:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_TLS_CERTDIR: ""
   before_script:
-    - apk add --no-cache yarn
+    - apt-get update && apt-get install -y yarn
   script:
     - yarn install --immutable --check-cache
     - make install-immutable
     - make test-api
   timeout: 10m
-  
 
 e2e:
   stage: e2e
