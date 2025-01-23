@@ -11,7 +11,7 @@ default:
 
 .before_script: &before_script
   before_script:
-    - yarn install --offline
+    - yarn install --immutable --check-cache
 
 stages:
   - lint
