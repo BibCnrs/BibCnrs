@@ -41,8 +41,8 @@ typecheck:
 
 test: 
   stage: test
-  image: ubuntu
   <<: *before_script
+  image: ubuntu
   timeout: 10m
   script:
     - make install-immutable
