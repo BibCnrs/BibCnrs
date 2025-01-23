@@ -41,7 +41,7 @@ typecheck:
 
 test: 
   stage: test
-  image: cimg/node:16.20-browsers
+  image: cimg/node:lts-browsers
   services:
     - name: docker:dind
   variables:
@@ -52,6 +52,7 @@ test:
     - make install-immutable
     - make test-api
   timeout: 10m
+  
 e2e:
   stage: e2e
   <<: *before_script
