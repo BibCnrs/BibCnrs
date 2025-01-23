@@ -11,7 +11,7 @@ default:
 
 .before_script: &before_script
   before_script:
-    - yarn install --immutable 
+    - yarn install --immutable --check-cache
 
 stages:
   - lint
@@ -37,6 +37,12 @@ typecheck:
 test: 
   stage: test
   <<: *before_script
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   timeout: 10m
   script:
     - make install-immutable
@@ -45,6 +51,12 @@ test:
 e2e:
   stage: e2e
   <<: *before_script
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   timeout: 10m
   script:
     - make install-immutable
