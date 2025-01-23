@@ -39,14 +39,19 @@ typecheck:
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
-test: 
+test:
   stage: test
-  <<: *before_script
-  image: ubuntu
-  timeout: 10m
+  image: node:lts
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   script:
+    - yarn install --immutable --check-cache
     - make install-immutable
     - make test-api
+  timeout: 10m
 
 e2e:
   stage: e2e
