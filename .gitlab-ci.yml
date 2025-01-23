@@ -11,8 +11,7 @@ default:
 
 .before_script: &before_script
   before_script:
-    - apt-get update && apt-get install -y docker.io docker-compose
-    - yarn install --immutable --check-cache
+    - yarn install --immutable 
 
 stages:
   - lint
@@ -61,7 +60,5 @@ e2e:
        - packages/e2e/test-results/    
      expire_in: 30 days
 
-  only:
-    - $CI_PIPELINE_SOURCE != "cancelled"
 
 
