@@ -20,7 +20,7 @@ stages:
   - e2e
 
 lint:
-  stage: ⬣ Lint
+  stage: lint
   <<: *before_script
   timeout: 10m
   script:
@@ -28,14 +28,14 @@ lint:
     - make lint-check
 
 typecheck:
-  stage: ʦ TypeScript
+  stage: typecheck
   <<: *before_script
   timeout: 10m
   script:
     - make type-check
 
 test: 
-  stage: 🔎 Test
+  stage: test
   <<: *before_script
   timeout: 10m
   script:
@@ -43,7 +43,7 @@ test:
     - make test-api
 
 e2e:
-  stage: 🌳 E2E Test
+  stage: e2e
   <<: *before_script
   timeout: 10m
   script:
