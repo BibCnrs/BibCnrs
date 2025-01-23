@@ -41,20 +41,14 @@ typecheck:
 
 test: 
   stage: test
-  image: docker/compose:latest
+  image: cimg/node:16.20-browsers
   services:
     - name: docker:dind
-      alias: docker
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_TLS_CERTDIR: ""
-  before_script:
-    - apt-get update && apt-get install -y curl
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-    - apt-get update && apt-get install -y yarn
   script:
-    - yarn install --immutable --check-cache
+    - docker compose version
     - make install-immutable
     - make test-api
   timeout: 10m
