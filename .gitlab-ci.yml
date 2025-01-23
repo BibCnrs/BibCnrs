@@ -11,7 +11,7 @@ default:
 
 .before_script: &before_script
   before_script:
-    - yarn install --cache-folder .yarn --prefer-offline
+    - yarn install --offline
 
 stages:
   - lint
