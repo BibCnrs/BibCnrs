@@ -41,7 +41,7 @@ typecheck:
 
 test: 
   stage: test
-  image: node:lts 
+  image: docker/compose:latest
   services:
     - name: docker:dind
       alias: docker
