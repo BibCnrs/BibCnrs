@@ -148,7 +148,7 @@ test-front-watch:						## Run tests for front in watch mode
 		--no-log-prefix
 
 test-api:								## Run tests for api
-	docker compose \
+	docker-compose \
 		-f docker-compose.test.yml \
 		run \
 		--build \
