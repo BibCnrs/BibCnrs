@@ -35,6 +35,7 @@ typecheck:
     - make typecheck
 
 test-api:
+  stage: test-api
   image: node:22
   services:
     - postgres:16.3
@@ -58,6 +59,7 @@ test-api:
     - yarn workspace @bibcnrs/api run test
 
 test-front:
+  stage: test-front
   image: node:22
   services:
     - postgres:16.3
