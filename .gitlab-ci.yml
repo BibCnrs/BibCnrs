@@ -109,7 +109,8 @@ e2e:
     METADORE_URL: ${METADORE_URL}
     METADORE_API_KEY: ${METADORE_API_KEY}
     DOAJ_URL: ${DOAJ_URL}
-    REDIS_URL: redis://redis:6379
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
     bib_admin_host: http://localhost:3000/admin
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
@@ -120,7 +121,6 @@ e2e:
     - yarn workspace @bibcnrs/e2e run playwright install 
     - yarn workspace @bibcnrs/api run start:e2e
     - CI=1 yarn workspace @bibcnrs/e2e run test
-    - yarn stop
   artifacts:
     name: E2E Test Artifacts
     paths:
