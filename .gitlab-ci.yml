@@ -1,16 +1,17 @@
-variables:
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_TLS_CERTDIR: ""
-
 default:
-  image: docker:20.10.16
-  services:
-    - name: docker:20.10.16-dind
-      command: ["--tls=false"]
+  image:
+    name: node:lts
+  tags:
+    - docker
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    policy: pull-push
+    paths:
+      - .yarn/
+
+.before_script: &before_script
   before_script:
-    - docker info
-    - docker-compose version
-    - apk add --no-cache make
+    - yarn install --immutable --check-cache
 
 stages:
   - lint
@@ -20,6 +21,8 @@ stages:
 
 lint:
   stage: lint
+  <<: *before_script
+  timeout: 10m
   script:
     - make install-immutable
     - make lint-check
@@ -28,6 +31,8 @@ lint:
 
 typecheck:
   stage: typecheck
+  <<: *before_script
+  timeout: 10m
   script:
     - make typecheck
   only:
@@ -35,20 +40,36 @@ typecheck:
 
 test:
   stage: test
+  image: cimg/node:lts-browsers
+  services:
+    - name: docker:dind
+      command: ["--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   script:
+    - docker compose version
     - make install-immutable
     - make test-api
   timeout: 10m
 
 e2e:
   stage: e2e
+  <<: *before_script
+  image: docker:latest
+  services:
+    - name: docker:dind
+      command: ["--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+  timeout: 10m
   script:
     - make install-immutable
     - make test-e2e-install
     - make test-e2e-start
     - make test-e2e-ci
     - make test-e2e-stop
-  timeout: 10m
   artifacts:
     name: E2E Test Artifacts
     paths:
