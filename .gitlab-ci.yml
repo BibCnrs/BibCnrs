@@ -47,6 +47,16 @@ test:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: S3cr3t
     DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: ${NODE_ENV:-development}
+    MAIL_SERVER_HOST: mail
+    MAIL_SERVER_PORT: 1025
+    cookie_secret: S3cr3t!C00kie
+    header_secret: S3cr3t!H34d3r
+    admin_secret: S3cr3t!4dm1n
+    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+    MAIL_FROM: bibcnrs@bib.cnrs.fr
+    MAIL_TO: assistance-portail@inist.fr
+    BIB_UPLOADS_DIR: /app/packages/api/uploads
   script:
     - yarn install
     - yarn workspace @bibcnrs/api run test
