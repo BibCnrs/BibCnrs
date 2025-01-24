@@ -39,20 +39,17 @@ typecheck:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
 test:
-  stage: test
-  image: cimg/node:lts-browsers
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
+  image: node:16
   services:
-    - name: docker:dind
-      alias: docker
-      command: ["--tls=false"]
+    - postgres:13
+  variables:
+    POSTGRES_DB: testdb
+    POSTGRES_USER: testuser
+    POSTGRES_PASSWORD: testpassword
+    DATABASE_URL: postgres://postgres:S3cr3t@db/bibcnrs
   script:
-    - docker compose version
-    - make install-immutable
-    - make test-api
-  timeout: 10m
+    - yarn install
+    - yarn  .... test
 
 e2e:
   stage: e2e
