@@ -46,7 +46,7 @@ test:
     POSTGRES_DB: bibcnrs
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: S3cr3t
-    DATABASE_URL: postgres://postgres:S3cr3t@db-test:5432/bibcnrs
+    DATABASE_URL: postgres://postgres:S3cr3t@test:5432/bibcnrs
   script:
     - yarn install
     - yarn workspace @bibcnrs/api run test
