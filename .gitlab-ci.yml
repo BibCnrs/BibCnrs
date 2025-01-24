@@ -1,17 +1,17 @@
 default:
   image:
-    name: node:lts
+    name: docker:20.10.16
   tags:
-      - docker
-  cache: 
-    key: $CI_COMMIT_REF_SLUG
-    policy: pull-push
-    paths:
-        - .yarn/
-
-.before_script: &before_script
+    - docker
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
   before_script:
-    - yarn install --immutable --check-cache
+    - docker info
+    - docker-compose version
+    - apk add --no-cache make
 
 stages:
   - lint
@@ -21,61 +21,40 @@ stages:
 
 lint:
   stage: lint
-  <<: *before_script
-  timeout: 10m
   script:
     - make install-immutable
     - make lint-check
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
-
 typecheck:
   stage: typecheck
-  <<: *before_script
-  timeout: 10m
   script:
     - make typecheck
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
-test: 
+test:
   stage: test
-  image: cimg/node:lts-browsers
-  services:
-    - name: docker:dind
   script:
-    - docker compose version
     - make install-immutable
     - make test-api
   timeout: 10m
-  
+
 e2e:
   stage: e2e
-  <<: *before_script
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
-  timeout: 10m
   script:
     - make install-immutable
     - make test-e2e-install
     - make test-e2e-start
     - make test-e2e-ci
     - make test-e2e-stop
-
+  timeout: 10m
   artifacts:
-     name: E2E Test Artifacts
-     paths:
-       - packages/e2e/playwright-report/
-       - packages/e2e/test-results/    
-     expire_in: 30 days
+    name: E2E Test Artifacts
+    paths:
+      - packages/e2e/playwright-report/
+      - packages/e2e/test-results/
+    expire_in: 30 days
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
-
-
-
-
