@@ -41,13 +41,13 @@ typecheck:
 test:
   stage: test
   image: cimg/node:lts-browsers
-  services:
-    - name: docker:dind
-      alias: docker
-      command: ["--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false"]
   script:
     - docker compose version
     - make install-immutable
