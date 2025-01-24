@@ -89,6 +89,7 @@ e2e:
   image: node:22
   services:
     - postgres:16.3
+    - redis:7.2.5
   variables:
     POSTGRES_DB: bibcnrs
     POSTGRES_USER: postgres
