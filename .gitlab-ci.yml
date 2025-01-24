@@ -16,7 +16,8 @@ default:
 stages:
   - lint
   - typecheck
-  - test
+  - test-api
+  - test-front
   - e2e
 
 lint:
@@ -24,10 +25,7 @@ lint:
   <<: *before_script
   timeout: 10m
   script:
-    - make install-immutable
     - make lint-check
-  only:
-    - $CI_PIPELINE_SOURCE != "cancelled"
 
 typecheck:
   stage: typecheck
@@ -35,10 +33,8 @@ typecheck:
   timeout: 10m
   script:
     - make typecheck
-  only:
-    - $CI_PIPELINE_SOURCE != "cancelled"
 
-test:
+test-api:
   image: node:22
   services:
     - postgres:16.3
@@ -57,9 +53,26 @@ test:
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
+  <<: *before_script
   script:
-    - yarn install
     - yarn workspace @bibcnrs/api run test
+
+test-front:
+  image: node:22
+  services:
+    - postgres:16.3
+  variables:
+    POSTGRES_DB: bibcnrs
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: S3cr3t
+    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: development
+    VITE_ENV: development
+    VITE_BIBAPI_HOST: http://localhost:3000/api
+    VITE_SOURCE_MAP: true
+  <<: *before_script
+  script:
+    - yarn workspace @bibcnrs/front run test
 
 e2e:
   stage: e2e
