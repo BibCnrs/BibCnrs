@@ -110,6 +110,7 @@ e2e:
     METADORE_API_KEY: ${METADORE_API_KEY}
     DOAJ_URL: ${DOAJ_URL}
     REDIS_HOST: redis
+    REDIS_URL: redis://redis:6379
     bib_admin_host: http://localhost:3000/admin
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
