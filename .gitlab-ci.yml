@@ -3,12 +3,10 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 default:
-  image:
-    name: docker:20.10.16
-  tags:
-    - docker
+  image: docker:20.10.16
   services:
-    - docker:20.10.16-dind
+    - name: docker:20.10.16-dind
+      command: ["--tls=false"]
   before_script:
     - docker info
     - docker-compose version
