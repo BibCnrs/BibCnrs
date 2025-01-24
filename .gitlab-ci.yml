@@ -117,7 +117,7 @@ e2e:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/e2e run playwright install 
-    - yarn workspace @bibcnrs/e2e run start
+    - yarn workspace @bibcnrs/api run start:e2e
     - CI=1 yarn workspace @bibcnrs/e2e run test
     - yarn stop
   artifacts:
