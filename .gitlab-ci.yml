@@ -132,17 +132,17 @@ test:front:
 
 build:dev:
   stage: build
-    image:
-        name: gcr.io/kaniko-project/executor:v1.20.0-debug
-        entrypoint: [""]
-    before_script:
-        - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
-    script:
-        - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
-        #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
-        #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
-        - /kaniko/executor
-          --context "${CI_PROJECT_DIR}/packages/admin"
-          --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
-          --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
+  image:
+    name: gcr.io/kaniko-project/executor:v1.20.0-debug
+    entrypoint: [""]
+  before_script:
+    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
+  script:
+    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
+    #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
+    #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/packages/admin"
+      --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
 
