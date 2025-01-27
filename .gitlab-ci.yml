@@ -139,6 +139,7 @@ build:dev:
     - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
   script:
     - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
+    - BIBAPI_HOST=https://bib-dev.inist.fr/api
     #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
     #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
     - /kaniko/executor
