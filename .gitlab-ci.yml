@@ -32,7 +32,7 @@ typecheck:
   script:
     - make typecheck
 
-.test:api:
+test:api:
   stage: test
   image: node:22
   services:
@@ -56,7 +56,7 @@ typecheck:
   script:
     - yarn workspace @bibcnrs/api run test
 
-.test:front:
+test:front:
   stage: test
   image: node:22
   services:
