@@ -119,7 +119,11 @@ e2e:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/e2e run playwright install 
-    - yarn workspace @bibcnrs/e2e run test
+    - yarn workspace @bibcnrs/api run start:e2e -d &
+    - yarn workspace @bibcnrs/front run start:e2e -d &
+    - yarn workspace @bibcnrs/admin run start:e2e -d &
+    - sleep 20
+    - yarn workspace @bibcnrs/e2e run test:ui
   artifacts:
     name: E2E Test Artifacts
     paths:
