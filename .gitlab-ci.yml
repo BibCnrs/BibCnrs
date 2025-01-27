@@ -144,11 +144,11 @@ build:dev:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}/packages/admin"
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1"
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}/packages/front"
       --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:1.0.1-dev"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:1.0.1"
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}/packages/api"
       --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
