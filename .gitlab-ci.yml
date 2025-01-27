@@ -16,9 +16,7 @@ default:
 stages:
   - lint
   - typecheck
-  - test-api
-  - test-front
-  - e2e
+  - test
 
 lint:
   stage: lint
@@ -34,8 +32,8 @@ typecheck:
   script:
     - make typecheck
 
-test-api:
-  stage: test-api
+.test:api:
+  stage: test
   image: node:22
   services:
     - postgres:16.3
@@ -58,8 +56,8 @@ test-api:
   script:
     - yarn workspace @bibcnrs/api run test
 
-test-front:
-  stage: test-front
+.test:front:
+  stage: test
   image: node:22
   services:
     - postgres:16.3
@@ -76,8 +74,8 @@ test-front:
   script:
     - yarn workspace @bibcnrs/front run test
 
-e2e:
-  stage: e2e
+.test:e2e:
+  stage: test
   image: node:22
   services:
     - postgres:16.3
