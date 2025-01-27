@@ -147,4 +147,14 @@ build:dev:
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
       --build-arg BIBAPI_HOST="https://bib-dev.inist.fr/api"
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:1.0.1-dev"
+      --build-arg BIBAPI_HOST="https://bib-dev.inist.fr/api"
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:1.0.1"
+      --build-arg BIBAPI_HOST="https://bib-dev.inist.fr/api"
 
