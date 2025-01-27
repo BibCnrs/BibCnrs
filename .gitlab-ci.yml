@@ -146,4 +146,5 @@ build:dev:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
+      --build-arg BIBAPI_HOST=$(BIBAPI_HOST)
 
