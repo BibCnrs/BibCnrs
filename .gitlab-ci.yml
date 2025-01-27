@@ -140,6 +140,8 @@ build:dev:
     - cat $CI_NEXUS_AUTH_CONFIG | base64 -d > /kaniko/.docker/config.json
   script:
     #- VERSION_NUM=$(echo $CI_COMMIT_TAG | cut -c 2-)
+    - echo "${CI_PROJECT_DIR}"
+    - echo "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}"
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}/admin"
       --dockerfile "${CI_PROJECT_DIR}/admin/Dockerfile"
