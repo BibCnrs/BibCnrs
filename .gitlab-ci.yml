@@ -138,30 +138,7 @@ build:dev:
   before_script:
     - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
   script:
-    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
-    - BIBAPI_HOST=https://bib-dev.inist.fr/api
-    #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
-    #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
-
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
-      --build-arg BIBAPI_HOST="https://bib-dev.inist.fr/api"
-
-    - rm -rf /kaniko/buildcontext
-
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:1.0.1"
-      --build-arg BIBAPI_HOST="https://bib-dev.inist.fr/api"
-
-    - rm -rf /kaniko/buildcontext
-
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:1.0.1-dev"
-      --build-arg BIBAPI_HOST="https://bib-dev.inist.fr/api"
+    - export BIBAPI_VERSION=${CI_COMMIT_TAG:1.0.1-dev}
+    - export BIBAPI_HOST=https://bib-dev.inist.fr/api
+    - ./scripts/build-dev.sh
 
