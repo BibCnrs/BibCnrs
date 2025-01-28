@@ -9,14 +9,13 @@ default:
     paths:
       - .yarn/
 
-variables:
-  .rule: &rule
-    if: '$CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-  .rule_main: &rule_main
-    if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    variables:
-      BIBAPI_HOST: "https://bib-preprod.inist.fr/api"
-      VERSION_NUM: "1.0.1-int"
+.rule: &rule
+  if: '$CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+.rule_main: &rule_main
+  if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+  variables:
+    BIBAPI_HOST: "https://bib-preprod.inist.fr/api"
+    VERSION_NUM: "1.0.1-int"
 
 .before_script: &before_script
   before_script:
