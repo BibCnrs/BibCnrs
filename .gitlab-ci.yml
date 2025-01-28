@@ -148,7 +148,7 @@ build:devadmin:
   script:
     - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
     - BIBAPI_HOST=https://bib-dev.inist.fr/api
-    - VERSION_NUM= 1.0.1-dev
+    - VERSION_NUM=1.0.1-dev
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
