@@ -9,6 +9,15 @@ default:
     paths:
       - .yarn/
 
+variables:
+  .rule: &rule
+    if: '$CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+  .rule_main: &rule_main
+    if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    variables:
+      BIBAPI_HOST: "https://bib-preprod.inist.fr/api"
+      VERSION_NUM: "1.0.1-int"
+
 .before_script: &before_script
   before_script:
     - yarn install --immutable --check-cache
@@ -140,13 +149,15 @@ build:devadmin:
   script:
     - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
     - BIBAPI_HOST=https://bib-dev.inist.fr/api
-    #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
-    #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
+    - VERSION_NUM= 1.0.1-dev
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:1.0.1-dev"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
+  rules:
+    - <<: *rule
+    - <<: *rule_main
 
 build:devapi:
   stage: build
@@ -158,8 +169,6 @@ build:devapi:
   script:
     - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
     - BIBAPI_HOST=https://bib-dev.inist.fr/api
-    #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
-    #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
@@ -176,8 +185,6 @@ build:devfront:
   script:
     - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
     - BIBAPI_HOST=https://bib-dev.inist.fr/api
-    #- COMMIT_TAG=$(echo $CI_COMMIT_TAG | cut -c 2-)
-    #- echo ${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/${PROJECT_PATH}:${COMMIT_TAG}
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
