@@ -22,7 +22,7 @@ default:
 
 .before_script: &before_script
   before_script:
-    - yarn install --immutable 
+    - make install-immutable
 
 stages:
   - lint
