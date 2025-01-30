@@ -54,7 +54,7 @@ export default function ArticleAdvancedSearchItem({
 					}}
 					size="small"
 				>
-					<InputLabel>{t("components.advancedSearch.operator")}</InputLabel>
+					<InputLabel aria-label="operateur">{t("components.advancedSearch.operator")}</InputLabel>
 					<Select
 						value={item.operator}
 						label={t("components.advancedSearch.operator")}
@@ -82,7 +82,7 @@ export default function ArticleAdvancedSearchItem({
 				}}
 				size="small"
 			>
-				<InputLabel>{t("components.advancedSearch.field")}</InputLabel>
+				<InputLabel aria-label="champ">{t("components.advancedSearch.field")}</InputLabel>
 				<Select
 					label={t("components.advancedSearch.field")}
 					value={item.field}

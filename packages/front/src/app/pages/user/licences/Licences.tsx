@@ -137,6 +137,7 @@ const Licences = () => {
 										<a
 											href={`${activeLicences.media?.url}`}
 											target="_blank"
+											aria-label="media"
 											rel="noopener noreferrer nofollow"
 											style={{ color: "#6941EB" }}
 											onClick={() => {

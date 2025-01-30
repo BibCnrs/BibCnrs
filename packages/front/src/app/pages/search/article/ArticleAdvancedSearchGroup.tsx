@@ -45,7 +45,7 @@ export default function ArticleAdvancedSearchGroup({
 					}}
 					size="small"
 				>
-					<InputLabel>{t("components.advancedSearch.operator")}</InputLabel>
+					<InputLabel aria-label="operateur">{t("components.advancedSearch.operator")}</InputLabel>
 					<Select
 						value={group.operator}
 						label={t("components.advancedSearch.operator")}
