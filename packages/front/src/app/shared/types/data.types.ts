@@ -53,7 +53,7 @@ export type CMSDataType = {
 	name_en: string;
 	content_fr: string;
 	content_en: string;
-	page: "faq" | "home" | "legal";
+	page: "faq" | "home" | "legal" | "plan";
 	from: string;
 	to: string | null;
 	enable: boolean;

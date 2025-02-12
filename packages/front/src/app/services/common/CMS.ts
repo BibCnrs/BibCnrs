@@ -8,7 +8,8 @@ type Pages =
 	| "home"
 	| "legal"
 	| "privacy"
-	| "accessibility";
+	| "accessibility"
+	| "plan";
 
 const doQuery = async <Page extends Pages>(
 	page: Page,
@@ -41,3 +42,5 @@ export const about = (): Promise<CMSResultDataType> => doQuery("about");
 
 export const accessibility = (): Promise<CMSResultDataType> =>
 	doQuery("accessibility");
+
+export const plan = (): Promise<CMSResultDataType> => doQuery("plan");

@@ -492,6 +492,7 @@ export class EbscoSearchAlertCronService {
     <div style="box-sizing: border-box;">
         <a 
             href="${this.services.frontEndpoint}/account/alert"
+			aria-label="Gérer mes alertes"
             style="
                 text-decoration: none;
                 background-color: #f8f8f8;
@@ -574,7 +575,7 @@ export class EbscoSearchAlertCronService {
 						<h4 class="title">
 							${
 								oaLink
-									? `<a href="${oaLink.url}" style="
+									? `<a href="${oaLink.url}" aria-label="oaLink" style="
 									text-decoration: none;
 									background-color: #f8f8f8;
 									box-sizing: border-box;

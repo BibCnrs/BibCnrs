@@ -25,12 +25,12 @@ export class JanusAlertService {
 	}
 
 	private getLink({ uid, id }): string {
-		return `<a href="${this.getEditHref(id)}">${uid}</a>`;
+		return `<a href="${this.getEditHref(id)}" aria-label="getLink">${uid}</a>`;
 	}
 
 	getSimilarAlertMailHtml(account, similarAccounts): string {
 		return `<p>Le nouveau compte ${this.getLink(account)} ressemble aux comptes suivants : </p>
-    <a href="${this.getListHref(account.uid)}">Liste :</a>
+    <a href="${this.getListHref(account.uid)}" aria-label="getAccount">Liste :</a>
     <ul>
         ${similarAccounts
 					.map((account) => `<li>${this.getLink(account)}</li>`)

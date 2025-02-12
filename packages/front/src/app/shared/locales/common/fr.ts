@@ -245,6 +245,7 @@ const fr: Common = {
 			legal: "Mentions légales",
 			privacy: "Politique de confidentialité",
 			accessibility: "Accessibilité",
+			plan: "Plan du site",
 			mail: {
 				subject: "Demande d’assistance",
 				body: `Bonjour,
@@ -306,6 +307,9 @@ Cordialement`,
 		},
 		accessibility: {
 			title: "Accessibilité",
+		},
+		plan: {
+			title: "Plan du site",
 		},
 		article: {
 			title: "Article",

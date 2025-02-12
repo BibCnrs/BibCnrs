@@ -1,5 +1,6 @@
 import i18next from "i18next";
 import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
+import { useEffect } from "react";
 import { initReactI18next, useTranslation } from "react-i18next";
 import type { SupportedLanguages, TFunction } from "../types/types";
 import en from "./common/en";
@@ -253,6 +254,7 @@ export type Common = {
 			legal: string;
 			privacy: string;
 			accessibility: string;
+			plan: string;
 			mail: {
 				subject: string;
 				body: string;
@@ -298,6 +300,9 @@ export type Common = {
 			emptyFavorites: string;
 		};
 		accessibility: {
+			title: string;
+		};
+		plan: {
 			title: string;
 		};
 		article: {
@@ -495,19 +500,37 @@ i18next
 	.use(initReactI18next)
 	.init({
 		fallbackLng: "fr",
-		debug: false,
+		debug: true,
 		interpolation: {
 			escapeValue: false,
 		},
 		resources: {
-			en: {
-				common: en,
-			},
 			fr: {
 				common: fr,
 			},
+			en: {
+				common: en,
+			},
 		},
 	});
+
+export const LanguageSetter = () => {
+	useEffect(() => {
+		const handleLanguageChange = () => {
+			document.documentElement.lang = i18next.language;
+		};
+
+		handleLanguageChange();
+
+		i18next.on("languageChanged", handleLanguageChange);
+
+		return () => {
+			i18next.off("languageChanged", handleLanguageChange);
+		};
+	}, []);
+
+	return null;
+};
 
 /**
  * export the translation function and the i18n system

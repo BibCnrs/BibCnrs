@@ -243,6 +243,7 @@ const en: Common = {
 			legal: "Legal notice",
 			privacy: "Privacy",
 			accessibility: "Accessibility",
+			plan: "Site map",
 			mail: {
 				subject: "Request for assistance",
 				body: `Hello,
@@ -303,6 +304,9 @@ Sincerely`,
 		},
 		accessibility: {
 			title: "Accessibility",
+		},
+		plan: {
+			title: "Site map",
 		},
 		article: {
 			title: "Article",

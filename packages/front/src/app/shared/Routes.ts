@@ -26,6 +26,7 @@ const Routes = {
 	legal: "/legal",
 	accessibility: "/accessibility",
 	resources: "/resources",
+	plan: "/plan",
 	/* Domain route */
 	tests: "/tests",
 	news: "/news",
@@ -135,3 +136,4 @@ export const RouteHistory = Routes.history;
 export const RouteAlert = Routes.alert;
 export const RouteFavourite = Routes.favourite;
 export const RouteUserSettings = Routes.userSettings;
+export const RoutePlan = Routes.plan;

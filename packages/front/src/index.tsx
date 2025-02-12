@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./app/App";
 import { BibContextProvider } from "./app/context/BibContext";
 import ExceptedError from "./app/pages/errors/ExceptedError";
-import I18N from "./app/shared/locales/I18N";
+import I18N, { LanguageSetter } from "./app/shared/locales/I18N";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = ReactDOMClient.createRoot(container);
@@ -16,6 +16,7 @@ const queryClient = new QueryClient();
 root.render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
+			<LanguageSetter />
 			<I18nextProvider i18n={I18N}>
 				<BrowserRouter>
 					<BibContextProvider>

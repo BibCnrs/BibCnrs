@@ -42,7 +42,7 @@ export default function FacetList({
 	}
 
 	return (
-		<Stack gap={2}>
+		<Stack gap={2} tabIndex={0}>
 			{!isPublicationPage &&
 				MOST_USED_FACETS.map((facet) => (
 					<FacetSearchList

@@ -37,7 +37,7 @@ export const FakeSearchBar = ({ title }: { title: string }) => {
 				</Typography>
 				<Typography
 					variant="h4"
-					component="h1"
+					component="h2"
 					fontWeight="bold"
 					sx={{
 						color: "white",

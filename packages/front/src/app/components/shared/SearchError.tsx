@@ -15,7 +15,7 @@ export const SearchError = () => {
 			}}
 		>
 			<img src="/img/error.svg" alt="error" width={300} />
-			<Typography variant="h4" component="h1">
+			<Typography variant="h4" component="h2">
 				{t("components.searchError.message")}
 			</Typography>
 		</Stack>
