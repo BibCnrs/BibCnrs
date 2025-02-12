@@ -105,7 +105,7 @@ describe("SearchBar", () => {
 		await userEvent.type(input, " ");
 		await userEvent.type(input, "there");
 		expect(onSearch).toBeCalledTimes(0);
-		screen.getByRole("search").click();
+		screen.getByTestId("search-box-button").click();
 		expect(onSearch).toBeCalledTimes(1);
 		expect(onSearch).toHaveBeenCalledWith("hello there");
 	});
