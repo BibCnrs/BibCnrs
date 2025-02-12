@@ -18,6 +18,9 @@ import { Empty } from "../../shared/Empty";
  * @param data - Array of Articles
  * @param domain
  */
+const newName = (name) => {
+	return name.replace(/[^a-zA-Z0-9 ]/g, "");
+};
 const RenderNews = ({ data }: TestsNewsProps) => {
 	const { language } = useBibContext();
 	const theme = useTheme();
@@ -70,6 +73,7 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 									? data.media.url
 									: "https://bib.cnrs.fr/wp-content/uploads/2018/04/bibcnrs-logo-visite.png"
 							}
+							alt={newName(data.media.name)}
 						/>
 						<CardContent
 							sx={{
