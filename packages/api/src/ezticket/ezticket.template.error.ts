@@ -41,7 +41,7 @@ export function errorTemplate(language: string, error?: string, gate?: string) {
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="alert alert-danger" role="alert">
-                            <img class="logo" src="/api/ezticket/bibcnrspng"/>
+                            <img class="logo" src="/api/ezticket/bibcnrspng" alt="bibcnrspng"/>
                             <p>${text[error](gate)}</p>
                         </div>
                     </div>

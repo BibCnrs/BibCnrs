@@ -6,6 +6,7 @@ import {
 	RouteAbout,
 	RouteAccessibility,
 	RouteLegal,
+	RoutePlan,
 	RoutePrivacy,
 } from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -99,6 +100,10 @@ const Footer = () => {
 					<Divider orientation="vertical" flexItem />
 					<Button to={RouteAccessibility} component={RouterLink} sx={FOOTER_SX}>
 						{t("components.footer.accessibility")}
+					</Button>
+					<Divider orientation="vertical" flexItem />
+					<Button to={RoutePlan} component={RouterLink} sx={FOOTER_SX}>
+						{t("components.footer.plan")}
 					</Button>
 				</Stack>
 

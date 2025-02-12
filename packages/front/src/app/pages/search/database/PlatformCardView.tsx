@@ -31,7 +31,7 @@ export function PlatformCardView({ platforms }: PlatformCardViewProps) {
 					lg: "repeat(4, 1fr)",
 				}}
 				gap={2}
-				role="list"
+				role="listitem"
 				aria-label={t("pages.database.title")}
 			>
 				{platforms

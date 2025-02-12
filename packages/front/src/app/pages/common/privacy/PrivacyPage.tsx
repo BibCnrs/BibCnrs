@@ -23,7 +23,7 @@ const PrivacyPage = () => {
 		<>
 			<PageTitle page="privacy" />
 			<FakeSearchBar title={t("pages.privacy.title")} />
-			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }} tabIndex={0}>
 				<RenderContent
 					data={data}
 					page="privacy"

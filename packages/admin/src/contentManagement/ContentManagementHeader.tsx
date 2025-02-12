@@ -13,6 +13,7 @@ export const pages = [
 	{ id: "about", name: "A propos" },
 	{ id: "privacy", name: "Politique de confidentialité" },
 	{ id: "accessibility", name: "Accessibilité" },
+	{ id: "plan", name: "plan" },
 ];
 
 const ContentManagementHeader = () => {

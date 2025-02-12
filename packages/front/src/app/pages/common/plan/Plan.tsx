@@ -3,17 +3,17 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../components/internal/PageTitle";
 import RenderContent from "../../../components/page/render/RenderContent";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
-import { accessibility } from "../../../services/common/CMS";
+import { plan } from "../../../services/common/CMS";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type { CMSResultDataType } from "../../../shared/types/data.types";
 
-const AccessibilityPage = () => {
+const Plan = () => {
 	const t = useTranslator();
 
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 	const { data } = useQuery<CMSResultDataType, any, CMSResultDataType, any>({
-		queryKey: ["accessibility"],
-		queryFn: accessibility,
+		queryKey: ["plan"],
+		queryFn: plan,
 		placeholderData: keepPreviousData,
 		staleTime: 3600000, // 1 hour of cache
 		gcTime: 3600000, // 1000 * 60 * 60
@@ -21,12 +21,12 @@ const AccessibilityPage = () => {
 
 	return (
 		<>
-			<PageTitle page="accessibility" />
-			<FakeSearchBar title={t("pages.accessibility.title")} />
+			<PageTitle page="plan" />
+			<FakeSearchBar title={t("pages.plan.title")} />
 			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }} tabIndex={0}>
 				<RenderContent
 					data={data}
-					page="accessibility"
+					page="plan"
 					updateDocumentTitle
 					showDate
 					t={t}
@@ -36,4 +36,4 @@ const AccessibilityPage = () => {
 	);
 };
 
-export default AccessibilityPage;
+export default Plan;

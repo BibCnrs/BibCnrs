@@ -186,6 +186,7 @@ const SearchBar = ({
 						disableClearable
 						fullWidth
 						size="small"
+						role="search"
 						sx={{
 							"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
 								border: "none",

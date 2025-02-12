@@ -14,7 +14,7 @@ export const Empty = () => {
 			}}
 		>
 			<img src="/img/empty.svg" alt="empty" width={300} />
-			<Typography variant="h4" component="h1">
+			<Typography variant="h4" component="h2">
 				{t("components.empty.message")}
 			</Typography>
 		</Stack>

@@ -108,7 +108,7 @@ const Licences = () => {
 							<>
 								<Typography
 									variant="h4"
-									component="h1"
+									component="h2"
 									fontWeight="bold"
 									color="primary"
 								>
@@ -118,7 +118,7 @@ const Licences = () => {
 								</Typography>
 								<Box
 									sx={{
-										"a, h1": {
+										"a, h2": {
 											color: "primary.main",
 										},
 									}}
