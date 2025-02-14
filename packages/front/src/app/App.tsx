@@ -8,6 +8,7 @@ import About from "./pages/common/about/About";
 import Accessibility from "./pages/common/accessibility/AccessibilityPage";
 import Faq from "./pages/common/faq/Faq";
 import Legal from "./pages/common/legal/Legal";
+import Plan from "./pages/common/plan/Plan";
 import PrivacyPage from "./pages/common/privacy/PrivacyPage";
 import Resources from "./pages/common/resources/Resources";
 import Error404 from "./pages/errors/Error404";
@@ -34,6 +35,7 @@ import {
 	RouteLicences,
 	RouteMetadore,
 	RouteNews,
+	RoutePlan,
 	RoutePrivacy,
 	RoutePublication,
 	RouteResources,
@@ -47,7 +49,7 @@ const App = () => {
 		<>
 			<ConsentForm />
 			<Header />
-			<div id="app-container">
+			<div id="app-container" role="main">
 				<Routes>
 					{/* Header route */}
 					<Route path={RouteRoot} element={<Root />} />
@@ -128,6 +130,7 @@ const App = () => {
 					<Route path={RouteAbout} element={<About />} />
 					<Route path={RouteLegal} element={<Legal />} />
 					<Route path={RouteAccessibility} element={<Accessibility />} />
+					<Route path={RoutePlan} element={<Plan />} />
 					{/* Error route */}
 					<Route path="*" element={<Error404 />} />
 				</Routes>

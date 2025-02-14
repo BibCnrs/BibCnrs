@@ -55,7 +55,7 @@ test("filter platforms as cards", async ({ page }) => {
 		timeout: 10000,
 	});
 
-	const searchButton = page.getByRole("search");
+	const searchButton = page.getByRole("search").first();
 	await expect(searchButton).toBeVisible({
 		timeout: 10000,
 	});
@@ -123,7 +123,7 @@ test("filter platforms as datagrid", async ({ page }) => {
 		timeout: 10000,
 	});
 
-	const searchButton = page.getByRole("search");
+	const searchButton = page.getByRole("search").first();
 	await expect(searchButton).toBeVisible({
 		timeout: 10000,
 	});
@@ -161,7 +161,7 @@ test("filter platforms updates filters result", async ({ page }) => {
 		timeout: 10000,
 	});
 
-	const searchButton = page.getByRole("search");
+	const searchButton = page.getByRole("search").first();
 	await expect(searchButton).toBeVisible({
 		timeout: 10000,
 	});

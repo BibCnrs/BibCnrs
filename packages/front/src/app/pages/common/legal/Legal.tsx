@@ -23,7 +23,7 @@ const Legal = () => {
 		<>
 			<PageTitle page="legal" />
 			<FakeSearchBar title={t("pages.legal.title")} />
-			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }} tabIndex={0}>
 				<RenderContent
 					data={data}
 					page="legal"

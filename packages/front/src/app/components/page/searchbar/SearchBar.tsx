@@ -186,6 +186,7 @@ const SearchBar = ({
 						disableClearable
 						fullWidth
 						size="small"
+						role="search"
 						sx={{
 							"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
 								border: "none",
@@ -200,7 +201,7 @@ const SearchBar = ({
 							<Divider orientation="vertical" id="search-box-divider" />
 						</>
 					) : null}
-					<IconButton onClick={searchOnClick} role="search">
+					<IconButton onClick={searchOnClick} data-testid="search-box-button">
 						<SearchIcon />
 					</IconButton>
 					{secondaryAction && (

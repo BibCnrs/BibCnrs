@@ -6,6 +6,7 @@ import {
 	RouteAbout,
 	RouteAccessibility,
 	RouteLegal,
+	RoutePlan,
 	RoutePrivacy,
 } from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -16,16 +17,16 @@ const FOOTER_SX = {
 	textTransform: "none",
 };
 const BlueSkyIcon = () => {
-	return <img src="/logos/BlueSkyLogo.png" alt="" />;
+	return <img src="/logos/BlueSkyLogo.png" alt="BlueSky" />;
 };
 const MastodonIcon = () => {
-	return <img src="/logos/MastodonLogo.png" alt="" />;
+	return <img src="/logos/MastodonLogo.png" alt="Mastodon" />;
 };
 const InstagramIcon = () => {
-	return <img src="/logos/InstagramLogo.png" alt="" />;
+	return <img src="/logos/InstagramLogo.png" alt="Instagram" />;
 };
 const LinkedInIcon = () => {
-	return <img src="/logos/LinkedinLogo.png" alt="" />;
+	return <img src="/logos/LinkedinLogo.png" alt="Linkedin" />;
 };
 
 /**
@@ -61,6 +62,7 @@ const Footer = () => {
 					<img
 						src={CNRSRFLogo}
 						alt="CNRS RF logo"
+						aria-label="CNRS logo"
 						style={{
 							width: 200,
 							filter:
@@ -99,6 +101,10 @@ const Footer = () => {
 					<Button to={RouteAccessibility} component={RouterLink} sx={FOOTER_SX}>
 						{t("components.footer.accessibility")}
 					</Button>
+					<Divider orientation="vertical" flexItem />
+					<Button to={RoutePlan} component={RouterLink} sx={FOOTER_SX}>
+						{t("components.footer.plan")}
+					</Button>
 				</Stack>
 
 				<Stack
@@ -112,6 +118,7 @@ const Footer = () => {
 						href="https://www.linkedin.com/company/inist-cnrs"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
+						aria-label="LinkedIn"
 					>
 						<LinkedInIcon />
 					</IconButton>
@@ -119,6 +126,7 @@ const Footer = () => {
 						href="https://bsky.app/profile/cnrs-inist.bsky.social"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
+						aria-label="BlueSky"
 					>
 						<BlueSkyIcon />
 					</IconButton>
@@ -126,6 +134,7 @@ const Footer = () => {
 						href="https://social.numerique.gouv.fr/@inistcnrs"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
+						aria-label="Mastodon"
 					>
 						<MastodonIcon />
 					</IconButton>
@@ -133,6 +142,7 @@ const Footer = () => {
 						href=" https://www.instagram.com/inist_cnrs/ "
 						target="_blank"
 						rel="noreferrer noopener nofollow"
+						aria-label="Instagram"
 					>
 						<InstagramIcon />
 					</IconButton>

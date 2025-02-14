@@ -59,6 +59,7 @@ export default function PaginationComponent({
 					className="page-selector"
 					count={Math.ceil(total / perPage)}
 					page={page}
+					tabIndex={0}
 				/>
 			</Box>
 

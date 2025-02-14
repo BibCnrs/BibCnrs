@@ -66,7 +66,7 @@ export function loginTemplate(language: string, error?: string) {
             ${text.janus}
         </button>
        
-        <a href="#" class="text-sm text-bibcnrs italic  block text-right mb-2">${text.askAccount}</a>
+        <a href="#" aria-label="text" class="text-sm text-bibcnrs italic  block text-right mb-2">${text.askAccount}</a>
         <div class="inline-flex items-center justify-center w-full mb-2">
             <hr class="w-full h-px my-4 bg-gray-200 border-0">
             <span class="absolute px-3 font-medium text-gray-400 -translate-x-1/2 bg-white left-1/2">${text.or}</span>
@@ -78,8 +78,8 @@ export function loginTemplate(language: string, error?: string) {
         </button>
 
         <form role="form" method="post" id="login_form" class="form-signin hidden transform transition-opacity opacity-0 scale-95" >
-            <input name="username" type="text" required class="w-full border border-bibcnrsLight rounded-md p-2 mb-4" placeholder=${text.login}>
-            <input name="password" type="password" required class="w-full border border-bibcnrsLight rounded-md p-2 mb-4" placeholder=${text.password}>
+            <input name="username" type="text" required class="w-full border border-bibcnrsLight rounded-md p-2 mb-4" aria-label="username" placeholder=${text.login}>
+            <input name="password" type="password" required class="w-full border border-bibcnrsLight rounded-md p-2 mb-4" aria-label="password" placeholder=${text.password}>
             ${
 							error
 								? `<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">

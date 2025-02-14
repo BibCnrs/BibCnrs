@@ -1,0 +1,218 @@
+default:
+  image:
+    name: node:22
+  tags:
+    - docker
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    policy: pull-push
+    paths:
+      - .yarn/
+
+.rule: &rule
+  if: $CI_COMMIT_BRANCH == "develop"
+  variables:
+    BIBAPI_HOST: "https://bib-dev.inist.fr/api"
+    VERSION_NUM: "develop"
+    BIB_ENV: "-dev"
+    MATOMO_SITE_ID: 86
+.rule_main: &rule_main
+  if: $CI_COMMIT_BRANCH == "main"
+  variables:
+    BIBAPI_HOST: "https://bib-preprod.inist.fr/api"
+    VERSION_NUM: "-main"
+    BIB_ENV: "int"
+    MATOMO_SITE_ID: 86
+.rule_tag: &rule_tag
+  if: $CI_COMMIT_TAG
+  variables:
+    BIBAPI_HOST: "https://bib.cnrs.fr/api"
+    VERSION_NUM: $CI_COMMIT_TAG
+    BIB_ENV: "-prd"
+    MATOMO_SITE_ID: 1
+
+.before_script: &before_script
+  before_script:
+    - make install-immutable
+
+stages:
+  - lint
+  - typecheck
+  - test
+  - build
+
+lint:
+  stage: lint
+  <<: *before_script
+  timeout: 10m
+  script:
+    - make lint-check
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
+
+typecheck:
+  stage: typecheck
+  <<: *before_script
+  timeout: 10m
+  script:
+    - make typecheck
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
+
+test:api:
+  stage: test
+  image: node:22
+  services:
+    - postgres:16.3
+  variables:
+    POSTGRES_DB: bibcnrs
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: S3cr3t
+    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: ${NODE_ENV:-development}
+    MAIL_SERVER_HOST: mail
+    MAIL_SERVER_PORT: 1025
+    cookie_secret: S3cr3t!C00kie
+    header_secret: S3cr3t!H34d3r
+    admin_secret: S3cr3t!4dm1n
+    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+    MAIL_FROM: bibcnrs@bib.cnrs.fr
+    MAIL_TO: assistance-portail@inist.fr
+    BIB_UPLOADS_DIR: /app/packages/api/uploads
+  <<: *before_script
+  script:
+    - yarn workspace @bibcnrs/api run test
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
+
+test:front:
+  stage: test
+  image: node:22
+  services:
+    - postgres:16.3
+  variables:
+    POSTGRES_DB: bibcnrs
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: S3cr3t
+    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: development
+    VITE_ENV: development
+    VITE_BIBAPI_HOST: http://localhost:3000/api
+    VITE_SOURCE_MAP: true
+  <<: *before_script
+  script:
+    - yarn workspace @bibcnrs/front run test
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
+
+# .test:e2e:
+#   stage: test
+#   image: node:22
+#   services:
+#     - postgres:16.3
+#     - redis:7.2.5
+#   variables:
+#     POSTGRES_DB: bibcnrs
+#     POSTGRES_USER: postgres
+#     POSTGRES_PASSWORD: S3cr3t
+#     DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+#     NODE_ENV: test
+#     RENATER_FAKE_LOGIN: true
+#     BIBAPI_HOST: http://localhost:3000/api
+#     cookie_secret: ${cookie_secret}
+#     header_secret: ${header_secret}
+#     admin_secret: ${admin_secret}
+#     ticket_secret: ${ticket_secret}
+#     BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+#     ebsco_host: ${ebsco_host}
+#     EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
+#     EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
+#     METADORE_URL: ${METADORE_URL}
+#     METADORE_API_KEY: ${METADORE_API_KEY}
+#     DOAJ_URL: ${DOAJ_URL}
+#     REDIS_HOST: redis
+#     REDIS_PORT: 6379
+#     bib_admin_host: http://localhost:3000/admin
+#     MAIL_FROM: bibcnrs@bib.cnrs.fr
+#     MAIL_TO: assistance-portail@inist.fr
+#     BIB_UPLOADS_DIR: /app/packages/api/uploads
+#   timeout: 10m
+#   <<: *before_script
+#   script:
+#     - yarn workspace @bibcnrs/e2e run playwright install
+#     - yarn workspace @bibcnrs/api run start:e2e -d &
+#     - sleep 20
+#     - yarn workspace @bibcnrs/e2e run test
+#   artifacts:
+#     name: E2E Test Artifacts
+#     paths:
+#       - packages/e2e/playwright-report/
+#       - packages/e2e/test-results/
+#     expire_in: 30 days
+#   only:
+#     - $CI_PIPELINE_SOURCE != "cancelled"
+
+build:admin:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.20.0-debug
+    entrypoint: [""]
+  before_script:
+    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
+  script:
+    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
+      --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
+  rules:
+    - *rule
+    - *rule_main
+    - *rule_tag
+
+build:api:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.20.0-debug
+    entrypoint: [""]
+  before_script:
+    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
+  script:
+    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:${VERSION_NUM}"
+      --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
+      --build-arg http_proxy
+      --build-arg http_proxy
+  rules:
+    - *rule
+    - *rule_main
+    - *rule_tag
+  
+
+build:front:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.20.0-debug
+    entrypoint: [""]
+  before_script:
+    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
+  script:
+    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr '[A-Z]' '[a-z]')
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
+      --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
+      --build-arg "MATOMO_TRACKER_URL=$(MATOMO_TRACKER_URL)"
+      --build-arg "MATOMO_SCRIPT_URL=$(MATOMO_SCRIPT_URL)"
+      --build-arg "MATOMO_SITE_ID=$(MATOMO_SITE_ID)"
+  rules:
+    - *rule
+    - *rule_main
+    - *rule_tag
+  
+

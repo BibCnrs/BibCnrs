@@ -92,7 +92,7 @@ function FavouriteList({
 		return (
 			<Typography
 				variant="h6"
-				component="h1"
+				component="h2"
 				sx={{
 					color: "text.disabled",
 				}}
