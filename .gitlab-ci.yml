@@ -13,12 +13,23 @@ default:
   if: $CI_COMMIT_BRANCH == "develop"
   variables:
     BIBAPI_HOST: "https://bib-dev.inist.fr/api"
-    VERSION_NUM: "1.0.1-dev"
+    VERSION_NUM: "develop"
+    BIB_ENV: "-dev"
+    MATOMO_SITE_ID: 86
 .rule_main: &rule_main
   if: $CI_COMMIT_BRANCH == "main"
   variables:
     BIBAPI_HOST: "https://bib-preprod.inist.fr/api"
-    VERSION_NUM: "1.0.1-int"
+    VERSION_NUM: "main"
+    BIB_ENV: "-int"
+    MATOMO_SITE_ID: 86
+.rule_tag: &rule_tag
+  if: $CI_COMMIT_TAG
+  variables:
+    BIBAPI_HOST: "https://bib.cnrs.fr/api"
+    VERSION_NUM: $CI_COMMIT_TAG
+    BIB_ENV: "-prd"
+    MATOMO_SITE_ID: 1
 
 .before_script: &before_script
   before_script:
@@ -145,11 +156,12 @@ build:admin:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
   rules:
     - *rule
     - *rule_main
+    - *rule_tag
 
 build:api:
   stage: build
@@ -163,13 +175,14 @@ build:api:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:1.0.1"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:${VERSION_NUM}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
       --build-arg http_proxy
       --build-arg http_proxy
   rules:
     - *rule
     - *rule_main
+    - *rule_tag
   
 
 build:front:
@@ -181,11 +194,10 @@ build:front:
     - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
   script:
     - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr '[A-Z]' '[a-z]')
-    - MATOMO_SITE_ID=86
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}"
+      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
       --build-arg "MATOMO_TRACKER_URL=$(MATOMO_TRACKER_URL)"
       --build-arg "MATOMO_SCRIPT_URL=$(MATOMO_SCRIPT_URL)"
@@ -193,5 +205,6 @@ build:front:
   rules:
     - *rule
     - *rule_main
+    - *rule_tag
   
 
