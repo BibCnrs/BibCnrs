@@ -48,6 +48,7 @@ export type AutoCompleteDataType = {
 };
 
 export type CMSDataType = {
+	info: boolean;
 	id: number;
 	name_fr: string;
 	name_en: string;

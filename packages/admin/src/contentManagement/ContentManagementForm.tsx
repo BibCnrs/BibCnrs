@@ -48,6 +48,13 @@ export function ContentManagementForm() {
 					name="enable"
 					options={{}}
 				/>
+				<BooleanInput
+					label="Info"
+					source="info"
+					defaultValue={false}
+					name="info"
+					options={{}}
+				/>
 				<NumberInput label="Ordre" source="order" />
 				<DateInput
 					name="from"
