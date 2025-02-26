@@ -402,6 +402,7 @@ model content_management {
   from       DateTime  @db.Date()
   to         DateTime? @db.Date()
   enable     Boolean   @default(true)
+  info       Boolean   @default(false)
   order      Int?
   media_id   Int?
   media      medias?   @relation(fields: [media_id], references: [id])

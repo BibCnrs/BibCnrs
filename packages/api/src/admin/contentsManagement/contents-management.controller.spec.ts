@@ -84,6 +84,7 @@ describe("ContentManagementController", () => {
 				id: 2,
 				page: "home",
 				enable: true,
+				info: false,
 				from: new Date("2021-01-01"),
 				to: null,
 				name_en: "Hello 1",
@@ -101,6 +102,7 @@ describe("ContentManagementController", () => {
 			const createdAdmin = await contentsManagementController.create({
 				page: randomPage,
 				enable: true,
+				info: false,
 				from: new Date("2024-01-01"),
 				to: null,
 				name_en: "Hello Created",
@@ -130,6 +132,11 @@ describe("ContentManagementController", () => {
 					...createdAdmin,
 					page: "updatedPage",
 					name_fr: "Bonjour Updated",
+					content_fr: "Bonjour! Updated",
+					to: new Date("2025-01-01"),
+					order: 1,
+					media_id: 1,
+					info: true,
 				},
 			);
 
