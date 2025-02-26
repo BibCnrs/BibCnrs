@@ -41,7 +41,6 @@ export default function ContentManagementList() {
 					label="resources.contentManagement.fields.name"
 				/>
 				<BooleanField label="Actif" source="enable" />
-				<BooleanField label="Info" source="info" />
 				<WrapperField label="Page" source={null}>
 					<InternalChip />
 				</WrapperField>

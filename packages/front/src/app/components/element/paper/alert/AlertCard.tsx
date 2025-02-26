@@ -1,4 +1,4 @@
-import InfoIcon from "@mui/icons-material/Info";
+import CampaignIcon from "@mui/icons-material/Campaign";
 import WarningIcon from "@mui/icons-material/Warning";
 import { Card, CardContent } from "@mui/material";
 import { Box } from "@mui/system";
@@ -66,7 +66,7 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 						}}
 					/>
 				) : content.info ? (
-					<InfoIcon color="warning" />
+					<CampaignIcon color="primary" />
 				) : (
 					<WarningIcon color="error" />
 				)}

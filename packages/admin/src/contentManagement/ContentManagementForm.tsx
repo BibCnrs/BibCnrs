@@ -48,13 +48,19 @@ export function ContentManagementForm() {
 					name="enable"
 					options={{}}
 				/>
-				<BooleanInput
-					label="Info"
-					source="info"
-					defaultValue={false}
-					name="info"
-					options={{}}
-				/>
+				<FormDataConsumer<{ page: "home" | "alert" | string }>>
+					{({ formData }) =>
+						formData.page === "alert" ? (
+							<BooleanInput
+								label="Info"
+								source="info"
+								defaultValue={false}
+								name="info"
+								options={{}}
+							/>
+						) : null
+					}
+				</FormDataConsumer>
 				<NumberInput label="Ordre" source="order" />
 				<DateInput
 					name="from"
