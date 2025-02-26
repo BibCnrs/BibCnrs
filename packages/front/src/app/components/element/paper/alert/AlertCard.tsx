@@ -1,3 +1,4 @@
+import CampaignIcon from "@mui/icons-material/Campaign";
 import WarningIcon from "@mui/icons-material/Warning";
 import { Card, CardContent } from "@mui/material";
 import { Box } from "@mui/system";
@@ -18,6 +19,7 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 		title: data[0].name_fr,
 		text: data[0].content_fr,
 		media: data[0].media,
+		info: data[0].info,
 	};
 
 	// Change the page content if the page is set to English
@@ -32,7 +34,9 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 			id="alert"
 			sx={{
 				border: "none",
-				backgroundColor: (theme) => theme.palette.error.light,
+				backgroundColor: content.info
+					? (theme) => theme.palette.secondary.light
+					: (theme) => theme.palette.error.light,
 				alignItems: "center",
 				justifyContent: "center",
 				minHeight: "100%",
@@ -47,7 +51,6 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 					alignItems: "center",
 					"&:last-child": {
 						padding: 1,
-
 						height: "100%",
 					},
 				}}
@@ -62,6 +65,8 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 							borderRadius: "6px",
 						}}
 					/>
+				) : content.info ? (
+					<CampaignIcon color="primary" />
 				) : (
 					<WarningIcon color="error" />
 				)}
