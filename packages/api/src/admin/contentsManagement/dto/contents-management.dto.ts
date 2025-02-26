@@ -11,6 +11,7 @@ export class CreateContentManagementDto
 	from: Date;
 	to: Date | null;
 	enable: boolean;
+	info: boolean;
 	order: number | null;
 	media_id: number | null;
 }
