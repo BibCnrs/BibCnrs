@@ -41,6 +41,7 @@ export class EbscoOaController {
 		O: string | null,
 		I: string | null,
 		OU: string | null,
+		IP: string,
 	) {
 		this.logger.log({
 			message: "open access",
@@ -53,6 +54,7 @@ export class EbscoOaController {
 			I,
 			OU,
 			url,
+			IP,
 		});
 	}
 
@@ -62,6 +64,7 @@ export class EbscoOaController {
 		sid: string,
 		domain: string,
 		doi: string,
+		ip: string,
 	) {
 		const institute = janusUser.primary_institute
 			? await this.instituteService.findOne(janusUser.primary_institute)
@@ -80,6 +83,7 @@ export class EbscoOaController {
 			janusUser.cnrs ? "CNRS" : "OTHER",
 			institute?.code ?? null,
 			unit?.code ?? null,
+			ip,
 		);
 	}
 
@@ -89,6 +93,7 @@ export class EbscoOaController {
 		sid: string,
 		domain: string,
 		doi: string,
+		ip: string,
 	) {
 		const institute = inistUser.main_institute
 			? await this.instituteService.findOne(inistUser.main_institute)
@@ -107,6 +112,7 @@ export class EbscoOaController {
 			"UNKNOWN",
 			institute?.code ?? null,
 			unit?.code ?? null,
+			"UNKNOWN",
 		);
 	}
 
@@ -133,27 +139,28 @@ export class EbscoOaController {
 		} catch (error) {
 			throw new BadRequestException("Invalid URL");
 		}
+		const ip = res.req.ip.replace(/^.*:/, "");
 
 		if (user_id && typeof user_id === "string") {
 			const numericUserId = Number.parseInt(user_id, 10);
 			const janusUser =
 				await this.janusAccountService.findOneById(numericUserId);
 			if (janusUser) {
-				await this.logJanusUser(janusUser, url, sid, domaine, doi);
+				await this.logJanusUser(janusUser, url, sid, domaine, doi, ip);
 				return res.redirect(url);
 			}
 
 			const inistUser =
 				await this.inistAccountService.findOneById(numericUserId);
 			if (inistUser) {
-				await this.logInistUser(inistUser, url, sid, domaine, doi);
+				await this.logInistUser(inistUser, url, sid, domaine, doi, ip);
 			}
 		} else if (user?.origin === "janus") {
 			const janusUser = await this.janusAccountService.findOneById(user.id);
-			await this.logJanusUser(janusUser, url, sid, domaine, doi);
+			await this.logJanusUser(janusUser, url, sid, domaine, doi, ip);
 		} else if (user?.origin === "inist") {
 			const inistUser = await this.inistAccountService.findOneById(user.id);
-			await this.logInistUser(inistUser, url, sid, domaine, doi);
+			await this.logInistUser(inistUser, url, sid, domaine, doi, ip);
 		}
 
 		return res.redirect(url);
