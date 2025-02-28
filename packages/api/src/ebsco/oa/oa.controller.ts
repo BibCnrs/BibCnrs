@@ -41,7 +41,7 @@ export class EbscoOaController {
 		O: string | null,
 		I: string | null,
 		OU: string | null,
-		IP: string | null,
+		IP: string | undefined,
 	) {
 		this.logger.log({
 			message: "open access",
