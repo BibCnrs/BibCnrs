@@ -41,7 +41,7 @@ export class EbscoOaController {
 		O: string | null,
 		I: string | null,
 		OU: string | null,
-		IP: string,
+		IP: string | null,
 	) {
 		this.logger.log({
 			message: "open access",
@@ -83,7 +83,7 @@ export class EbscoOaController {
 			janusUser.cnrs ? "CNRS" : "OTHER",
 			institute?.code ?? null,
 			unit?.code ?? null,
-			ip,
+			ip ?? "undefined",
 		);
 	}
 
@@ -112,7 +112,7 @@ export class EbscoOaController {
 			"UNKNOWN",
 			institute?.code ?? null,
 			unit?.code ?? null,
-			"UNKNOWN",
+			ip ?? "undefined",
 		);
 	}
 
@@ -139,7 +139,15 @@ export class EbscoOaController {
 		} catch (error) {
 			throw new BadRequestException("Invalid URL");
 		}
-		const ip = res.req.ip.replace(/^.*:/, "");
+		const clientIp =
+			res.req.ip ||
+			res.req.headers["x-forwarded-for"] ||
+			res.req.headers["x-real-ip"] ||
+			res.req.socket.remoteAddress;
+		const ip =
+			clientIp && typeof clientIp === "string"
+				? clientIp.replace(/^.*:/, "")
+				: null;
 
 		if (user_id && typeof user_id === "string") {
 			const numericUserId = Number.parseInt(user_id, 10);
