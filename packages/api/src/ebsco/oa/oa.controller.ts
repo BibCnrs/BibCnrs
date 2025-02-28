@@ -41,7 +41,7 @@ export class EbscoOaController {
 		O: string | null,
 		I: string | null,
 		OU: string | null,
-		IP: string | undefined,
+		IP: string | null,
 	) {
 		this.logger.log({
 			message: "open access",
@@ -83,7 +83,7 @@ export class EbscoOaController {
 			janusUser.cnrs ? "CNRS" : "OTHER",
 			institute?.code ?? null,
 			unit?.code ?? null,
-			ip,
+			ip ?? undefined,
 		);
 	}
 
@@ -112,7 +112,7 @@ export class EbscoOaController {
 			"UNKNOWN",
 			institute?.code ?? null,
 			unit?.code ?? null,
-			ip,
+			ip ?? undefined,
 		);
 	}
 
