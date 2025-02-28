@@ -27,7 +27,7 @@ const en: Common = {
 		header: {
 			login: "Sign in",
 			logout: "Logout",
-			title: "CNRS documents access",
+			title: "CNRS document access",
 			questions: "Q&A",
 			resources: "Lists of resources",
 			licences: "Licences",
@@ -293,12 +293,12 @@ Sincerely`,
 	pages: {
 		root: {
 			title: "Home",
-			seeMoreFavourites: "See more favorites",
+			seeMoreFavourites: "see more bookmarks",
 			seeMoreNews: "See more news",
 			emptyFavorites: "Pin your favourite resources to find them easily later.",
 		},
 		resources: {
-			title: "Lists of documentaries resources",
+			title: "Lists of document resources",
 		},
 		about: {
 			title: "About",
