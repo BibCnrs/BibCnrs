@@ -24,6 +24,7 @@ export const FIELDS = {
 	TI: "title",
 	SO: "source",
 	AD: "affiliation",
+	DT: "publication_date",
 } as const;
 
 export type Operator = keyof typeof OPERATORS;
