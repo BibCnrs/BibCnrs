@@ -170,7 +170,6 @@ const en: Common = {
 			reset: "Reset",
 			affiliation: "Affiliation Author",
 			publication_date: "Publication Date",
-
 		},
 		facet: {
 			title: "Filter",
