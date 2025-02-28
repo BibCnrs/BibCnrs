@@ -169,6 +169,8 @@ const en: Common = {
 			humanQuery: "How will the query be executed?",
 			reset: "Reset",
 			affiliation: "Affiliation Author",
+			publication_date: "Publication Date",
+
 		},
 		facet: {
 			title: "Filter",
