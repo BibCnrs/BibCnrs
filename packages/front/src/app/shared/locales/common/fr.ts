@@ -171,6 +171,7 @@ const fr: Common = {
 			humanQuery: "Comment sera exécutée la requête ?",
 			reset: "Réinitialiser",
 			affiliation: "Affiliation auteur",
+			publication_date: "Date de publication",
 		},
 		facet: {
 			title: "Filtrer",

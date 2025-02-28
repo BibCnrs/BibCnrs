@@ -110,6 +110,7 @@ export default function ArticleAdvancedSearchItem({
 					handleChange("value", e.target.value);
 				}}
 				size="small"
+				placeholder={item.field === "DT" ? "YYYY-YYYY" : ""}
 			/>
 			<IconButton
 				aria-label={t("components.advancedSearch.add")}

@@ -182,6 +182,7 @@ export type Common = {
 			humanQuery: string;
 			reset: string;
 			affiliation: string;
+			publication_date: string;
 		};
 		facet: {
 			title: string;
