@@ -296,10 +296,10 @@ export class AbstractEbscoSearchService {
 			RetrievalCriteria: {
 				View: view,
 				ResultsPerPage: query.resultsPerPage,
-				PageNumber: 1,
+				PageNumber: query.currentPage,
 				Highlight: "n",
 			},
-			Actions: actions,
+			/*Actions: actions,*/
 		};
 	}
 
