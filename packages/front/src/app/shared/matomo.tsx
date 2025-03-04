@@ -1,4 +1,4 @@
-import { Button, Link, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -9,8 +9,7 @@ const MATOMO_SCRIPT_URL = import.meta.env.VITE_MATOMO_SCRIPT_URL;
 const MATOMO_SITE_ID = import.meta.env.VITE_MATOMO_SITE_ID;
 
 export function ConsentForm() {
-	const [consent, setConsentGiven] = useState<boolean | null>(null);
-	const [isVisible, setIsVisible] = useState<boolean | null>(null);
+	const [isVisible, setIsVisible] = useState<boolean>(true);
 	const location = useLocation();
 	const t = useTranslator();
 
@@ -21,21 +20,9 @@ export function ConsentForm() {
 
 		if (consent) {
 			setIsVisible(false);
-			const consentValue = consent.split("=")[1];
-			setConsentGiven(consentValue === "true");
-		} else {
-			setIsVisible(true);
 		}
-	}, []);
 
-	useEffect(() => {
-		if (
-			!MATOMO_TRACKER_URL ||
-			!MATOMO_SCRIPT_URL ||
-			window._paq ||
-			isVisible ||
-			!consent
-		) {
+		if (!MATOMO_TRACKER_URL || !MATOMO_SCRIPT_URL || window._paq) {
 			return;
 		}
 		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
@@ -51,7 +38,7 @@ export function ConsentForm() {
 		g.async = true;
 		g.src = MATOMO_SCRIPT_URL;
 		s.parentNode.insertBefore(g, s);
-	}, [isVisible, consent]);
+	}, []);
 
 	useEffect(() => {
 		window._paq?.push?.([
@@ -64,36 +51,19 @@ export function ConsentForm() {
 
 	const handleAccept = () => {
 		document.cookie = "consent=true; path=/; max-age=2592000";
-		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-		const _paq = (window._paq = window._paq || []);
-		_paq.push(["trackPageView"]);
-		_paq.push(["enableLinkTracking"]);
-		_paq.push(["setTrackerUrl", MATOMO_TRACKER_URL]);
-		_paq.push(["setSiteId", MATOMO_SITE_ID]);
-
-		const d = document;
-		const g = d.createElement("script");
-		const s = d.getElementsByTagName("script")[0];
-		g.async = true;
-		g.src = MATOMO_SCRIPT_URL;
-		s.parentNode.insertBefore(g, s);
-
-		setConsentGiven(true);
 		setIsVisible(false);
 	};
 
-	const handleDecline = () => {
-		document.cookie = "consent=false; path=/; max-age=2592000";
-		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-		const _paq = (window._paq = window._paq || []);
-		_paq.push(["disableCookies"]);
-		setConsentGiven(false);
+	const handleLearnMore = () => {
+		document.cookie = "consent=true; path=/; max-age=2592000";
 		setIsVisible(false);
+		window.location.href = "/privacy";
 	};
 
 	if (!isVisible) {
 		return null;
 	}
+
 	return (
 		<Box
 			id="optout-form"
@@ -108,12 +78,7 @@ export function ConsentForm() {
 				zIndex: 1000,
 			}}
 		>
-			<Typography variant="body1">
-				{t("consent.consent")}
-				<Link href="/privacy" sx={{ color: "primary.main" }}>
-					{t("consent.link")}
-				</Link>
-			</Typography>
+			<Typography variant="body1">{t("consent.consent")}</Typography>
 
 			<Box
 				sx={{
@@ -138,12 +103,12 @@ export function ConsentForm() {
 						},
 					}}
 				>
-					{t("consent.accept")}
+					OK
 				</Button>
 				<Button
 					variant="outlined"
 					color="primary"
-					onClick={handleDecline}
+					onClick={handleLearnMore}
 					sx={{
 						borderRadius: "20px",
 						fontWeight: "bold",
@@ -155,7 +120,7 @@ export function ConsentForm() {
 						},
 					}}
 				>
-					{t("consent.decline")}
+					{t("consent.learnMore")}
 				</Button>
 			</Box>
 		</Box>

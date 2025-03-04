@@ -490,9 +490,8 @@ export type Common = {
 	};
 	consent: {
 		accept: string;
-		decline: string;
+		learnMore: string;
 		consent: string;
-		link: string;
 	};
 };
 

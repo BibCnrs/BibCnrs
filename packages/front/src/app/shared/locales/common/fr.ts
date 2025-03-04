@@ -498,10 +498,9 @@ Cordialement`,
 	},
 	consent: {
 		accept: "Accepter",
-		decline: "Refuser",
+		learnMore: "En savoir plus",
 		consent:
-			"L'INIST-CNRS utilise des cookies pour améliorer votre expérience de navigation sur ce site. Vous pouvez accepter ou refuser l'utilisation et le dépôt de ces cookies ci-dessous. ",
-		link: "Politique de confidentialité",
+			"En poursuivant votre navigation sans modifier vos paramètres, vous acceptez l'utilisation de cookies destinés à mesurer de façon anonymisée la fréquentation du site.",
 	},
 };
 
