@@ -55,8 +55,7 @@ export function ConsentForm() {
 	};
 
 	const handleLearnMore = () => {
-		document.cookie = "consent=true; path=/; max-age=2592000";
-		setIsVisible(false);
+		setIsVisible(true);
 		window.location.href = "/privacy";
 	};
 
