@@ -495,10 +495,9 @@ Sincerely`,
 	},
 	consent: {
 		accept: "Accept",
-		decline: "Refuse",
+		learnMore: "Learn more",
 		consent:
-			"INIST-CNRS uses cookies to improve your browsing experience on this site. You can accept or decline the use of these cookies below. ",
-		link: "Privacy Policy",
+			"By continuing to navigate without changing your parameters, you accept the use of cookies to anonymously measure site traffic.",
 	},
 };
 

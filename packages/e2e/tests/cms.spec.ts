@@ -4,9 +4,7 @@ import { adminLogin, janusLogin, janusLogout } from "../page-objects/login";
 async function handleCookieBanner(page: Page) {
 	const cookieBanner = page.locator("#optout-form");
 	if (await cookieBanner.isVisible()) {
-		await cookieBanner
-			.locator('button:has-text("Accepter")')
-			.click({ force: true });
+		await cookieBanner.locator('button:has-text("ok")').click({ force: true });
 
 		await page
 			.waitForSelector("#optout-form", {
