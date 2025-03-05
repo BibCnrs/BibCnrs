@@ -14,19 +14,13 @@ export function ConsentForm() {
 	const t = useTranslator();
 
 	useEffect(() => {
-		const consent = document.cookie
-			.split("; ")
-			.find((row) => row.startsWith("consent="));
-
-		if (consent) {
-			setIsVisible(false);
-		}
-
 		if (!MATOMO_TRACKER_URL || !MATOMO_SCRIPT_URL || window._paq) {
 			return;
 		}
+
 		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 		const _paq = (window._paq = window._paq || []);
+
 		_paq.push(["trackPageView"]);
 		_paq.push(["enableLinkTracking"]);
 		_paq.push(["setTrackerUrl", MATOMO_TRACKER_URL]);
@@ -38,6 +32,16 @@ export function ConsentForm() {
 		g.async = true;
 		g.src = MATOMO_SCRIPT_URL;
 		s.parentNode.insertBefore(g, s);
+	}, []);
+
+	useEffect(() => {
+		const consent = document.cookie
+			.split("; ")
+			.find((row) => row.startsWith("consent="));
+
+		if (consent) {
+			setIsVisible(false);
+		}
 	}, []);
 
 	useEffect(() => {
