@@ -199,9 +199,9 @@ build:front:
       --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
-      --build-arg "MATOMO_TRACKER_URL=$(MATOMO_TRACKER_URL)"
-      --build-arg "MATOMO_SCRIPT_URL=$(MATOMO_SCRIPT_URL)"
-      --build-arg "MATOMO_SITE_ID=$(MATOMO_SITE_ID)"
+      --build-arg "MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}"
+      --build-arg "MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}"
+      --build-arg "MATOMO_SITE_ID=${MATOMO_SITE_ID}"
   rules:
     - *rule
     - *rule_main
