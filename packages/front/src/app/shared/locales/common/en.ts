@@ -293,7 +293,7 @@ Sincerely`,
 	pages: {
 		root: {
 			title: "Home",
-			seeMoreFavourites: "see more bookmarks",
+			seeMoreFavourites: "See more bookmarks",
 			seeMoreNews: "See more news",
 			emptyFavorites: "Pin your favourite resources to find them easily later.",
 		},

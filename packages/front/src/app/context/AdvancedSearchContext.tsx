@@ -23,7 +23,7 @@ export const FIELDS = {
 	AB: "abstract",
 	TI: "title",
 	SO: "source",
-	AD: "affiliation",
+	AF: "affiliation",
 	DT: "publication_date",
 } as const;
 
