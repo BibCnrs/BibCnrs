@@ -42,6 +42,24 @@ export class ContentsManagementService {
 			formattedData.to = new Date(data.to);
 		}
 
+		const addAltToImages = (content: string) => {
+			return content.replace(/<img[^>]*src="([^"]+)"[^>]*>/g, (match, src) => {
+				const file = src.split("/").pop()?.split(".")[0] || "";
+				const alt = file.replace(/[^a-zA-Z ]/g, " ");
+				return match.includes("alt=")
+					? match
+					: match.replace("<img", `<img alt="${alt}"`);
+			});
+		};
+
+		if (data.content_fr) {
+			formattedData.content_fr = addAltToImages(data.content_fr);
+		}
+
+		if (data.content_en) {
+			formattedData.content_en = addAltToImages(data.content_en);
+		}
+
 		return formattedData;
 	}
 
