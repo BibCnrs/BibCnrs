@@ -2,7 +2,6 @@ import {
 	BadRequestException,
 	Controller,
 	Get,
-	Query,
 	Req,
 	Res,
 	UseGuards,
@@ -118,10 +117,10 @@ export class EbscoOaController {
 
 	private async redirectOA(
 		@Res() res: Response,
-		query: Request["query"],
+		@Req() req: Request,
 		user: TokenPayload<"inist"> | TokenPayload<"janus"> | null = null,
 	) {
-		const { sid, url, domaine, doi, user_id } = query;
+		const { sid, url, domaine, doi, user_id } = req.query;
 
 		if (
 			typeof sid !== "string" ||
@@ -140,10 +139,10 @@ export class EbscoOaController {
 			throw new BadRequestException("Invalid URL");
 		}
 		const clientIp =
-			res.req.ip ||
-			res.req.headers["x-forwarded-for"] ||
-			res.req.headers["x-real-ip"] ||
-			res.req.socket.remoteAddress;
+			req.ip ||
+			req.headers["x-forwarded-for"] ||
+			req.headers["x-real-ip"] ||
+			req.socket.remoteAddress;
 		const ip =
 			clientIp && typeof clientIp === "string"
 				? clientIp.replace(/^.*:/, "")
@@ -176,21 +175,13 @@ export class EbscoOaController {
 
 	@Get("oa")
 	@UseGuards(AuthGuard)
-	async oa(
-		@Req() request: Request,
-		@Res() res: Response,
-		@Query() query: Request["query"],
-	) {
-		return this.redirectOA(res, query, request.user);
+	async oa(@Req() request: Request, @Res() res: Response) {
+		return this.redirectOA(res, request, request.user);
 	}
 
 	@Get("oa_database")
 	@UseGuards(UserRetrieveGuard)
-	async oaDatabase(
-		@Req() request: Request,
-		@Res() res: Response,
-		@Query() query: Request["query"],
-	) {
-		return this.redirectOA(res, query, request.user ?? null);
+	async oaDatabase(@Req() request: Request, @Res() res: Response) {
+		return this.redirectOA(res, request, request.user ?? null);
 	}
 }
