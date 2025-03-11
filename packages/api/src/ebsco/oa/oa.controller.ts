@@ -2,7 +2,6 @@ import {
 	BadRequestException,
 	Controller,
 	Get,
-	Query,
 	Req,
 	Res,
 	UseGuards,
@@ -119,10 +118,9 @@ export class EbscoOaController {
 	private async redirectOA(
 		@Res() res: Response,
 		@Req() req: Request,
-		query: Request["query"],
 		user: TokenPayload<"inist"> | TokenPayload<"janus"> | null = null,
 	) {
-		const { sid, url, domaine, doi, user_id } = query;
+		const { sid, url, domaine, doi, user_id } = req.query;
 
 		if (
 			typeof sid !== "string" ||
@@ -177,21 +175,13 @@ export class EbscoOaController {
 
 	@Get("oa")
 	@UseGuards(AuthGuard)
-	async oa(
-		@Req() request: Request,
-		@Res() res: Response,
-		@Query() query: Request["query"],
-	) {
-		return this.redirectOA(res, query, request.user);
+	async oa(@Req() request: Request, @Res() res: Response) {
+		return this.redirectOA(res, request, request.user);
 	}
 
 	@Get("oa_database")
 	@UseGuards(UserRetrieveGuard)
-	async oaDatabase(
-		@Req() request: Request,
-		@Res() res: Response,
-		@Query() query: Request["query"],
-	) {
-		return this.redirectOA(res, query, request.user ?? null);
+	async oaDatabase(@Req() request: Request, @Res() res: Response) {
+		return this.redirectOA(res, request, request.user ?? null);
 	}
 }
