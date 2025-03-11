@@ -118,6 +118,7 @@ export class EbscoOaController {
 
 	private async redirectOA(
 		@Res() res: Response,
+		@Req() req: Request,
 		query: Request["query"],
 		user: TokenPayload<"inist"> | TokenPayload<"janus"> | null = null,
 	) {
@@ -140,10 +141,10 @@ export class EbscoOaController {
 			throw new BadRequestException("Invalid URL");
 		}
 		const clientIp =
-			res.req.ip ||
-			res.req.headers["x-forwarded-for"] ||
-			res.req.headers["x-real-ip"] ||
-			res.req.socket.remoteAddress;
+			req.ip ||
+			req.headers["x-forwarded-for"] ||
+			req.headers["x-real-ip"] ||
+			req.socket.remoteAddress;
 		const ip =
 			clientIp && typeof clientIp === "string"
 				? clientIp.replace(/^.*:/, "")
