@@ -121,6 +121,21 @@ const dataProvider: DataProvider = {
 				},
 			});
 		}
+		if (resource === "medias") {
+			if (params.data.file) {
+				const formData = new FormData();
+				formData.append("name", params.data.name);
+				formData.append("file", params.data.file.rawFile);
+
+				return await fetch(`${apiUrl}/medias/${params.id}`, {
+					method: "PUT",
+					body: formData,
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				}).then((response) => response.json());
+			}
+		}
 
 		if (
 			!params.data.image ||

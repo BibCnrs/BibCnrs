@@ -3,6 +3,7 @@ import {
 	Edit,
 	EditActions,
 	FileField,
+	FileInput,
 	Labeled,
 	SimpleForm,
 	TextInput,
@@ -36,9 +37,14 @@ export default function MediasEdit() {
 						label="resources.medias.fields.createdAt"
 					/>
 				</Labeled>
-				<Labeled>
-					<FileField source="url" title="url" />
-				</Labeled>
+				<FileInput
+					sx={{ marginTop: 4 }}
+					source="file"
+					label="Fichier"
+					name="file"
+				>
+					<FileField source="src" title="title" />
+				</FileInput>
 			</SimpleForm>
 		</Edit>
 	);
