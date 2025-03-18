@@ -17,6 +17,7 @@ import type { FormEvent } from "react";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import { useTranslator } from "../../shared/locales/I18N";
 import type { useSession } from "../useSession";
+import PasswordField from "./PasswordField";
 
 type AuthenticationModalProps = {
 	open: boolean;
@@ -185,9 +186,8 @@ function AuthenticationModal({
 														)}
 														size="small"
 													/>
-													<TextField
+													<PasswordField
 														name="password"
-														type="password"
 														label={t(
 															"components.authentication.legacy.password",
 														)}
