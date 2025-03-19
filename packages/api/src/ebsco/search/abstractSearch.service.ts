@@ -247,10 +247,6 @@ export class AbstractEbscoSearchService {
 	}
 
 	protected getEbscoQuery(query: EbscoQuery, view = "brief") {
-		const actions = query.action
-			? [`goToPage(${query.currentPage || 1})`, query.action]
-			: [`goToPage(${query.currentPage || 1})`];
-
 		if (query.OA === "Y") {
 			if (!query.queries) {
 				query.queries = [];
@@ -290,7 +286,7 @@ export class AbstractEbscoSearchService {
 										Id: id,
 										Values: [].concat(query[id]),
 									})),
-				Expanders: [],
+
 				Sort: query.sort || "relevance",
 			},
 			RetrievalCriteria: {
@@ -299,7 +295,6 @@ export class AbstractEbscoSearchService {
 				PageNumber: query.currentPage,
 				Highlight: "n",
 			},
-			/*Actions: actions,*/
 		};
 	}
 
