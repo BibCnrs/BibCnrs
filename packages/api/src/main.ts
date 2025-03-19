@@ -9,7 +9,6 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
 		logger: new AppLogger("Nest"),
 	});
-	//app.set("trust proxy", "loopback");
 	app.use(cookieParser());
 	app.useBodyParser("json", { limit: "10mb" });
 	app.useGlobalPipes(

@@ -139,11 +139,10 @@ export class EbscoOaController {
 			throw new BadRequestException("Invalid URL");
 		}
 		const clientIp =
-			req.ip ||
 			req.headers["x-forwarded-for"] ||
 			req.headers["x-real-ip"] ||
-			req.socket.remoteAddress;
-			//req.ips.length ? req.ips[0] : req.ip;
+			req.socket.remoteAddress ||
+			req.ip;
 		const ip =
 			clientIp && typeof clientIp === "string"
 				? clientIp.replace(/^.*:/, "")
