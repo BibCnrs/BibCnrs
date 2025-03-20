@@ -137,6 +137,9 @@ const dataProvider: DataProvider = {
 				});
 
 				const response = await updateFile.json();
+				if (!response.id) {
+					response.id = params.id;
+				}
 				return { data: response };
 			}
 		}

@@ -37,11 +37,15 @@ export default function MediasEdit() {
 						label="resources.medias.fields.createdAt"
 					/>
 				</Labeled>
+				<Labeled>
+					<FileField source="url" title="url" />
+				</Labeled>
 				<FileInput
 					sx={{ marginTop: 4 }}
 					source="file"
 					label="Fichier"
 					name="file"
+					placeholder="Pour remplacer le média, déposez un nouveau fichier ici."
 				>
 					<FileField source="src" title="title" />
 				</FileInput>

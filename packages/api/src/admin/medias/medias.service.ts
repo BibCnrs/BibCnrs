@@ -1,10 +1,22 @@
 import { promises as fsPromises, unlinkSync } from "node:fs";
-import { Injectable } from "@nestjs/common";
+import { extname } from "node:path";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { medias } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateMediaDto, UpdateMediaDto } from "./dto/media.dto";
+
+const imageExtensions = new Set([
+	".jpg",
+	".jpeg",
+	".png",
+	".gif",
+	".bmp",
+	".svg",
+	".webp",
+]);
+const pdfExtensions = new Set([".pdf", ".docs", ".docx", ".odt", ".rtf"]);
 
 @Injectable()
 export class MediasService {
@@ -76,6 +88,21 @@ export class MediasService {
 		}
 
 		if (file) {
+			const newFileExtension = extname(file.path).toLowerCase();
+			const existingFileExtension = extname(media.file).toLowerCase();
+
+			const EXT = imageExtensions.has(existingFileExtension)
+				? imageExtensions.has(newFileExtension)
+				: pdfExtensions.has(existingFileExtension)
+					? pdfExtensions.has(newFileExtension)
+					: false;
+
+			if (!EXT) {
+				const errorMessage = `File extension expected ${existingFileExtension}, got ${newFileExtension}`;
+				console.error(errorMessage);
+				throw new BadRequestException(errorMessage);
+			}
+
 			try {
 				const newFile = await fsPromises.readFile(file.path);
 
