@@ -3,12 +3,13 @@ import {
 	Edit,
 	EditActions,
 	FileField,
+	FileInput,
 	Labeled,
 	SimpleForm,
+	TextField,
 	TextInput,
 	required,
 } from "react-admin";
-
 // biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 function validate(values: any) {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
@@ -39,6 +40,20 @@ export default function MediasEdit() {
 				<Labeled>
 					<FileField source="url" title="url" />
 				</Labeled>
+				<TextField
+					source="file_name"
+					label="resources.medias.fields.fileName"
+				/>
+				<FileInput
+					sx={{ marginTop: 4 }}
+					source="file"
+					label="Fichier"
+					name="file"
+					placeholder="Pour remplacer le média, déposez un nouveau fichier ici."
+					
+				>
+					<FileField source="src" title="title" />
+				</FileInput>
 			</SimpleForm>
 		</Edit>
 	);
