@@ -106,6 +106,13 @@ const dataProvider: DataProvider = {
 				return { data: { ...file } };
 			}
 		}
+
+		return jsonServerDataProvider.update(resource, {
+			...params,
+			data: {
+				...params.data,
+			},
+		});
 	},
 
 	create: async (resource, params) => {
