@@ -82,10 +82,9 @@ const dataProvider: DataProvider = {
 				);
 
 				mediaID = file.id;
+				// biome-ignore lint/performance/noDelete: <explanation>
+				delete params.data.file;
 			}
-
-			// biome-ignore lint/performance/noDelete: <explanation>
-			delete params.data.file;
 
 			return jsonServerDataProvider.update(resource, {
 				...params,
@@ -97,22 +96,20 @@ const dataProvider: DataProvider = {
 		}
 
 		if (resource === "medias") {
-			if (params.data.file) {
+			if (params.data.file2) {
 				const file = await upsertFile(
 					params.data.name,
-					params.data.file.rawFile,
+					params.data.file2.rawFile,
 					params.id,
 				);
+
+				// biome-ignore lint/performance/noDelete: <explanation>
+				delete params.data.file2;
 				return { data: { ...file } };
 			}
 		}
-
-		return jsonServerDataProvider.update(resource, {
-			...params,
-			data: {
-				...params.data,
-			},
-		});
+		// fallback to the default implementation
+		return jsonServerDataProvider.update(resource, params);
 	},
 
 	create: async (resource, params) => {

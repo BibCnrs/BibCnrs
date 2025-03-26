@@ -148,8 +148,19 @@ export class MediasController {
 		@Body() updateMediaDto: UpdateMediaDto,
 		@UploadedFile() file?: Express.Multer.File,
 	) {
-		const data = await this.mediasService.update(id, updateMediaDto, file);
+		if (updateMediaDto.file) {
+			const media = {
+				...updateMediaDto,
+				url: `${updateMediaDto.file?.replace(UPLOADS_DIR, "")}`,
+			};
+			const data = await this.mediasService.update(id, media, file);
+			if (!data) {
+				throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+			}
 
+			return data;
+		}
+		const data = await this.mediasService.update(id, updateMediaDto, file);
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
 		}
