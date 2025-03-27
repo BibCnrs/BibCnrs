@@ -107,6 +107,18 @@ const dataProvider: DataProvider = {
 				delete params.data.file2;
 				return { data: { ...file } };
 			}
+			if (params.data.url2) {
+				const url = params.data.url2;
+				// biome-ignore lint/performance/noDelete: <explanation>
+				delete params.data.url2;
+				return jsonServerDataProvider.update(resource, {
+					...params,
+					data: {
+						...params.data,
+						url: url,
+					},
+				});
+			}
 		}
 		// fallback to the default implementation
 		return jsonServerDataProvider.update(resource, params);
