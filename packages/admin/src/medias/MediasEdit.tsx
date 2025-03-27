@@ -20,18 +20,6 @@ function validate(values: any) {
 		errors.name = "ra.validation.required";
 	}
 
-	const { record } = useEditController();
-	console.log(record);
-	console.log(values);
-	if (record?.file2 && record.file_name) {
-		const fileExtension = values.file2.name.split(".").pop().toLowerCase();
-		const expectedExtension = record.file_name.split(".").pop().toLowerCase();
-		if (fileExtension !== expectedExtension) {
-			errors.file2 =
-				"Le fichier doit avoir la même extension que le nom de fichier existant.";
-		}
-	}
-
 	return errors;
 }
 
