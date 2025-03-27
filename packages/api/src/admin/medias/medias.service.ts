@@ -1,10 +1,11 @@
-import { unlinkSync } from "node:fs";
+import { promises as fsPromises, unlinkSync } from "node:fs";
 import { Injectable } from "@nestjs/common";
 import { medias } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
 import { FindAllQueryArgs } from "../admin.type";
 import { CreateMediaDto, UpdateMediaDto } from "./dto/media.dto";
+
 @Injectable()
 export class MediasService {
 	constructor(private prismaService: PrismaService) {}
@@ -61,13 +62,33 @@ export class MediasService {
 		});
 	}
 
-	update(id: number, updateMediaDto: UpdateMediaDto) {
-		const { id: _id, url: _url, file: _file, ...rest } = updateMediaDto;
+	async update(
+		id: number,
+		updateMediaDto: UpdateMediaDto,
+		file?: Express.Multer.File,
+	) {
+		const media = await this.prismaService.medias.findUnique({
+			where: { id },
+		});
+
+		if (!media) {
+			throw new Error(`${id} not found`);
+		}
+		if (file) {
+			try {
+				const newFile = await fsPromises.readFile(file.path);
+
+				await fsPromises.writeFile(media.file, newFile);
+
+				unlinkSync(file.path);
+			} catch (error) {
+				console.error("Error while updating file content", error);
+			}
+		}
+
 		return this.prismaService.medias.update({
-			where: {
-				id,
-			},
-			data: rest,
+			where: { id },
+			data: updateMediaDto,
 		});
 	}
 
