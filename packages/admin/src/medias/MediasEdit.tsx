@@ -19,33 +19,26 @@ function validate(values: any, record: any) {
 	if (!values.name) {
 		errors.name = "ra.validation.required";
 	}
-
-	if (!values.url2?.startsWith("http")) {
+	if (values.url2 && !values.url2.startsWith("http")) {
 		errors.url2 = "Lien invalide";
 	}
-
 	if (values.file2 && record.file_name) {
-		const fileType = values.file2.rawFile.type;
 		const fileExtension = values.file2.rawFile.name
 			.split(".")
 			.pop()
 			.toLowerCase();
 		const expectedExtension = record.file_name.split(".").pop().toLowerCase();
-
-		if (fileType !== "application/pdf" && expectedExtension === "pdf") {
+		const isImage = ["jpg", "png", "svg"].includes(expectedExtension);
+		if (expectedExtension === "pdf" && fileExtension !== "pdf") {
 			errors.file2 =
 				"Le fichier doit être de type PDF et avoir l'extension .pdf";
-		} else if (
-			!fileType.startsWith("image/") &&
-			["jpg", "png", "svg"].includes(expectedExtension)
-		) {
+		} else if (isImage && !["jpg", "png", "svg"].includes(fileExtension)) {
 			errors.file2 =
 				"Le fichier doit être une image et avoir l'extension .jpg, .png ou .svg";
-		} else if (fileExtension !== expectedExtension) {
+		} else if (!isImage && fileExtension !== expectedExtension) {
 			errors.file2 = `Le fichier doit avoir la même extension que le nom de fichier existant (${expectedExtension}) `;
 		}
 	}
-
 	return errors;
 }
 
