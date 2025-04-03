@@ -1,6 +1,6 @@
 default:
   image:
-    name: node:22
+    name: node:23.3-alpine3.21
   tags:
     - docker
   cache:
@@ -141,8 +141,8 @@ test:e2e:
   script:
     - yarn workspace @bibcnrs/e2e run playwright install
     #- prisma migrate reset --force && tsx ./test/seed-e2e.ts && yarn run build && node dist/main
-    #- yarn workspace @bibcnrs/e2e run start:e2e -d &
-    #- sleep 20
+    - yarn workspace @bibcnrs/api run start:e2e -d &
+    - sleep 20
     - yarn workspace @bibcnrs/e2e run test
   artifacts:
     name: E2E Test Artifacts
