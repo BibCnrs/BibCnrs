@@ -26,10 +26,6 @@ export default function MediasList() {
 		>
 			<Datagrid bulkActionButtons={<BulkActionButtons />}>
 				<TextField source="name" label="resources.medias.fields.name" />
-				<TextField
-					source="file_name"
-					label="resources.medias.fields.fileName"
-				/>
 				<UrlField
 					source="url"
 					label="resources.medias.fields.url"
