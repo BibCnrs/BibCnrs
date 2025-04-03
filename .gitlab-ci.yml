@@ -138,7 +138,7 @@ test:e2e:
   timeout: 10m
   <<: *before_script
   script:
-    - yarn workspace @bibcnrs/e2e run playwright install & yarn playwright install-deps
+    - yarn workspace @bibcnrs/e2e run playwright install && yarn playwright install-deps
     #- prisma migrate reset --force && tsx ./test/seed-e2e.ts && yarn run build && node dist/main
     - yarn workspace @bibcnrs/api run start:e2e -d &
     - sleep 20
