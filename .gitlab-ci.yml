@@ -107,7 +107,8 @@ test:front:
 
 test:e2e:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.51.1-noble
+  tags:
+    - shell
   services:
     - postgres:16.3
     - redis:7.2.5
@@ -138,12 +139,11 @@ test:e2e:
     BIB_UPLOADS_DIR: /app/packages/api/uploads
   timeout: 10m
   script:
-    - yarn install --immutable
-    - yarn workspace @bibcnrs/api prisma generate
-    - yarn workspace @bibcnrs/e2e run playwright install
-    - yarn workspace @bibcnrs/api run start:e2e -d &
-    - sleep 20
-    - yarn workspace @bibcnrs/e2e run test
+    - make install-immutable
+    - make test-e2e-install
+    - make test-e2e-start
+    - make test-e2e-ci
+    - make test-e2e-stop
   artifacts:
     name: E2E Test Artifacts
     paths:
