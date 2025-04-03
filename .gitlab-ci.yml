@@ -47,6 +47,8 @@ lint:
   timeout: 10m
   script:
     - make lint-check
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 typecheck:
   stage: typecheck
@@ -54,6 +56,8 @@ typecheck:
   timeout: 10m
   script:
     - make typecheck
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 test:api:
   stage: test
@@ -78,6 +82,8 @@ test:api:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/api run test
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 test:front:
   stage: test
@@ -96,53 +102,55 @@ test:front:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/front run test
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
-# .test:e2e:
-#   stage: test
-#   image: node:22
-#   services:
-#     - postgres:16.3
-#     - redis:7.2.5
-#   variables:
-#     POSTGRES_DB: bibcnrs
-#     POSTGRES_USER: postgres
-#     POSTGRES_PASSWORD: S3cr3t
-#     DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
-#     NODE_ENV: test
-#     RENATER_FAKE_LOGIN: true
-#     BIBAPI_HOST: http://localhost:3000/api
-#     cookie_secret: ${cookie_secret}
-#     header_secret: ${header_secret}
-#     admin_secret: ${admin_secret}
-#     ticket_secret: ${ticket_secret}
-#     BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
-#     ebsco_host: ${ebsco_host}
-#     EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
-#     EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
-#     METADORE_URL: ${METADORE_URL}
-#     METADORE_API_KEY: ${METADORE_API_KEY}
-#     DOAJ_URL: ${DOAJ_URL}
-#     REDIS_HOST: redis
-#     REDIS_PORT: 6379
-#     bib_admin_host: http://localhost:3000/admin
-#     MAIL_FROM: bibcnrs@bib.cnrs.fr
-#     MAIL_TO: assistance-portail@inist.fr
-#     BIB_UPLOADS_DIR: /app/packages/api/uploads
-#   timeout: 10m
-#   <<: *before_script
-#   script:
-#     - yarn workspace @bibcnrs/e2e run playwright install
-#     - yarn workspace @bibcnrs/api run start:e2e -d &
-#     - sleep 20
-#     - yarn workspace @bibcnrs/e2e run test
-#   artifacts:
-#     name: E2E Test Artifacts
-#     paths:
-#       - packages/e2e/playwright-report/
-#       - packages/e2e/test-results/
-#     expire_in: 30 days
-#   only:
-#     - $CI_PIPELINE_SOURCE != "cancelled"
+test:e2e:
+  stage: test
+  image: node:22
+  services:
+    - postgres:16.3
+    - redis:7.2.5
+  variables:
+    POSTGRES_DB: bibcnrs
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: S3cr3t
+    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: test
+    RENATER_FAKE_LOGIN: true
+    BIBAPI_HOST: http://localhost:3000/api
+    cookie_secret: ${cookie_secret}
+    header_secret: ${header_secret}
+    admin_secret: ${admin_secret}
+    ticket_secret: ${ticket_secret}
+    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+    ebsco_host: ${ebsco_host}
+    EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
+    EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
+    METADORE_URL: ${METADORE_URL}
+    METADORE_API_KEY: ${METADORE_API_KEY}
+    DOAJ_URL: ${DOAJ_URL}
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    bib_admin_host: http://localhost:3000/admin
+    MAIL_FROM: bibcnrs@bib.cnrs.fr
+    MAIL_TO: assistance-portail@inist.fr
+    BIB_UPLOADS_DIR: /app/packages/api/uploads
+  timeout: 10m
+  <<: *before_script
+  script:
+    - yarn workspace @bibcnrs/e2e run playwright install
+    - prisma migrate reset --force && tsx ./test/seed-e2e.ts && yarn run build && node dist/main
+    - yarn workspace @bibcnrs/api run start:e2e -d &
+    - sleep 20
+    - yarn workspace @bibcnrs/e2e run test
+  artifacts:
+    name: E2E Test Artifacts
+    paths:
+      - packages/e2e/playwright-report/
+      - packages/e2e/test-results/
+    expire_in: 30 days
+
 
 build:admin:
   stage: build
@@ -162,6 +170,8 @@ build:admin:
     - *rule
     - *rule_main
     - *rule_tag
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 build:api:
   stage: build
@@ -183,7 +193,8 @@ build:api:
     - *rule
     - *rule_main
     - *rule_tag
-  
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 build:front:
   stage: build
@@ -206,5 +217,6 @@ build:front:
     - *rule
     - *rule_main
     - *rule_tag
-  
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
