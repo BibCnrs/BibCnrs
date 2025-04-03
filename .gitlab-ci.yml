@@ -107,6 +107,7 @@ test:front:
 
 test:e2e:
   stage: test
+  image: mcr.microsoft.com/playwright:v1.51.1-noble
   services:
     - postgres:16.3
     - redis:7.2.5
@@ -138,7 +139,7 @@ test:e2e:
   timeout: 10m
   <<: *before_script
   script:
-    - yarn workspace @bibcnrs/e2e run playwright install && yarn playwright install-deps
+    - yarn workspace @bibcnrs/e2e run playwright install
     #- prisma migrate reset --force && tsx ./test/seed-e2e.ts && yarn run build && node dist/main
     - yarn workspace @bibcnrs/api run start:e2e -d &
     - sleep 20
