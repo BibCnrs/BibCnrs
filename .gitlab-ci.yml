@@ -107,7 +107,6 @@ test:front:
 
 test:e2e:
   stage: test
-  image: node:22
   services:
     - postgres:16.3
     - redis:7.2.5
