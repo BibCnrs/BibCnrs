@@ -7,8 +7,8 @@ import {
 	FileInput,
 	Labeled,
 	SimpleForm,
+	TextField,
 	TextInput,
-	required,
 	useEditController,
 } from "react-admin";
 
@@ -57,12 +57,9 @@ export default function MediasEdit() {
 	return (
 		<Edit actions={<EditActions />} redirect="list">
 			<SimpleForm validate={(values) => validate(values, record)}>
-				<TextInput
-					source="name"
-					label="resources.medias.fields.name"
-					validate={required()}
-					name="name"
-				/>
+				<Labeled>
+					<TextField source="name" label="resources.medias.fields.name" />
+				</Labeled>
 				<Labeled>
 					<DateField
 						source="created_at"

@@ -78,11 +78,18 @@ export class MediasController {
 			return this.mediasService.create(media);
 		}
 
+		const File = path.extname(file.originalname);
+		const newMediaName = createMediaDto.name.replace(/\s+/g, "-");
+		const newFileName = `${newMediaName}${File}`;
+
+		const filePath = path.join(path.dirname(file.path), newFileName);
+		fs.renameSync(file.path, filePath);
+
 		const media = {
 			...createMediaDto,
-			file_name: file.filename,
-			file: `${file.path}`,
-			url: `${file.path.replace(UPLOADS_DIR, "")}`,
+			file_name: newFileName,
+			file: filePath,
+			url: `${filePath.replace(UPLOADS_DIR, "")}`,
 		};
 
 		return this.mediasService.create(media);
