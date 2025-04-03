@@ -166,10 +166,10 @@ build:admin:
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
-  rules:
-    - *rule
-    - *rule_main
-    - *rule_tag
+  # rules:
+  #   - *rule
+  #   - *rule_main
+  #   - *rule_tag
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
@@ -189,10 +189,10 @@ build:api:
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
       --build-arg http_proxy
       --build-arg http_proxy
-  rules:
-    - *rule
-    - *rule_main
-    - *rule_tag
+  # rules:
+  #   - *rule
+  #   - *rule_main
+  #   - *rule_tag
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
@@ -213,10 +213,10 @@ build:front:
       --build-arg "MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}"
       --build-arg "MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}"
       --build-arg "MATOMO_SITE_ID=${MATOMO_SITE_ID}"
-  rules:
-    - *rule
-    - *rule_main
-    - *rule_tag
+  # rules:
+  #   - *rule
+  #   - *rule_main
+  #   - *rule_tag
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
 
