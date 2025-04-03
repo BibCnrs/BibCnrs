@@ -63,7 +63,7 @@ function NameFile() {
 
 	useEffect(() => {
 		if (file) {
-			setValue("name", file.rawFile.name);
+			setValue("name", file.rawFile.name.replace(/\.[^/.]+$/, ""));
 		}
 	}, [file, setValue]);
 
