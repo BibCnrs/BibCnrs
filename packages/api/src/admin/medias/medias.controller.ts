@@ -71,6 +71,7 @@ export class MediasController {
 			const media = {
 				name: createMediaDto.name,
 				url: createMediaDto.url,
+				tag: createMediaDto.tag,
 				file_name: "",
 				file: "",
 				created_at: new Date(),
@@ -87,6 +88,7 @@ export class MediasController {
 
 		const media = {
 			...createMediaDto,
+			tag: createMediaDto.tag,
 			file_name: newFileName,
 			file: filePath,
 			url: `${filePath.replace(UPLOADS_DIR, "")}`,

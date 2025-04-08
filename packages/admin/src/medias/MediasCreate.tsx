@@ -3,6 +3,7 @@ import {
 	Create,
 	FileField,
 	FileInput,
+	SelectInput,
 	SimpleForm,
 	TextInput,
 	required,
@@ -28,6 +29,9 @@ function validate(values: any) {
 		errors.url = "ra.validation.required";
 	}
 
+	if (!values.tag) {
+		errors.tag = "Le tag est requis";
+	}
 	return errors;
 }
 
@@ -43,6 +47,27 @@ export default function MediasCreate() {
 				/>
 
 				<TextInput source="url" label="URL du Média" name="url" />
+
+				<SelectInput
+					source="tag"
+					label="Tag du Média"
+					choices={[
+						{ id: "logo", name: "Logo" },
+						{ id: "image", name: "Image" },
+						{ id: "pdf", name: "PDF" },
+						{ id: "video", name: "Vidéo" },
+						{ id: "contentFR", name: "Content FR" },
+						{ id: "contentEN", name: "Content EN" },
+						{ id: "Alertes", name: "Alertes" },
+						{ id: "News", name: "Actualités" },
+						{ id: "Plateformes", name: "Plateformes" },
+						{ id: "Ressources", name: "Ressources" },
+						{ id: "FAQ", name: "FAQ" },
+						{ id: "licences", name: "Licences" },
+						{ id: "Accueil", name: "Accueil" },
+					]}
+					validate={required()}
+				/>
 
 				<FileInput
 					sx={{ marginTop: 4 }}

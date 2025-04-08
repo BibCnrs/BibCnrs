@@ -22,10 +22,16 @@ const httpClient = (url: string, options: Options = {}) => {
 
 const jsonServerDataProvider = jsonServerProvider(apiUrl, httpClient);
 
-const upsertFile = async (name: string, file: File, id?: number) => {
+const upsertFile = async (
+	name: string,
+	file: File,
+	tag: string,
+	id?: number,
+) => {
 	const formData = new FormData();
 	formData.append("name", name);
 	formData.append("file", file);
+	formData.append("tag", tag);
 	const mediaRoute = id ? `/medias/${id}` : "/medias";
 
 	return await fetch(`${apiUrl}${mediaRoute}`, {
@@ -79,6 +85,7 @@ const dataProvider: DataProvider = {
 				const file = await upsertFile(
 					params.data.file.title,
 					params.data.file.rawFile,
+					params.data.name,
 				);
 
 				mediaID = file.id;
@@ -99,6 +106,7 @@ const dataProvider: DataProvider = {
 			if (params.data.file2) {
 				const file = await upsertFile(
 					params.data.name,
+					params.data.tag,
 					params.data.file2.rawFile,
 					params.id,
 				);
@@ -130,6 +138,7 @@ const dataProvider: DataProvider = {
 				const file = await upsertFile(
 					params.data.name,
 					params.data.file.rawFile,
+					params.data.tag,
 				);
 				return { data: { ...file } };
 			}
@@ -145,6 +154,7 @@ const dataProvider: DataProvider = {
 				const file = await upsertFile(
 					params.data.file.title,
 					params.data.file.rawFile,
+					params.data.name,
 				);
 
 				mediaID = file.id;

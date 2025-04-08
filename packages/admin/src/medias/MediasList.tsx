@@ -35,6 +35,7 @@ export default function MediasList() {
 					source="created_at"
 					label="resources.medias.fields.createdAt"
 				/>
+				<TextField source="tag" label="tag" />
 				<EditButton />
 				<DeleteWithConfirmButton />
 			</Datagrid>

@@ -3,6 +3,7 @@ import type { medias } from "@prisma/client";
 export class CreateMediaDto implements Omit<medias, "id"> {
 	name: string;
 	file_name: string;
+	tag: string;
 	file: string;
 	url: string;
 	created_at: Date;

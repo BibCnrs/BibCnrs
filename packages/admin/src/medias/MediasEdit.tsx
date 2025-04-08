@@ -6,6 +6,7 @@ import {
 	FileField,
 	FileInput,
 	Labeled,
+	SelectInput,
 	SimpleForm,
 	TextField,
 	TextInput,
@@ -67,7 +68,25 @@ export default function MediasEdit() {
 					/>
 				</Labeled>
 				<Labeled>
-					<FileField label="Url" source="url" title="url" target="_blank" />
+					<SelectInput
+						source="tag"
+						label="Tag du Média"
+						choices={[
+							{ id: "logo", name: "Logo" },
+							{ id: "image", name: "Image" },
+							{ id: "pdf", name: "PDF" },
+							{ id: "video", name: "Vidéo" },
+							{ id: "contentFR", name: "Content FR" },
+							{ id: "contentEN", name: "Content EN" },
+							{ id: "Alertes", name: "Alertes" },
+							{ id: "News", name: "Actualités" },
+							{ id: "Plateformes", name: "Plateformes" },
+							{ id: "Ressources", name: "Ressources" },
+							{ id: "FAQ", name: "FAQ" },
+							{ id: "licences", name: "Licences" },
+							{ id: "Accueil", name: "Accueil" },
+						]}
+					/>
 				</Labeled>
 
 				{hasFileName ? (
