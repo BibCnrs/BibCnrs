@@ -3,7 +3,7 @@ import {
 	Create,
 	FileField,
 	FileInput,
-	SelectInput,
+	SelectArrayInput,
 	SimpleForm,
 	TextInput,
 	required,
@@ -13,6 +13,7 @@ import { CreateActions } from "../components/Actions";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function validate(values: any) {
+	console.log("values", values);
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const errors: any = {};
 	if (!values.name) {
@@ -34,6 +35,21 @@ function validate(values: any) {
 	}
 	return errors;
 }
+const Choices = [
+	{ id: "Accueil", name: "Accueil" },
+	{ id: "Alertes", name: "Alertes" },
+	{ id: "EN", name: "EN" },
+	{ id: "FAQ", name: "FAQ" },
+	{ id: "FR", name: "FR" },
+	{ id: "Image", name: "Image" },
+	{ id: "licences", name: "Licences" },
+	{ id: "Logo", name: "Logo" },
+	{ id: "Actus", name: "Actus" },
+	{ id: "Pdf", name: "PDF" },
+	{ id: "Plateformes", name: "Plateformes" },
+	{ id: "Ressources", name: "Ressources" },
+	{ id: "Video", name: "Vidéo" },
+];
 
 export default function MediasCreate() {
 	return (
@@ -48,24 +64,10 @@ export default function MediasCreate() {
 
 				<TextInput source="url" label="URL du Média" name="url" />
 
-				<SelectInput
+				<SelectArrayInput
 					source="tag"
 					label="Tag du Média"
-					choices={[
-						{ id: "logo", name: "Logo" },
-						{ id: "image", name: "Image" },
-						{ id: "pdf", name: "PDF" },
-						{ id: "video", name: "Vidéo" },
-						{ id: "contentFR", name: "Content FR" },
-						{ id: "contentEN", name: "Content EN" },
-						{ id: "Alertes", name: "Alertes" },
-						{ id: "News", name: "Actualités" },
-						{ id: "Plateformes", name: "Plateformes" },
-						{ id: "Ressources", name: "Ressources" },
-						{ id: "FAQ", name: "FAQ" },
-						{ id: "licences", name: "Licences" },
-						{ id: "Accueil", name: "Accueil" },
-					]}
+					choices={Choices}
 					validate={required()}
 				/>
 

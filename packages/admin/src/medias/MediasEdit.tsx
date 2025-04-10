@@ -6,16 +6,23 @@ import {
 	FileField,
 	FileInput,
 	Labeled,
-	SelectInput,
+	SelectArrayInput,
 	SimpleForm,
 	TextField,
 	TextInput,
 	useEditController,
 } from "react-admin";
 
-// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+function transformTags(record: any) {
+	if (typeof record?.tag === "string") {
+		return record.tag.split(",").map((tag: string) => tag.trim());
+	}
+	return [];
+}
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function validate(values: any, record: any) {
-	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const errors: any = {};
 	if (!values.name) {
 		errors.name = "ra.validation.required";
@@ -55,6 +62,22 @@ export default function MediasEdit() {
 		}
 	}, [record]);
 
+	const Choices = [
+		{ id: "Accueil", name: "Accueil" },
+		{ id: "Alertes", name: "Alertes" },
+		{ id: "EN", name: "EN" },
+		{ id: "FAQ", name: "FAQ" },
+		{ id: "FR", name: "FR" },
+		{ id: "Image", name: "Image" },
+		{ id: "licences", name: "Licences" },
+		{ id: "Logo", name: "Logo" },
+		{ id: "Actus", name: "Actus" },
+		{ id: "Pdf", name: "PDF" },
+		{ id: "Plateformes", name: "Plateformes" },
+		{ id: "Ressources", name: "Ressources" },
+		{ id: "Video", name: "Vidéo" },
+	];
+
 	return (
 		<Edit actions={<EditActions />} redirect="list">
 			<SimpleForm validate={(values) => validate(values, record)}>
@@ -68,24 +91,12 @@ export default function MediasEdit() {
 					/>
 				</Labeled>
 				<Labeled>
-					<SelectInput
+					<SelectArrayInput
 						source="tag"
 						label="Tag du Média"
-						choices={[
-							{ id: "logo", name: "Logo" },
-							{ id: "image", name: "Image" },
-							{ id: "pdf", name: "PDF" },
-							{ id: "video", name: "Vidéo" },
-							{ id: "contentFR", name: "Content FR" },
-							{ id: "contentEN", name: "Content EN" },
-							{ id: "Alertes", name: "Alertes" },
-							{ id: "News", name: "Actualités" },
-							{ id: "Plateformes", name: "Plateformes" },
-							{ id: "Ressources", name: "Ressources" },
-							{ id: "FAQ", name: "FAQ" },
-							{ id: "licences", name: "Licences" },
-							{ id: "Accueil", name: "Accueil" },
-						]}
+						choices={Choices}
+						format={(value) => transformTags({ tag: value })}
+						parse={(value) => value.join(", ")}
 					/>
 				</Labeled>
 

@@ -71,11 +71,14 @@ export class MediasController {
 			const media = {
 				name: createMediaDto.name,
 				url: createMediaDto.url,
-				tag: createMediaDto.tag,
+				tag: Array.isArray(createMediaDto.tag)
+					? createMediaDto.tag.join(", ")
+					: createMediaDto.tag,
 				file_name: "",
 				file: "",
 				created_at: new Date(),
 			};
+			console.log("media", media);
 			return this.mediasService.create(media);
 		}
 
@@ -88,12 +91,14 @@ export class MediasController {
 
 		const media = {
 			...createMediaDto,
-			tag: createMediaDto.tag,
+			tag: Array.isArray(createMediaDto.tag)
+				? createMediaDto.tag.join(", ")
+				: createMediaDto.tag,
 			file_name: newFileName,
 			file: filePath,
 			url: `${filePath.replace(UPLOADS_DIR, "")}`,
 		};
-
+		console.log("media", media);
 		return this.mediasService.create(media);
 	}
 
@@ -160,6 +165,9 @@ export class MediasController {
 		if (updateMediaDto.file) {
 			const media = {
 				...updateMediaDto,
+				tag: Array.isArray(updateMediaDto.tag)
+					? updateMediaDto.tag.join(", ")
+					: updateMediaDto.tag,
 				url: `${updateMediaDto.file?.replace(UPLOADS_DIR, "")}`,
 			};
 			const data = await this.mediasService.update(id, media, file);
