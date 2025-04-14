@@ -86,6 +86,32 @@ const dataProvider: DataProvider = {
 				delete params.data.file;
 			}
 
+			const previousMediaID = params.previousData?.media_id;
+
+			if (mediaID !== previousMediaID) {
+				if (previousMediaID) {
+					await fetch(`${apiUrl}/medias/${previousMediaID}/is-used`, {
+						method: "PATCH",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						body: JSON.stringify({ is_used: false }),
+					});
+				}
+
+				if (mediaID) {
+					await fetch(`${apiUrl}/medias/${mediaID}/is-used`, {
+						method: "PATCH",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						body: JSON.stringify({ is_used: true }),
+					});
+				}
+			}
+
 			return jsonServerDataProvider.update(resource, {
 				...params,
 				data: {
@@ -145,6 +171,7 @@ const dataProvider: DataProvider = {
 				const file = await upsertFile(
 					params.data.file.title,
 					params.data.file.rawFile,
+					Number(params.data.file.is_used === "true"),
 				);
 
 				mediaID = file.id;
@@ -169,6 +196,30 @@ const dataProvider: DataProvider = {
 			},
 		});
 	},
+
+	delete: async (resource, params) => {
+		if (
+			resource === "news" ||
+			resource === "contentManagement" ||
+			resource === "licenses" ||
+			resource === "resources"
+		) {
+			const mediaID = params.previousData?.media_id;
+			if (mediaID) {
+				await fetch(`${apiUrl}/medias/${mediaID}/is-used`, {
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+					body: JSON.stringify({ is_used: false }),
+				});
+			}
+		}
+
+		return jsonServerDataProvider.delete(resource, params);
+	},
+
 	setCommonLicense: (licenseId: number) => {
 		return fetch(`${apiUrl}/licenses/${licenseId}/common`, {
 			method: "PUT",

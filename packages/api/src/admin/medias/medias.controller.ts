@@ -8,6 +8,7 @@ import {
 	HttpException,
 	HttpStatus,
 	Param,
+	Patch,
 	Post,
 	Put,
 	Query,
@@ -73,6 +74,7 @@ export class MediasController {
 				url: createMediaDto.url,
 				file_name: "",
 				file: "",
+				is_used: createMediaDto.is_used,
 				created_at: new Date(),
 			};
 			return this.mediasService.create(media);
@@ -175,6 +177,21 @@ export class MediasController {
 		return data;
 	}
 
+	@Patch(":id/is-used")
+	async updateIsUsed(
+		@Param("id") id: number,
+		@Body("is_used") isUsed: boolean,
+	) {
+		const data = await this.mediasService.update(id, {
+			is_used: isUsed,
+		} as UpdateMediaDto);
+
+		if (!data) {
+			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+		}
+
+		return data;
+	}
 	@Delete(":id")
 	async remove(@Param("id") id: number) {
 		const data = await this.mediasService.remove(id);

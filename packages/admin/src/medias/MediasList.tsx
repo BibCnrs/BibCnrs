@@ -1,4 +1,5 @@
 import {
+	BooleanField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
@@ -35,6 +36,7 @@ export default function MediasList() {
 					source="created_at"
 					label="resources.medias.fields.createdAt"
 				/>
+				<BooleanField source="is_used" label="Utilisé" />
 				<EditButton />
 				<DeleteWithConfirmButton />
 			</Datagrid>

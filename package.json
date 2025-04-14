@@ -6,6 +6,10 @@
 		"packages/*"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "^1.8.3"
+		"@biomejs/biome": "^1.8.3",
+		"prisma": "^6.6.0"
+	},
+	"dependencies": {
+		"@prisma/client": "^6.6.0"
 	}
 }
