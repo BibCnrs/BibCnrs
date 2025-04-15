@@ -176,6 +176,16 @@ const dataProvider: DataProvider = {
 
 				mediaID = file.id;
 			}
+			if (mediaID) {
+				await fetch(`${apiUrl}/medias/${mediaID}/is-used`, {
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+					body: JSON.stringify({ is_used: true }),
+				});
+			}
 
 			// biome-ignore lint/performance/noDelete: <explanation>
 			delete params.data.file;
