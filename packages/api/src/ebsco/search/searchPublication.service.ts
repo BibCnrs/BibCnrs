@@ -40,9 +40,8 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		const { term, field } = queriesJson[0];
 
 		if (
-			field === "TI" &&
-			(term.match(/^[A-Z]{1,2}\*$/) ||
-				term === "0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*")
+			term.match(/[A-Z]\*$/) ||
+			term === "0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
 		) {
 			return {
 				queries: [
@@ -111,10 +110,6 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			this.publicationParser,
 			searchResult,
 			communityName,
-		);
-
-		parsedResult.results.sort((a, b) =>
-			a.title.localeCompare(b.title, "en", { sensitivity: "base" }),
 		);
 
 		const formatISSN = (issn: string) => {
