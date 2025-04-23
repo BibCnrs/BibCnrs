@@ -39,12 +39,6 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		}
 		const { term, field } = queriesJson[0];
 
-		if (field !== "TI") {
-			return {
-				queries: queriesJson.map(this.addTruncatureToQuery),
-			};
-		}
-
 		if (
 			term.match(/[A-Z]\*$/) ||
 			term === "0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
@@ -77,7 +71,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		};
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: EBSCO result object
 	private publicationParser(result: any) {
 		return {
 			id: result.ResultId,
@@ -159,7 +153,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
 						}
 					}
-				} catch (e) {
+				} catch {
 					item.isDiamond = false;
 				}
 			}),
@@ -168,7 +162,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		return parsedResult;
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: parsing helper
 	async retrievePublicationParser(result: any) {
 		return {
 			items: [...(await parseItems(result.Items))],
