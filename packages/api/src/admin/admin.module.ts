@@ -11,6 +11,7 @@ import { MediasModule } from "./medias/medias.module";
 import { ResourcesModule } from "./resources/resources.module";
 import { RevuesModule } from "./revues/revues.module";
 import { SectionsCNModule } from "./sectionsCN/sectionsCN.module";
+import { TagsModule } from "./tags/tags.module";
 import { TestsNewsModule } from "./testsNews/tests-news.module";
 import { UnitsModule } from "./units/units.module";
 import { AdminUsersModule } from "./users/users.module";
@@ -25,6 +26,7 @@ import { AdminUsersModule } from "./users/users.module";
 		LicensesModule,
 		ContentsManagementModule,
 		MediasModule,
+		TagsModule,
 		ResourcesModule,
 		TestsNewsModule,
 		InstitutesModule,
