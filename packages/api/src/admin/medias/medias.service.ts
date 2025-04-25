@@ -28,7 +28,7 @@ export class MediasService {
 
 	async findAll(
 		query: FindAllQueryArgs,
-	): Promise<{ data: Partial<medias>[]; total: number }> {
+	): Promise<{ data: Partial<medias & { tags?: number[] }>[]; total: number }> {
 		const filters = this.parseFilters(query);
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
@@ -39,6 +39,13 @@ export class MediasService {
 			where: filters,
 			orderBy: {
 				[query._sortField]: query._sortDir,
+			},
+			include: {
+				tags_medias: {
+					select: {
+						tags_id: true,
+					},
+				},
 			},
 		});
 
@@ -53,13 +60,35 @@ export class MediasService {
 			where: {
 				id,
 			},
+			include: {
+				tags_medias: {
+					select: {
+						tags_id: true,
+					},
+				},
+			},
 		});
 	}
 
-	create(createMediaDto: CreateMediaDto) {
-		return this.prismaService.medias.create({
-			data: createMediaDto,
+	async create(createMediaDto: CreateMediaDto) {
+		const { tags, ...mediaData } = createMediaDto;
+
+		const createdMedia = await this.prismaService.medias.create({
+			data: mediaData,
 		});
+
+		if (!tags || tags.length === 0) {
+			return this.findOne(createdMedia.id);
+		}
+
+		await this.prismaService.tags_medias.createMany({
+			data: tags.map((tag) => ({
+				medias_id: createdMedia.id,
+				tags_id: tag,
+			})),
+		});
+
+		return this.findOne(createdMedia.id);
 	}
 
 	async update(

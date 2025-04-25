@@ -408,6 +408,23 @@ model content_management {
   media      medias?   @relation(fields: [media_id], references: [id])
 }
 
+model tags {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  tags_medias tags_medias[]
+}
+
+model tags_medias {
+  tags_id   Int
+  medias_id Int
+  medias    medias @relation(fields: [medias_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tags      tags   @relation(fields: [tags_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([tags_id, medias_id], map: "tags_medias_constraint")
+  @@index([medias_id], map: "tags_medias_medias_id_fkey")
+  @@map("_tags_medias")
+}
+
 model medias {
   id                 Int                  @id @default(autoincrement())
   name               String               @db.VarChar(255)
@@ -419,6 +436,7 @@ model medias {
   content_management content_management[]
   license            license[]
   resources          resources[]
+  tags_medias        tags_medias[]
 }
 
 model resources {
