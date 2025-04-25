@@ -1,4 +1,5 @@
 import {
+	BooleanField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
@@ -13,7 +14,7 @@ import CustomPagination from "../components/CustomPagination";
 
 const MediasFilter = [
 	<TextInput key="name" label="Rechercher" source="name" alwaysOn />,
-	<TextInput key="file_name" source="file_name" />,
+	<TextInput key="file_name" label="Nom" source="file_name" />,
 ];
 
 export default function MediasList() {
@@ -26,6 +27,7 @@ export default function MediasList() {
 		>
 			<Datagrid bulkActionButtons={<BulkActionButtons />}>
 				<TextField source="name" label="resources.medias.fields.name" />
+				<BooleanField label="Utilisé" source="isused" />
 				<UrlField
 					source="url"
 					label="resources.medias.fields.url"
