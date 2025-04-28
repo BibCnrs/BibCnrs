@@ -96,6 +96,9 @@ const dataProvider: DataProvider = {
 		}
 
 		if (resource === "medias") {
+			// biome-ignore lint/performance/noDelete: isUsed colonne dynamique on ne l'update pas
+			delete params.data.isUsed;
+
 			if (params.data.file2) {
 				const file = await upsertFile(
 					params.data.name,
@@ -103,13 +106,13 @@ const dataProvider: DataProvider = {
 					params.id,
 				);
 
-				// biome-ignore lint/performance/noDelete: <explanation>
+				// biome-ignore lint/performance/noDelete: upsertFile gére le fichier on ne update pas
 				delete params.data.file2;
 				return { data: { ...file } };
 			}
 			if (params.data.url2) {
 				const url = params.data.url2;
-				// biome-ignore lint/performance/noDelete: <explanation>
+				// biome-ignore lint/performance/noDelete: url est updaté
 				delete params.data.url2;
 				return jsonServerDataProvider.update(resource, {
 					...params,

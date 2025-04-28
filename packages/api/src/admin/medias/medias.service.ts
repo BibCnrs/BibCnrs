@@ -1,6 +1,6 @@
 import { promises as fsPromises, unlinkSync } from "node:fs";
 import { Injectable } from "@nestjs/common";
-import { Prisma, medias } from "@prisma/client";
+import { medias } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { FilterQuery, transformFilters } from "../../utils/filter";
 import { FindAllQueryArgs } from "../admin.type";
@@ -29,15 +29,13 @@ export class MediasService {
 	async findAll(
 		query: FindAllQueryArgs,
 	): Promise<{ data: (medias & { isUsed: boolean })[]; total: number }> {
-		//const filters = this.parseFilters(query);
-		const filters = JSON.parse(query._filters || "{}");
+		const filters = this.parseFilters(query);
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
 
-		const sortField = query._sortField;
-
-		console.log(`${sortField ? `${sortField} ${query._sortDir}` : "m.id"}`);
-		console.log(filters);
+		/*const sortField = query._sortField
+			? `${query._sortField} ${query._sortDir}`
+			: "m.id";
 
 		const data = await this.prismaService.$queryRaw<
 			(medias & { isUsed: boolean })[]
@@ -57,28 +55,35 @@ export class MediasService {
                 FROM tests_news tn
                 WHERE tn.media_id = m.id
                 UNION
+				SELECT 1
+                FROM tests_news tn
+                WHERE tn.content_fr LIKE '%' || m.url || '%'
+                OR tn.content_en LIKE '%' || m.url || '%'
+				UNION
                 SELECT 1
                 FROM license l
                 WHERE l.media_id = m.id
                 UNION
+				SELECT 1
+                FROM license l
+                WHERE l.content_fr LIKE '%' || m.url || '%'
+                OR l.content_en LIKE '%' || m.url || '%'
+				UNION
                 SELECT 1
                 FROM content_management cm
                 WHERE cm.content_fr LIKE '%' || m.url || '%'
                 OR cm.content_en LIKE '%' || m.url || '%'
             ) AS isUsed
-        FROM medias m
-		${this.getFiltersSql(filters)}
-        ORDER BY ${sortField ? `${sortField} ${query._sortDir}` : "created_at desc"} 
-        LIMIT ${take} 
-		OFFSET ${offset}
+			FROM medias m
+            ORDER BY created_at desc  
+            LIMIT ${take} OFFSET ${offset}
     `);
-
 		const total = await this.prismaService.medias.count({
 			where: filters,
 		});
 
-		return { data, total };
-		/*const sortField =
+		return { data, total };*/
+		const sortField =
 			query._sortField === "isUsed" ? undefined : query._sortField;
 
 		const data = await this.prismaService.medias.findMany({
@@ -98,35 +103,7 @@ export class MediasService {
 		const total = await this.prismaService.medias.count({
 			where: filters,
 		});
-		return { data: dataWithUsage, total };*/
-	}
-
-	private async getFiltersSql(filters: FilterQuery): Promise<string> {
-		const conditions = [];
-
-		// Exemple de gestion des filtres
-		if (filters.name) {
-			conditions.push(`name LIKE '%${filters.name}%'`);
-		}
-		if (filters.from) {
-			conditions.push(`created_at >= '${filters.from.toISOString()}'`);
-		}
-		if (filters.to) {
-			conditions.push(`created_at <= '${filters.to.toISOString()}'`);
-		}
-		if (filters.enable !== undefined) {
-			conditions.push(`enable = ${filters.enable}`);
-		}
-		if (filters.info !== undefined) {
-			conditions.push(`info = ${filters.info}`);
-		}
-		if (filters.media_id) {
-			conditions.push(`media_id = ${filters.media_id}`);
-		}
-
-		// Ajoutez d'autres conditions selon vos besoins
-
-		return conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+		return { data: dataWithUsage, total };
 	}
 
 	private async isMediaUsed(
@@ -155,24 +132,45 @@ export class MediasService {
 				},
 			}));
 
-		const isUsedByUrl = await this.prismaService.content_management.findFirst({
-			where: {
-				OR: [
-					{ content_fr: { contains: mediaUrl } },
-					{ content_en: { contains: mediaUrl } },
-				],
-			},
-		});
+		const isUsedByUrl =
+			(await this.prismaService.content_management.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: mediaUrl } },
+						{ content_en: { contains: mediaUrl } },
+					],
+				},
+			})) ||
+			(await this.prismaService.license.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: mediaUrl } },
+						{ content_en: { contains: mediaUrl } },
+					],
+				},
+			})) ||
+			(await this.prismaService.tests_news.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: mediaUrl } },
+						{ content_en: { contains: mediaUrl } },
+					],
+				},
+			}));
 
 		return !!isUsedByMediaId || !!isUsedByUrl;
 	}
 
-	findOne(id: number): Promise<Partial<medias>> {
-		return this.prismaService.medias.findUnique({
+	async findOne(id: number): Promise<Partial<medias & { isUsed: boolean }>> {
+		const data = await this.prismaService.medias.findUnique({
 			where: {
 				id,
 			},
 		});
+
+		const isUsed = await this.isMediaUsed(data.id, data.url);
+
+		return { ...data, isUsed };
 	}
 
 	create(createMediaDto: CreateMediaDto) {

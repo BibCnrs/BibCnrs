@@ -8,14 +8,26 @@ import {
 	TextField,
 	TextInput,
 	UrlField,
+	useRecordContext,
 } from "react-admin";
 import BulkActionButtons from "../components/BulkActionButtons";
 import CustomPagination from "../components/CustomPagination";
 
 const MediasFilter = [
 	<TextInput key="name" label="Rechercher" source="name" alwaysOn />,
-	<TextInput key="file_name" label="Nom" source="file_name" />,
+	<TextInput key="file_name" label="Lien" source="file_name" />,
 ];
+
+const MediasActions = () => {
+	const record = useRecordContext();
+	if (!record) return null;
+	return (
+		<>
+			<EditButton record={record} />
+			{!record.isUsed && <DeleteWithConfirmButton record={record} />}
+		</>
+	);
+};
 
 export default function MediasList() {
 	return (
@@ -27,7 +39,7 @@ export default function MediasList() {
 		>
 			<Datagrid bulkActionButtons={<BulkActionButtons />}>
 				<TextField source="name" label="resources.medias.fields.name" />
-				<BooleanField label="Utilisé" source="isused" />
+				<BooleanField label="Utilisé" source="isUsed" />
 				<UrlField
 					source="url"
 					label="resources.medias.fields.url"
