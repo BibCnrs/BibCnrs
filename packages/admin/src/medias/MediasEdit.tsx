@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
 import {
-	Button,
 	DateField,
-	DeleteButton,
 	DeleteWithConfirmButton,
 	Edit,
-	EditActions,
 	FileField,
 	FileInput,
 	Labeled,
 	ListButton,
-	SaveButton,
-	ShowButton,
 	SimpleForm,
 	TextField,
 	TextInput,
-	Toolbar,
 	TopToolbar,
 	useEditController,
 	useRecordContext,
@@ -85,10 +79,7 @@ export default function MediasEdit() {
 					<TextField source="name" label="resources.medias.fields.name" />
 				</Labeled>
 				<Labeled>
-					<DateField
-						source="created_at"
-						label="resources.medias.fields.createdAt"
-					/>
+					<DateField source="created_at" label="Date" />
 				</Labeled>
 				<Labeled>
 					<FileField label="Url" source="url" title="url" target="_blank" />

@@ -203,6 +203,8 @@ export class MediasService {
 			}
 		}
 
+		updateMediaDto.created_at = new Date();
+
 		return this.prismaService.medias.update({
 			where: { id },
 			data: updateMediaDto,

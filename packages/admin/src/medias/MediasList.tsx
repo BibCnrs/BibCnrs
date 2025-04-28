@@ -45,12 +45,8 @@ export default function MediasList() {
 					label="resources.medias.fields.url"
 					target="_blank"
 				/>
-				<DateField
-					source="created_at"
-					label="resources.medias.fields.createdAt"
-				/>
-				<EditButton />
-				<DeleteWithConfirmButton />
+				<DateField source="created_at" label="Date" />
+				<MediasActions />
 			</Datagrid>
 		</List>
 	);
