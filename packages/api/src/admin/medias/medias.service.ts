@@ -26,9 +26,10 @@ export class MediasService {
 		return query._page ? (Number.parseInt(query._page) - 1) * take : 0;
 	}
 
-	async findAll(
-		query: FindAllQueryArgs,
-	): Promise<{ data: Partial<medias & { tags?: number[] }>[]; total: number }> {
+	async findAll(query: FindAllQueryArgs): Promise<{
+		data: Partial<medias & { tags?: number[] }>[];
+		total: number;
+	}> {
 		const filters = this.parseFilters(query);
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
@@ -42,17 +43,22 @@ export class MediasService {
 			},
 			include: {
 				tags_medias: {
-					select: {
-						tags_id: true,
+					include: {
+						tags: true,
 					},
 				},
 			},
 		});
 
+		const transformedData = data.map((media) => ({
+			...media,
+			tags: media.tags_medias.map((relation) => relation.tags.id),
+		}));
+
 		const total = await this.prismaService.medias.count({
 			where: filters,
 		});
-		return { data, total };
+		return { data: transformedData, total };
 	}
 
 	findOne(id: number): Promise<Partial<medias>> {
@@ -73,20 +79,32 @@ export class MediasService {
 	async create(createMediaDto: CreateMediaDto) {
 		const { tags, ...mediaData } = createMediaDto;
 
-		const createdMedia = await this.prismaService.medias.create({
-			data: mediaData,
-		});
+		console.log("Creating media with data:", mediaData, "and tags:", tags);
 
-		if (!tags || tags.length === 0) {
-			return this.findOne(createdMedia.id);
-		}
+		const createdMedia = await this.prismaService.$transaction(
+			async (prisma) => {
+				const media = await prisma.medias.create({
+					data: mediaData,
+				});
 
-		await this.prismaService.tags_medias.createMany({
-			data: tags.map((tag) => ({
-				medias_id: createdMedia.id,
-				tags_id: tag,
-			})),
-		});
+				console.log("Created media:", media);
+
+				if (tags && tags.length > 0) {
+					const tagRelations = tags.map((tag) => ({
+						medias_id: media.id,
+						tags_id: tag,
+					}));
+
+					console.log("Creating tag relations:", tagRelations);
+
+					await prisma.tags_medias.createMany({
+						data: tagRelations,
+					});
+				}
+
+				return media;
+			},
+		);
 
 		return this.findOne(createdMedia.id);
 	}

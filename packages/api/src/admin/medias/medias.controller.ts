@@ -74,7 +74,9 @@ export class MediasController {
 				file_name: "",
 				file: "",
 				created_at: new Date(),
+				tags: createMediaDto.tags,
 			};
+			console.log("Payload received from frontend:", createMediaDto);
 			return this.mediasService.create(media);
 		}
 
@@ -90,8 +92,10 @@ export class MediasController {
 			file_name: newFileName,
 			file: filePath,
 			url: `${filePath.replace(UPLOADS_DIR, "")}`,
+			tags: createMediaDto.tags,
 		};
 
+		console.log("Payload received from frontend:", createMediaDto);
 		return this.mediasService.create(media);
 	}
 

@@ -1,9 +1,12 @@
 import {
+	ChipField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
+	ReferenceArrayField,
+	SingleFieldList,
 	TextField,
 	TextInput,
 	UrlField,
@@ -35,6 +38,16 @@ export default function MediasList() {
 					source="created_at"
 					label="resources.medias.fields.createdAt"
 				/>
+				<ReferenceArrayField
+					label="tags"
+					reference="tags"
+					source="tags"
+					sortable={false}
+				>
+					<SingleFieldList>
+						<ChipField source="name" />
+					</SingleFieldList>
+				</ReferenceArrayField>
 				<EditButton />
 				<DeleteWithConfirmButton />
 			</Datagrid>
