@@ -76,10 +76,35 @@ export class MediasService {
 		});
 	}
 
-	async create(createMediaDto: CreateMediaDto) {
-		const { tags, ...mediaData } = createMediaDto;
+	getTagRelations(
+		tags: number[],
+		tags_medias: string,
+		media_id: number,
+	): { tags_id: number; medias_id: number }[] {
+		let tagRelations: { tags_id: number; medias_id: number }[] = [];
 
-		console.log("Creating media with data:", mediaData, "and tags:", tags);
+		if (tags_medias) {
+			const tags = tags_medias.split(",");
+			for (const tag of tags) {
+				const tag_id = Number.parseInt(tag, 10);
+				if (!Number.isNaN(tag_id)) {
+					tagRelations.push({ tags_id: tag_id, medias_id: media_id });
+				}
+			}
+		}
+
+		if (tags && tags.length > 0) {
+			tagRelations = tags.map((tag) => ({
+				medias_id: media_id,
+				tags_id: tag,
+			}));
+		}
+
+		return tagRelations;
+	}
+
+	async create(createMediaDto: CreateMediaDto) {
+		const { tags, tags_id, ...mediaData } = createMediaDto;
 
 		const createdMedia = await this.prismaService.$transaction(
 			async (prisma) => {
@@ -87,20 +112,11 @@ export class MediasService {
 					data: mediaData,
 				});
 
-				console.log("Created media:", media);
+				const tagRelations = this.getTagRelations(tags, tags_id, media.id);
 
-				if (tags && tags.length > 0) {
-					const tagRelations = tags.map((tag) => ({
-						medias_id: media.id,
-						tags_id: tag,
-					}));
-
-					console.log("Creating tag relations:", tagRelations);
-
-					await prisma.tags_medias.createMany({
-						data: tagRelations,
-					});
-				}
+				await prisma.tags_medias.createMany({
+					data: tagRelations,
+				});
 
 				return media;
 			},
