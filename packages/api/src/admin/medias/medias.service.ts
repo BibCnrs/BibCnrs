@@ -18,6 +18,11 @@ export class MediasService {
 			? transformFilters(filters, [
 					{ field: "name", mode: "contains" },
 					{ field: "file_name", mode: "contains" },
+					{
+						field: "tags_medias.tags_id",
+						mode: "equals",
+						excludeMatch: true,
+					},
 				])
 			: {};
 	}
@@ -61,19 +66,28 @@ export class MediasService {
 		return { data: transformedData, total };
 	}
 
-	findOne(id: number): Promise<Partial<medias>> {
-		return this.prismaService.medias.findUnique({
-			where: {
-				id,
-			},
-			include: {
-				tags_medias: {
-					select: {
-						tags_id: true,
+	findOne(id: number): Promise<Partial<medias & { tags?: number[] }>> {
+		return this.prismaService.medias
+			.findUnique({
+				where: {
+					id,
+				},
+				include: {
+					tags_medias: {
+						include: {
+							tags: true,
+						},
 					},
 				},
-			},
-		});
+			})
+			.then((media) => {
+				if (!media) return null;
+
+				return {
+					...media,
+					tags: media.tags_medias.map((relation) => relation.tags.id),
+				};
+			});
 	}
 
 	getTagRelations(
@@ -101,6 +115,21 @@ export class MediasService {
 		}
 
 		return tagRelations;
+	}
+
+	async updateTags(mediaId: number, tags: number[]) {
+		await this.prismaService.tags_medias.deleteMany({
+			where: { medias_id: mediaId },
+		});
+
+		const tagRelations = tags.map((tagId) => ({
+			medias_id: mediaId,
+			tags_id: tagId,
+		}));
+
+		await this.prismaService.tags_medias.createMany({
+			data: tagRelations,
+		});
 	}
 
 	async create(createMediaDto: CreateMediaDto) {
@@ -137,6 +166,7 @@ export class MediasService {
 		if (!media) {
 			throw new Error(`${id} not found`);
 		}
+
 		if (file) {
 			try {
 				const newFile = await fsPromises.readFile(file.path);
@@ -149,12 +179,20 @@ export class MediasService {
 			}
 		}
 
+		if (updateMediaDto.tags) {
+			try {
+				await this.updateTags(id, updateMediaDto.tags);
+			} catch (error) {
+				console.error("Error while updating tags", error);
+				throw new Error("Failed to update tags");
+			}
+		}
+
 		return this.prismaService.medias.update({
 			where: { id },
 			data: updateMediaDto,
 		});
 	}
-
 	async remove(id: number) {
 		const media = await this.prismaService.medias.findUnique({ where: { id } });
 		if (!media) {
