@@ -188,9 +188,11 @@ export class MediasService {
 			}
 		}
 
+		const { tags_medias, tags, ...rest } = updateMediaDto;
+
 		return this.prismaService.medias.update({
 			where: { id },
-			data: updateMediaDto,
+			data: rest,
 		});
 	}
 	async remove(id: number) {

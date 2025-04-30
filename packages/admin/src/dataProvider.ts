@@ -98,6 +98,7 @@ const dataProvider: DataProvider = {
 				data: {
 					...params.data,
 					media_id: mediaID,
+					tags: JSON.stringify(params.data.tags),
 				},
 			});
 		}
@@ -108,7 +109,6 @@ const dataProvider: DataProvider = {
 					params.data.name,
 					params.data.file2.rawFile,
 					params.id,
-					params.data.tags,
 				);
 
 				// biome-ignore lint/performance/noDelete: <explanation>
