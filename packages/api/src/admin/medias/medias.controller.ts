@@ -129,22 +129,6 @@ export class MediasController {
 	@UseInterceptors(
 		FileInterceptor("file", {
 			storage: diskStorage({
-				/*destination: (_req, _file, callback) => {
-					const now = new Date();
-					const directoryPath = path.join(
-						UPLOADS_DIR,
-						now.getUTCFullYear().toString(10),
-						(now.getUTCMonth() + 1).toString(10),
-						now.getUTCDate().toString(10),
-					);
-
-					fs.mkdir(directoryPath, { recursive: true }, (err) => {
-						if (err) {
-							return callback(new Error(err.message), null);
-						}
-						callback(null, directoryPath);
-					});
-				},*/
 				filename: (_, file, callback) => {
 					callback(null, file.originalname);
 				},
@@ -156,10 +140,6 @@ export class MediasController {
 		@Body() updateMediaDto: UpdateMediaDto,
 		@UploadedFile() file?: Express.Multer.File,
 	) {
-		if (updateMediaDto.tags && Array.isArray(updateMediaDto.tags)) {
-			await this.mediasService.updateTags(id, updateMediaDto.tags);
-		}
-
 		// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
 		let data;
 
