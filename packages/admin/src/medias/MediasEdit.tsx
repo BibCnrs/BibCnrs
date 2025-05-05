@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import {
+	AutocompleteArrayInput,
 	DateField,
 	Edit,
 	EditActions,
 	FileField,
 	FileInput,
 	Labeled,
+	ReferenceArrayInput,
 	SimpleForm,
 	TextField,
 	TextInput,
@@ -69,6 +71,13 @@ export default function MediasEdit() {
 				<Labeled>
 					<FileField label="Url" source="url" title="url" target="_blank" />
 				</Labeled>
+				<ReferenceArrayInput label="Tags" source="tags" reference="tags">
+					<AutocompleteArrayInput
+						filterToQuery={(searchText) => ({ name: searchText })}
+						optionText="name"
+						fullWidth
+					/>
+				</ReferenceArrayInput>
 
 				{hasFileName ? (
 					<FileInput

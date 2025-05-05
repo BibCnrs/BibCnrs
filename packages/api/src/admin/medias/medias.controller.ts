@@ -75,6 +75,7 @@ export class MediasController {
 				file: "",
 				created_at: new Date(),
 			};
+
 			return this.mediasService.create(media);
 		}
 
@@ -128,22 +129,6 @@ export class MediasController {
 	@UseInterceptors(
 		FileInterceptor("file", {
 			storage: diskStorage({
-				/*destination: (_req, _file, callback) => {
-					const now = new Date();
-					const directoryPath = path.join(
-						UPLOADS_DIR,
-						now.getUTCFullYear().toString(10),
-						(now.getUTCMonth() + 1).toString(10),
-						now.getUTCDate().toString(10),
-					);
-
-					fs.mkdir(directoryPath, { recursive: true }, (err) => {
-						if (err) {
-							return callback(new Error(err.message), null);
-						}
-						callback(null, directoryPath);
-					});
-				},*/
 				filename: (_, file, callback) => {
 					callback(null, file.originalname);
 				},
@@ -155,19 +140,19 @@ export class MediasController {
 		@Body() updateMediaDto: UpdateMediaDto,
 		@UploadedFile() file?: Express.Multer.File,
 	) {
+		// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+		let data;
+
 		if (updateMediaDto.file) {
 			const media = {
 				...updateMediaDto,
 				url: `${updateMediaDto.file?.replace(UPLOADS_DIR, "")}`,
 			};
-			const data = await this.mediasService.update(id, media, file);
-			if (!data) {
-				throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
-			}
-
-			return data;
+			data = await this.mediasService.update(id, media, file);
+		} else {
+			data = await this.mediasService.update(id, updateMediaDto, file);
 		}
-		const data = await this.mediasService.update(id, updateMediaDto, file);
+
 		if (!data) {
 			throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
 		}
