@@ -1,9 +1,14 @@
 import {
+	AutocompleteInput,
+	ChipField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
 	EditButton,
 	List,
+	ReferenceArrayField,
+	ReferenceInput,
+	SingleFieldList,
 	TextField,
 	TextInput,
 	UrlField,
@@ -13,7 +18,19 @@ import CustomPagination from "../components/CustomPagination";
 
 const MediasFilter = [
 	<TextInput key="name" label="Rechercher" source="name" alwaysOn />,
-	<TextInput key="file_name" source="file_name" />,
+	<ReferenceInput
+		key="tags_medias"
+		label="tags"
+		source="tags_medias.tags_id"
+		reference="tags"
+	>
+		<AutocompleteInput
+			key="tags_autocomplete"
+			filterToQuery={(searchText) => ({ name: searchText })}
+			optionText="name"
+			label="tags"
+		/>
+	</ReferenceInput>,
 ];
 
 export default function MediasList() {
@@ -35,6 +52,16 @@ export default function MediasList() {
 					source="created_at"
 					label="resources.medias.fields.createdAt"
 				/>
+				<ReferenceArrayField
+					label="tags"
+					reference="tags"
+					source="tags"
+					sortable={true}
+				>
+					<SingleFieldList>
+						<ChipField source="name" />
+					</SingleFieldList>
+				</ReferenceArrayField>
 				<EditButton />
 				<DeleteWithConfirmButton />
 			</Datagrid>

@@ -6,6 +6,8 @@ export class CreateMediaDto implements Omit<medias, "id"> {
 	file: string;
 	url: string;
 	created_at: Date;
+	tags?: number[];
+	tags_id?: string;
 }
 
 export class UpdateMediaDto extends CreateMediaDto {

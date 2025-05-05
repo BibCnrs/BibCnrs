@@ -22,10 +22,16 @@ const httpClient = (url: string, options: Options = {}) => {
 
 const jsonServerDataProvider = jsonServerProvider(apiUrl, httpClient);
 
-const upsertFile = async (name: string, file: File, id?: number) => {
+const upsertFile = async (
+	name: string,
+	file: File,
+	tags?: string,
+	id?: number,
+) => {
 	const formData = new FormData();
 	formData.append("name", name);
 	formData.append("file", file);
+	formData.append("tags_id", tags);
 	const mediaRoute = id ? `/medias/${id}` : "/medias";
 
 	return await fetch(`${apiUrl}${mediaRoute}`, {
@@ -96,15 +102,20 @@ const dataProvider: DataProvider = {
 		}
 
 		if (resource === "medias") {
+			// biome-ignore lint/performance/noDelete: update tag via tags dans tags_id
+			delete params.data.tags_medias;
+
 			if (params.data.file2) {
 				const file = await upsertFile(
 					params.data.name,
 					params.data.file2.rawFile,
+					params.data.tags,
 					params.id,
 				);
 
 				// biome-ignore lint/performance/noDelete: <explanation>
 				delete params.data.file2;
+
 				return { data: { ...file } };
 			}
 			if (params.data.url2) {
@@ -126,10 +137,11 @@ const dataProvider: DataProvider = {
 
 	create: async (resource, params) => {
 		if (resource === "medias") {
-			if (params.data.url == null) {
+			if (params.data.file) {
 				const file = await upsertFile(
 					params.data.name,
 					params.data.file.rawFile,
+					params.data.tags,
 				);
 				return { data: { ...file } };
 			}

@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import {
+	AutocompleteArrayInput,
 	Create,
 	FileField,
 	FileInput,
+	ReferenceArrayInput,
 	SimpleForm,
 	TextInput,
 	required,
@@ -52,6 +54,13 @@ export default function MediasCreate() {
 				>
 					<FileField source="src" title="title" />
 				</FileInput>
+				<ReferenceArrayInput label="Tags" source="tags" reference="tags">
+					<AutocompleteArrayInput
+						filterToQuery={(searchText) => ({ name: searchText })}
+						optionText="name"
+						fullWidth
+					/>
+				</ReferenceArrayInput>
 			</SimpleForm>
 		</Create>
 	);

@@ -18,6 +18,11 @@ export class MediasService {
 			? transformFilters(filters, [
 					{ field: "name", mode: "contains" },
 					{ field: "file_name", mode: "contains" },
+					{
+						field: "tags_medias.tags_id",
+						mode: "equals",
+						excludeMatch: true,
+					},
 				])
 			: {};
 	}
@@ -26,9 +31,10 @@ export class MediasService {
 		return query._page ? (Number.parseInt(query._page) - 1) * take : 0;
 	}
 
-	async findAll(
-		query: FindAllQueryArgs,
-	): Promise<{ data: Partial<medias>[]; total: number }> {
+	async findAll(query: FindAllQueryArgs): Promise<{
+		data: Partial<medias & { tags?: number[] }>[];
+		total: number;
+	}> {
 		const filters = this.parseFilters(query);
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
@@ -40,26 +46,107 @@ export class MediasService {
 			orderBy: {
 				[query._sortField]: query._sortDir,
 			},
+			include: {
+				tags_medias: {
+					include: {
+						tags: true,
+					},
+				},
+			},
 		});
+
+		const transformedData = data.map((media) => ({
+			...media,
+			tags: media.tags_medias.map((relation) => relation.tags.id),
+		}));
 
 		const total = await this.prismaService.medias.count({
 			where: filters,
 		});
-		return { data, total };
+		return { data: transformedData, total };
 	}
 
-	findOne(id: number): Promise<Partial<medias>> {
-		return this.prismaService.medias.findUnique({
-			where: {
-				id,
+	findOne(id: number): Promise<Partial<medias & { tags?: number[] }>> {
+		return this.prismaService.medias
+			.findUnique({
+				where: {
+					id,
+				},
+				include: {
+					tags_medias: {
+						include: {
+							tags: true,
+						},
+					},
+				},
+			})
+			.then((media) => {
+				if (!media) return null;
+
+				return {
+					...media,
+					tags: media.tags_medias.map((relation) => relation.tags.id),
+				};
+			});
+	}
+
+	getTagRelations(
+		tags: number[],
+		tags_id?: string,
+		media_id?: number,
+	): { tags_id: number; medias_id: number }[] {
+		let tagRelations: { tags_id: number; medias_id: number }[] = [];
+
+		if (tags_id) {
+			const tags = tags_id.split(",");
+			for (const tag of tags) {
+				const tag_id = Number.parseInt(tag, 10);
+				if (!Number.isNaN(tag_id)) {
+					tagRelations.push({ tags_id: tag_id, medias_id: media_id });
+				}
+			}
+		} else if (tags) {
+			tagRelations = tags.map((tag) => ({
+				medias_id: media_id,
+				tags_id: tag,
+			}));
+		}
+
+		return tagRelations;
+	}
+
+	async updateTags(mediaId: number, tags?: number[], tags_id?: string) {
+		await this.prismaService.tags_medias.deleteMany({
+			where: { medias_id: mediaId },
+		});
+
+		const tagRelations = this.getTagRelations(tags, tags_id, mediaId);
+
+		await this.prismaService.tags_medias.createMany({
+			data: tagRelations,
+		});
+	}
+
+	async create(createMediaDto: CreateMediaDto) {
+		const { tags, tags_id, ...mediaData } = createMediaDto;
+
+		const createdMedia = await this.prismaService.$transaction(
+			async (prisma) => {
+				const media = await prisma.medias.create({
+					data: mediaData,
+				});
+
+				const tagRelations = this.getTagRelations(tags, tags_id, media.id);
+
+				await prisma.tags_medias.createMany({
+					data: tagRelations,
+				});
+
+				return media;
 			},
-		});
-	}
+		);
 
-	create(createMediaDto: CreateMediaDto) {
-		return this.prismaService.medias.create({
-			data: createMediaDto,
-		});
+		return this.findOne(createdMedia.id);
 	}
 
 	async update(
@@ -74,6 +161,7 @@ export class MediasService {
 		if (!media) {
 			throw new Error(`${id} not found`);
 		}
+
 		if (file) {
 			try {
 				const newFile = await fsPromises.readFile(file.path);
@@ -86,19 +174,23 @@ export class MediasService {
 			}
 		}
 
+		const { tags, tags_id, ...mediaData } = updateMediaDto;
+		await this.updateTags(id, tags, tags_id);
+
 		return this.prismaService.medias.update({
 			where: { id },
-			data: updateMediaDto,
+			data: mediaData,
 		});
 	}
-
 	async remove(id: number) {
 		const media = await this.prismaService.medias.findUnique({ where: { id } });
 		if (!media) {
 			return null;
 		}
 		try {
-			unlinkSync(media.file);
+			if (media.file) {
+				unlinkSync(media.file);
+			}
 		} catch (error) {
 			console.error("Error while removing file", error);
 		}
