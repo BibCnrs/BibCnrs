@@ -92,22 +92,20 @@ export class MediasService {
 
 	getTagRelations(
 		tags: number[],
-		tags_medias: string,
-		media_id: number,
+		tags_id?: string,
+		media_id?: number,
 	): { tags_id: number; medias_id: number }[] {
 		let tagRelations: { tags_id: number; medias_id: number }[] = [];
 
-		if (tags_medias) {
-			const tags = tags_medias.split(",");
+		if (tags_id) {
+			const tags = tags_id.split(",");
 			for (const tag of tags) {
 				const tag_id = Number.parseInt(tag, 10);
 				if (!Number.isNaN(tag_id)) {
 					tagRelations.push({ tags_id: tag_id, medias_id: media_id });
 				}
 			}
-		}
-
-		if (tags && tags.length > 0) {
+		} else if (tags) {
 			tagRelations = tags.map((tag) => ({
 				medias_id: media_id,
 				tags_id: tag,
@@ -117,15 +115,12 @@ export class MediasService {
 		return tagRelations;
 	}
 
-	async updateTags(mediaId: number, tags: number[]) {
+	async updateTags(mediaId: number, tags?: number[], tags_id?: string) {
 		await this.prismaService.tags_medias.deleteMany({
 			where: { medias_id: mediaId },
 		});
 
-		const tagRelations = tags.map((tagId) => ({
-			medias_id: mediaId,
-			tags_id: tagId,
-		}));
+		const tagRelations = this.getTagRelations(tags, tags_id, mediaId);
 
 		await this.prismaService.tags_medias.createMany({
 			data: tagRelations,
@@ -179,20 +174,12 @@ export class MediasService {
 			}
 		}
 
-		if (updateMediaDto.tags) {
-			try {
-				await this.updateTags(id, updateMediaDto.tags);
-			} catch (error) {
-				console.error("Error while updating tags", error);
-				throw new Error("Failed to update tags");
-			}
-		}
-
-		const { tags_medias, tags, ...rest } = updateMediaDto;
+		const { tags, tags_id, ...mediaData } = updateMediaDto;
+		await this.updateTags(id, tags, tags_id);
 
 		return this.prismaService.medias.update({
 			where: { id },
-			data: rest,
+			data: mediaData,
 		});
 	}
 	async remove(id: number) {
@@ -201,7 +188,9 @@ export class MediasService {
 			return null;
 		}
 		try {
-			unlinkSync(media.file);
+			if (media.file) {
+				unlinkSync(media.file);
+			}
 		} catch (error) {
 			console.error("Error while removing file", error);
 		}

@@ -85,7 +85,6 @@ const dataProvider: DataProvider = {
 				const file = await upsertFile(
 					params.data.file.title,
 					params.data.file.rawFile,
-					JSON.stringify(params.data.tags),
 				);
 
 				mediaID = file.id;
@@ -98,21 +97,25 @@ const dataProvider: DataProvider = {
 				data: {
 					...params.data,
 					media_id: mediaID,
-					tags: JSON.stringify(params.data.tags),
 				},
 			});
 		}
 
 		if (resource === "medias") {
+			// biome-ignore lint/performance/noDelete: update tag via tags dans tags_id
+			delete params.data.tags_medias;
+
 			if (params.data.file2) {
 				const file = await upsertFile(
 					params.data.name,
 					params.data.file2.rawFile,
+					params.data.tags,
 					params.id,
 				);
 
 				// biome-ignore lint/performance/noDelete: <explanation>
 				delete params.data.file2;
+
 				return { data: { ...file } };
 			}
 			if (params.data.url2) {
@@ -134,7 +137,7 @@ const dataProvider: DataProvider = {
 
 	create: async (resource, params) => {
 		if (resource === "medias") {
-			if (params.data.url == null) {
+			if (params.data.file) {
 				const file = await upsertFile(
 					params.data.name,
 					params.data.file.rawFile,

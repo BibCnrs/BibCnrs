@@ -12,6 +12,4 @@ export class CreateMediaDto implements Omit<medias, "id"> {
 
 export class UpdateMediaDto extends CreateMediaDto {
 	id: number;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	tags_medias?: any[];
 }
