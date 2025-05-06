@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import {
+	AutocompleteArrayInput,
 	Create,
 	FileField,
 	FileInput,
+	ReferenceArrayInput,
 	SimpleForm,
 	TextInput,
 	required,
@@ -20,8 +22,12 @@ function validate(values: any) {
 		const invalidName = /[^a-zA-Z\s]|(\.[a-zA-Z0-9]+)$/;
 		if (invalidName.test(values.name)) {
 			errors.name =
-				"Le nom ne doit contenir que des lettres sans chiffres, tirets ou extensions.";
+				"Le nom du média ne doit contenir que des lettres sans chiffres, tirets ou extensions.";
 		}
+	}
+
+	if (values.file && values.url) {
+		errors.name = "Un média est soit une URL soit un fichier pas les deux.";
 	}
 
 	if (!values.file && !values.url) {
@@ -52,6 +58,13 @@ export default function MediasCreate() {
 				>
 					<FileField source="src" title="title" />
 				</FileInput>
+				<ReferenceArrayInput label="Tags" source="tags" reference="tags">
+					<AutocompleteArrayInput
+						filterToQuery={(searchText) => ({ name: searchText })}
+						optionText="name"
+						fullWidth
+					/>
+				</ReferenceArrayInput>
 			</SimpleForm>
 		</Create>
 	);

@@ -18,6 +18,11 @@ export class MediasService {
 			? transformFilters(filters, [
 					{ field: "name", mode: "contains" },
 					{ field: "file_name", mode: "contains" },
+					{
+						field: "tags_medias.tags_id",
+						mode: "equals",
+						excludeMatch: true,
+					},
 				])
 			: {};
 	}
@@ -26,40 +31,236 @@ export class MediasService {
 		return query._page ? (Number.parseInt(query._page) - 1) * take : 0;
 	}
 
-	async findAll(
-		query: FindAllQueryArgs,
-	): Promise<{ data: Partial<medias>[]; total: number }> {
+	async findAll(query: FindAllQueryArgs): Promise<{
+		data: Partial<medias & { tags?: number[] } & { isUsed: boolean }>[];
+		total: number;
+	}> {
 		const filters = this.parseFilters(query);
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
+
+		/*const sortField = query._sortField
+			? `${query._sortField} ${query._sortDir}`
+			: "m.id";
+
+		const data = await this.prismaService.$queryRaw<
+			(medias & { isUsed: boolean })[]
+		>(Prisma.sql`
+        SELECT
+            m.*,
+            EXISTS (
+                SELECT 1
+                FROM content_management cm
+                WHERE cm.media_id = m.id
+                UNION
+                SELECT 1
+                FROM resources r
+                WHERE r.media_id = m.id
+                UNION
+                SELECT 1
+                FROM tests_news tn
+                WHERE tn.media_id = m.id
+                UNION
+				SELECT 1
+                FROM tests_news tn
+                WHERE tn.content_fr LIKE '%' || m.url || '%'
+                OR tn.content_en LIKE '%' || m.url || '%'
+				UNION
+                SELECT 1
+                FROM license l
+                WHERE l.media_id = m.id
+                UNION
+				SELECT 1
+                FROM license l
+                WHERE l.content_fr LIKE '%' || m.url || '%'
+                OR l.content_en LIKE '%' || m.url || '%'
+				UNION
+                SELECT 1
+                FROM content_management cm
+                WHERE cm.content_fr LIKE '%' || m.url || '%'
+                OR cm.content_en LIKE '%' || m.url || '%'
+            ) AS isUsed
+			FROM medias m
+            ORDER BY created_at desc  
+            LIMIT ${take} OFFSET ${offset}
+    `);
+		const total = await this.prismaService.medias.count({
+			where: filters,
+		});
+
+		return { data, total };*/
+		const sortField =
+			query._sortField === "isUsed" ? undefined : query._sortField;
 
 		const data = await this.prismaService.medias.findMany({
 			skip: offset || 0,
 			take: take || 100,
 			where: filters,
-			orderBy: {
-				[query._sortField]: query._sortDir,
+			orderBy: sortField ? { [sortField]: query._sortDir } : undefined,
+			include: {
+				tags_medias: {
+					include: {
+						tags: true,
+					},
+				},
 			},
 		});
+
+		const transformedData = await Promise.all(
+			data.map(async (media) => {
+				const isUsed = await this.isMediaUsed(media.id, media.url);
+				const tags = media.tags_medias.map((relation) => relation.tags.id);
+				return { ...media, tags, isUsed };
+			}),
+		);
 
 		const total = await this.prismaService.medias.count({
 			where: filters,
 		});
-		return { data, total };
+
+		return { data: transformedData, total };
 	}
 
-	findOne(id: number): Promise<Partial<medias>> {
-		return this.prismaService.medias.findUnique({
+	private async isMediaUsed(
+		mediaId: number,
+		mediaUrl: string,
+	): Promise<boolean> {
+		const isUsedByMediaId =
+			(await this.prismaService.content_management.findFirst({
+				where: {
+					media_id: mediaId,
+				},
+			})) ||
+			(await this.prismaService.resources.findFirst({
+				where: {
+					media_id: mediaId,
+				},
+			})) ||
+			(await this.prismaService.tests_news.findFirst({
+				where: {
+					media_id: mediaId,
+				},
+			})) ||
+			(await this.prismaService.license.findFirst({
+				where: {
+					media_id: mediaId,
+				},
+			}));
+
+		const isUsedByUrl =
+			(await this.prismaService.content_management.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: mediaUrl } },
+						{ content_en: { contains: mediaUrl } },
+					],
+				},
+			})) ||
+			(await this.prismaService.license.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: mediaUrl } },
+						{ content_en: { contains: mediaUrl } },
+					],
+				},
+			})) ||
+			(await this.prismaService.tests_news.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: mediaUrl } },
+						{ content_en: { contains: mediaUrl } },
+					],
+				},
+			}));
+
+		return !!isUsedByMediaId || !!isUsedByUrl;
+	}
+
+	async findOne(
+		id: number,
+	): Promise<Partial<medias & { tags?: number[] } & { isUsed: boolean }>> {
+		const media = await this.prismaService.medias.findUnique({
 			where: {
 				id,
 			},
+			include: {
+				tags_medias: {
+					include: {
+						tags: true,
+					},
+				},
+			},
+		});
+
+		if (!media) return null;
+
+		const tags = media.tags_medias.map((relation) => relation.tags.id);
+		const isUsed = await this.isMediaUsed(media.id, media.url);
+
+		return {
+			...media,
+			tags,
+			isUsed,
+		};
+	}
+
+	getTagRelations(
+		tags: number[],
+		tags_id?: string,
+		media_id?: number,
+	): { tags_id: number; medias_id: number }[] {
+		let tagRelations: { tags_id: number; medias_id: number }[] = [];
+
+		if (tags_id) {
+			const tags = tags_id.split(",");
+			for (const tag of tags) {
+				const tag_id = Number.parseInt(tag, 10);
+				if (!Number.isNaN(tag_id)) {
+					tagRelations.push({ tags_id: tag_id, medias_id: media_id });
+				}
+			}
+		} else if (tags) {
+			tagRelations = tags.map((tag) => ({
+				medias_id: media_id,
+				tags_id: tag,
+			}));
+		}
+
+		return tagRelations;
+	}
+
+	async updateTags(mediaId: number, tags?: number[], tags_id?: string) {
+		await this.prismaService.tags_medias.deleteMany({
+			where: { medias_id: mediaId },
+		});
+
+		const tagRelations = this.getTagRelations(tags, tags_id, mediaId);
+
+		await this.prismaService.tags_medias.createMany({
+			data: tagRelations,
 		});
 	}
 
-	create(createMediaDto: CreateMediaDto) {
-		return this.prismaService.medias.create({
-			data: createMediaDto,
-		});
+	async create(createMediaDto: CreateMediaDto) {
+		const { tags, tags_id, ...mediaData } = createMediaDto;
+
+		const createdMedia = await this.prismaService.$transaction(
+			async (prisma) => {
+				const media = await prisma.medias.create({
+					data: mediaData,
+				});
+
+				const tagRelations = this.getTagRelations(tags, tags_id, media.id);
+
+				await prisma.tags_medias.createMany({
+					data: tagRelations,
+				});
+
+				return media;
+			},
+		);
+
+		return this.findOne(createdMedia.id);
 	}
 
 	async update(
@@ -74,6 +275,7 @@ export class MediasService {
 		if (!media) {
 			throw new Error(`${id} not found`);
 		}
+
 		if (file) {
 			try {
 				const newFile = await fsPromises.readFile(file.path);
@@ -86,19 +288,29 @@ export class MediasService {
 			}
 		}
 
+		updateMediaDto.created_at = new Date();
+
+		const { tags, tags_id, ...mediaData } = updateMediaDto;
+
+		await this.updateTags(id, tags, tags_id);
+
 		return this.prismaService.medias.update({
 			where: { id },
-			data: updateMediaDto,
+			data: mediaData,
 		});
 	}
-
 	async remove(id: number) {
 		const media = await this.prismaService.medias.findUnique({ where: { id } });
 		if (!media) {
 			return null;
 		}
+		if (this.isMediaUsed(media.id, media.url)) {
+			return media;
+		}
 		try {
-			unlinkSync(media.file);
+			if (media.file) {
+				unlinkSync(media.file);
+			}
 		} catch (error) {
 			console.error("Error while removing file", error);
 		}
