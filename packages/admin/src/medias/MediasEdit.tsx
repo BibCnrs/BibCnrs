@@ -2,17 +2,21 @@ import { useEffect, useState } from "react";
 import {
 	AutocompleteArrayInput,
 	DateField,
+	DeleteWithConfirmButton,
 	Edit,
-	EditActions,
 	FileField,
 	FileInput,
 	Labeled,
+	ListButton,
 	ReferenceArrayInput,
 	SimpleForm,
 	TextField,
 	TextInput,
+	TopToolbar,
 	useEditController,
+	useRecordContext,
 } from "react-admin";
+import EditToolbar from "../components/EditToolbar";
 
 // biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 function validate(values: any, record: any) {
@@ -44,6 +48,17 @@ function validate(values: any, record: any) {
 	return errors;
 }
 
+const PostEditActions = () => {
+	const record = useRecordContext();
+	if (!record) return null;
+	return (
+		<TopToolbar>
+			<ListButton />
+			{!record.isUsed && <DeleteWithConfirmButton record={record} />}
+		</TopToolbar>
+	);
+};
+
 export default function MediasEdit() {
 	const { record } = useEditController();
 	const [hasFileName, setHasFileName] = useState(false);
@@ -57,16 +72,16 @@ export default function MediasEdit() {
 	}, [record]);
 
 	return (
-		<Edit actions={<EditActions />} redirect="list">
-			<SimpleForm validate={(values) => validate(values, record)}>
+		<Edit actions={<PostEditActions />} redirect="list">
+			<SimpleForm
+				validate={(values) => validate(values, record)}
+				toolbar={<EditToolbar />}
+			>
 				<Labeled>
 					<TextField source="name" label="resources.medias.fields.name" />
 				</Labeled>
 				<Labeled>
-					<DateField
-						source="created_at"
-						label="resources.medias.fields.createdAt"
-					/>
+					<DateField source="created_at" label="Date" />
 				</Labeled>
 				<Labeled>
 					<FileField label="Url" source="url" title="url" target="_blank" />
