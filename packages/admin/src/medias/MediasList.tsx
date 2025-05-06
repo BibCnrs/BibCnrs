@@ -1,7 +1,6 @@
 import {
 	AutocompleteInput,
 	BooleanField,
-	BulkDeleteWithConfirmButton,
 	ChipField,
 	Datagrid,
 	DateField,
@@ -16,7 +15,6 @@ import {
 	UrlField,
 	useRecordContext,
 } from "react-admin";
-import BulkActionButtons from "../components/BulkActionButtons";
 import CustomPagination from "../components/CustomPagination";
 
 const MediasFilter = [
