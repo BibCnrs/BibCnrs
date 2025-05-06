@@ -22,8 +22,12 @@ function validate(values: any) {
 		const invalidName = /[^a-zA-Z\s]|(\.[a-zA-Z0-9]+)$/;
 		if (invalidName.test(values.name)) {
 			errors.name =
-				"Le nom ne doit contenir que des lettres sans chiffres, tirets ou extensions.";
+				"Le nom du média ne doit contenir que des lettres sans chiffres, tirets ou extensions.";
 		}
+	}
+
+	if (values.file && values.url) {
+		errors.name = "Un média est soit une URL soit un fichier pas les deux.";
 	}
 
 	if (!values.file && !values.url) {

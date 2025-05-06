@@ -1,5 +1,6 @@
 import {
 	AutocompleteInput,
+	BooleanField,
 	ChipField,
 	Datagrid,
 	DateField,
@@ -12,8 +13,8 @@ import {
 	TextField,
 	TextInput,
 	UrlField,
+	useRecordContext,
 } from "react-admin";
-import BulkActionButtons from "../components/BulkActionButtons";
 import CustomPagination from "../components/CustomPagination";
 
 const MediasFilter = [
@@ -33,6 +34,18 @@ const MediasFilter = [
 	</ReferenceInput>,
 ];
 
+const MediasActions = () => {
+	const record = useRecordContext();
+	if (!record) return null;
+	return (
+		<>
+			<EditButton record={record} />
+			{!record.isUsed && <DeleteWithConfirmButton record={record} />}
+		</>
+	);
+};
+
+const BulkActionButtons2 = () => <></>;
 export default function MediasList() {
 	return (
 		<List
@@ -41,16 +54,13 @@ export default function MediasList() {
 			pagination={<CustomPagination />}
 			sort={{ field: "created_at", order: "DESC" }}
 		>
-			<Datagrid bulkActionButtons={<BulkActionButtons />}>
+			<Datagrid bulkActionButtons={<BulkActionButtons2 />}>
 				<TextField source="name" label="resources.medias.fields.name" />
+				<BooleanField label="Utilisé" source="isUsed" />
 				<UrlField
 					source="url"
 					label="resources.medias.fields.url"
 					target="_blank"
-				/>
-				<DateField
-					source="created_at"
-					label="resources.medias.fields.createdAt"
 				/>
 				<ReferenceArrayField
 					label="tags"
@@ -62,8 +72,8 @@ export default function MediasList() {
 						<ChipField source="name" />
 					</SingleFieldList>
 				</ReferenceArrayField>
-				<EditButton />
-				<DeleteWithConfirmButton />
+				<DateField source="created_at" label="Date" />
+				<MediasActions />
 			</Datagrid>
 		</List>
 	);
