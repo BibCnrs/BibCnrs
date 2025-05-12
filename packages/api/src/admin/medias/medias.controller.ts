@@ -73,6 +73,7 @@ export class MediasController {
 				url: createMediaDto.url,
 				file_name: "",
 				file: "",
+				tags: createMediaDto.tags,
 				created_at: new Date(),
 			};
 
