@@ -330,9 +330,11 @@ export class MediasService {
 		if (!media) {
 			return null;
 		}
-		if (this.isMediaUsed(media.id, media.url)) {
+		const used = await this.isMediaUsed(media.id, media.url);
+		if (used) {
 			return media;
 		}
+
 		try {
 			if (media.file) {
 				unlinkSync(media.file);
