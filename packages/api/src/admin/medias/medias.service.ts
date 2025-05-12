@@ -173,7 +173,33 @@ export class MediasService {
 				},
 			}));
 
-		return !!isUsedByMediaId || !!isUsedByUrl;
+		const isUsedByEncodedUrl =
+			(await this.prismaService.content_management.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: encodeURIComponent(mediaUrl) } },
+						{ content_en: { contains: encodeURIComponent(mediaUrl) } },
+					],
+				},
+			})) ||
+			(await this.prismaService.license.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: encodeURIComponent(mediaUrl) } },
+						{ content_en: { contains: encodeURIComponent(mediaUrl) } },
+					],
+				},
+			})) ||
+			(await this.prismaService.tests_news.findFirst({
+				where: {
+					OR: [
+						{ content_fr: { contains: encodeURIComponent(mediaUrl) } },
+						{ content_en: { contains: encodeURIComponent(mediaUrl) } },
+					],
+				},
+			}));
+
+		return !!isUsedByMediaId || !!isUsedByUrl || !!isUsedByEncodedUrl;
 	}
 
 	async findOne(
@@ -304,9 +330,11 @@ export class MediasService {
 		if (!media) {
 			return null;
 		}
-		if (this.isMediaUsed(media.id, media.url)) {
+		const used = await this.isMediaUsed(media.id, media.url);
+		if (used) {
 			return media;
 		}
+
 		try {
 			if (media.file) {
 				unlinkSync(media.file);
