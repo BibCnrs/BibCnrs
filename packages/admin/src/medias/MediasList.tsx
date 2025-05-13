@@ -66,7 +66,7 @@ export default function MediasList() {
 					label="tags"
 					reference="tags"
 					source="tags"
-					sortable={true}
+					sortable={false}
 				>
 					<SingleFieldList>
 						<ChipField source="name" />
