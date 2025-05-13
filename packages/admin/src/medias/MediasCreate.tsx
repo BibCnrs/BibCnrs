@@ -58,7 +58,12 @@ export default function MediasCreate() {
 				>
 					<FileField source="src" title="title" />
 				</FileInput>
-				<ReferenceArrayInput label="Tags" source="tags" reference="tags">
+				<ReferenceArrayInput
+					label="Tags"
+					source="tags"
+					reference="tags"
+					sort={{ field: "id", order: "ASC" }}
+				>
 					<AutocompleteArrayInput
 						filterToQuery={(searchText) => ({ name: searchText })}
 						optionText="name"
