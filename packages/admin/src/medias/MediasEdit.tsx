@@ -86,7 +86,12 @@ export default function MediasEdit() {
 				<Labeled>
 					<FileField label="Url" source="url" title="url" target="_blank" />
 				</Labeled>
-				<ReferenceArrayInput label="Tags" source="tags" reference="tags">
+				<ReferenceArrayInput
+					label="Tags"
+					source="tags"
+					reference="tags"
+					sort={{ field: "id", order: "ASC" }}
+				>
 					<AutocompleteArrayInput
 						filterToQuery={(searchText) => ({ name: searchText })}
 						optionText="name"
