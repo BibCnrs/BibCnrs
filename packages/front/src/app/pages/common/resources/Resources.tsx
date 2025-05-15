@@ -26,7 +26,7 @@ export const DisplayResources = ({
 	const ressourceurl = data.find((resource) => resource.media.file === "");
 
 	const otherResources = data.filter(
-		(resource) => resource.media.file !== null,
+		(resource) => resource.media.file !== null && resource.media.file !== "",
 	);
 
 	otherResources.sort((a, b) => {

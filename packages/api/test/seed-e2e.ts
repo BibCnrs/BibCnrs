@@ -153,6 +153,13 @@ const prisma = new PrismaClient();
 				file_name: "Chimie",
 				file: "app/packages/api/uploads/files/2024/6/14/BibCNRS_INC2_ListeTitres.xlsx",
 			},
+			{
+				id: 3,
+				url: "www.lodex.inist.fr",
+				name: "Lodex",
+				file_name: "",
+				file: "",
+			},
 		],
 	});
 
@@ -170,6 +177,12 @@ const prisma = new PrismaClient();
 				name_en: "Resources available for the Chemistry domain",
 				enable: true,
 				media_id: 200,
+			},
+			{
+				name_fr: "lodex",
+				name_en: "lodex",
+				enable: true,
+				media_id: 3,
 			},
 		],
 	});

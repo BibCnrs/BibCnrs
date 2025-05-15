@@ -4,6 +4,7 @@ import { Response } from "express";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import configFunction from "../../config";
 import { PrismaService } from "../../prisma/prisma.service";
+import { TagsService } from "../tags/tags.service";
 import { MediasController } from "./medias.controller";
 import { MediasService } from "./medias.service";
 
@@ -20,7 +21,7 @@ describe("MediaController", () => {
 				}),
 			],
 			controllers: [MediasController],
-			providers: [MediasService, PrismaService, ConfigService],
+			providers: [MediasService, TagsService, PrismaService, ConfigService],
 		}).compile();
 
 		mediasController = testingModule.get<MediasController>(MediasController);
@@ -42,33 +43,65 @@ describe("MediaController", () => {
 						created_at: expect.any(Date),
 						file_name: "media1.png",
 						url: "http://localhost:3000/files/2024/1/1/media1.png",
+						tags: [1, 2],
 					}),
 					expect.objectContaining({
-						id: 2,
-						name: "media2",
+						id: 3,
+						name: "lodex",
 						created_at: expect.any(Date),
-						file_name: "media2.png",
-						url: "http://localhost:3000/files/2024/1/1/media2.png",
-					}),
-					expect.objectContaining({
-						id: 100,
-						name: "bib",
-						url: "http://localhost:3000/files/2024/1/1/bibcnrs.pdf",
-						created_at: expect.any(Date),
-						file_name: "bib.pdf",
-					}),
-					expect.objectContaining({
-						id: 101,
-						name: "preprod",
-						url: "http://localhost:3000/files/2024/1/1/preprod.pdf",
-						created_at: expect.any(Date),
-						file_name: "preprod.pdf",
+						file_name: "",
+						url: "www.lodex.inist.fr",
+						tags: [2],
 					}),
 				]),
 			);
 		});
 
 		test("should return a single content media", async () => {
+			const data = await mediasController.findOne(3);
+			expect(data).toEqual(
+				expect.objectContaining({
+					id: 3,
+					name: "lodex",
+					file_name: "",
+					file: "",
+					url: "www.lodex.inist.fr",
+					created_at: expect.any(Date),
+					tags: [2],
+				}),
+			);
+		});
+
+		test("should verify if a media is used url", async () => {
+			const data = await mediasController.findOne(3);
+			expect(data).toEqual(
+				expect.objectContaining({
+					id: 3,
+					name: "lodex",
+					file_name: "",
+					file: "",
+					url: "www.lodex.inist.fr",
+					created_at: expect.any(Date),
+					tags: [2],
+					isUsed: true,
+				}),
+			);
+		});
+		test("should verify if a media is used file", async () => {
+			const data = await mediasController.findOne(1);
+			expect(data).toEqual(
+				expect.objectContaining({
+					id: 1,
+					name: "media1",
+					created_at: expect.any(Date),
+					file_name: "media1.png",
+					url: "http://localhost:3000/files/2024/1/1/media1.png",
+					tags: [1, 2],
+					isUsed: true,
+				}),
+			);
+		});
+		test("should verify if a media is not used", async () => {
 			const data = await mediasController.findOne(2);
 			expect(data).toEqual(
 				expect.objectContaining({
@@ -77,6 +110,8 @@ describe("MediaController", () => {
 					file_name: "media2.png",
 					file: "/app/packages/api/uploads/2024/1/1/media2.png",
 					url: "http://localhost:3000/files/2024/1/1/media2.png",
+					created_at: expect.any(Date),
+					isUsed: false,
 				}),
 			);
 		});
