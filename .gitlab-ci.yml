@@ -136,7 +136,7 @@ test:e2e:
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
-  timeout: 10m
+  timeout: 5m
   script:
     - yarn install --immutable
     - yarn workspace @bibcnrs/api prisma generate
