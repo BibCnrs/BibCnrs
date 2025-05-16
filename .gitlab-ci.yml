@@ -137,15 +137,15 @@ test:e2e:
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
   timeout: 5m
-  script:
+  before_script:
+    - apt-get update && apt-get install -y make
     - yarn install --immutable
     - yarn workspace @bibcnrs/api prisma generate
     - yarn workspace @bibcnrs/e2e run playwright install
-    - yarn workspace @bibcnrs/api run start:e2e -d &
-    - yarn workspace @bibcnrs/front run dev -d &
-    - yarn workspace @bibcnrs/admin run dev -d &
-    - sleep 20
+  script:
+    - make test-e2e-start
     - yarn workspace @bibcnrs/e2e run test
+    - make test-e2e-stop
   artifacts:
     name: E2E Test Artifacts
     paths:
