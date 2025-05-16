@@ -43,6 +43,47 @@ const prisma = new PrismaClient();
 		],
 	});
 
+	// Medias
+	await prisma.medias.createMany({
+		data: [
+			{
+				id: 1,
+				name: "media1",
+				file_name: "media1.png",
+				file: "/app/packages/api/uploads/2024/1/1/media1.png",
+				url: "/2024/1/1/media1.png",
+			},
+			{
+				id: 2,
+				name: "media2",
+				file_name: "media2.png",
+				file: "/app/packages/api/uploads/2024/1/1/media2.png",
+				url: "/2024/1/1/media2.png",
+			},
+			{
+				id: 100,
+				name: "bib",
+				file_name: "bib.pdf",
+				file: "/app/packages/api/uploads/2024/1/1/bib.pdf",
+				url: "/2024/1/1/bibcnrs.pdf",
+			},
+			{
+				id: 101,
+				name: "preprod",
+				file_name: "preprod.pdf",
+				file: "/app/packages/api/uploads/2024/1/1/preprod.pdf",
+				url: "/2024/1/1/preprod.pdf",
+			},
+			{
+				id: 3,
+				name: "lodex",
+				url: "www.lodex.inist.fr",
+				file_name: "",
+				file: "",
+			},
+		],
+	});
+
 	// CMS
 	await prisma.content_management.createMany({
 		data: [
@@ -55,6 +96,7 @@ const prisma = new PrismaClient();
 				name_fr: "Bonjour 2",
 				content_en: "Hello! 2",
 				content_fr: "Bonjour! 2",
+				media_id: 3,
 			},
 			{
 				page: "home",
@@ -65,6 +107,18 @@ const prisma = new PrismaClient();
 				name_fr: "Bonjour 1",
 				content_en: "Hello! 1",
 				content_fr: "Bonjour! 1",
+			},
+			{
+				page: "alertes",
+				enable: true,
+				from: new Date("2021-01-01"),
+				to: null,
+				name_en: "bibcnrs",
+				name_fr: "bibcnrs",
+				content_en:
+					'<p>Hello! 1</p><img src="/2024/1/1/media1.png" alt="Media 1">',
+				content_fr:
+					'<p>Bonjour! 1</p><img src="/2024/1/1/media1.png" alt="Media 1">',
 			},
 		],
 	});
@@ -199,36 +253,34 @@ const prisma = new PrismaClient();
 		],
 	});
 
-	// Medias
-	await prisma.medias.createMany({
+	// Tags
+	await prisma.tags.createMany({
 		data: [
 			{
 				id: 1,
-				name: "media1",
-				file_name: "media1.png",
-				file: "/app/packages/api/uploads/2024/1/1/media1.png",
-				url: "/2024/1/1/media1.png",
+				name: "tag1",
 			},
 			{
 				id: 2,
-				name: "media2",
-				file_name: "media2.png",
-				file: "/app/packages/api/uploads/2024/1/1/media2.png",
-				url: "/2024/1/1/media2.png",
+				name: "tag2",
+			},
+		],
+	});
+
+	//tags_medias
+	await prisma.tags_medias.createMany({
+		data: [
+			{
+				tags_id: 1,
+				medias_id: 1,
 			},
 			{
-				id: 100,
-				name: "bib",
-				file_name: "bib.pdf",
-				file: "/app/packages/api/uploads/2024/1/1/bib.pdf",
-				url: "/2024/1/1/bibcnrs.pdf",
+				tags_id: 2,
+				medias_id: 1,
 			},
 			{
-				id: 101,
-				name: "preprod",
-				file_name: "preprod.pdf",
-				file: "/app/packages/api/uploads/2024/1/1/preprod.pdf",
-				url: "/2024/1/1/preprod.pdf",
+				tags_id: 2,
+				medias_id: 3,
 			},
 		],
 	});
