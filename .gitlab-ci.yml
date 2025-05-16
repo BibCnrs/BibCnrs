@@ -138,7 +138,11 @@ test:e2e:
     BIB_UPLOADS_DIR: /app/packages/api/uploads
   timeout: 5m
   before_script:
-  - apt-get update && apt-get install -y make docker.io
+  - apt-get update && apt-get install -y make docker.io curl
+  - mkdir -p ~/.docker/cli-plugins/
+  - curl -SL https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+  - chmod +x ~/.docker/cli-plugins/docker-compose
+  - docker compose version
   - yarn install --immutable
   - yarn workspace @bibcnrs/api prisma generate
   - yarn workspace @bibcnrs/e2e run playwright install
