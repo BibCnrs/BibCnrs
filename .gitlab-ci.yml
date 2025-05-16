@@ -138,10 +138,10 @@ test:e2e:
     BIB_UPLOADS_DIR: /app/packages/api/uploads
   timeout: 5m
   before_script:
-    - apt-get update && apt-get install -y make
-    - yarn install --immutable
-    - yarn workspace @bibcnrs/api prisma generate
-    - yarn workspace @bibcnrs/e2e run playwright install
+  - apt-get update && apt-get install -y make docker.io
+  - yarn install --immutable
+  - yarn workspace @bibcnrs/api prisma generate
+  - yarn workspace @bibcnrs/e2e run playwright install
   script:
     - make test-e2e-start
     - yarn workspace @bibcnrs/e2e run test
