@@ -1,7 +1,6 @@
 import {
 	AutocompleteInput,
 	BooleanField,
-	ChipField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
@@ -24,6 +23,7 @@ const MediasFilter = [
 		label="tags"
 		source="tags_medias.tags_id"
 		reference="tags"
+		sort={{ field: "id", order: "ASC" }}
 	>
 		<AutocompleteInput
 			key="tags_autocomplete"
@@ -68,9 +68,7 @@ export default function MediasList() {
 					source="tags"
 					sortable={false}
 				>
-					<SingleFieldList>
-						<ChipField source="name" />
-					</SingleFieldList>
+					<SingleFieldList linkType={false} />
 				</ReferenceArrayField>
 				<DateField source="created_at" label="Date" />
 				<MediasActions />
