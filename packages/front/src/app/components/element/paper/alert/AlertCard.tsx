@@ -41,7 +41,11 @@ const AlertCard = ({ data }: { data: CMSResultDataType | undefined }) => {
 				justifyContent: "center",
 				minHeight: "100%",
 				textAlign: "center",
-				pointerEvents: "none",
+				"&:hover": {
+					backgroundColor: content.info
+						? (theme) => theme.palette.secondary.light
+						: (theme) => theme.palette.error.light,
+				},
 			}}
 		>
 			<CardContent
