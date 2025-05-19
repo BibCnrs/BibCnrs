@@ -1,3 +1,10 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "group:jsTest"],
+  "labels": ["renovate"],
+  "reviewers": ["join"],
+  "enabledManagers": ["yarn"],
+  "prHourlyLimit": 8,
+  "prConcurrentLimit": 8,
+  "configMigration": true
 }
