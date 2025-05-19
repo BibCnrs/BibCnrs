@@ -40,6 +40,7 @@ stages:
   - typecheck
   - test
   - build
+  - renovate
 
 lint:
   stage: lint
@@ -206,5 +207,21 @@ build:front:
     - *rule
     - *rule_main
     - *rule_tag
+
+renovate:
+  stage: renovate
+  image: enovate/renovate:38.129
+  interruptible: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  script:
+    - renovate
+  variables:
+    RENOVATE_AUTODISCOVER: true
+    RENOVATE_AUTODISCOVER_FILTER: "/^BibCNRS\/BibCnrs$/"
+    RENOVATE_PLATFORM: gitlab
+    RENOVATE_ENDPOINT: $CI_API_V4_URL
+    RENOVATE_COMMIT_MESSAGE_PREFIX: "[Renovate]"
+    LOG_LEVEL: debug
   
 
