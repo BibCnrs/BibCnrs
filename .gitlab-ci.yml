@@ -218,7 +218,7 @@ renovate:
     - renovate
   variables:
     RENOVATE_AUTODISCOVER: true
-    RENOVATE_AUTODISCOVER_FILTER: "/^BibCNRS\/BibCnrs$/"
+    RENOVATE_AUTODISCOVER_FILTER: "/^bibcnrs\/BibCnrs$/"
     RENOVATE_PLATFORM: gitlab
     RENOVATE_ENDPOINT: $CI_API_V4_URL
     RENOVATE_COMMIT_MESSAGE_PREFIX: "[Renovate]"
