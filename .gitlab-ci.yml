@@ -210,7 +210,7 @@ build:front:
 
 renovate:
   stage: renovate
-  image: enovate/renovate:38.129
+  image: renovate/renovate:38.129
   interruptible: false
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
