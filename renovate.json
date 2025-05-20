@@ -3,7 +3,7 @@
 	"extends": ["config:recommended", "group:jsTest"],
 	"labels": ["renovate"],
 	"reviewers": ["join"],
-	"enabledManagers": ["yarn"],
+	"enabledManagers": ["npm"],
 	"prHourlyLimit": 8,
 	"prConcurrentLimit": 8,
 	"configMigration": true
