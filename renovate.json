@@ -6,5 +6,6 @@
 	"enabledManagers": ["npm"],
 	"prHourlyLimit": 8,
 	"prConcurrentLimit": 8,
-	"configMigration": true
+	"configMigration": true,
+	"rangeStrategy": "bump"
 }
