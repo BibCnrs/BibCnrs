@@ -109,8 +109,57 @@ test:e2e:
   stage: test
   image: mcr.microsoft.com/playwright:v1.51.1-noble
   services:
-    - postgres:16.3
-    - redis:7.2.5
+  - postgres:16.3
+  - redis:7.2.5
+  - name: nginx:1.25-alpine
+    command:
+      [
+        "sh", "-c",
+        "echo 'events {
+              }
+
+              http {
+                  server {
+                      listen          80;
+                      server_tokens   off;
+                      
+                      include         /etc/nginx/mime.types;
+
+                      location /api {
+                          rewrite             ^/api(/.*)$             $1      break;
+                          proxy_pass          http://api:3000/;
+                          proxy_redirect      off;
+                          proxy_set_header    Host $host;
+                          client_max_body_size 100M;
+                          break;
+                      }
+
+                      location /admin {
+                          proxy_pass          http://admin:80/;
+                          proxy_redirect      off;
+                          proxy_set_header    Host        $host;
+                          proxy_set_header    Upgrade     $http_upgrade;
+                          proxy_set_header    Connection  \"Upgrade\";
+                          break;
+                      }
+
+                      location /files {
+                          root /usr/share/nginx/html;
+                          try_files $uri $uri/ =404;
+                          break;
+                      }
+
+                      location / {
+                          proxy_pass          http://front:80/;
+                          proxy_redirect      off;
+                          proxy_set_header    Host        $host;
+                          proxy_set_header    Upgrade     $http_upgrade;
+                          proxy_set_header    Connection  \"Upgrade\";
+                      }
+                  }
+              }
+        ' > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+      ]
   variables:
     POSTGRES_DB: bibcnrs
     POSTGRES_USER: postgres
@@ -137,19 +186,15 @@ test:e2e:
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
   timeout: 5m
-  before_script:
-  - apt-get update && apt-get install -y make docker.io curl
-  - mkdir -p ~/.docker/cli-plugins/
-  - curl -SL https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-  - chmod +x ~/.docker/cli-plugins/docker-compose
-  - docker compose version
-  - yarn install --immutable
-  - yarn workspace @bibcnrs/api prisma generate
-  - yarn workspace @bibcnrs/e2e run playwright install
   script:
-    - make test-e2e-start
+    - yarn install --immutable
+    - yarn workspace @bibcnrs/api prisma generate
+    - yarn workspace @bibcnrs/e2e run playwright install
+    - yarn workspace @bibcnrs/api run start:e2e -d &
+    - yarn workspace @bibcnrs/front run -d &
+    - yarn workspace @bibcnrs/admin run -d &
+    - sleep 20
     - yarn workspace @bibcnrs/e2e run test
-    - make test-e2e-stop
   artifacts:
     name: E2E Test Artifacts
     paths:
