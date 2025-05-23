@@ -99,6 +99,7 @@ const Header = () => {
 
 					{session.status === "loading" && <UserLoading />}
 					{session.status === "loggedIn" && (
+						// biome-ignore lint/complexity/noUselessFragments: <explanation>
 						<>
 							<UserButton />
 						</>

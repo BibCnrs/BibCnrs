@@ -44,7 +44,9 @@ export class JanusAccountService {
 	}
 
 	async findOneByUid(uid: string) {
-		const janusAccount = await this.prismaService.$queryRaw<JanusAccount[]>`SELECT *,
+		const janusAccount = await this.prismaService.$queryRaw<
+			JanusAccount[]
+		>`SELECT *,
         ARRAY(${selectPrimaryInstituteDomains}) as primary_institute_domains,
         ARRAY(${selectPrimaryUnitDomains}) as primary_unit_domains,
         ARRAY(${selectDomains}) AS domains,
@@ -59,7 +61,9 @@ export class JanusAccountService {
 	}
 
 	async findOneById(id: number) {
-		const janusAccount = await this.prismaService.$queryRaw<JanusAccount[]>`SELECT *,
+		const janusAccount = await this.prismaService.$queryRaw<
+			JanusAccount[]
+		>`SELECT *,
         ARRAY(${selectPrimaryInstituteDomains}) as primary_institute_domains,
         ARRAY(${selectPrimaryUnitDomains}) as primary_unit_domains,
         ARRAY(${selectDomains}) AS domains,

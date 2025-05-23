@@ -1,59 +1,59 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
 }
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 td > a:visited {
-  color: #3752c1;
+	color: #3752c1;
 }
 
 /* change size sidebar font */
 a[role="menuitem"] {
-  font-size: 15px;
+	font-size: 15px;
 }
 
 /* icon sidebar */
 a[role="menuitem"] div {
-  min-width: 30px !important;
+	min-width: 30px !important;
 }
 
 /* determine size of input in form */
 form.simple-form > div > div > div,
 form.simple-form > div > div > span > div {
-  width: 90% !important;
-  z-index: 0 !important;
+	width: 90% !important;
+	z-index: 0 !important;
 }
 
 div[role="combobox"] > div,
 div.picker > div {
-  width: 100% !important;
+	width: 100% !important;
 }
 
 div.ra-input-all_communities > div > div > div,
 div.ra-input-all_communities > div > div > div > a {
-  width: initial;
+	width: initial;
 }
 
 /* determine size of chips */
 .tags > a {
-  width: initial;
+	width: initial;
 }
 
 /* reduce margin size */
 table th,
 table td {
-  padding: 6px 6px !important;
+	padding: 6px 6px !important;
 }
 
 .width-200 {
-  width: 200px;
+	width: 200px;
 }
 
 .autocomplete div:last-child {
-  position: relative;
+	position: relative;
 }

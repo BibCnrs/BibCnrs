@@ -36,6 +36,7 @@ const FaqEntry = ({ data }: { data: CMSDataType }) => {
 				aria-controls={`${data.name_en}-content`}
 				id={`${data.name_en}-header`}
 			>
+				{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
 				<Typography color="primary" fontWeight="bold" role="heading">
 					{language === "en" ? data.name_en : data.name_fr}
 				</Typography>

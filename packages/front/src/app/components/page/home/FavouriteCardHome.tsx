@@ -13,6 +13,7 @@ const FavouriteCardHome = ({ favourite }) => {
 				flexDirection: "row",
 				gap: 2,
 			}}
+			// biome-ignore lint/a11y/useSemanticElements: <explanation>
 			role="listitem"
 			aria-label={favourite.url}
 		>
