@@ -48,6 +48,8 @@ lint:
   timeout: 10m
   script:
     - make lint-check
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 typecheck:
   stage: typecheck
@@ -55,6 +57,8 @@ typecheck:
   timeout: 10m
   script:
     - make typecheck
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 test:api:
   stage: test
@@ -79,6 +83,8 @@ test:api:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/api run test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 
 test:front:
   stage: test
@@ -97,7 +103,8 @@ test:front:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/front run test
-
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
 # .test:e2e:
 #   stage: test
 #   image: node:22
