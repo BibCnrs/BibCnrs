@@ -17,6 +17,7 @@ export function PlatformCardItem(props: DatabaseItemProps) {
 	};
 
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: <explanation>
 		<Card role="listitem" aria-label={props.name} elevation={3}>
 			<CardContent
 				sx={{

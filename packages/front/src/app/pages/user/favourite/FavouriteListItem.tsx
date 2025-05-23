@@ -114,6 +114,7 @@ function FavouriteListItem({
 					backgroundColor: hasFilter ? "#fff" : undefined,
 				},
 			}}
+			// biome-ignore lint/a11y/useSemanticElements: <explanation>
 			role="listitem"
 			aria-label={favourite.url}
 		>

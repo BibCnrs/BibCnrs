@@ -31,6 +31,7 @@ export function PlatformCardView({ platforms }: PlatformCardViewProps) {
 					lg: "repeat(4, 1fr)",
 				}}
 				gap={2}
+				// biome-ignore lint/a11y/useSemanticElements: <explanation>
 				role="listitem"
 				aria-label={t("pages.database.title")}
 			>

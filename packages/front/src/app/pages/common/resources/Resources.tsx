@@ -54,6 +54,7 @@ export const DisplayResources = ({
 			{otherResources.map((resource) => (
 				<Card
 					key={resource.id}
+					// biome-ignore lint/a11y/useSemanticElements: <explanation>
 					role="listitem"
 					aria-label={resource.name_fr}
 					elevation={3}
@@ -84,6 +85,7 @@ export const DisplayResources = ({
 			{ressourceurl && (
 				<Card
 					key={ressourceurl.id}
+					// biome-ignore lint/a11y/useSemanticElements: <explanation>
 					role="listitem"
 					aria-label={ressourceurl.name_fr}
 					elevation={3}
