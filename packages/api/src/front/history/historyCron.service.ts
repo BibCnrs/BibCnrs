@@ -25,7 +25,9 @@ export class FrontHistoryCronService {
 			this.historyConfig.maxSearchHistoryAgeInMonths,
 		);
 
-		const [{ count }] = await this.prismaService.$queryRaw<{ count: string }[]>`WITH deleted AS (
+		const [{ count }] = await this.prismaService.$queryRaw<
+			{ count: string }[]
+		>`WITH deleted AS (
 	DELETE FROM history WHERE has_alert is false AND created_at < ${oldestDate}::timestamp RETURNING *
 ) SELECT count(*) FROM deleted;`;
 

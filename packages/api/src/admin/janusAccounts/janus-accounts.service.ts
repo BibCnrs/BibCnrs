@@ -181,7 +181,8 @@ export class JanusAccountsService {
 	}
 
 	async findAllExport() {
-		const dataForExport = await this.prismaService.$queryRaw`SELECT janus_account.id, janus_account.uid, janus_account.name, janus_account.firstname,
+		const dataForExport = await this.prismaService
+			.$queryRaw`SELECT janus_account.id, janus_account.uid, janus_account.name, janus_account.firstname,
                   janus_account.mail, janus_account.cnrs, janus_account.comment, 
                   janus_account.last_connexion, janus_account.first_connexion, janus_account.active, 
                   institute.name AS primary_institute,

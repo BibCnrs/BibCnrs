@@ -49,6 +49,7 @@ const App = () => {
 		<>
 			<ConsentForm />
 			<Header />
+			{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
 			<div id="app-container" role="main">
 				<Routes>
 					{/* Header route */}
