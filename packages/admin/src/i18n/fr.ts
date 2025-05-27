@@ -225,4 +225,5 @@ const i18n = {
 	},
 };
 
-export default i18n;
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export default i18n as any;
