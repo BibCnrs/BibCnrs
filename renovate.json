@@ -6,5 +6,43 @@
 	"enabledManagers": ["npm"],
 	"prHourlyLimit": 8,
 	"prConcurrentLimit": 8,
-	"configMigration": true
+	"configMigration": true,
+	"packageRules": [
+		{
+			"groupName": "React & MUI",
+			"matchPackageNames": [
+				"react{/,}**",
+				"react-dom{/,}**",
+				"@mui{/,}**",
+				"@emotion{/,}**",
+				"@types/react{/,}**",
+				"@types/react-dom{/,}**"
+			]
+		},
+		{
+			"groupName": "React Query",
+			"matchPackageNames": ["@tanstack{/,}**"]
+		},
+		{
+			"groupName": "Vite & Vitest",
+			"matchPackageNames": ["vite{/,}**", "vitest{/,}**", "@vitejs{/,}**"]
+		},
+		{
+			"groupName": "Linters and Formatters",
+			"matchPackageNames": ["@biomejs{/,}**", "eslint{/,}**"]
+		},
+		{
+			"groupName": "Testing",
+			"matchPackageNames": [
+				"@testing-library{/,}**",
+				"jest{/,}**",
+				"@playwright{/,}**",
+				"playwright"
+			]
+		},
+		{
+			"groupName": "Types",
+			"matchPackageNames": ["@types{/,}**"]
+		}
+	]
 }
