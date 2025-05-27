@@ -3047,11 +3047,11 @@ __metadata:
   linkType: hard
 
 "@types/nodemailer@npm:^6.4.15":
-  version: 6.4.15
-  resolution: "@types/nodemailer@npm:6.4.15"
+  version: 6.4.17
+  resolution: "@types/nodemailer@npm:6.4.17"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/553e613fe08fd663bff1fb3647a8ebbcc4ca297a6249296a43f3c92499158acad5955689be2096ff3fe72f145e80d749c1fc66d5549fe665d7ceb6d0946f2a26
+  checksum: 10c0/689abb3005cf36cf89c2abe56f0aa4469a37e0814633a73fbeb35732e856f4b0d7ab32b6d91585038b6941f5b70db58ec2bd147ebe9f73e528eb6c99604f4e82
   languageName: node
   linkType: hard
 
@@ -7603,9 +7603,9 @@ __metadata:
   linkType: hard
 
 "nodemailer@npm:^6.9.15":
-  version: 6.9.15
-  resolution: "nodemailer@npm:6.9.15"
-  checksum: 10c0/92493406310cb1bb0bac575d604b3c75b67e420e8af94711bd55cb012ee02d3bf6fda57c663d66c15bdd89acd5f9cd540922644b089617c6e191596536503b5b
+  version: 6.10.1
+  resolution: "nodemailer@npm:6.10.1"
+  checksum: 10c0/e81fde258ea4f4e5646e9e3eebe89294d007939999d2d1a8c96c5488fa00bf659e46cf76fccb2697e9aa6ef9807a1ed47ff2aef6ad30b795e3849b6997066d16
   languageName: node
   linkType: hard
 
