@@ -28,6 +28,14 @@
 			"matchPackageNames": ["vite{/,}**", "vitest{/,}**", "@vitejs{/,}**"]
 		},
 		{
+            "groupName": "NestJS & Prisma",
+            "matchPackageNames": [
+                "@nestjs{/,}**",
+                "@prisma{/,}**",
+                "prisma"
+            ]
+        },
+		{
 			"groupName": "Linters and Formatters",
 			"matchPackageNames": ["@biomejs{/,}**", "eslint{/,}**"]
 		},
