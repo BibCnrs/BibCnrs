@@ -172,7 +172,7 @@ export class MediasService {
 					],
 				},
 			}));
-			
+
 		const isUsedByEncodedUrl =
 			(await this.prismaService.content_management.findFirst({
 				where: {
