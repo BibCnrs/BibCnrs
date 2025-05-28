@@ -172,7 +172,7 @@ export class MediasService {
 					],
 				},
 			}));
-
+			
 		const isUsedByEncodedUrl =
 			(await this.prismaService.content_management.findFirst({
 				where: {
@@ -195,6 +195,14 @@ export class MediasService {
 					OR: [
 						{ content_fr: { contains: encodeURIComponent(mediaUrl) } },
 						{ content_en: { contains: encodeURIComponent(mediaUrl) } },
+					],
+				},
+			})) ||
+			(await this.prismaService.database.findFirst({
+				where: {
+					OR: [
+						{ url_fr: { contains: mediaUrl } },
+						{ url_en: { contains: mediaUrl } },
 					],
 				},
 			}));
