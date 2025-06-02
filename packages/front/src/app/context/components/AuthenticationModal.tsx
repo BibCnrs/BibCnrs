@@ -1,3 +1,4 @@
+import CloseIcon from "@mui/icons-material/Close";
 import {
 	Card,
 	CardContent,
@@ -104,7 +105,9 @@ function AuthenticationModal({
 					sx={{
 						border: 0,
 						borderRadius: 2,
-						minWidth: 512,
+						width: "95%",
+						maxWidth: 400,
+						boxSizing: "border-box",
 						padding: 2,
 						":hover": {
 							backgroundColor: "background.default",
@@ -118,6 +121,16 @@ function AuthenticationModal({
 							fontSize: 22,
 							fontWeight: "bold",
 						}}
+						action={
+							<Button
+								onClick={handleClose}
+								size="small"
+								sx={{ minWidth: 0, padding: 0, color: "grey.600" }}
+								aria-label="close"
+							>
+								<CloseIcon />
+							</Button>
+						}
 					/>
 					<CardContent id="authentication-body">
 						<Stack gap={2}>

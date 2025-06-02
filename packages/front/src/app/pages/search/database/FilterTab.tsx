@@ -100,8 +100,8 @@ export default function FilterTab({
 	};
 
 	return (
-		<FormGroup sx={{ position: "sticky", top: 0 }}>
-			<Typography variant="h6" fontWeight="bold">
+		<FormGroup sx={{ position: "sticky", top: 0 }} aria-label="filters">
+			<Typography fontWeight="bold">
 				{t("pages.database.filters.title")}
 			</Typography>
 			{sections.map((section) => {
@@ -145,9 +145,10 @@ export default function FilterTab({
 				);
 			})}
 			<Button
-				color="error"
 				sx={{
 					mt: 2,
+					color: (theme) =>
+						theme.palette.mode === "light" ? "error.main" : "error.main",
 				}}
 				onClick={resetSearch}
 				size="small"

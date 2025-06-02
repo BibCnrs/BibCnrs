@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { Stack, useTheme } from "@mui/system";
+import { Box, Stack, useTheme } from "@mui/system";
 import { memo } from "react";
 import BibCNRSLightLogo from "/logos/BIB_LIGHT.svg";
 import CNRSLightLogo from "/logos/CNRS_LIGHT.svg";
@@ -33,6 +33,64 @@ const Header = () => {
 
 	return (
 		<>
+			<Box
+				component="a"
+				href="#main-content"
+				sx={{
+					position: "absolute",
+					left: "-999px",
+					top: "auto",
+					width: "1px",
+					height: "1px",
+					overflow: "hidden",
+					zIndex: 1000,
+					background: "#fff",
+					color: "#0078d4",
+					px: 2,
+					py: 1,
+					borderRadius: 1,
+					textDecoration: "none",
+					fontWeight: "bold",
+					"&:focus": {
+						left: 16,
+						top: 16,
+						width: "auto",
+						height: "auto",
+						outline: "2px solid #0078d4",
+					},
+				}}
+			>
+				Aller au contenu principal
+			</Box>
+			<Box
+				component="a"
+				href="#main-nav"
+				sx={{
+					position: "absolute",
+					left: "-999px",
+					top: "auto",
+					width: "1px",
+					height: "1px",
+					overflow: "hidden",
+					zIndex: 1000,
+					background: "#fff",
+					color: "#0078d4",
+					px: 2,
+					py: 1,
+					borderRadius: 1,
+					textDecoration: "none",
+					fontWeight: "bold",
+					"&:focus": {
+						left: 16,
+						top: 48,
+						width: "auto",
+						height: "auto",
+						outline: "2px solid #0078d4",
+					},
+				}}
+			>
+				Aller à la navigation
+			</Box>
 			<Stack
 				direction="row"
 				justifyContent="space-between"
@@ -41,7 +99,13 @@ const Header = () => {
 				component={"header"}
 				m={2}
 			>
-				<Stack direction="row" alignItems="flex-end" gap={2}>
+				<Stack
+					direction="row"
+					alignItems="flex-end"
+					gap={2}
+					component={"nav"}
+					id="main-nav"
+				>
 					<Stack direction="row" alignItems="flex-end" gap="60px">
 						<CustomLink to={RouteRoot}>
 							<img

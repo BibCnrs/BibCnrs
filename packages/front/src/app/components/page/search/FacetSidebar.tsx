@@ -103,7 +103,15 @@ export default function ({
 				onChange={handleFacetChange}
 				isPublicationPage={isPublicationPage}
 			/>
-			<Button color="error" size="small" variant="text" onClick={onReset}>
+			<Button
+				size="small"
+				variant="text"
+				onClick={onReset}
+				sx={{
+					color: (theme) =>
+						theme.palette.mode === "light" ? "#b71c1c" : "#ff8a80",
+				}}
+			>
 				{t("components.facet.reset")}
 			</Button>
 		</Stack>
