@@ -197,6 +197,14 @@ export class MediasService {
 						{ content_en: { contains: encodeURIComponent(mediaUrl) } },
 					],
 				},
+			})) ||
+			(await this.prismaService.database.findFirst({
+				where: {
+					OR: [
+						{ url_fr: { contains: mediaUrl } },
+						{ url_en: { contains: mediaUrl } },
+					],
+				},
 			}));
 
 		return !!isUsedByMediaId || !!isUsedByUrl || !!isUsedByEncodedUrl;
