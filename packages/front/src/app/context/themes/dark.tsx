@@ -19,7 +19,7 @@ const darkThemePalette = {
 		paper: "#2A323C",
 	},
 	error: {
-		main: "#F35B5B",
+		main: "#ff8a80",
 		light: "#F35B5B4D",
 	},
 	info: {

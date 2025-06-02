@@ -33,8 +33,8 @@ const FaqEntry = ({ data }: { data: CMSDataType }) => {
 		<Accordion onChange={handleChange}>
 			<AccordionSummary
 				expandIcon={<ExpandMoreIcon />}
-				aria-controls={`${data.name_en}-content`}
-				id={`${data.name_en}-header`}
+				aria-controls={`${data.name_en.replace(/\s+/g, "_")}-content`}
+				id={`${data.name_en.replace(/\s+/g, "_")}-header`}
 			>
 				{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
 				<Typography color="primary" fontWeight="bold" role="heading">

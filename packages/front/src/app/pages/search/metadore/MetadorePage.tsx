@@ -224,7 +224,14 @@ const MetadorePage = () => {
 					isDomain={false}
 				/>
 			</SearchBar>
-			<Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
+			<Container
+				maxWidth={false}
+				sx={{
+					mt: 2,
+					mb: 2,
+					overflowX: "auto",
+				}}
+			>
 				<Grid container spacing={4} padding={2}>
 					<Grid item xs={12} md={12}>
 						{isLoading || isFetching ? (
@@ -251,13 +258,25 @@ const MetadorePage = () => {
 									</Box>
 								) : null}
 
-								<Stack mt={2} spacing={2} mb={2} gap={2}>
+								<Stack
+									component="ul"
+									mt={2}
+									spacing={2}
+									mb={2}
+									gap={2}
+									sx={{ p: 0, m: 0, listStyle: "none" }}
+								>
 									{data?.results?.map((value) => (
-										<MetadoreCard
+										<Box
+											component="li"
 											key={value.id}
-											metadore={value}
-											setSelectedMetadore={setSelectedMetadore}
-										/>
+											sx={{ listStyle: "none", p: 0, m: 0 }}
+										>
+											<MetadoreCard
+												metadore={value}
+												setSelectedMetadore={setSelectedMetadore}
+											/>
+										</Box>
 									))}
 								</Stack>
 								<PaginationComponent

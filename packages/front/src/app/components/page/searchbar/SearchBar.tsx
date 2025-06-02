@@ -25,6 +25,7 @@ const SEARCH_BAR_HEIGHT = "50px";
 
 type SearchBarProps = PropsWithoutRef<{
 	placeholder: string;
+	label?: string;
 	value?: string | null;
 	onSearch: (value: string | undefined) => void;
 	secondaryAction?: ReactNode;
@@ -157,60 +158,73 @@ const SearchBar = ({
 			>
 				{!disableSearchButton && <SearchModeSelection />}
 
-				<Stack
-					direction="row"
-					id="search-box"
-					sx={{
-						width: "100%",
-						background: (theme) => theme.palette.background.paper,
-						borderRadius: "50px",
-						height: SEARCH_BAR_HEIGHT,
-						"& .MuiAutocomplete-inputRoot": {
-							height: SEARCH_BAR_HEIGHT,
-						},
+				<form
+					// biome-ignore lint/a11y/useSemanticElements: <explanation>
+					role="search"
+					style={{ width: "100%" }}
+					onSubmit={(e) => {
+						e.preventDefault();
+						onSearch(value);
 					}}
 				>
-					<Autocomplete
-						inputValue={value}
-						value={autocompleteValue}
-						onChange={handleAutocompleteChange}
-						onBlur={() => onSearch(value)}
-						onInputChange={handleChange}
-						onKeyDown={inputKeyDown}
-						renderInput={(params) => (
-							<TextField {...params} placeholder={placeholder} />
-						)}
-						options={data ?? []}
-						id="search-box-input"
-						freeSolo
-						disableClearable
-						fullWidth
-						size="small"
-						role="search"
+					<Stack
+						direction="row"
+						id="search-box"
 						sx={{
-							"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-								border: "none",
+							width: "100%",
+							background: (theme) => theme.palette.background.paper,
+							borderRadius: "50px",
+							height: SEARCH_BAR_HEIGHT,
+							"& .MuiAutocomplete-inputRoot": {
+								height: SEARCH_BAR_HEIGHT,
 							},
 						}}
-					/>
-					{value !== "" ? (
-						<>
-							<IconButton onClick={clearOnClick}>
-								<ClearIcon />
-							</IconButton>
-							<Divider orientation="vertical" id="search-box-divider" />
-						</>
-					) : null}
-					<IconButton onClick={searchOnClick} data-testid="search-box-button">
-						<SearchIcon />
-					</IconButton>
-					{secondaryAction && (
-						<>
-							<Divider orientation="vertical" id="search-box-divider" />
-							{secondaryAction}
-						</>
-					)}
-				</Stack>
+					>
+						<Autocomplete
+							inputValue={value}
+							value={autocompleteValue}
+							onChange={handleAutocompleteChange}
+							onBlur={() => onSearch(value)}
+							onInputChange={handleChange}
+							onKeyDown={inputKeyDown}
+							renderInput={(params) => (
+								<TextField {...params} placeholder={placeholder} />
+							)}
+							options={data ?? []}
+							id="search-box-input"
+							freeSolo
+							disableClearable
+							fullWidth
+							size="small"
+							sx={{
+								"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+									border: "none",
+								},
+							}}
+						/>
+						{value !== "" ? (
+							<>
+								<IconButton onClick={clearOnClick}>
+									<ClearIcon />
+								</IconButton>
+								<Divider orientation="vertical" id="search-box-divider" />
+							</>
+						) : null}
+						<IconButton
+							onClick={searchOnClick}
+							data-testid="search-box-button"
+							type="submit"
+						>
+							<SearchIcon />
+						</IconButton>
+						{secondaryAction && (
+							<>
+								<Divider orientation="vertical" id="search-box-divider" />
+								{secondaryAction}
+							</>
+						)}
+					</Stack>
+				</form>
 				{children}
 			</Container>
 		</Stack>

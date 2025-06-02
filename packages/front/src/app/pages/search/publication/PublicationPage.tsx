@@ -357,69 +357,18 @@ const PublicationPage = () => {
 					values={domains}
 					onChange={handleDomain}
 				/>
-				<Box>
+				<Box
+					component="ul"
+					sx={{
+						display: "flex",
+						flexWrap: "wrap",
+						padding: 0,
+						margin: 0,
+						listStyle: "none",
+					}}
+				>
 					{ALPHABET.map((letter) => (
-						<Button
-							variant="contained"
-							size="small"
-							sx={{
-								padding: 0,
-								minWidth: "30px",
-								margin: "0 2px",
-								backgroundColor: (theme) =>
-									searchByLetter === letter
-										? theme.palette.secondary.main
-										: theme.palette.info.light,
-								color: (theme) =>
-									searchByLetter === letter ? "black" : theme.palette.info.dark,
-								"&:hover": {
-									backgroundColor: (theme) =>
-										searchByNumber === letter
-											? theme.palette.secondary.main
-											: theme.palette.secondary.main,
-								},
-							}}
-							key={letter}
-							onClick={() => {
-								handleSearchByLetterL1(letter);
-							}}
-						>
-							{letter}
-						</Button>
-					))}
-					<Button
-						variant="contained"
-						size="small"
-						sx={{
-							padding: 0,
-							minWidth: "30px",
-							margin: "0 2px",
-							backgroundColor: (theme) =>
-								searchByNumber ===
-								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
-									? theme.palette.secondary.main
-									: theme.palette.info.light,
-							color: (theme) =>
-								searchByNumber ===
-								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
-									? "black"
-									: theme.palette.info.dark,
-							"&:hover": {
-								backgroundColor:
-									searchByNumber ===
-									"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
-										? "secondary.main"
-										: "white",
-							},
-						}}
-						onClick={handleSearchByNumber}
-					>
-						0-9
-					</Button>
-				</Box>
-				{searchByLetter && (
-					<Box>
-						{ALPHABET.map((letter) => (
+						<Box component="li" key={letter}>
 							<Button
 								variant="contained"
 								size="small"
@@ -428,29 +377,111 @@ const PublicationPage = () => {
 									minWidth: "30px",
 									margin: "0 2px",
 									backgroundColor: (theme) =>
-										searchByLetterL2 === `${searchByLetter}${letter}`
+										searchByLetter === letter
 											? theme.palette.secondary.main
 											: theme.palette.info.light,
-									fontFamily: "monospace",
 									color: (theme) =>
-										searchByLetterL2 === `${searchByLetter}${letter}`
+										searchByLetter === letter
 											? "black"
 											: theme.palette.info.dark,
 									"&:hover": {
-										backgroundColor:
-											searchByLetterL2 === `${searchByLetter}${letter}`
-												? "secondary.main"
-												: "white",
+										backgroundColor: (theme) =>
+											searchByNumber === letter
+												? theme.palette.secondary.main
+												: theme.palette.secondary.main,
 									},
 								}}
-								key={`${searchByLetter}${letter}`}
-								onClick={() =>
-									handleSearchByLetterL2(`${searchByLetter}${letter}`)
-								}
+								onClick={() => handleSearchByLetterL1(letter)}
+								aria-pressed={searchByLetter === letter}
 							>
-								{searchByLetter}
 								{letter}
 							</Button>
+						</Box>
+					))}
+					<Box component="li">
+						<Button
+							variant="contained"
+							size="small"
+							sx={{
+								padding: 0,
+								minWidth: "30px",
+								margin: "0 2px",
+								backgroundColor: (theme) =>
+									searchByNumber ===
+									"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+										? theme.palette.secondary.main
+										: theme.palette.info.light,
+								color: (theme) =>
+									searchByNumber ===
+									"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+										? "black"
+										: theme.palette.info.dark,
+								"&:hover": {
+									backgroundColor:
+										searchByNumber ===
+										"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+											? "secondary.main"
+											: "white",
+								},
+							}}
+							onClick={handleSearchByNumber}
+							aria-pressed={
+								searchByNumber ===
+								"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*"
+							}
+						>
+							0-9
+						</Button>
+					</Box>
+				</Box>
+				{searchByLetter && (
+					<Box
+						component="ul"
+						sx={{
+							display: "flex",
+							flexWrap: "wrap",
+							padding: 0,
+							margin: 0,
+							listStyle: "none",
+						}}
+					>
+						{ALPHABET.map((letter) => (
+							<Box component="li" key={letter}>
+								<Button
+									variant="contained"
+									size="small"
+									sx={{
+										padding: 0,
+										minWidth: "30px",
+										margin: "0 2px",
+										backgroundColor: (theme) =>
+											searchByLetterL2 === `${searchByLetter}${letter}`
+												? theme.palette.secondary.main
+												: theme.palette.info.light,
+										fontFamily: "monospace",
+										color: (theme) =>
+											searchByLetterL2 === `${searchByLetter}${letter}`
+												? "black"
+												: theme.palette.info.dark,
+										"&:hover": {
+											backgroundColor:
+												searchByLetterL2 === `${searchByLetter}${letter}`
+													? "secondary.main"
+													: "white",
+										},
+									}}
+									key={`${searchByLetter}${letter}`}
+									onClick={() =>
+										handleSearchByLetterL2(`${searchByLetter}${letter}`)
+									}
+									aria-pressed={
+										searchByLetterL2 === `${searchByLetter}${letter}`
+									}
+								>
+									{searchByLetter}
+									{letter}
+								</Button>
+							</Box>
 						))}
 					</Box>
 				)}

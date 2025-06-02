@@ -73,7 +73,7 @@ const Footer = () => {
 					/>
 				</Link>
 
-				<Stack direction="row" spacing={2}>
+				<Stack direction="row" spacing={2} component="nav">
 					<Button component={RouterLink} to={RouteAbout} sx={FOOTER_SX}>
 						{t("components.footer.about")}
 					</Button>
@@ -118,7 +118,8 @@ const Footer = () => {
 						href="https://www.linkedin.com/company/inist-cnrs"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
-						aria-label="LinkedIn"
+						aria-label="Profil LinkedIn de l'INIST"
+						title="Profil LinkedIn de l'INIST"
 					>
 						<LinkedInIcon />
 					</IconButton>
@@ -126,7 +127,8 @@ const Footer = () => {
 						href="https://bsky.app/profile/cnrs-inist.bsky.social"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
-						aria-label="BlueSky"
+						aria-label="Profil BlueSky de l'INIST"
+						title="Profil BlueSky de l'INIST"
 					>
 						<BlueSkyIcon />
 					</IconButton>
@@ -134,15 +136,17 @@ const Footer = () => {
 						href="https://social.numerique.gouv.fr/@inistcnrs"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
-						aria-label="Mastodon"
+						aria-label="Profil Mastodon de l'INIST"
+						title="Profil Mastodon de l'INIST"
 					>
 						<MastodonIcon />
 					</IconButton>
 					<IconButton
-						href=" https://www.instagram.com/inist_cnrs/ "
+						href="https://www.instagram.com/inist_cnrs/"
 						target="_blank"
 						rel="noreferrer noopener nofollow"
-						aria-label="Instagram"
+						aria-label="Profil Instagram de l'INIST"
+						title="Profil Instagram de l'INIST"
 					>
 						<InstagramIcon />
 					</IconButton>

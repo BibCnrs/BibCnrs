@@ -43,6 +43,8 @@ export const DisplayResources = ({
 	return (
 		<Box
 			display="grid"
+			// biome-ignore lint/a11y/useSemanticElements: <explanation>
+			role="list"
 			gridTemplateColumns={{
 				xs: "repeat(1, 1fr)",
 				sm: "repeat(2, 1fr)",

@@ -23,7 +23,7 @@ const lightThemePalette = {
 		secondary: "#00294B",
 	},
 	error: {
-		main: "#E14040",
+		main: "#b71c1c",
 		light: "#F35B5B4D",
 	},
 	info: {
