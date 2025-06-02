@@ -60,7 +60,7 @@ const Header = () => {
 					},
 				}}
 			>
-				Aller au contenu principal
+				{t("components.header.skipToContent")}
 			</Box>
 			<Box
 				component="a"
@@ -89,7 +89,7 @@ const Header = () => {
 					},
 				}}
 			>
-				Aller à la navigation
+				{t("components.header.skipToNav")}
 			</Box>
 			<Stack
 				direction="row"

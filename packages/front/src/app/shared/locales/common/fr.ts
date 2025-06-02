@@ -27,6 +27,8 @@ const fr: Common = {
 		header: {
 			login: "Connexion",
 			logout: "Déconnexion",
+			skipToContent: "Aller au contenu principal",
+			skipToNav: "Aller à la navigation",
 			title: "Accès aux ressources documentaires du CNRS",
 			questions: "FAQ",
 			resources: "Listes des ressources",
