@@ -49,8 +49,7 @@ const App = () => {
 		<>
 			<ConsentForm />
 			<Header />
-			{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
-			<div id="app-container" role="main">
+			<main id="main-content" tabIndex={-1}>
 				<Routes>
 					{/* Header route */}
 					<Route path={RouteRoot} element={<Root />} />
@@ -135,7 +134,7 @@ const App = () => {
 					{/* Error route */}
 					<Route path="*" element={<Error404 />} />
 				</Routes>
-			</div>
+			</main>
 			<Footer />
 		</>
 	);

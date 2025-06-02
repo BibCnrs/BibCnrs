@@ -75,6 +75,7 @@ const ThemeButton = () => {
 			className="header-button-icon"
 			checked={theme === "dark"}
 			onChange={handleChange}
+			aria-label="Toggle theme"
 		/>
 	);
 };

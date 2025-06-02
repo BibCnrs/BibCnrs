@@ -12,6 +12,8 @@ import {
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { useRef } from "react";
+
 import {
 	createContext,
 	useCallback,
@@ -417,6 +419,13 @@ const ArticlePage = () => {
 		[setSearch, trackEvent],
 	);
 
+	const resultsRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (!isFetching && data?.results.length > 0 && resultsRef.current) {
+			resultsRef.current.focus({ preventScroll: true });
+		}
+	}, [isFetching, data]);
 	return (
 		<>
 			<PageTitle page="article" />
@@ -506,7 +515,18 @@ const ArticlePage = () => {
 									</Box>
 								) : null}
 
-								<Stack mt={2} spacing={2} mb={2} gap={2}>
+								<Stack
+									mt={2}
+									spacing={2}
+									mb={2}
+									gap={2}
+									ref={resultsRef}
+									tabIndex={0}
+									aria-label="search results"
+									sx={{
+										outline: "none",
+									}}
+								>
 									{data?.results.map((value) => (
 										<ArticleCard
 											key={value.id}

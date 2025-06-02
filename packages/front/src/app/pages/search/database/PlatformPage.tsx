@@ -37,6 +37,7 @@ export function PlatformPage() {
 			<PageTitle page="database" />
 			<SearchBar
 				placeholder={t("pages.researchData.search.bar")}
+				label="facets"
 				value={search}
 				onSearch={setSearch}
 				disableAutocomplete
@@ -44,7 +45,7 @@ export function PlatformPage() {
 			>
 				<ChipFacet value={domain} values={domains} onChange={handleDomain} />
 			</SearchBar>
-			<Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+			<Container maxWidth="xl" sx={{ mt: 4, mb: 4, overflowX: "hidden" }}>
 				<Stack gap={2}>
 					{!user && (
 						<Alert variant="outlined" severity="info">
@@ -59,6 +60,10 @@ export function PlatformPage() {
 							sm: "1fr 4fr",
 						}}
 						gap={3}
+						sx={{
+							width: "100%",
+							minWidth: 0,
+						}}
 					>
 						<Box>
 							<FilterTab

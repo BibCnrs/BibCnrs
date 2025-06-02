@@ -42,6 +42,8 @@ export type Common = {
 			title: string;
 			login: string;
 			logout: string;
+			skipToContent: string;
+			skipToNav: string;
 			questions: string;
 			resources: string;
 			licences: string;

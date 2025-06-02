@@ -27,6 +27,8 @@ const en: Common = {
 		header: {
 			login: "Sign in",
 			logout: "Logout",
+			skipToContent: "Skip to main content",
+			skipToNav: "Skip to navigation",
 			title: "CNRS document access",
 			questions: "Q&A",
 			resources: "Lists of resources",
