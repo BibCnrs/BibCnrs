@@ -51,6 +51,7 @@ lint:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - when: on_success
 
 typecheck:
   stage: typecheck
@@ -61,6 +62,7 @@ typecheck:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - when: on_success
 
 test:api:
   stage: test
@@ -88,6 +90,8 @@ test:api:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - when: on_success
+
 
 test:front:
   stage: test
@@ -109,6 +113,7 @@ test:front:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - when: on_success
 
 # .test:e2e:
 #   stage: test
