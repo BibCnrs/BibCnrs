@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { createQuery, environment } from "../services/Environment";
 import { updateFavourite } from "../services/user/Favourite";
@@ -252,8 +253,8 @@ export function useSession() {
 		})
 			.then(() => ({ ok: true }))
 			.finally(() => {
-				navigate("/", {
-					unstable_flushSync: true,
+				flushSync(() => {
+					navigate("/");
 				});
 				setTimeout(() => {
 					persistentStorage?.removeItem(STORAGE_KEY);

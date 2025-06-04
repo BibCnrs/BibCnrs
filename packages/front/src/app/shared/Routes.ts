@@ -7,7 +7,7 @@ import {
 	useMatch,
 	useResolvedPath,
 } from "react-router-dom";
-import type { NavigateFunction } from "react-router/dist/lib/hooks";
+import type { NavigateFunction } from "react-router-dom";
 
 /**
  * Export evey route use by the application

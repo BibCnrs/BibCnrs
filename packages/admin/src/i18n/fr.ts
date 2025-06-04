@@ -223,6 +223,7 @@ const i18n = {
 			rejected_error: "Erreur: Commentaire non rejeté",
 		},
 	},
-};
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+} as any;
 
 export default i18n;
