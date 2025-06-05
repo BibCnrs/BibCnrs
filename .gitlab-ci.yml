@@ -135,7 +135,7 @@ test:e2e:
                       }
 
                       location /admin {
-                          proxy_pass          http://localhost:5173/admin;
+                          proxy_pass          http://localhost:5174/admin;
                           proxy_redirect      off;
                           proxy_set_header    Host        $host;
                           proxy_set_header    Upgrade     $http_upgrade;
