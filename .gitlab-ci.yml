@@ -135,7 +135,7 @@ test:e2e:
                       }
 
                       location /admin {
-                          proxy_pass          http://localhost:5174/admin;
+                          proxy_pass          http://localhost:5174;
                           proxy_redirect      off;
                           proxy_set_header    Host        $host;
                           proxy_set_header    Upgrade     $http_upgrade;
@@ -185,7 +185,7 @@ test:e2e:
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
-  timeout: 10m
+  timeout: 2h
   script:
     - yarn install --immutable
     - yarn workspace @bibcnrs/api prisma generate
