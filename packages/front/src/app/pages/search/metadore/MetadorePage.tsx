@@ -227,6 +227,7 @@ const MetadorePage = () => {
 			<Container
 				maxWidth={false}
 				sx={{
+					maxWidth: "xl",
 					mt: 2,
 					mb: 2,
 					overflowX: "auto",
