@@ -319,3 +319,12 @@ clear-history-dev:								## Clear search history entries older than 2 months in
 clear_history:									## Clear search history entries older than 2 months in production mode
 	docker exec bibcnrs-api \
 		yarn workspace @bibcnrs/api run command:cleanOldHistoryEntries
+
+POSTGRES_USER ?= postgres
+POSTGRES_DB ?= bibcnrs
+
+
+replace-in-db:
+	sed -e 's/{{ARG1}}/$(ARG1)/g' -e 's/{{ARG2}}/$(ARG2)/g' replace-in-db.sql > /tmp/replace-in-db.tmp.sql
+	docker cp /tmp/replace-in-db.tmp.sql bibcnrs-db-1:/tmp/replace-in-db.tmp.sql
+	docker exec bibcnrs-db-1 psql -U $(POSTGRES_USER) $(POSTGRES_DB) -f /tmp/replace-in-db.tmp.sql
