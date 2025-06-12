@@ -120,6 +120,8 @@ services:
           memory: ${API_MAX_MEMORY:-1G}
 
   redis:
+    ports:
+      - 6379:6379
     image: redis:7.2.5
     restart: always
 
