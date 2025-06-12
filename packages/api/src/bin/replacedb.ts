@@ -14,11 +14,19 @@ BEGIN
     FOR r IN
         SELECT table_name, column_name
         FROM information_schema.columns
-        WHERE (column_name = 'content_fr' OR column_name = 'content_en')
-            AND table_schema = 'public'
+        WHERE (table_name IN ('content_management', 'license', 'tests_news'))
+          AND (column_name = 'content_fr' OR column_name = 'content_en')
+          AND table_schema = 'public'
     LOOP
-        EXECUTE format('UPDATE %I SET %I = REPLACE(%I, %L, %L)',
-            r.table_name, r.column_name, r.column_name, '${searchValue}', '${replaceValue}');
+        EXECUTE format(
+            $$UPDATE %I SET %I = regexp_replace(
+                %I,
+                '(<img[^>]*\\bsrc\\s*=\\s*["''])%s((?:[^"''\\\\]|\\\\.)*?)(["''])',
+                '\\1%s\\3',
+                'g'
+            ) WHERE %I ~ '<img[^>]*\\bsrc\\s*=\\s*["'']%s'$$,
+            r.table_name, r.column_name, r.column_name, '${searchValue}', '${replaceValue}', r.column_name, '${searchValue}'
+        );
     END LOOP;
 END
 $$;
