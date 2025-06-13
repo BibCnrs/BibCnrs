@@ -547,7 +547,10 @@ const ArticlePage = () => {
 									onClose={handleDrawerClose}
 								>
 									{selectedArticle && (
-										<ArticleSidebar article={selectedArticle} />
+										<ArticleSidebar
+											article={selectedArticle}
+											onClose={handleDrawerClose}
+										/>
 									)}
 								</Drawer>
 							</ArticleContext.Provider>
