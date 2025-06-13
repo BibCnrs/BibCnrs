@@ -546,7 +546,10 @@ const PublicationPage = () => {
 									onClose={handleDrawerClose}
 								>
 									{selectedPublication && (
-										<PublicationSidebar publication={selectedPublication} />
+										<PublicationSidebar
+											publication={selectedPublication}
+											onClose={handleDrawerClose}
+										/>
 									)}
 								</Drawer>
 							</>
