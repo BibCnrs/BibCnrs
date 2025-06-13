@@ -34,7 +34,7 @@ export const ArticleSidebar = ({ article, onClose }) => {
 		data: dataRetrieve,
 		isLoading,
 		isError,
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	} = useQuery<ArticleRetrieveDataType, any, ArticleRetrieveDataType, any>({
 		queryKey: [
 			"article_retrieve",
