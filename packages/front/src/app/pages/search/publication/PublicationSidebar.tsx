@@ -1,4 +1,12 @@
-import { Alert, Chip, Link, Skeleton, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+	Alert,
+	Chip,
+	IconButton,
+	Link,
+	Skeleton,
+	Typography,
+} from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
@@ -13,7 +21,7 @@ import type {
 import { PublicationTitle } from "./PublicationTitle";
 import { getPrioritizedLink } from "./prioritizeLinks";
 
-export const PublicationSidebar = ({ publication }) => {
+export const PublicationSidebar = ({ publication, onClose }) => {
 	const t = useTranslator();
 	const { search } = useBibContext();
 
@@ -114,19 +122,29 @@ export const PublicationSidebar = ({ publication }) => {
 			gap={10}
 			maxWidth="80vw"
 			padding={4}
+			position="relative"
 		>
 			<Stack gap={2}>
-				<Stack direction="row" justifyContent="space-between">
+				<Stack
+					direction="row"
+					justifyContent="space-between"
+					alignItems="center"
+				>
 					<Chip label="Publication" color="secondary" />
-					<BookmarkButton
-						className="table-bookmark-button"
-						title={bookmarkTitle}
-						url={href}
-						aria-label={t("components.search.content.bookmark", {
-							title: publication.title,
-						})}
-						source="publication"
-					/>
+					<Box display="flex" alignItems="center" gap={1}>
+						<BookmarkButton
+							className="table-bookmark-button"
+							title={bookmarkTitle}
+							url={href}
+							aria-label={t("components.search.content.bookmark", {
+								title: publication.title,
+							})}
+							source="publication"
+						/>
+						<IconButton aria-label="close" onClick={onClose}>
+							<CloseIcon />
+						</IconButton>
+					</Box>
 				</Stack>
 				<PublicationTitle
 					reconciledFullTextHoldings={reconciledFullTextHoldings}

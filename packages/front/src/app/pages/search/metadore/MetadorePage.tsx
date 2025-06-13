@@ -292,7 +292,10 @@ const MetadorePage = () => {
 									onClose={handleDrawerClose}
 								>
 									{selectedMetadore && (
-										<MetadoreSidebar metadore={selectedMetadore} />
+										<MetadoreSidebar
+											metadore={selectedMetadore}
+											onClose={handleDrawerClose}
+										/>
 									)}
 								</Drawer>
 							</>
