@@ -1,4 +1,12 @@
-import { Alert, Chip, Link, Skeleton, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+	Alert,
+	Chip,
+	IconButton,
+	Link,
+	Skeleton,
+	Typography,
+} from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -12,7 +20,7 @@ import { useTranslator } from "../../../shared/locales/I18N";
 import type { ArticleRetrieveDataType } from "../../../shared/types/data.types";
 import { ArticleTitle } from "./ArticleTitle";
 
-export const ArticleSidebar = ({ article }) => {
+export const ArticleSidebar = ({ article, onClose }) => {
 	const t = useTranslator();
 	const {
 		search,
@@ -26,7 +34,7 @@ export const ArticleSidebar = ({ article }) => {
 		data: dataRetrieve,
 		isLoading,
 		isError,
-		// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	} = useQuery<ArticleRetrieveDataType, any, ArticleRetrieveDataType, any>({
 		queryKey: [
 			"article_retrieve",
@@ -80,6 +88,7 @@ export const ArticleSidebar = ({ article }) => {
 		...articleLinks.pdfLinks,
 		...articleLinks.urls,
 	];
+
 	return (
 		<Box
 			display="grid"
@@ -91,21 +100,18 @@ export const ArticleSidebar = ({ article }) => {
 			maxWidth="80vw"
 			padding={4}
 		>
-			<Stack
-				gap={2}
-				sx={{
-					position: "relative",
-					"&:after": {
-						content: '""',
+			<Stack gap={2}>
+				<IconButton
+					aria-label="close"
+					onClick={onClose}
+					sx={{
 						position: "absolute",
-						right: "-40px", // Adjust based on your layout
-						top: 0,
-						bottom: 0,
-						width: "1px",
-						backgroundColor: (theme) => theme.palette.divider,
-					},
-				}}
-			>
+						right: 8,
+						top: 8,
+					}}
+				>
+					<CloseIcon />
+				</IconButton>
 				<Stack direction="row" justifyContent="space-between">
 					<Chip label="Article" color="secondary" />
 					<BookmarkButton

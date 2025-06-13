@@ -1,4 +1,5 @@
-import { Chip, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Chip, IconButton, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import { useBibContext } from "../../../context/BibContext";
@@ -21,12 +22,6 @@ const getTitle = (
 	return titles[0].title;
 };
 
-/**
- * Function used to get the translated description if available
- * @param descriptions Array of descriptions
- * @param langKey Language key
- * @return Translated description if found, first if not found, or undefined as fallback if descriptions are empty
- */
 const getDescription = (
 	descriptions: MetadoreResultDescriptionType[],
 	langKey: string,
@@ -50,11 +45,10 @@ const getDescription = (
 	return descriptions[0].description;
 };
 
-export const MetadoreSidebar = ({ metadore }) => {
+export const MetadoreSidebar = ({ metadore, onClose }) => {
 	const t = useTranslator();
 	const { language } = useBibContext();
 
-	// Get translated title and description if available
 	const title = getTitle(metadore.titles, language);
 	const description = getDescription(metadore.descriptions, language);
 	const bookmarkTitle = `${metadore.type} - ${title}`;
@@ -68,17 +62,27 @@ export const MetadoreSidebar = ({ metadore }) => {
 			gap={10}
 			maxWidth="80vw"
 			padding={4}
+			position="relative"
 		>
 			<Stack gap={2}>
-				<Stack direction="row" justifyContent="space-between">
+				<Stack
+					direction="row"
+					justifyContent="space-between"
+					alignItems="center"
+				>
 					<Chip label="Metadore" color="secondary" />
-					<BookmarkButton
-						className="table-bookmark-button"
-						title={bookmarkTitle}
-						url={metadore.url}
-						aria-label={t("components.search.content.bookmark", { title })}
-						source="metadore"
-					/>
+					<Box display="flex" alignItems="center" gap={1}>
+						<BookmarkButton
+							className="table-bookmark-button"
+							title={bookmarkTitle}
+							url={metadore.url}
+							aria-label={t("components.search.content.bookmark", { title })}
+							source="metadore"
+						/>
+						<IconButton aria-label="close" onClick={onClose}>
+							<CloseIcon />
+						</IconButton>
+					</Box>
 				</Stack>
 				<MetadoreTitle title={title} href={metadore.url} type={metadore.type} />
 				<Stack gap={1}>
