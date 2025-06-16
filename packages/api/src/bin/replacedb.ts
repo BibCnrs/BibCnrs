@@ -2,39 +2,46 @@ import { PrismaClient } from "@prisma/client";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const [, , searchValue, replaceValue] = process.argv;
+const [, , searchValueRaw, replaceValueRaw] = process.argv;
+
+if (!searchValueRaw || !replaceValueRaw) {
+	console.error("❌ Please provide search and replace values.");
+	process.exit(1);
+}
+
+function sqlEscape(str: string): string {
+	return str.replace(/'/g, "''");
+}
+
+const searchValue = sqlEscape(searchValueRaw);
+const replaceValue = sqlEscape(replaceValueRaw);
+
 const prisma = new PrismaClient();
 
 (async () => {
-	const sql = `
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN
-        SELECT table_name, column_name
-        FROM information_schema.columns
-        WHERE (table_name IN ('content_management', 'license', 'tests_news'))
-          AND (column_name = 'content_fr' OR column_name = 'content_en')
-          AND table_schema = 'public'
-    LOOP
-        EXECUTE format(
-            $$UPDATE %I SET %I = regexp_replace(
-                %I,
-                '(<img[^>]*\\bsrc\\s*=\\s*["''])%s((?:[^"''\\\\]|\\\\.)*?)(["''])',
-                '\\1%s\\3',
-                'g'
-            ) WHERE %I ~ '<img[^>]*\\bsrc\\s*=\\s*["'']%s'$$,
-            r.table_name, r.column_name, r.column_name, '${searchValue}', '${replaceValue}', r.column_name, '${searchValue}'
-        );
-    END LOOP;
-END
-$$;
-`;
+	const tables = ["content_management", "license", "tests_news"];
+	const columns = ["content_fr", "content_en"];
 
 	try {
-		await prisma.$executeRawUnsafe(sql);
-		console.log("✅ Replacement completed successfully");
+		for (const table of tables) {
+			for (const column of columns) {
+				const sql = `
+UPDATE ${table}
+SET ${column} = regexp_replace(
+  ${column},
+  '(src=["''])([^"'']*)${searchValue}([^"'']*)(["''])',
+  E'\\\\1\\\\2${replaceValue}\\\\3\\\\4',
+  'gi'
+)
+WHERE ${column} ~* 'src=["''][^"'']*${searchValue}';
+				`;
+
+				console.log(`Executing SQL for table "${table}", column "${column}"`);
+				await prisma.$executeRawUnsafe(sql);
+			}
+		}
+
+		console.log("✅ Replacement completed successfully.");
 	} catch (error) {
 		console.error("❌ Error during replacement:", error);
 		process.exit(1);
