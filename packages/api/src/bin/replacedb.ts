@@ -25,7 +25,7 @@ const prisma = new PrismaClient();
 	try {
 		for (const table of tables) {
 			for (const column of columns) {
-				const sql = `
+				const sqlImg = `
 UPDATE ${table}
 SET ${column} = regexp_replace(
   ${column},
@@ -36,8 +36,26 @@ SET ${column} = regexp_replace(
 WHERE ${column} ~* 'src=["''][^"'']*${searchValue}';
 				`;
 
-				console.log(`Executing SQL for table "${table}", column "${column}"`);
-				await prisma.$executeRawUnsafe(sql);
+				const sqlHref = `
+UPDATE ${table}
+SET ${column} = regexp_replace(
+  ${column},
+  '(href=["''])([^"'']*)${searchValue}([^"'']*)(["''])',
+  E'\\\\1\\\\2${replaceValue}\\\\3\\\\4',
+  'gi'
+)
+WHERE ${column} ~* 'href=["''][^"'']*${searchValue}';
+				`;
+
+				console.log(
+					`Executing SQL for <img> in table "${table}", column "${column}"`,
+				);
+				await prisma.$executeRawUnsafe(sqlImg);
+
+				console.log(
+					`Executing SQL for <a> in table "${table}", column "${column}"`,
+				);
+				await prisma.$executeRawUnsafe(sqlHref);
 			}
 		}
 
