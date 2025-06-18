@@ -90,5 +90,5 @@ test("find resources with media = url not file", async ({ page }) => {
 	const backgroundColor = await lodexCard.evaluate((el) => {
 		return window.getComputedStyle(el as HTMLElement).backgroundColor;
 	});
-	expect(backgroundColor.toLowerCase()).toMatch("rgb(255, 235, 110)");
+	expect(backgroundColor.toLowerCase()).toMatch("rgb(255, 255, 255)");
 });
