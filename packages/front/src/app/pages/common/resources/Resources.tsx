@@ -23,13 +23,18 @@ export const DisplayResources = ({
 		return <Empty />;
 	}
 
-	const ressourceurl = data.find((resource) => resource.media.file === "");
-
-	const otherResources = data.filter(
-		(resource) => resource.media.file !== null && resource.media.file !== "",
+	const filteredResources = data.filter(
+		(resource) =>
+			(resource.media.file !== null && resource.media.file !== "") ||
+			(resource.media.url !== null && resource.media.url !== ""),
 	);
 
-	otherResources.sort((a, b) => {
+	filteredResources.sort((a, b) => {
+		const aHasFile = a.media.file !== null && a.media.file !== "";
+		const bHasFile = b.media.file !== null && b.media.file !== "";
+		if (aHasFile !== bHasFile) {
+			return aHasFile ? -1 : 1;
+		}
 		if (language === "en") {
 			return a.name_en.localeCompare(b.name_en);
 		}
@@ -53,7 +58,7 @@ export const DisplayResources = ({
 			}}
 			gap={2}
 		>
-			{otherResources.map((resource) => (
+			{filteredResources.map((resource) => (
 				<Card
 					key={resource.id}
 					// biome-ignore lint/a11y/useSemanticElements: <explanation>
@@ -83,42 +88,6 @@ export const DisplayResources = ({
 					</CardActionArea>
 				</Card>
 			))}
-
-			{ressourceurl && (
-				<Card
-					key={ressourceurl.id}
-					// biome-ignore lint/a11y/useSemanticElements: <explanation>
-					role="listitem"
-					aria-label={ressourceurl.name_fr}
-					elevation={3}
-					sx={{
-						minHeight: "100%",
-						backgroundColor: "secondary.main",
-						color: "black",
-						gridColumn: "1",
-					}}
-				>
-					<CardActionArea
-						component={Link}
-						href={ressourceurl.media?.url}
-						sx={{ height: "100%" }}
-						rel="nofollow noreferrer noopener"
-						target="_blank"
-						onClick={() => handleResourceClick(ressourceurl)}
-					>
-						<CardContent
-							sx={{
-								"&:last-child": {
-									paddingBottom: 2,
-									height: "100%",
-								},
-							}}
-						>
-							{language === "en" ? ressourceurl.name_en : ressourceurl.name_fr}
-						</CardContent>
-					</CardActionArea>
-				</Card>
-			)}
 		</Box>
 	);
 };
