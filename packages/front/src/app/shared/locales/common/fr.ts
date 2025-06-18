@@ -174,6 +174,10 @@ const fr: Common = {
 			reset: "Réinitialiser",
 			affiliation: "Affiliation auteur",
 			publication_date: "Date de publication",
+			language: "Langue",
+			fr: "Français",
+			en: "Anglais",
+			es: "Espagnol",
 		},
 		facet: {
 			title: "Filtrer",
