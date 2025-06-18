@@ -185,6 +185,10 @@ export type Common = {
 			reset: string;
 			affiliation: string;
 			publication_date: string;
+			language: string;
+			fr: string;
+			en: string;
+			es: string;
 		};
 		facet: {
 			title: string;

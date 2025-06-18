@@ -101,18 +101,36 @@ export default function ArticleAdvancedSearchItem({
 					))}
 				</Select>
 			</FormControl>
-			<TextField
-				sx={{
-					flexGrow: 1,
-				}}
-				value={item.value}
-				onChange={(e) => {
-					handleChange("value", e.target.value);
-				}}
-				size="small"
-				placeholder={item.field === "DT" ? "YYYY-YYYY" : ""}
-				aria-label="value"
-			/>
+			{item.field === "LA" ? (
+				<FormControl sx={{ flexGrow: 1 }} size="small">
+					<Select
+						labelId="lang-select-label"
+						value={item.value}
+						label="Langue"
+						aria-label="langue"
+						onChange={(e) => {
+							handleChange("value", e.target.value);
+						}}
+					>
+						<MenuItem value="fr">{t("components.advancedSearch.fr")}</MenuItem>
+						<MenuItem value="en">{t("components.advancedSearch.en")}</MenuItem>
+						<MenuItem value="es">{t("components.advancedSearch.es")}</MenuItem>
+					</Select>
+				</FormControl>
+			) : (
+				<TextField
+					sx={{
+						flexGrow: 1,
+					}}
+					value={item.value}
+					onChange={(e) => {
+						handleChange("value", e.target.value);
+					}}
+					size="small"
+					placeholder={item.field === "DT" ? "YYYY-YYYY" : ""}
+					aria-label="value"
+				/>
+			)}
 			<IconButton
 				aria-label={t("components.advancedSearch.add")}
 				onClick={onAdd}
