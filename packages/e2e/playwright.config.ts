@@ -17,7 +17,7 @@ export default defineConfig({
 	workers: 1,
 	reporter: process.env.CI ? "html" : "line",
 	use: {
-		baseURL: "http://localhost:3000",
+		baseURL: "http://localhost",
 		trace: "on-first-retry",
 	},
 	projects: [

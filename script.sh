@@ -14,6 +14,6 @@ yarn workspace @bibcnrs/api prisma generate
 yarn workspace @bibcnrs/e2e run playwright install
 yarn workspace @bibcnrs/api run start:e2e &
 # yarn workspace @bibcnrs/api run start:dev -d &
-yarn workspace @bibcnrs/front run dev --port 5173 -d &
-yarn workspace @bibcnrs/admin run dev --port 5174 -d & 
+yarn workspace @bibcnrs/front run e2e -d &
+yarn workspace @bibcnrs/admin run e2e -d & 
 
