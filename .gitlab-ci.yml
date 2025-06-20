@@ -111,55 +111,6 @@ test:e2e:
   services:
     - postgres:16.3
     - redis:7.2.5
-    - name: nginx:1.25-alpine
-      command:
-        [
-          "sh", "-c",
-          "echo 'events {
-                }
-
-                http {
-                    server {
-                        listen          80;
-                        server_tokens   off;
-                        
-                        include         /etc/nginx/mime.types;
-
-                        location /api {
-                            rewrite             ^/api(/.*)$             $1      break;
-                            proxy_pass          http://host.docker.internal:3000;
-                            proxy_redirect      off;
-                            proxy_set_header    Host $host;
-                            client_max_body_size 100M;
-                            break;
-                        }
-
-                        location /admin {
-                            proxy_pass          http://host.docker.internal:5173;
-                            proxy_redirect      off;
-                            proxy_set_header    Host        $host;
-                            proxy_set_header    Upgrade     $http_upgrade;
-                            proxy_set_header    Connection  \"Upgrade\";
-                            break;
-                        }
-
-                        location /files {
-                            root /usr/share/nginx/html;
-                            try_files $uri $uri/ =404;
-                            break;
-                        }
-
-                        location / {
-                            proxy_pass          http://host.docker.internal:5174;
-                            proxy_redirect      off;
-                            proxy_set_header    Host        $host;
-                            proxy_set_header    Upgrade     $http_upgrade;
-                            proxy_set_header    Connection  \"Upgrade\";
-                        }
-                    }
-                }
-          ' > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
-        ]
   variables:
     POSTGRES_DB: bibcnrs
     POSTGRES_USER: postgres
@@ -194,8 +145,49 @@ test:e2e:
     - yarn workspace @bibcnrs/front run e2e -d &
     - yarn workspace @bibcnrs/admin run e2e -d &
     - sleep 20
-    - curl -v http://nginx/api/health || true
-    - curl -v http://nginx/admin || true
+    # Lance nginx dans le même conteneur
+    - |
+      echo 'events {
+            }
+            http {
+                server {
+                    listen          80;
+                    server_tokens   off;
+                    include         /etc/nginx/mime.types;
+                    location /api {
+                        rewrite             ^/api(/.*)$             $1      break;
+                        proxy_pass          http://localhost:3000;
+                        proxy_redirect      off;
+                        proxy_set_header    Host $host;
+                        client_max_body_size 100M;
+                        break;
+                    }
+                    location /admin {
+                        proxy_pass          http://localhost:5173;
+                        proxy_redirect      off;
+                        proxy_set_header    Host        $host;
+                        proxy_set_header    Upgrade     $http_upgrade;
+                        proxy_set_header    Connection  "Upgrade";
+                        break;
+                    }
+                    location /files {
+                        root /usr/share/nginx/html;
+                        try_files $uri $uri/ =404;
+                        break;
+                    }
+                    location / {
+                        proxy_pass          http://localhost:5174;
+                        proxy_redirect      off;
+                        proxy_set_header    Host        $host;
+                        proxy_set_header    Upgrade     $http_upgrade;
+                        proxy_set_header    Connection  "Upgrade";
+                    }
+                }
+            }' > /etc/nginx/nginx.conf
+    - nginx -g 'daemon off;' &
+    - sleep 5
+    - curl -v http://localhost/api/health || true
+    - curl -v http://localhost/admin || true
     - yarn workspace @bibcnrs/e2e run test
   artifacts:
     name: E2E Test Artifacts
