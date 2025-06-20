@@ -145,7 +145,8 @@ test:e2e:
     - yarn workspace @bibcnrs/front run e2e -d &
     - yarn workspace @bibcnrs/admin run e2e -d &
     - sleep 20
-    # Lance nginx dans le même conteneur
+    - apt-get update && apt-get install -y nginx
+    - mkdir -p /etc/nginx
     - |
       echo 'events {
             }
