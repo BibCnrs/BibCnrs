@@ -8,6 +8,7 @@ import {
 import { Container } from "@mui/system";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { SyntheticEvent } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import PageTitle from "../../../components/internal/PageTitle";
 import { FakeSearchBar } from "../../../components/page/searchbar/FakeSearchBar";
 import { useBibContext } from "../../../context/BibContext";
@@ -36,8 +37,15 @@ const FaqEntry = ({ data }: { data: CMSDataType }) => {
 				aria-controls={`${data.name_en.replace(/\s+/g, "_")}-content`}
 				id={`${data.name_en.replace(/\s+/g, "_")}-header`}
 			>
-				{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
-				<Typography color="primary" fontWeight="bold" role="heading">
+				<Typography
+					color="primary"
+					fontWeight="bold"
+					// biome-ignore lint/a11y/useSemanticElements: <explanation>
+					role="heading"
+					component={RouterLink}
+					to={`/faq/${data.id}`}
+					sx={{ textDecoration: "none" }}
+				>
 					{language === "en" ? data.name_en : data.name_fr}
 				</Typography>
 			</AccordionSummary>
