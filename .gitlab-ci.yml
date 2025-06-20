@@ -1,6 +1,6 @@
 default:
   image:
-    name: node:22
+    name: node:23.11.0
   tags:
     - docker
   cache:
@@ -40,7 +40,6 @@ stages:
   - typecheck
   - test
   - build
-  - renovate
 
 lint:
   stage: lint
@@ -48,22 +47,17 @@ lint:
   timeout: 10m
   script:
     - make lint-check
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: on_success
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
+
 typecheck:
   stage: typecheck
   <<: *before_script
   timeout: 10m
   script:
     - make typecheck
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: on_success
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 test:api:
   stage: test
@@ -88,12 +82,8 @@ test:api:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/api run test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: on_success
-
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 test:front:
   stage: test
@@ -112,58 +102,108 @@ test:front:
   <<: *before_script
   script:
     - yarn workspace @bibcnrs/front run test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: on_success
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
-# .test:e2e:
-#   stage: test
-#   image: node:22
-#   services:
-#     - postgres:16.3
-#     - redis:7.2.5
-#   variables:
-#     POSTGRES_DB: bibcnrs
-#     POSTGRES_USER: postgres
-#     POSTGRES_PASSWORD: S3cr3t
-#     DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
-#     NODE_ENV: test
-#     RENATER_FAKE_LOGIN: true
-#     BIBAPI_HOST: http://localhost:3000/api
-#     cookie_secret: ${cookie_secret}
-#     header_secret: ${header_secret}
-#     admin_secret: ${admin_secret}
-#     ticket_secret: ${ticket_secret}
-#     BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
-#     ebsco_host: ${ebsco_host}
-#     EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
-#     EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
-#     METADORE_URL: ${METADORE_URL}
-#     METADORE_API_KEY: ${METADORE_API_KEY}
-#     DOAJ_URL: ${DOAJ_URL}
-#     REDIS_HOST: redis
-#     REDIS_PORT: 6379
-#     bib_admin_host: http://localhost:3000/admin
-#     MAIL_FROM: bibcnrs@bib.cnrs.fr
-#     MAIL_TO: assistance-portail@inist.fr
-#     BIB_UPLOADS_DIR: /app/packages/api/uploads
-#   timeout: 10m
-#   <<: *before_script
-#   script:
-#     - yarn workspace @bibcnrs/e2e run playwright install
-#     - yarn workspace @bibcnrs/api run start:e2e -d &
-#     - sleep 20
-#     - yarn workspace @bibcnrs/e2e run test
-#   artifacts:
-#     name: E2E Test Artifacts
-#     paths:
-#       - packages/e2e/playwright-report/
-#       - packages/e2e/test-results/
-#     expire_in: 30 days
-#   only:
-#     - $CI_PIPELINE_SOURCE != "cancelled"
+test:e2e:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.51.1-noble
+  services:
+    - postgres:16.3
+    - redis:7.2.5
+    - name: nginx:1.25-alpine
+      command:
+        [
+          "sh", "-c",
+          "echo 'events {
+                }
+
+                http {
+                    server {
+                        listen          80;
+                        server_tokens   off;
+                        
+                        include         /etc/nginx/mime.types;
+
+                        location /api {
+                            rewrite             ^/api(/.*)$             $1      break;
+                            proxy_pass          http://host.docker.internal:3000;
+                            proxy_redirect      off;
+                            proxy_set_header    Host $host;
+                            client_max_body_size 100M;
+                            break;
+                        }
+
+                        location /admin {
+                            proxy_pass          http://host.docker.internal:5173;
+                            proxy_redirect      off;
+                            proxy_set_header    Host        $host;
+                            proxy_set_header    Upgrade     $http_upgrade;
+                            proxy_set_header    Connection  \"Upgrade\";
+                            break;
+                        }
+
+                        location /files {
+                            root /usr/share/nginx/html;
+                            try_files $uri $uri/ =404;
+                            break;
+                        }
+
+                        location / {
+                            proxy_pass          http://host.docker.internal:5174;
+                            proxy_redirect      off;
+                            proxy_set_header    Host        $host;
+                            proxy_set_header    Upgrade     $http_upgrade;
+                            proxy_set_header    Connection  \"Upgrade\";
+                        }
+                    }
+                }
+          ' > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+        ]
+  variables:
+    POSTGRES_DB: bibcnrs
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: S3cr3t
+    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: test
+    RENATER_FAKE_LOGIN: true
+    BIBAPI_HOST: http://localhost:3000/api
+    cookie_secret: ${cookie_secret}
+    header_secret: ${header_secret}
+    admin_secret: ${admin_secret}
+    ticket_secret: ${ticket_secret}
+    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+    ebsco_host: ${ebsco_host}
+    EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
+    EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
+    METADORE_URL: ${METADORE_URL}
+    METADORE_API_KEY: ${METADORE_API_KEY}
+    DOAJ_URL: ${DOAJ_URL}
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    bib_admin_host: http://localhost:3000/admin
+    MAIL_FROM: bibcnrs@bib.cnrs.fr
+    MAIL_TO: assistance-portail@inist.fr
+    BIB_UPLOADS_DIR: /app/packages/api/uploads
+  timeout: 2h
+  script:
+    - yarn install --immutable
+    - yarn workspace @bibcnrs/api prisma generate
+    - yarn workspace @bibcnrs/e2e run playwright install
+    - yarn workspace @bibcnrs/api run start:e2e -d &
+    - yarn workspace @bibcnrs/front run e2e -d &
+    - yarn workspace @bibcnrs/admin run e2e -d &
+    - sleep 20
+    - curl -v http://nginx/api/health || true
+    - curl -v http://nginx/admin || true
+    - yarn workspace @bibcnrs/e2e run test
+  artifacts:
+    name: E2E Test Artifacts
+    paths:
+      - packages/e2e/playwright-report/
+      - packages/e2e/test-results/
+    expire_in: 30 days
+
 
 build:admin:
   stage: build
@@ -179,12 +219,12 @@ build:admin:
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - *rule
-    - *rule_main
-    - *rule_tag
+  # rules:
+  #   - *rule
+  #   - *rule_main
+  #   - *rule_tag
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 build:api:
   stage: build
@@ -202,13 +242,12 @@ build:api:
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
       --build-arg http_proxy
       --build-arg http_proxy
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - *rule
-    - *rule_main
-    - *rule_tag
-  
+  # rules:
+  #   - *rule
+  #   - *rule_main
+  #   - *rule_tag
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
 build:front:
   stage: build
@@ -227,27 +266,10 @@ build:front:
       --build-arg "MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}"
       --build-arg "MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}"
       --build-arg "MATOMO_SITE_ID=${MATOMO_SITE_ID}"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - *rule
-    - *rule_main
-    - *rule_tag
-
-renovate:
-  stage: renovate
-  image: renovate/renovate:38.129
-  interruptible: false
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-  script:
-    - renovate
-  variables:
-    RENOVATE_AUTODISCOVER: true
-    RENOVATE_AUTODISCOVER_FILTER: "/^bibcnrs\/BibCnrs$/"
-    RENOVATE_PLATFORM: gitlab
-    RENOVATE_ENDPOINT: $CI_API_V4_URL
-    RENOVATE_COMMIT_MESSAGE_PREFIX: "[Renovate]"
-    LOG_LEVEL: debug
-
+  # rules:
+  #   - *rule
+  #   - *rule_main
+  #   - *rule_tag
+  only:
+    - $CI_PIPELINE_SOURCE != "cancelled"
 
