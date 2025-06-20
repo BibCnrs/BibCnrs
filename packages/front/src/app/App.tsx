@@ -7,6 +7,7 @@ import Root from "./pages/Root";
 import About from "./pages/common/about/About";
 import Accessibility from "./pages/common/accessibility/AccessibilityPage";
 import Faq from "./pages/common/faq/Faq";
+import IndividualFaq from "./pages/common/faq/IndividualFaq";
 import Legal from "./pages/common/legal/Legal";
 import Plan from "./pages/common/plan/Plan";
 import PrivacyPage from "./pages/common/privacy/PrivacyPage";
@@ -126,6 +127,7 @@ const App = () => {
 							</ProtectedRoute>
 						}
 					/>
+					<Route path="/faq/:id" element={<IndividualFaq />} />
 					{/* Footer route */}
 					<Route path={RouteAbout} element={<About />} />
 					<Route path={RouteLegal} element={<Legal />} />
