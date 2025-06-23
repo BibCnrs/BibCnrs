@@ -8,7 +8,6 @@ import {
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
-import ExportArticleCheckbox from "../../../components/element/button/ExportArticleCheckbox";
 import { useBibContext } from "../../../context/BibContext";
 import { createQuery, environment } from "../../../services/Environment";
 import { ArticleContentGetter } from "../../../services/search/Article";
@@ -96,7 +95,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			elevation={3}
 		>
 			<Stack direction="row" alignItems="center" justifyContent="space-between">
-				<ExportArticleCheckbox getter={getterArticle} />
 				<ArticleId id={getterArticle.getId()} />
 			</Stack>
 			<CardContent sx={{ flex: 1, paddingY: 0 }}>

@@ -36,5 +36,5 @@ test("Open FAQ item when clicking on title", async ({ page }) => {
 		.getByRole("heading", { name: "En savoir plus sur Unpaywall ?" })
 		.click();
 
-	await expect(page.getByText(FULL_TEXT)).not.toBeVisible();
+	await expect(page.getByText(FULL_TEXT)).toBeVisible();
 });
