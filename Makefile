@@ -2,7 +2,7 @@ export UID = $(shell id -u)
 export GID = $(shell id -g)
 
 # If the first argument is one of the supported commands...
-SUPPORTED_COMMANDS := restore-db _restore_db create-test-alert-dev create-test-alert
+SUPPORTED_COMMANDS := restore-db _restore_db create-test-alert-dev create-test-alert replace-in-db-dev replace-in-db
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     # use the rest as arguments for the command
@@ -319,3 +319,12 @@ clear-history-dev:								## Clear search history entries older than 2 months in
 clear_history:									## Clear search history entries older than 2 months in production mode
 	docker exec bibcnrs-api \
 		yarn workspace @bibcnrs/api run command:cleanOldHistoryEntries
+
+
+replace-in-db-dev:  						    ## Replace in database in dev mode, usage: ARG1='old_value' ARG2='new_value' make replace-in-db-dev
+	docker exec bibcnrs-api-1 \
+        yarn workspace @bibcnrs/api run command:replaceInDB:dev $(word 1,$(COMMAND_ARGS)) $(word 2,$(COMMAND_ARGS))
+
+replace-in-db:  						        ## Replace in database in production mode, usage: ARG1='old_value' ARG2='new_value' make replace-in-db
+	docker exec bibcnrs-api \
+		yarn workspace @bibcnrs/api run command:replaceInDB $(word 1,$(COMMAND_ARGS)) $(word 2,$(COMMAND_ARGS))
