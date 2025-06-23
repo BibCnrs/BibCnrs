@@ -5,7 +5,6 @@ import {
 	extractAuthors,
 	extractDOI,
 	extractDatabase,
-	extractExportLinks,
 	extractFullTextLinks,
 	extractHtml,
 	extractLanguages,
@@ -495,41 +494,6 @@ describe("articleParser", () => {
 			};
 
 			expect(extractSource(result)).toBeNull();
-		});
-	});
-
-	describe("extractExportLinks", () => {
-		it("should return exportLinks", async () => {
-			const result = {
-				CustomLinks: [
-					{
-						Name: "Exporter en format RIS",
-						Url: "http://ris-link.com",
-						Category: "other",
-					},
-					{
-						Name: "Exporter en format BIBTEX",
-						Url: "http://bibtex-link.com",
-						Category: "other",
-					},
-					{
-						Name: "Ignore",
-						Url: "http://ignore-link.com",
-						Category: "ignore",
-					},
-				],
-			};
-
-			expect(extractExportLinks(result)).toEqual({
-				"Exporter en format RIS": "http://ris-link.com",
-				"Exporter en format BIBTEX": "http://bibtex-link.com",
-			});
-		});
-
-		it("should return empty array if no CustomLinks", () => {
-			const result = {};
-
-			expect(extractExportLinks(result)).toEqual({});
 		});
 	});
 
