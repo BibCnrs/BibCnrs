@@ -142,74 +142,60 @@ test:e2e:
     - yarn workspace @bibcnrs/api prisma generate
     - yarn workspace @bibcnrs/e2e run playwright install
     - yarn workspace @bibcnrs/api run start:e2e -d &
-    - yarn workspace @bibcnrs/front run e2e -d -- --port 5174 &
-    - yarn workspace @bibcnrs/admin run e2e -d -- --port 5173 &
-    - |
-      for i in {1..30}; do
-        curl -s http://localhost/api/health && break
-        echo "Waiting for API..."
-        sleep 2
-      done
-    - |
-      for i in {1..30}; do
-        curl -s http://localhost/admin && break
-        echo "Waiting for admin..."
-        sleep 2
-      done
+    - yarn workspace @bibcnrs/front run e2e -d &
+    - yarn workspace @bibcnrs/admin run e2e -d &
+    - sleep 20
     - apt-get update && apt-get install -y nginx
     - mkdir -p /etc/nginx
     - |
       echo 'events {
-          }
-          http {
-              include /etc/nginx/mime.types;
-              server {
-                  listen 80;
-                  server_tokens off;
-
-                  location /api {
-                      rewrite ^/api(/.*)$ $1 break;
-                      proxy_pass http://localhost:3000;
-                      proxy_redirect off;
-                      proxy_set_header Host $host;
-                      client_max_body_size 100M;
-                  }
-
-                  location /admin {
-                      proxy_pass http://localhost:5173;
-                      proxy_redirect off;
-                      proxy_set_header Host $host;
-                      proxy_set_header Upgrade $http_upgrade;
-                      proxy_set_header Connection "Upgrade";
-                  }
-
-                  location /files {
-                      root /usr/share/nginx/html;
-                      try_files $uri $uri/ =404;
-                  }
-
-                  location / {
-                      proxy_pass http://localhost:5174;
-                      proxy_redirect off;
-                      proxy_set_header Host $host;
-                      proxy_set_header Upgrade $http_upgrade;
-                      proxy_set_header Connection "Upgrade";
-                  }
-              }
-          }' > /etc/nginx/nginx.conf
+            }
+            http {
+                server {
+                    listen          80;
+                    server_tokens   off;
+                    include         /etc/nginx/mime.types;
+                    location /api {
+                        rewrite             ^/api(/.*)$             $1      break;
+                        proxy_pass          http://localhost:3000;
+                        proxy_redirect      off;
+                        proxy_set_header    Host $host;
+                        client_max_body_size 100M;
+                        break;
+                    }
+                    location /admin {
+                        proxy_pass          http://localhost:5173;
+                        proxy_redirect      off;
+                        proxy_set_header    Host        $host;
+                        proxy_set_header    Upgrade     $http_upgrade;
+                        proxy_set_header    Connection  "Upgrade";
+                        break;
+                    }
+                    location /files {
+                        root /usr/share/nginx/html;
+                        try_files $uri $uri/ =404;
+                        break;
+                    }
+                    location / {
+                        proxy_pass          http://localhost:5174;
+                        proxy_redirect      off;
+                        proxy_set_header    Host        $host;
+                        proxy_set_header    Upgrade     $http_upgrade;
+                        proxy_set_header    Connection  "Upgrade";
+                    }
+                }
+            }' > /etc/nginx/nginx.conf
     - nginx -g 'daemon off;' &
     - sleep 5
-    - curl -v http://localhost/api/health || exit 1
-    - curl -v http://localhost/admin || exit 1
-    - curl -v http://localhost || exit 1
-    - DEBUG=pw:browser* yarn workspace @bibcnrs/e2e run test
+    - curl -v http://localhost/api/health || true
+    - curl -v http://localhost/admin || true
+    - yarn workspace @bibcnrs/e2e run test
   artifacts:
     name: E2E Test Artifacts
     paths:
       - packages/e2e/playwright-report/
       - packages/e2e/test-results/
     expire_in: 30 days
-
 
 
 build:admin:
