@@ -8,8 +8,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Book",
 					resourceTypeGeneral: "Text",
 					citeproc: "book",
-					bibtex: "book",
-					ris: "BOOK",
 					resourceType: "Book",
 				},
 				rightsList: [
@@ -80,8 +78,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "survey data",
 				},
 				rightsList: [],
@@ -155,8 +151,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "CreativeWork",
 					resourceTypeGeneral: "Text",
 					citeproc: "article",
-					bibtex: "misc",
-					ris: "GEN",
 					resourceType: "Other",
 				},
 				rightsList: [
@@ -221,8 +215,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "CreativeWork",
 					resourceTypeGeneral: "Text",
 					citeproc: "article",
-					bibtex: "misc",
-					ris: "GEN",
 					resourceType: "Other",
 				},
 				rightsList: [
@@ -287,8 +279,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "ScholarlyArticle",
 					resourceTypeGeneral: "Text",
 					citeproc: "article-journal",
-					bibtex: "article",
-					ris: "RPRT",
 					resourceType: "Project",
 				},
 				rightsList: [],
@@ -340,8 +330,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Article",
 					resourceTypeGeneral: "ConferencePaper",
 					citeproc: "",
-					bibtex: "article",
-					ris: "CPAPER",
 				},
 				rightsList: [
 					{
@@ -418,8 +406,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Article",
 					resourceTypeGeneral: "ConferencePaper",
 					citeproc: "",
-					bibtex: "article",
-					ris: "CPAPER",
 				},
 				rightsList: [
 					{
@@ -496,8 +482,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [],
@@ -752,8 +736,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [
@@ -811,8 +793,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [
@@ -875,8 +855,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "ScholarlyArticle",
 					resourceTypeGeneral: "Text",
 					citeproc: "article-journal",
-					bibtex: "article",
-					ris: "RPRT",
 					resourceType: "Conference Paper",
 				},
 				rightsList: [],
@@ -908,8 +886,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "ScholarlyArticle",
 					resourceTypeGeneral: "Text",
 					citeproc: "article-journal",
-					bibtex: "article",
-					ris: "RPRT",
 					resourceType: "Publication",
 				},
 				rightsList: [],
@@ -947,8 +923,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "ScholarlyArticle",
 					resourceTypeGeneral: "Text",
 					citeproc: "article-journal",
-					bibtex: "article",
-					ris: "RPRT",
 					resourceType: "Poster",
 				},
 				rightsList: [
@@ -1037,8 +1011,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "ScholarlyArticle",
 					resourceTypeGeneral: "Text",
 					citeproc: "article-journal",
-					bibtex: "article",
-					ris: "RPRT",
 					resourceType: "Poster",
 				},
 				rightsList: [
@@ -1117,8 +1089,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [
@@ -1186,8 +1156,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [
@@ -1261,8 +1229,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 				},
 				rightsList: [
 					{
@@ -1356,8 +1322,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "SoftwareSourceCode",
 					resourceTypeGeneral: "Software",
 					citeproc: "article",
-					bibtex: "misc",
-					ris: "COMP",
 				},
 				rightsList: [
 					{
@@ -1406,8 +1370,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [
@@ -1465,8 +1427,6 @@ export const COVID_RESULTS_INPUT = {
 					schemaOrg: "Dataset",
 					resourceTypeGeneral: "Dataset",
 					citeproc: "dataset",
-					bibtex: "misc",
-					ris: "DATA",
 					resourceType: "Dataset",
 				},
 				rightsList: [

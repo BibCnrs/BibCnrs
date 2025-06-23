@@ -32,7 +32,7 @@ import type {
 	ArticleParam,
 	OrderByType,
 } from "../../../services/search/Article";
-import { article, retrieveExport } from "../../../services/search/Article";
+import { article } from "../../../services/search/Article";
 import {
 	RouteArticle,
 	getJSON,
@@ -263,19 +263,6 @@ const ArticlePage = () => {
 		}));
 		setSeed((seed) => seed + 1);
 	}, [setSearch]);
-
-	const handleDownload = (target: "bibtex" | "ris") => {
-		const links = exports.map((value) => value[target]);
-		retrieveExport(links).then((exportValues) => {
-			const blob = new Blob([exportValues.join("\n")], { type: "text/plain" });
-			const elem = document.createElement("a");
-			elem.href = URL.createObjectURL(blob);
-			elem.download = `notices.${target === "bibtex" ? "bib" : "ris"}`;
-			document.body.appendChild(elem);
-			elem.click();
-			document.body.removeChild(elem);
-		});
-	};
 
 	const handleTable = (tableArgs: SearchResultsArgsProps) => {
 		setSearch({
