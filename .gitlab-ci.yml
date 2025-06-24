@@ -178,6 +178,8 @@ build:admin:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
+      --cache=true
+      --cache-repo="${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -199,8 +201,9 @@ build:api:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:${VERSION_NUM}"
+      --cache=true
+      --cache-repo="${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:${VERSION_NUM}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
-      --build-arg http_proxy
       --build-arg http_proxy
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -223,6 +226,8 @@ build:front:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
       --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
+      --cache=true
+      --cache-repo="${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
       --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
       --build-arg "MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}"
       --build-arg "MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}"
