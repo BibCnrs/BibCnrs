@@ -419,7 +419,6 @@ const ArticlePage = () => {
 				<Grid container spacing={4} padding={2}>
 					<Grid item xs={12} md={3}>
 						<FacetSidebar
-							key={seed}
 							available={getAvailable(data)}
 							active={getActive()}
 							onChange={handleFacets}
