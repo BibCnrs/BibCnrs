@@ -1,7 +1,7 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useTranslator } from "../../../../shared/locales/I18N";
 import type { FacetEntry, FacetRequired } from "./Facet.type";
 import FacetSearchList from "./FacetSearchList";
@@ -15,6 +15,8 @@ type FacetFacetsProps = {
 	activeFacets?: FacetRequired["facets"];
 	onChange: (facets: FacetRequired["facets"]) => void;
 	isPublicationPage: boolean;
+	isMoreFacetOpen: boolean;
+	setIsMoreFacetOpen: (open: boolean) => void;
 };
 
 export default function FacetList({
@@ -22,10 +24,10 @@ export default function FacetList({
 	activeFacets = {},
 	onChange,
 	isPublicationPage,
+	isMoreFacetOpen,
+	setIsMoreFacetOpen,
 }: FacetFacetsProps) {
 	const t = useTranslator();
-
-	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
 
 	const handleFacetChange = useCallback(
 		(values: FacetEntry[], key: string) => {
@@ -68,6 +70,8 @@ export default function FacetList({
 					/>
 				))}
 			<Accordion
+				expanded={isMoreFacetOpen}
+				onChange={(_, expanded) => setIsMoreFacetOpen(expanded)}
 				sx={{
 					background: "none",
 					boxShadow: "none",
@@ -78,7 +82,6 @@ export default function FacetList({
 						marginTop: 0,
 					},
 				}}
-				onChange={(_, expanded) => setIsMoreFacetOpen(expanded)}
 			>
 				{!isPublicationPage && (
 					<AccordionSummary
