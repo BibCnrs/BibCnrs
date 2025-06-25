@@ -112,7 +112,7 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 				initialState={{
 					pagination: {
 						paginationModel: {
-							pageSize: 25,
+							pageSize: 100,
 						},
 					},
 				}}

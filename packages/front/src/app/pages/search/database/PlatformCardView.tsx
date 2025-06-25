@@ -13,7 +13,7 @@ export function PlatformCardView({ platforms }: PlatformCardViewProps) {
 	const t = useTranslator();
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [databasePerPage, setDatabasePerPage] = useState<number>(100);
+	const [databasePerPage, setDatabasePerPage] = useState<number>(200);
 
 	const pageCount = useMemo(
 		() => Math.ceil(platforms.length / databasePerPage),
