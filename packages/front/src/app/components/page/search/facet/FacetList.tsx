@@ -15,7 +15,7 @@ type FacetFacetsProps = {
 	activeFacets?: FacetRequired["facets"];
 	onChange: (facets: FacetRequired["facets"]) => void;
 	isPublicationPage: boolean;
-	isMoreFacetOpen: boolean; 
+	isMoreFacetOpen: boolean;
 	setIsMoreFacetOpen: (open: boolean) => void;
 };
 
