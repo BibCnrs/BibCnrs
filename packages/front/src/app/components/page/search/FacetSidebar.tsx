@@ -14,6 +14,7 @@ export type FacetSidebarProps<T extends FacetRequired> = {
 	onReset: () => void;
 	isPublicationPage: boolean;
 };
+import { useState } from "react";
 
 export default function ({
 	available,
@@ -23,6 +24,8 @@ export default function ({
 	isPublicationPage,
 }: FacetSidebarProps<FacetRequired>) {
 	const t = useTranslator();
+
+	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
 
 	const handleLimiterChange = useCallback(
 		(limiters: FacetSidebarProps<FacetRequired>["active"]["limiters"]) => {
@@ -102,6 +105,8 @@ export default function ({
 				activeFacets={active.facets}
 				onChange={handleFacetChange}
 				isPublicationPage={isPublicationPage}
+				isMoreFacetOpen={isMoreFacetOpen}
+				setIsMoreFacetOpen={setIsMoreFacetOpen}
 			/>
 			<Button
 				size="small"
