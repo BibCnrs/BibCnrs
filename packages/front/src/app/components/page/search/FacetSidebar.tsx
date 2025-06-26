@@ -13,8 +13,9 @@ export type FacetSidebarProps<T extends FacetRequired> = {
 	onChange: (values: Omit<FacetRequired & T, "orderBy">) => void;
 	onReset: () => void;
 	isPublicationPage: boolean;
+	isMoreFacetOpen: boolean;
+	setIsMoreFacetOpen: (open: boolean) => void;
 };
-import { useState } from "react";
 
 export default function ({
 	available,
@@ -22,10 +23,10 @@ export default function ({
 	onChange,
 	onReset,
 	isPublicationPage,
+	isMoreFacetOpen,
+	setIsMoreFacetOpen,
 }: FacetSidebarProps<FacetRequired>) {
 	const t = useTranslator();
-
-	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
 
 	const handleLimiterChange = useCallback(
 		(limiters: FacetSidebarProps<FacetRequired>["active"]["limiters"]) => {
