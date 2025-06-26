@@ -63,7 +63,8 @@ const ArticlePage = () => {
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
 	const facetsCleaner = useFacetsCleaner<Omit<ArticleParam, "orderBy">>();
-	const { search, setSearch, isMoreFacetOpen, setIsMoreFacetOpen } = useBibContext();
+	const { search, setSearch, isMoreFacetOpen, setIsMoreFacetOpen } =
+		useBibContext();
 
 	const [seed, setSeed] = useState<number>(0);
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
