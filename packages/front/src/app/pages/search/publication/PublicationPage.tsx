@@ -497,6 +497,8 @@ const PublicationPage = () => {
 							onChange={handleFacets}
 							onReset={handleReset}
 							isPublicationPage={true}
+							isMoreFacetOpen={false}
+							setIsMoreFacetOpen={() => {}}
 						/>
 					</Grid>
 
