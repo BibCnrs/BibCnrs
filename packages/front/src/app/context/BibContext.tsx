@@ -35,6 +35,8 @@ type BibContextType = {
 	setSearch: Dispatch<SetStateAction<SearchContextType>>;
 	showLoginModal: () => void;
 	hideLoginModal: () => void;
+	isMoreFacetOpen: boolean;
+	setIsMoreFacetOpen: Dispatch<SetStateAction<boolean>>;
 } & ReturnType<typeof useSession>;
 
 const BibContext = createContext<BibContextType | null>(null);
@@ -56,6 +58,8 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 		publication: BibContextPublicationDefault,
 		metadore: BibContextMetadoreDefault,
 	});
+
+	const [isMoreFacetOpen, setIsMoreFacetOpen] = useState(false);
 
 	const showLoginModal = () => {
 		setDisplayAuthenticationModal(true);
@@ -116,6 +120,8 @@ export function BibContextProvider({ children }: BibContextProviderProps) {
 				setSearch,
 				showLoginModal,
 				hideLoginModal,
+				isMoreFacetOpen,
+				setIsMoreFacetOpen,
 			}}
 		>
 			<ThemeProvider theme={muiTheme}>
