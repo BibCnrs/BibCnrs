@@ -63,7 +63,7 @@ const ArticlePage = () => {
 	const t = useTranslator();
 	const serviceCatch = useServicesCatch();
 	const facetsCleaner = useFacetsCleaner<Omit<ArticleParam, "orderBy">>();
-	const { search, setSearch } = useBibContext();
+	const { search, setSearch, isMoreFacetOpen, setIsMoreFacetOpen } = useBibContext();
 
 	const [seed, setSeed] = useState<number>(0);
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
@@ -424,6 +424,8 @@ const ArticlePage = () => {
 							onChange={handleFacets}
 							onReset={handleReset}
 							isPublicationPage={false}
+							isMoreFacetOpen={isMoreFacetOpen}
+							setIsMoreFacetOpen={setIsMoreFacetOpen}
 						/>
 					</Grid>
 
