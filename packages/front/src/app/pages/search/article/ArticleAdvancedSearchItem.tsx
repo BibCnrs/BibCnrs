@@ -112,9 +112,15 @@ export default function ArticleAdvancedSearchItem({
 							handleChange("value", e.target.value);
 						}}
 					>
-						<MenuItem value="fr">{t("components.advancedSearch.fr")}</MenuItem>
-						<MenuItem value="en">{t("components.advancedSearch.en")}</MenuItem>
-						<MenuItem value="es">{t("components.advancedSearch.es")}</MenuItem>
+						<MenuItem value="french">
+							{t("components.advancedSearch.fr")}
+						</MenuItem>
+						<MenuItem value="english">
+							{t("components.advancedSearch.en")}
+						</MenuItem>
+						<MenuItem value="spanish">
+							{t("components.advancedSearch.es")}
+						</MenuItem>
 					</Select>
 				</FormControl>
 			) : (
