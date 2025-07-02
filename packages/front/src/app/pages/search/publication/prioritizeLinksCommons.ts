@@ -21,7 +21,7 @@ export interface Link {
 	name: string;
 	isCurrent: boolean;
 	embargo?: Embargo;
-	coverage: Coverage[];
+	coverage?: Coverage[];
 }
 
 // ##############
@@ -342,6 +342,13 @@ export function haveAllLinksSameCoverageEnd(links: Link[]) {
 	}
 
 	for (let i = 0; i < links.length - 1; i++) {
+		if (links[i].coverage === links[i + 1].coverage) {
+			return true;
+		}
+
+		if (!links[i].coverage || !links[i + 1].coverage) {
+			return false;
+		}
 		const firstLinkCoverageEnd = calculateCoverageEndWithEmbargo(
 			links[i].coverage[0],
 			links[i].embargo,
@@ -364,6 +371,13 @@ export function haveAllLinksSameCoverage(links: Link[]) {
 	}
 
 	for (let i = 0; i < links.length - 1; i++) {
+		if (links[i].coverage === links[i + 1].coverage) {
+			return true;
+		}
+
+		if (!links[i].coverage || !links[i + 1].coverage) {
+			return false;
+		}
 		const firstLinkCoverageEnd = calculateCoverageEndWithEmbargo(
 			links[i].coverage[0],
 			links[i].embargo,
