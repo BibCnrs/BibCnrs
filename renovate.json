@@ -9,6 +9,10 @@
 	"configMigration": true,
 	"packageRules": [
 		{
+			"matchUpdateTypes": ["major"],
+			"enabled": false
+		},
+		{
 			"groupName": "React & MUI",
 			"matchPackageNames": [
 				"react{/,}**",
