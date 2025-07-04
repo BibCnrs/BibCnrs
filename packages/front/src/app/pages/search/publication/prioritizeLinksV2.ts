@@ -53,36 +53,89 @@ function getPriorityLinkWhenSameCoverageEnd(links: Link[]) {
 	return prioritizedLink ? [prioritizedLink] : [];
 }
 
+function getCoverageTypeWithOtherLink(
+	link: Pick<Link, "coverage" | "embargo">,
+	otherLink: Pick<Link, "coverage" | "embargo">,
+) {
+	if (!link.coverage?.at(0) || !otherLink.coverage) {
+		return "overlap";
+	}
+
+	const linkStartDate = getStartDate(link.coverage[0]).getTime();
+	const linkEndDate = calculateCoverageEndWithEmbargo(
+		link.coverage[0],
+		link.embargo,
+	).getTime();
+
+	const otherLinkStartDate = getStartDate(otherLink.coverage[0]).getTime();
+	const otherLinkEndDate = calculateCoverageEndWithEmbargo(
+		otherLink.coverage[0],
+		otherLink.embargo,
+	).getTime();
+
+	if (
+		linkStartDate === otherLinkStartDate &&
+		linkEndDate === otherLinkEndDate
+	) {
+		return "same";
+	}
+
+	if (otherLinkStartDate <= linkStartDate && otherLinkEndDate >= linkEndDate) {
+		return "included";
+	}
+	return "overlap";
+}
+
 function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
 	if (links.length < 2) {
 		return links;
 	}
 
-	return links.filter((currentLink, currentLinkIndex, allLinks) => {
-		const currentLinkStartDate = getStartDate(currentLink.coverage[0]);
-		const currentLinkEndDate = calculateCoverageEndWithEmbargo(
-			currentLink.coverage[0],
-			currentLink.embargo,
+	const linksWithoutEmbargo = links.filter((link) => !link.embargo);
+	if (linksWithoutEmbargo.length > 0) {
+		return linksWithoutEmbargo;
+	}
+
+	const linksWithEmbargo = links.filter((link) => link.embargo);
+	if (linksWithEmbargo.length > 0) {
+		const minEmbargo = Math.min(
+			...linksWithEmbargo.map((link) =>
+				link.embargo.unit === "Year"
+					? link.embargo.value * 12
+					: link.embargo.value,
+			),
 		);
+		return linksWithEmbargo.filter(
+			(link) =>
+				(link.embargo.unit === "Year"
+					? link.embargo.value * 12
+					: link.embargo.value) === minEmbargo,
+		);
+	}
 
-		// Check if the current link is included in another link
-		return allLinks.some((otherLink, otherLinkIndex) => {
-			const otherLinkStartDate = getStartDate(otherLink.coverage[0]);
-			const otherLinkEndDate = calculateCoverageEndWithEmbargo(
-				otherLink.coverage[0],
-				otherLink.embargo,
-			);
+	return links.filter((currentLink, currentLinkIndex, allLinks) => {
+		if (!currentLink.coverage?.length) {
+			return true;
+		}
 
-			if (
-				otherLinkStartDate < currentLinkStartDate &&
-				otherLinkEndDate > currentLinkEndDate
-			) {
-				return true;
+		for (
+			let otherLinkIndex = 0;
+			otherLinkIndex < allLinks.length;
+			otherLinkIndex++
+		) {
+			const otherLink = allLinks[otherLinkIndex];
+			const coverageType = getCoverageTypeWithOtherLink(currentLink, otherLink);
+
+			if (coverageType === "included") {
+				return false;
 			}
 
-			// Prioritize first link ordered by index if the coverage is the same
-			return currentLinkIndex > otherLinkIndex;
-		});
+			if (coverageType === "same" && currentLinkIndex < otherLinkIndex) {
+				return false;
+			}
+		}
+
+		return true;
 	});
 }
 
@@ -105,3 +158,8 @@ export const _getPriorityLinkWhenSameCoverageEnd =
  */
 export const _getPriorityLinksWhenDifferentCoverageEnd =
 	getPriorityLinksWhenDifferentCoverageEnd;
+
+/**
+ * @deprecated This is for testing purposes only
+ */
+export const _isCoverageIncludedInOtherLink = getCoverageTypeWithOtherLink;
