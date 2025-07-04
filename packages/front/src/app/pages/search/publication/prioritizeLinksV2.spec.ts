@@ -64,7 +64,6 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 			_getPriorityLinksWhenDifferentCoverageEnd([linkPresent]),
 		).toStrictEqual([linkPresent]);
 	});
-
 	it("should return a single link which coverage includes each others", () => {
 		const linkPresentWithLesserCoverage = {
 			...linkPresent,
@@ -84,7 +83,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresentWithLesserCoverage,
 				linkPresent,
 			]),
-		).toStrictEqual([linkPresent]);
+		).toStrictEqual([linkPresentWithLesserCoverage, linkPresent]);
 	});
 
 	it("should return the links that have coverage overlaping", () => {
@@ -125,7 +124,11 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresent,
 				linkPresentWithOverlappingCoverage,
 			]),
-		).toStrictEqual([linkPresent, linkPresentWithOverlappingCoverage]);
+		).toStrictEqual([
+			linkPresentWithLesserCoverage,
+			linkPresent,
+			linkPresentWithOverlappingCoverage,
+		]);
 	});
 
 	it("should return the links that have no coverage overlaping", () => {
@@ -166,7 +169,11 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresent,
 				linkPresentWithNoOverlappingCoverage,
 			]),
-		).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
+		).toStrictEqual([
+			linkPresentWithLesserCoverage,
+			linkPresent,
+			linkPresentWithNoOverlappingCoverage,
+		]);
 	});
 });
 
@@ -215,7 +222,7 @@ describe("getPrioritizedLink_v2", () => {
 			};
 			expect(
 				getPrioritizedLink_v2([linkPresentWithLesserCoverage, linkPresent]),
-			).toStrictEqual([linkPresent]);
+			).toStrictEqual([linkPresentWithLesserCoverage, linkPresent]);
 		});
 
 		it("should return the links that have coverage overlaping", () => {
@@ -256,7 +263,11 @@ describe("getPrioritizedLink_v2", () => {
 					linkPresent,
 					linkPresentWithOverlappingCoverage,
 				]),
-			).toStrictEqual([linkPresent, linkPresentWithOverlappingCoverage]);
+			).toStrictEqual([
+				linkPresentWithLesserCoverage,
+				linkPresent,
+				linkPresentWithOverlappingCoverage,
+			]);
 		});
 
 		it("should return the links that have no coverage overlaping", () => {
@@ -297,7 +308,11 @@ describe("getPrioritizedLink_v2", () => {
 					linkPresent,
 					linkPresentWithNoOverlappingCoverage,
 				]),
-			).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
+			).toStrictEqual([
+				linkPresentWithLesserCoverage,
+				linkPresent,
+				linkPresentWithNoOverlappingCoverage,
+			]);
 		});
 	});
 });
