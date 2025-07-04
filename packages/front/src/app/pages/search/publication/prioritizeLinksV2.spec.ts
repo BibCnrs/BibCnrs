@@ -55,6 +55,15 @@ describe("getPriorityLinkWhenSameCoverageEnd", () => {
 });
 
 describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
+	it("should return an empty array when array is empty", () => {
+		expect(_getPriorityLinksWhenDifferentCoverageEnd([])).toStrictEqual([]);
+	});
+
+	it("should return prioritized link when there is only one link in array", () => {
+		expect(
+			_getPriorityLinksWhenDifferentCoverageEnd([linkPresent]),
+		).toStrictEqual([linkPresent]);
+	});
 	it("should return a single link which coverage includes each others", () => {
 		const linkPresentWithLesserCoverage = {
 			...linkPresent,
