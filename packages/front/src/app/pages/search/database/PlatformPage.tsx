@@ -1,5 +1,9 @@
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import { Container, Stack } from "@mui/system";
+import { useState } from "react";
 import PageTitle from "../../../components/internal/PageTitle";
 import ChipFacet from "../../../components/page/search/ChipFacet";
 import SearchBar from "../../../components/page/searchbar/SearchBar";
@@ -31,6 +35,9 @@ export function PlatformPage() {
 
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
+	const [platformView, setPlatformView] = useState<"list" | "card">(
+		user?.settings?.platformView,
+	);
 
 	return (
 		<>
@@ -73,11 +80,33 @@ export function PlatformPage() {
 							/>
 						</Box>
 						<Stack gap={2}>
-							<Typography fontWeight={700}>
-								{t("pages.database.platform", {
-									count: platforms.length,
-								})}
-							</Typography>
+							<Stack
+								direction="row"
+								alignItems="center"
+								justifyContent="space-between"
+							>
+								<Typography fontWeight={700}>
+									{t("pages.database.platform", {
+										count: platforms.length,
+									})}
+								</Typography>
+								<Stack direction="row">
+									<IconButton
+										color={platformView === "list" ? "primary" : "default"}
+										onClick={() => setPlatformView("list")}
+										aria-label="list"
+									>
+										<ViewListIcon />
+									</IconButton>
+									<IconButton
+										color={platformView === "card" ? "primary" : "default"}
+										onClick={() => setPlatformView("card")}
+										aria-label="card"
+									>
+										<ViewModuleIcon />
+									</IconButton>
+								</Stack>
+							</Stack>
 
 							{isLoading ? (
 								<Stack alignItems="center" spacing={5}>
@@ -91,7 +120,7 @@ export function PlatformPage() {
 								<Alert variant="outlined" severity="info">
 									{t("pages.database.noResult")}
 								</Alert>
-							) : user?.settings?.platformView === "list" ? (
+							) : platformView === "list" ? (
 								<PlatformListView platforms={platforms} />
 							) : (
 								<PlatformCardView platforms={platforms} />
