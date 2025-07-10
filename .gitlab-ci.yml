@@ -139,6 +139,7 @@ test:e2e:
     PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
   timeout: 2h
   script:
+    - apt-get update && apt-get install -y nginx
     - mkdir -p /etc/nginx
     - cp packages/proxy/e2e-ci.conf /etc/nginx/nginx.conf
     - nginx -g 'daemon off;' &
@@ -150,7 +151,6 @@ test:e2e:
     - yarn workspace @bibcnrs/front run e2e -d &
     - yarn workspace @bibcnrs/admin run e2e -d &
     - sleep 20
-    - apt-get update && apt-get install -y nginx
     - curl -v http://localhost/admin || true
     - yarn workspace @bibcnrs/e2e run test resources.spec.ts --reporter=junit
   artifacts:
