@@ -119,6 +119,7 @@ test:e2e:
     NODE_ENV: test
     RENATER_FAKE_LOGIN: true
     BIBAPI_HOST: http://localhost/api
+    VITE_BIBAPI_HOST: http://localhost/api
     cookie_secret: ${cookie_secret}
     header_secret: ${header_secret}
     admin_secret: ${admin_secret}
