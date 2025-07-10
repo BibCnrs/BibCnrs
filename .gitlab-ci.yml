@@ -137,7 +137,7 @@ test:e2e:
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
-    PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+    PLAYWRIGHT_JUNIT_OUTPUT_FILE: results.xml
   timeout: 2h
   script:
     - apt-get update && apt-get install -y nginx
@@ -152,7 +152,6 @@ test:e2e:
     - yarn workspace @bibcnrs/front run e2e -d &
     - yarn workspace @bibcnrs/admin run e2e -d &
     - sleep 20
-    - curl -v http://localhost/admin || true
     - yarn workspace @bibcnrs/e2e run test resources.spec.ts --reporter=junit
   artifacts:
     name: E2E Test Artifacts
