@@ -107,102 +107,21 @@ test:front:
 
 test:e2e:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.51.1-noble
-  services:
-  - postgres:16.3
-  - redis:7.2.5
-  - name: nginx:1.25-alpine
-    command:
-      [
-        "sh", "-c",
-        "echo 'events {
-              }
-
-              http {
-                  server {
-                      listen          80;
-                      server_tokens   off;
-                      
-                      include         /etc/nginx/mime.types;
-
-                      location /api {
-                          rewrite             ^/api(/.*)$             $1      break;
-                          proxy_pass          http://localhost:3000;
-                          proxy_redirect      off;
-                          proxy_set_header    Host $host;
-                          client_max_body_size 100M;
-                          break;
-                      }
-
-                      location /admin {
-                          proxy_pass          http://localhost:5173;
-                          proxy_redirect      off;
-                          proxy_set_header    Host        $host;
-                          proxy_set_header    Upgrade     $http_upgrade;
-                          proxy_set_header    Connection  \"Upgrade\";
-                          break;
-                      }
-
-                      location /files {
-                          root /usr/share/nginx/html;
-                          try_files $uri $uri/ =404;
-                          break;
-                      }
-
-                      location / {
-                          proxy_pass          http://localhost:5174;
-                          proxy_redirect      off;
-                          proxy_set_header    Host        $host;
-                          proxy_set_header    Upgrade     $http_upgrade;
-                          proxy_set_header    Connection  \"Upgrade\";
-                      }
-                  }
-              }
-        ' > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
-      ]
-  variables:
-    POSTGRES_DB: bibcnrs
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: S3cr3t
-    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
-    NODE_ENV: test
-    RENATER_FAKE_LOGIN: true
-    BIBAPI_HOST: http://localhost:3000/api
-    cookie_secret: ${cookie_secret}
-    header_secret: ${header_secret}
-    admin_secret: ${admin_secret}
-    ticket_secret: ${ticket_secret}
-    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
-    ebsco_host: ${ebsco_host}
-    EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
-    EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
-    METADORE_URL: ${METADORE_URL}
-    METADORE_API_KEY: ${METADORE_API_KEY}
-    DOAJ_URL: ${DOAJ_URL}
-    REDIS_HOST: redis
-    REDIS_PORT: 6379
-    bib_admin_host: http://localhost:3000/admin
-    MAIL_FROM: bibcnrs@bib.cnrs.fr
-    MAIL_TO: assistance-portail@inist.fr
-    BIB_UPLOADS_DIR: /app/packages/api/uploads
-  timeout: 2h
+  tags:
+    - shell
   script:
-    - yarn install --immutable
-    - yarn workspace @bibcnrs/api prisma generate
-    - yarn workspace @bibcnrs/e2e run playwright install
-    - yarn workspace @bibcnrs/api run start:e2e -d &
-    - yarn workspace @bibcnrs/front run e2e -d &
-    - yarn workspace @bibcnrs/admin run e2e -d &
-    - sleep 20
-    - yarn workspace @bibcnrs/e2e run test
-  artifacts:
-    name: E2E Test Artifacts
-    paths:
-      - packages/e2e/playwright-report/
-      - packages/e2e/test-results/
-    expire_in: 30 days
-
-
+    - docker version && docker-compose version
+    - cp -n docker-compose.dev.env.sample 	docker-compose.e2e.env || true
+    - docker-compose --file docker-compose.test-e2e.yml down --volumes
+    - docker-compose --env-file docker-compose.e2e.env --file docker-compose.test-e2e.yml up --build --detach --wait
+    - sleep 30
+    - docker run --rm -v $CI_PROJECT_DIR:/app -w /app mcr.microsoft.com/playwright:v1.54.0-noble \
+      yarn install && \
+      yarn workspace @bibcnrs/e2e run playwright install && \
+      yarn workspace @bibcnrs/api prisma generate && \
+      yarn workspace @bibcnrs/e2e run playwright install --with-deps && \
+      CI=1 yarn workspace @bibcnrs/e2e run test
+  
 build:admin:
   stage: build
   image:
