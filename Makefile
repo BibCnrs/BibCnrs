@@ -266,7 +266,7 @@ else
 	@ls -h ./backups
 endif
 
-test-e2e-start: stop-dev						## Start stack in test 2e2 mode
+test-e2e-start: stop-dev						## Start stack in test e2e mode
 	docker compose \
 		--env-file docker-compose.dev.env \
 		-f docker-compose.test-e2e.yml \
