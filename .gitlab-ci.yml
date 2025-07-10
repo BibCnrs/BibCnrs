@@ -147,44 +147,7 @@ test:e2e:
     - sleep 20
     - apt-get update && apt-get install -y nginx
     - mkdir -p /etc/nginx
-    - |
-      echo 'events {
-            }
-            http {
-                server {
-                    listen          80;
-                    server_tokens   off;
-                    include         /etc/nginx/mime.types;
-                    location /api {
-                        rewrite             ^/api(/.*)$             $1      break;
-                        proxy_pass          http://localhost:3000;
-                        proxy_redirect      off;
-                        proxy_set_header    Host $host;
-                        client_max_body_size 100M;
-                        break;
-                    }
-                    location /admin {
-                        proxy_pass          http://localhost:5173;
-                        proxy_redirect      off;
-                        proxy_set_header    Host        $host;
-                        proxy_set_header    Upgrade     $http_upgrade;
-                        proxy_set_header    Connection  "Upgrade";
-                        break;
-                    }
-                    location /files {
-                        root /usr/share/nginx/html;
-                        try_files $uri $uri/ =404;
-                        break;
-                    }
-                    location / {
-                        proxy_pass          http://localhost:5174;
-                        proxy_redirect      off;
-                        proxy_set_header    Host        $host;
-                        proxy_set_header    Upgrade     $http_upgrade;
-                        proxy_set_header    Connection  "Upgrade";
-                    }
-                }
-            }' > /etc/nginx/nginx.conf
+    - cp packages/proxy/e2e-ci.conf /etc/nginx/nginx.conf
     - nginx -g 'daemon off;' &
     - sleep 5
     - curl -v http://localhost/api/health || true
@@ -196,7 +159,6 @@ test:e2e:
       - packages/e2e/playwright-report/
       - packages/e2e/test-results/
     expire_in: 30 days
-
 
 build:admin:
   stage: build
@@ -265,4 +227,3 @@ build:front:
   #   - *rule_tag
   only:
     - $CI_PIPELINE_SOURCE != "cancelled"
-
