@@ -56,44 +56,48 @@ describe("getPriorityLinkWhenSameCoverageEnd", () => {
 
 describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 	it("should group links with identical coverage and handle a third with different coverage", () => {
-	const linkA: Link = {
-		...linkPresent,
-		coverage: [
-			{
-				start: { year: "2020", month: "01", day: "01" },
-				end: { year: "2022", month: "12", day: "31" },
-			},
-		],
-		embargo: null,
-	};
+		const linkA: Link = {
+			...linkPresent,
+			coverage: [
+				{
+					start: { year: "2020", month: "01", day: "01" },
+					end: { year: "2022", month: "12", day: "31" },
+				},
+			],
+			embargo: null,
+		};
 
-	const linkB: Link = {
-		...linkPresent,
-		coverage: [
-			{
-				start: { year: "2020", month: "01", day: "01" },
-				end: { year: "2022", month: "12", day: "31" },
-			},
-		],
-		embargo: null,
-	};
+		const linkB: Link = {
+			...linkPresent,
+			coverage: [
+				{
+					start: { year: "2020", month: "01", day: "01" },
+					end: { year: "2022", month: "12", day: "31" },
+				},
+			],
+			embargo: null,
+		};
 
-	const linkC: Link = {
-		...linkPresent,
-		coverage: [
-			{
-				start: { year: "2021", month: "01", day: "01" },
-				end: { year: "2023", month: "12", day: "31" },
-			},
-		],
-		embargo: null,
-	};
+		const linkC: Link = {
+			...linkPresent,
+			coverage: [
+				{
+					start: { year: "2021", month: "01", day: "01" },
+					end: { year: "2023", month: "12", day: "31" },
+				},
+			],
+			embargo: null,
+		};
 
-	const result = _getPriorityLinksWhenDifferentCoverageEnd([linkA, linkB, linkC]);
+		const result = _getPriorityLinksWhenDifferentCoverageEnd([
+			linkA,
+			linkB,
+			linkC,
+		]);
 
-	expect(result.length).toBe(2);
-	expect(result).toEqual(expect.arrayContaining([linkA, linkC]));
-});
+		expect(result.length).toBe(2);
+		expect(result).toEqual(expect.arrayContaining([linkA, linkC]));
+	});
 
 	it("should return an empty array when array is empty", () => {
 		expect(_getPriorityLinksWhenDifferentCoverageEnd([])).toStrictEqual([]);
