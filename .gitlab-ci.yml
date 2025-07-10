@@ -118,12 +118,12 @@ test:e2e:
     DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
     NODE_ENV: test
     RENATER_FAKE_LOGIN: true
-    BIBAPI_HOST: http://localhost:3000/api
+    BIBAPI_HOST: http://localhost/api
     cookie_secret: ${cookie_secret}
     header_secret: ${header_secret}
     admin_secret: ${admin_secret}
     ticket_secret: ${ticket_secret}
-    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+    BIB_CONTENT_DELIVERY_HOST: http://localhost/files
     ebsco_host: ${ebsco_host}
     EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
     EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
@@ -132,10 +132,11 @@ test:e2e:
     DOAJ_URL: ${DOAJ_URL}
     REDIS_HOST: redis
     REDIS_PORT: 6379
-    bib_admin_host: http://localhost:3000/admin
+    bib_admin_host: http://localhost/admin
     MAIL_FROM: bibcnrs@bib.cnrs.fr
     MAIL_TO: assistance-portail@inist.fr
     BIB_UPLOADS_DIR: /app/packages/api/uploads
+    PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
   timeout: 2h
   script:
     - yarn install --immutable
@@ -150,14 +151,14 @@ test:e2e:
     - cp packages/proxy/e2e-ci.conf /etc/nginx/nginx.conf
     - nginx -g 'daemon off;' &
     - sleep 5
-    - curl -v http://localhost/api/health || true
     - curl -v http://localhost/admin || true
-    - yarn workspace @bibcnrs/e2e run test
+    - yarn workspace @bibcnrs/e2e run test resources.spec.ts --reporter=junit
   artifacts:
     name: E2E Test Artifacts
     paths:
-      - packages/e2e/playwright-report/
-      - packages/e2e/test-results/
+      - results.xml
+    reports:
+      junit: results.xml
     expire_in: 30 days
 
 build:admin:
