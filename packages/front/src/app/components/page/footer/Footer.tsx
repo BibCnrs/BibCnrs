@@ -2,6 +2,7 @@ import { Button, Divider, IconButton, Link } from "@mui/material";
 import { Container, Stack, useTheme } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
 import CNRSRFLogo from "/logos/CNRS-RF-Footer.png";
+import INISTLogo from "/logos/Opere_par_Inist long.png";
 import {
 	RouteAbout,
 	RouteAccessibility,
@@ -152,6 +153,22 @@ const Footer = () => {
 					</IconButton>
 				</Stack>
 			</Container>
+			<Stack direction="row" alignItems="center" justifyContent="center" mt={2}>
+				<a
+					href="https://www.inist.fr/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<img
+						src={INISTLogo}
+						alt="Inist logo"
+						aria-label="Inist logo"
+						style={{
+							width: 120,
+						}}
+					/>
+				</a>
+			</Stack>
 		</Stack>
 	);
 };
