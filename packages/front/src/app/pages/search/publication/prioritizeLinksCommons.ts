@@ -395,6 +395,9 @@ export function haveAllLinksSameCoverage(links: Link[]) {
 }
 
 export function getCouvertureDuration(link: Link) {
+	if (!link.coverage || link.coverage.length === 0) {
+		return 0;
+	}
 	const startDate = getStartDate(link.coverage[0]);
 	const endDate = calculateCoverageEndWithEmbargo(
 		link.coverage[0],

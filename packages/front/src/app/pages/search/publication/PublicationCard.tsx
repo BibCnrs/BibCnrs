@@ -59,9 +59,13 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 		fullTextHoldings,
 	) as PublicationHolding[];
 
-	const getCoverage = (coverage: PublicationCoverageDataType) => {
+	const getCoverage = (coverage?: PublicationCoverageDataType) => {
 		let coverageString = "";
 		try {
+			if (!coverage || !Array.isArray(coverage)) {
+				return "";
+			}
+
 			coverage.forEach((value) => {
 				const start = new Date(
 					Number.parseInt(value.start.year, 10),

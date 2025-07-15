@@ -1,6 +1,7 @@
 import {
 	type Link,
 	calculateCoverageEndWithEmbargo,
+	compareEndCouvertureWhenCouvertureDifferent,
 	getCouvertureDuration,
 	getStartDate,
 	haveAllLinksSameCoverageEnd,
@@ -87,8 +88,15 @@ function getCoverageTypeWithOtherLink(
 }
 
 function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
-	if (links.length < 2) {
-		return links;
+	if (links.length >= 2) {
+		const [firstLink, secondLink] = links;
+		const result = compareEndCouvertureWhenCouvertureDifferent(
+			firstLink,
+			secondLink,
+		);
+		if (result?.length > 0) {
+			return result;
+		}
 	}
 
 	const coveragesame = (link: Link) => {
@@ -132,49 +140,21 @@ function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
 			: [linksWithoutEmbargo[0], linksWithEmbargo[0]];
 	}
 
-	if (linksWithoutEmbargo.length > 0) {
-		return linksWithoutEmbargo;
-	}
-	if (linksWithEmbargo.length > 0) {
-		const minEmbargo = Math.min(
-			...linksWithEmbargo.map((link) =>
-				link.embargo.unit === "Year"
-					? link.embargo.value * 12
-					: link.embargo.value,
-			),
-		);
-		return linksWithEmbargo.filter(
-			(link) =>
-				(link.embargo.unit === "Year"
-					? link.embargo.value * 12
-					: link.embargo.value) === minEmbargo,
-		);
-	}
+	const selectedGroup =
+		linksWithoutEmbargo.length > 0 ? linksWithoutEmbargo : linksWithEmbargo;
 
-	return reducedLinks.filter((currentLink, currentLinkIndex, allLinks) => {
-		if (!currentLink.coverage?.length) {
-			return true;
-		}
+	const linkWithMaxCoverage = selectedGroup.reduce((best, current) => {
+		const bestDuration = getCouvertureDuration(best);
+		const currentDuration = getCouvertureDuration(current);
+		return currentDuration > bestDuration ? current : best;
+	}, selectedGroup[0]);
 
-		for (
-			let otherLinkIndex = 0;
-			otherLinkIndex < allLinks.length;
-			otherLinkIndex++
-		) {
-			const otherLink = allLinks[otherLinkIndex];
-			const coverageType = getCoverageTypeWithOtherLink(currentLink, otherLink);
-
-			if (coverageType === "included") {
-				return false;
-			}
-
-			if (coverageType === "same" && currentLinkIndex < otherLinkIndex) {
-				return false;
-			}
-		}
-
-		return true;
+	const fullCoverage = selectedGroup.every((l) => {
+		const type = getCoverageTypeWithOtherLink(l, linkWithMaxCoverage);
+		return type === "included" || type === "same";
 	});
+
+	return fullCoverage ? [linkWithMaxCoverage] : selectedGroup;
 }
 
 export function getPrioritizedLink_v2(links: Link[]) {
