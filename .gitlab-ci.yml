@@ -153,13 +153,12 @@ test:e2e:
     - yarn workspace @bibcnrs/front run e2e -d &
     - yarn workspace @bibcnrs/admin run e2e -d &
     - sleep 20
-    - yarn workspace @bibcnrs/e2e run test resources.spec.ts
+    - yarn workspace @bibcnrs/e2e run test
   artifacts:
     name: E2E Test Artifacts
     paths:
-      - results.xml
-    reports:
-      junit: results.xml
+      - packages/e2e/playwright-report/
+      - packages/e2e/test-results/
     expire_in: 30 days
 
 build:admin:
