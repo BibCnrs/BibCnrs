@@ -148,10 +148,9 @@ test:e2e:
     - yarn install --immutable
     - yarn workspace @bibcnrs/api prisma generate
     - yarn workspace @bibcnrs/e2e run playwright install
-    - yarn workspace @bibcnrs/api run start:e2e-ci -d &
-    - curl -I http://localhost:3000/api
-    - yarn workspace @bibcnrs/front run e2e-ci -d &
-    - yarn workspace @bibcnrs/admin run e2e-ci -d &
+    - yarn workspace @bibcnrs/api run start:e2e-ci -d > /dev/null 2>&1 &
+    - yarn workspace @bibcnrs/front run e2e-ci -d > /dev/null 2>&1 &
+    - yarn workspace @bibcnrs/admin run e2e-ci -d > /dev/null 2>&1 &
     - sleep 20
     - CI=1 yarn workspace @bibcnrs/e2e run test
   artifacts:

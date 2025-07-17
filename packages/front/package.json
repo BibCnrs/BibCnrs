@@ -11,7 +11,7 @@
 		"typecheck": "tsc --noEmit",
 		"test": "vitest --no-cache --watch=false packages/front",
 		"test:watch": "vitest --no-cache --watch packages/front",
-		"e2e-ci": "vite --host 0.0.0.0 --port 5173 --logLevel silent"
+		"e2e-ci": "vite --host 0.0.0.0 --port 5173"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.1.0",
