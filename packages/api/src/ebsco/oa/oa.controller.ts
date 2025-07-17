@@ -131,6 +131,9 @@ export class EbscoOaController {
 			throw new BadRequestException();
 		}
 
+		const doiRegex = /^10.\d{4,}(?:\.\d+)*\/[-._;()\/:A-Za-z0-9]+$/;
+		const doiQuery: string = doiRegex.test(doi) ? doi : "null";
+
 		const decodedUrl = decodeURIComponent(url);
 
 		try {
@@ -153,21 +156,21 @@ export class EbscoOaController {
 			const janusUser =
 				await this.janusAccountService.findOneById(numericUserId);
 			if (janusUser) {
-				await this.logJanusUser(janusUser, url, sid, domaine, doi, ip);
+				await this.logJanusUser(janusUser, url, sid, domaine, doiQuery, ip);
 				return res.redirect(url);
 			}
 
 			const inistUser =
 				await this.inistAccountService.findOneById(numericUserId);
 			if (inistUser) {
-				await this.logInistUser(inistUser, url, sid, domaine, doi, ip);
+				await this.logInistUser(inistUser, url, sid, domaine, doiQuery, ip);
 			}
 		} else if (user?.origin === "janus") {
 			const janusUser = await this.janusAccountService.findOneById(user.id);
-			await this.logJanusUser(janusUser, url, sid, domaine, doi, ip);
+			await this.logJanusUser(janusUser, url, sid, domaine, doiQuery, ip);
 		} else if (user?.origin === "inist") {
 			const inistUser = await this.inistAccountService.findOneById(user.id);
-			await this.logInistUser(inistUser, url, sid, domaine, doi, ip);
+			await this.logInistUser(inistUser, url, sid, domaine, doiQuery, ip);
 		}
 
 		return res.redirect(url);
