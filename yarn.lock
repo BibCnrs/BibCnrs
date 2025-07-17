@@ -2418,13 +2418,13 @@ __metadata:
   linkType: hard
 
 "@playwright/test@npm:^1.47.0":
-  version: 1.53.2
-  resolution: "@playwright/test@npm:1.53.2"
+  version: 1.54.1
+  resolution: "@playwright/test@npm:1.54.1"
   dependencies:
-    playwright: "npm:1.53.2"
+    playwright: "npm:1.54.1"
   bin:
     playwright: cli.js
-  checksum: 10c0/cdc718a94df00aaaff5489421a89286e006e9c7781c5e8294fd10aaffcf6558cfe3d0db2d76a447574b334329902659cd539756dfd12fafde03627e2013698ae
+  checksum: 10c0/1b414356bc1049927d7b9efc14d5b3bf000ef6483313926bb795b4f27fe3707e8e0acf0db59063a452bb4f7e34559758d17640401b6f3e2f5290f299a8d8d02f
   languageName: node
   linkType: hard
 
@@ -2913,10 +2913,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.81.5":
-  version: 5.81.5
-  resolution: "@tanstack/query-core@npm:5.81.5"
-  checksum: 10c0/8d3af841f0e2f3fba1dfd100a8bbc2d07e7b1d5b8570d3d0d8bba5127601c2788e5f7c84839f93f3b0cbe54f14866c1fef8e3f9e745f02d27afaaeea33b7b755
+"@tanstack/query-core@npm:5.83.0":
+  version: 5.83.0
+  resolution: "@tanstack/query-core@npm:5.83.0"
+  checksum: 10c0/e6dc480bc99eaca552a9ad65423788b60368cf99308681252fc7dbe42a3f2c1c978db0d3471cc3349b9112cfb4d967ace4e192a1d7e987e30c5c1ff74809c77c
   languageName: node
   linkType: hard
 
@@ -2928,25 +2928,25 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-query-devtools@npm:^5.56.0":
-  version: 5.81.5
-  resolution: "@tanstack/react-query-devtools@npm:5.81.5"
+  version: 5.83.0
+  resolution: "@tanstack/react-query-devtools@npm:5.83.0"
   dependencies:
     "@tanstack/query-devtools": "npm:5.81.2"
   peerDependencies:
-    "@tanstack/react-query": ^5.81.5
+    "@tanstack/react-query": ^5.83.0
     react: ^18 || ^19
-  checksum: 10c0/6e0c416cea1ae86620be1da882605871ba4c7304cb4789074e59371226492c737e6f051d2bd70f9f1fd5065d9b0bbf56db0987df1e0bf2b35f8c1c66b5620d0c
+  checksum: 10c0/9d3c0c4ba5d5f42d1e76a5d009d768fe407e2bcdfa24986236a5b501bf41de8a04c30ebca97c871f822f6c20e508490943dbe0602640770d95f518cce9e7a760
   languageName: node
   linkType: hard
 
 "@tanstack/react-query@npm:^5.56.0, @tanstack/react-query@npm:^5.8.4":
-  version: 5.81.5
-  resolution: "@tanstack/react-query@npm:5.81.5"
+  version: 5.83.0
+  resolution: "@tanstack/react-query@npm:5.83.0"
   dependencies:
-    "@tanstack/query-core": "npm:5.81.5"
+    "@tanstack/query-core": "npm:5.83.0"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10c0/04803dd7d7d6ac73ba8c55bb25d76aa2f74d173d1574a113c35559bf6a8ac7d04a75db5e470e9a2e4132fee5e0ce1ab23bd8c27d17f70a461aca0e7ae740e76b
+  checksum: 10c0/883229f9219ca906a54d7caafd44d59b57db5dbe87e954f8a7027f460e9f8b97842dfbd0d676dc3111d577baf312c64f6c1fdd67cd1e4b0f0bf574e29670c606
   languageName: node
   linkType: hard
 
@@ -3670,20 +3670,20 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 24.0.10
-  resolution: "@types/node@npm:24.0.10"
+  version: 24.0.13
+  resolution: "@types/node@npm:24.0.13"
   dependencies:
     undici-types: "npm:~7.8.0"
-  checksum: 10c0/11dbd869d3e12ee7b7818113588950e538783e45d227122174c763cb05977defbd1e01b44b5ccd4b8997e42c3df7f7b83c6ee05cfa43d924c8882886bc5f6582
+  checksum: 10c0/e1f3d4ea8973b1f2f987814ac5343d05ad8b56bf7fa41755295dee0ce0f7b4e2de4f3daef5296429180228970cef0d70f2ad873c61dbafc6f5eeca9d023aba76
   languageName: node
   linkType: hard
 
 "@types/node@npm:^20.16.5":
-  version: 20.19.4
-  resolution: "@types/node@npm:20.19.4"
+  version: 20.19.7
+  resolution: "@types/node@npm:20.19.7"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/53f40c963d1804d2e87ad942636fee4be0e1ca88f2173b2a52b198797747bfb55d9ba6613cd918a0c5083a03b87d58688497c7ea58a8f3108fc86a5d627528e1
+  checksum: 10c0/bd97ed8db9eaab0f66ff066944923bae3baf51c98b603be9f30ea53f2ceeb6ae6fb4bc5bda3d3cd54c90c2ddc146f2117287f42e64fdcac493790c28dd759763
   languageName: node
   linkType: hard
 
@@ -6906,11 +6906,11 @@ __metadata:
   linkType: hard
 
 "i18next-browser-languagedetector@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "i18next-browser-languagedetector@npm:8.0.0"
+  version: 8.2.0
+  resolution: "i18next-browser-languagedetector@npm:8.2.0"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
-  checksum: 10c0/08a7c747ec18a0743b54390a0b42836d814b15fb49c92b90c259298e6a6e7e001ff9df99d0fd308283a34fceea53b4d9053aa1695a37f696bc04160017bbb524
+  checksum: 10c0/4fcb6ec316e0fd4a10eee67a8d1e3d7e1407f14d5bed98978c50ed6f1853f5d559dc18ea7fd4b2de445ac0a4ed44df5b38f0b31b89b9ac883f99050d59ffec82
   languageName: node
   linkType: hard
 
@@ -8589,27 +8589,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.53.2":
-  version: 1.53.2
-  resolution: "playwright-core@npm:1.53.2"
+"playwright-core@npm:1.54.1":
+  version: 1.54.1
+  resolution: "playwright-core@npm:1.54.1"
   bin:
     playwright-core: cli.js
-  checksum: 10c0/cd9434736687600943e749313e3d6166ef5d8614e64e74f440099f3a1b0fe56a9a462921c0ca9264aebc7bfc4ffeaec3fddf1c30731c0d60de3211d796f1be44
+  checksum: 10c0/b821262b024d7753b1bfa71eb2bc99f2dda12a869d175b2e1bc6ac2764bd661baf36d9d42f45caf622854ad7e4a6077b9b57014c74bb5a78fe339c9edf1c9019
   languageName: node
   linkType: hard
 
-"playwright@npm:1.53.2":
-  version: 1.53.2
-  resolution: "playwright@npm:1.53.2"
+"playwright@npm:1.54.1":
+  version: 1.54.1
+  resolution: "playwright@npm:1.54.1"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.53.2"
+    playwright-core: "npm:1.54.1"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10c0/4620bdb2bd341916cae50721336f628abc9d0b1a097fd74a93127feed8dede52be4fb789ac0d17aefac74e5d43a5832b1b79a0d3c2af5abc5a82491b72ebcf92
+  checksum: 10c0/c5fedae31a03a1f4c4846569aef3ffb98da23000a4d255abfc8c2ede15b43cc7cd87b80f6fa078666c030373de8103787cf77ef7653ae9458aabbbd4320c2599
   languageName: node
   linkType: hard
 
@@ -10481,8 +10481,8 @@ __metadata:
   linkType: hard
 
 "tsx@npm:^4.19.1":
-  version: 4.19.4
-  resolution: "tsx@npm:4.19.4"
+  version: 4.20.3
+  resolution: "tsx@npm:4.20.3"
   dependencies:
     esbuild: "npm:~0.25.0"
     fsevents: "npm:~2.3.3"
@@ -10492,7 +10492,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10c0/f7b8d44362343fbde1f2ecc9832d243a450e1168dd09702a545ebe5f699aa6912e45b431a54b885466db414cceda48e5067b36d182027c43b2c02a4f99d8721e
+  checksum: 10c0/6ff0d91ed046ec743fac7ed60a07f3c025e5b71a5aaf58f3d2a6b45e4db114c83e59ebbb078c8e079e48d3730b944a02bc0de87695088aef4ec8bbc705dc791b
   languageName: node
   linkType: hard
 

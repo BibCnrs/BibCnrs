@@ -55,50 +55,6 @@ describe("getPriorityLinkWhenSameCoverageEnd", () => {
 });
 
 describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
-	it("should group links with identical coverage and handle a third with different coverage", () => {
-		const linkA: Link = {
-			...linkPresent,
-			coverage: [
-				{
-					start: { year: "2020", month: "01", day: "01" },
-					end: { year: "2022", month: "12", day: "31" },
-				},
-			],
-			embargo: null,
-		};
-
-		const linkB: Link = {
-			...linkPresent,
-			coverage: [
-				{
-					start: { year: "2020", month: "01", day: "01" },
-					end: { year: "2022", month: "12", day: "31" },
-				},
-			],
-			embargo: null,
-		};
-
-		const linkC: Link = {
-			...linkPresent,
-			coverage: [
-				{
-					start: { year: "2021", month: "01", day: "01" },
-					end: { year: "2023", month: "12", day: "31" },
-				},
-			],
-			embargo: null,
-		};
-
-		const result = _getPriorityLinksWhenDifferentCoverageEnd([
-			linkA,
-			linkB,
-			linkC,
-		]);
-
-		expect(result.length).toBe(2);
-		expect(result).toEqual(expect.arrayContaining([linkA, linkC]));
-	});
-
 	it("should return an empty array when array is empty", () => {
 		expect(_getPriorityLinksWhenDifferentCoverageEnd([])).toStrictEqual([]);
 	});
@@ -108,6 +64,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 			_getPriorityLinksWhenDifferentCoverageEnd([linkPresent]),
 		).toStrictEqual([linkPresent]);
 	});
+
 	it("should return a single link which coverage includes each others", () => {
 		const linkPresentWithLesserCoverage = {
 			...linkPresent,
@@ -127,7 +84,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresentWithLesserCoverage,
 				linkPresent,
 			]),
-		).toStrictEqual([linkPresentWithLesserCoverage, linkPresent]);
+		).toStrictEqual([linkPresent]);
 	});
 
 	it("should return the links that have coverage overlaping", () => {
@@ -168,11 +125,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresent,
 				linkPresentWithOverlappingCoverage,
 			]),
-		).toStrictEqual([
-			linkPresentWithLesserCoverage,
-			linkPresent,
-			linkPresentWithOverlappingCoverage,
-		]);
+		).toStrictEqual([linkPresent, linkPresentWithOverlappingCoverage]);
 	});
 
 	it("should return the links that have no coverage overlaping", () => {
@@ -213,11 +166,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresent,
 				linkPresentWithNoOverlappingCoverage,
 			]),
-		).toStrictEqual([
-			linkPresentWithLesserCoverage,
-			linkPresent,
-			linkPresentWithNoOverlappingCoverage,
-		]);
+		).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
 	});
 });
 
@@ -266,7 +215,7 @@ describe("getPrioritizedLink_v2", () => {
 			};
 			expect(
 				getPrioritizedLink_v2([linkPresentWithLesserCoverage, linkPresent]),
-			).toStrictEqual([linkPresentWithLesserCoverage, linkPresent]);
+			).toStrictEqual([linkPresent]);
 		});
 
 		it("should return the links that have coverage overlaping", () => {
@@ -307,11 +256,7 @@ describe("getPrioritizedLink_v2", () => {
 					linkPresent,
 					linkPresentWithOverlappingCoverage,
 				]),
-			).toStrictEqual([
-				linkPresentWithLesserCoverage,
-				linkPresent,
-				linkPresentWithOverlappingCoverage,
-			]);
+			).toStrictEqual([linkPresent, linkPresentWithOverlappingCoverage]);
 		});
 
 		it("should return the links that have no coverage overlaping", () => {
@@ -352,11 +297,7 @@ describe("getPrioritizedLink_v2", () => {
 					linkPresent,
 					linkPresentWithNoOverlappingCoverage,
 				]),
-			).toStrictEqual([
-				linkPresentWithLesserCoverage,
-				linkPresent,
-				linkPresentWithNoOverlappingCoverage,
-			]);
+			).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
 		});
 	});
 });

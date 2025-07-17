@@ -1,3 +1,3 @@
-import { getPrioritizedLink_v2 } from "./prioritizeLinksV2";
+import { getPrioritizedLink_v1 } from "./prioritizeLinksV1";
 
-export const getPrioritizedLink = getPrioritizedLink_v2;
+export const getPrioritizedLink = getPrioritizedLink_v1;
