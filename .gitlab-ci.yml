@@ -152,7 +152,7 @@ test:e2e:
     - yarn workspace @bibcnrs/admin run e2e-ci -d > /dev/null 2>&1 &
     - sleep 20
     - CI=1
-    - PLAYWRIGHT_JUNIT_OUTPUT_NAME=playwright-report/playwright.xunit.xml yarn workspace @bibcnrs/e2e run test --reporter=list,junit,html
+    - PLAYWRIGHT_JUNIT_OUTPUT_NAME=playwright-report/playwright.xunit.xml yarn workspace @bibcnrs/e2e run test --reporter=list,junit
   artifacts:
     name: E2E Test Artifacts
     when: always # Always collect artifacts even if tests fail
