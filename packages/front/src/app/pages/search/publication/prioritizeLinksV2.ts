@@ -53,127 +53,36 @@ function getPriorityLinkWhenSameCoverageEnd(links: Link[]) {
 	return prioritizedLink ? [prioritizedLink] : [];
 }
 
-function getCoverageTypeWithOtherLink(
-	link: Pick<Link, "coverage" | "embargo">,
-	otherLink: Pick<Link, "coverage" | "embargo">,
-) {
-	if (!link.coverage?.at(0) || !otherLink.coverage) {
-		return "overlap";
-	}
-
-	const linkStartDate = getStartDate(link.coverage[0]).getTime();
-	const linkEndDate = calculateCoverageEndWithEmbargo(
-		link.coverage[0],
-		link.embargo,
-	).getTime();
-
-	const otherLinkStartDate = getStartDate(otherLink.coverage[0]).getTime();
-	const otherLinkEndDate = calculateCoverageEndWithEmbargo(
-		otherLink.coverage[0],
-		otherLink.embargo,
-	).getTime();
-
-	if (
-		linkStartDate === otherLinkStartDate &&
-		linkEndDate === otherLinkEndDate
-	) {
-		return "same";
-	}
-
-	if (otherLinkStartDate <= linkStartDate && otherLinkEndDate >= linkEndDate) {
-		return "included";
-	}
-	return "overlap";
-}
-
 function getPriorityLinksWhenDifferentCoverageEnd(links: Link[]) {
 	if (links.length < 2) {
 		return links;
 	}
 
-	const coveragesame = (link: Link) => {
-		if (!link.coverage?.[0]) return "no-coverage";
-		const start = getStartDate(link.coverage[0]).getTime();
-		const end = calculateCoverageEndWithEmbargo(
-			link.coverage[0],
-			link.embargo,
-		).getTime();
-		return `${start}-${end}`;
-	};
-
-	const groupLink = new Map<string, Link[]>();
-	for (const link of links) {
-		// On génère une clé correspondant à la période de couverture du lien.
-		const key = coveragesame(link);
-
-		// Si cette clé n'existe pas encore dans la Map, on initialise un tableau vide pour cette clé.
-		if (!groupLink.has(key)) groupLink.set(key, []);
-
-		// On ajoute le lien au groupe correspondant dans la Map.
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		groupLink.get(key)!.push(link);
-	}
-
-	const reducedLinks = Array.from(groupLink.values()).flatMap((group) =>
-		group.length > 1 ? getPriorityLinkWhenSameCoverageEnd(group) : group,
-	);
-
-	const linksWithoutEmbargo = reducedLinks.filter((link) => !link.embargo);
-	const linksWithEmbargo = reducedLinks.filter((link) => link.embargo);
-
-	if (linksWithoutEmbargo.length > 0 && linksWithEmbargo.length > 0) {
-		const noEmbargo = getStartDate(
-			linksWithoutEmbargo[0].coverage?.[0],
-		).getTime();
-		const embargo = getStartDate(linksWithEmbargo[0].coverage?.[0]).getTime();
-
-		return noEmbargo === embargo
-			? linksWithoutEmbargo
-			: [linksWithoutEmbargo[0], linksWithEmbargo[0]];
-	}
-
-	if (linksWithoutEmbargo.length > 0) {
-		return linksWithoutEmbargo;
-	}
-	if (linksWithEmbargo.length > 0) {
-		const minEmbargo = Math.min(
-			...linksWithEmbargo.map((link) =>
-				link.embargo.unit === "Year"
-					? link.embargo.value * 12
-					: link.embargo.value,
-			),
+	return links.filter((currentLink, currentLinkIndex, allLinks) => {
+		const currentLinkStartDate = getStartDate(currentLink.coverage[0]);
+		const currentLinkEndDate = calculateCoverageEndWithEmbargo(
+			currentLink.coverage[0],
+			currentLink.embargo,
 		);
-		return linksWithEmbargo.filter(
-			(link) =>
-				(link.embargo.unit === "Year"
-					? link.embargo.value * 12
-					: link.embargo.value) === minEmbargo,
-		);
-	}
 
-	return reducedLinks.filter((currentLink, currentLinkIndex, allLinks) => {
-		if (!currentLink.coverage?.length) {
-			return true;
-		}
+		// Check if the current link is included in another link
+		return allLinks.some((otherLink, otherLinkIndex) => {
+			const otherLinkStartDate = getStartDate(otherLink.coverage[0]);
+			const otherLinkEndDate = calculateCoverageEndWithEmbargo(
+				otherLink.coverage[0],
+				otherLink.embargo,
+			);
 
-		for (
-			let otherLinkIndex = 0;
-			otherLinkIndex < allLinks.length;
-			otherLinkIndex++
-		) {
-			const otherLink = allLinks[otherLinkIndex];
-			const coverageType = getCoverageTypeWithOtherLink(currentLink, otherLink);
-
-			if (coverageType === "included") {
-				return false;
+			if (
+				otherLinkStartDate < currentLinkStartDate &&
+				otherLinkEndDate > currentLinkEndDate
+			) {
+				return true;
 			}
 
-			if (coverageType === "same" && currentLinkIndex < otherLinkIndex) {
-				return false;
-			}
-		}
-
-		return true;
+			// Prioritize first link ordered by index if the coverage is the same
+			return currentLinkIndex > otherLinkIndex;
+		});
 	});
 }
 
@@ -196,8 +105,3 @@ export const _getPriorityLinkWhenSameCoverageEnd =
  */
 export const _getPriorityLinksWhenDifferentCoverageEnd =
 	getPriorityLinksWhenDifferentCoverageEnd;
-
-/**
- * @deprecated This is for testing purposes only
- */
-export const _isCoverageIncludedInOtherLink = getCoverageTypeWithOtherLink;
