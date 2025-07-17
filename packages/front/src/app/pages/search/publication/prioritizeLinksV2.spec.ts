@@ -127,7 +127,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresentWithLesserCoverage,
 				linkPresent,
 			]),
-		).toStrictEqual([linkPresentWithLesserCoverage, linkPresent]);
+		).toStrictEqual([linkPresent]);
 	});
 
 	it("should return the links that have coverage overlaping", () => {
@@ -168,11 +168,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresent,
 				linkPresentWithOverlappingCoverage,
 			]),
-		).toStrictEqual([
-			linkPresentWithLesserCoverage,
-			linkPresent,
-			linkPresentWithOverlappingCoverage,
-		]);
+		).toStrictEqual([linkPresent, linkPresentWithOverlappingCoverage]);
 	});
 
 	it("should return the links that have no coverage overlaping", () => {
@@ -213,11 +209,7 @@ describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 				linkPresent,
 				linkPresentWithNoOverlappingCoverage,
 			]),
-		).toStrictEqual([
-			linkPresentWithLesserCoverage,
-			linkPresent,
-			linkPresentWithNoOverlappingCoverage,
-		]);
+		).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
 	});
 });
 
@@ -266,7 +258,7 @@ describe("getPrioritizedLink_v2", () => {
 			};
 			expect(
 				getPrioritizedLink_v2([linkPresentWithLesserCoverage, linkPresent]),
-			).toStrictEqual([linkPresentWithLesserCoverage, linkPresent]);
+			).toStrictEqual([linkPresent]);
 		});
 
 		it("should return the links that have coverage overlaping", () => {
@@ -307,11 +299,7 @@ describe("getPrioritizedLink_v2", () => {
 					linkPresent,
 					linkPresentWithOverlappingCoverage,
 				]),
-			).toStrictEqual([
-				linkPresentWithLesserCoverage,
-				linkPresent,
-				linkPresentWithOverlappingCoverage,
-			]);
+			).toStrictEqual([linkPresent, linkPresentWithOverlappingCoverage]);
 		});
 
 		it("should return the links that have no coverage overlaping", () => {
@@ -352,11 +340,7 @@ describe("getPrioritizedLink_v2", () => {
 					linkPresent,
 					linkPresentWithNoOverlappingCoverage,
 				]),
-			).toStrictEqual([
-				linkPresentWithLesserCoverage,
-				linkPresent,
-				linkPresentWithNoOverlappingCoverage,
-			]);
+			).toStrictEqual([linkPresent, linkPresentWithNoOverlappingCoverage]);
 		});
 	});
 });
