@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { Link } from "./prioritizeLinksCommons";
 import {
+	linkA,
+	linkB,
+	linkC,
 	linkPresent,
 	linkPresentWithEmbargo_doaj,
 	linkPresentWithEmbargo_one,
@@ -56,43 +59,22 @@ describe("getPriorityLinkWhenSameCoverageEnd", () => {
 
 describe("getPriorityLinksWhenDifferentCoverageEnd", () => {
 	it("should group links with identical coverage and handle a third with different coverage", () => {
-		const linkA: Link = {
-			...linkPresent,
-			coverage: [
-				{
-					start: { year: "2020", month: "01", day: "01" },
-					end: { year: "2022", month: "12", day: "31" },
-				},
-			],
-			embargo: null,
+		const linkWithCoverage2020to2022A: Link = {
+			...linkA,
 		};
 
-		const linkB: Link = {
-			...linkPresent,
-			coverage: [
-				{
-					start: { year: "2020", month: "01", day: "01" },
-					end: { year: "2022", month: "12", day: "31" },
-				},
-			],
-			embargo: null,
+		const linkWithCoverage2020to2022B: Link = {
+			...linkB,
 		};
 
-		const linkC: Link = {
-			...linkPresent,
-			coverage: [
-				{
-					start: { year: "2021", month: "01", day: "01" },
-					end: { year: "2023", month: "12", day: "31" },
-				},
-			],
-			embargo: null,
+		const linkWithCoverage2021to2023C: Link = {
+			...linkC,
 		};
 
 		const result = _getPriorityLinksWhenDifferentCoverageEnd([
-			linkA,
-			linkB,
-			linkC,
+			linkWithCoverage2020to2022A,
+			linkWithCoverage2020to2022B,
+			linkWithCoverage2021to2023C,
 		]);
 
 		expect(result.length).toBe(2);

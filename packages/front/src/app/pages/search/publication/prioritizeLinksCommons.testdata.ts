@@ -137,3 +137,63 @@ export const linkPresent: Link = {
 		},
 	],
 };
+
+export const linkA: Link = {
+	url: "http://example.com/A",
+	name: "Link A",
+	isCurrent: true,
+	coverage: [
+		{
+			start: {
+				month: "01",
+				day: "01",
+				year: "2020",
+			},
+			end: {
+				month: "12",
+				day: "31",
+				year: "2022",
+			},
+		},
+	],
+};
+
+export const linkB: Link = {
+	url: "http://example.com/B",
+	name: "Link B",
+	isCurrent: true,
+	coverage: [
+		{
+			start: {
+				month: "01",
+				day: "01",
+				year: "2020",
+			},
+			end: {
+				month: "12",
+				day: "31",
+				year: "2022",
+			},
+		},
+	],
+};
+
+export const linkC: Link = {
+	url: "http://example.com/C",
+	name: "Link C",
+	isCurrent: true,
+	coverage: [
+		{
+			start: {
+				month: "01",
+				day: "01",
+				year: "2021",
+			},
+			end: {
+				month: "12",
+				day: "31",
+				year: "2023",
+			},
+		},
+	],
+};
