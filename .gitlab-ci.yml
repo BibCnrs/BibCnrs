@@ -118,52 +118,69 @@ test:front:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
-# .test:e2e:
-#   stage: test
-#   image: node:22
-#   services:
-#     - postgres:16.3
-#     - redis:7.2.5
-#   variables:
-#     POSTGRES_DB: bibcnrs
-#     POSTGRES_USER: postgres
-#     POSTGRES_PASSWORD: S3cr3t
-#     DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
-#     NODE_ENV: test
-#     RENATER_FAKE_LOGIN: true
-#     BIBAPI_HOST: http://localhost:3000/api
-#     cookie_secret: ${cookie_secret}
-#     header_secret: ${header_secret}
-#     admin_secret: ${admin_secret}
-#     ticket_secret: ${ticket_secret}
-#     BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
-#     ebsco_host: ${ebsco_host}
-#     EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
-#     EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
-#     METADORE_URL: ${METADORE_URL}
-#     METADORE_API_KEY: ${METADORE_API_KEY}
-#     DOAJ_URL: ${DOAJ_URL}
-#     REDIS_HOST: redis
-#     REDIS_PORT: 6379
-#     bib_admin_host: http://localhost:3000/admin
-#     MAIL_FROM: bibcnrs@bib.cnrs.fr
-#     MAIL_TO: assistance-portail@inist.fr
-#     BIB_UPLOADS_DIR: /app/packages/api/uploads
-#   timeout: 10m
-#   <<: *before_script
-#   script:
-#     - yarn workspace @bibcnrs/e2e run playwright install
-#     - yarn workspace @bibcnrs/api run start:e2e -d &
-#     - sleep 20
-#     - yarn workspace @bibcnrs/e2e run test
-#   artifacts:
-#     name: E2E Test Artifacts
-#     paths:
-#       - packages/e2e/playwright-report/
-#       - packages/e2e/test-results/
-#     expire_in: 30 days
-#   only:
-#     - $CI_PIPELINE_SOURCE != "cancelled"
+test:e2e:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.51.1-noble
+  services:
+    - postgres:16.3
+    - redis:7.2.5
+  variables:
+    POSTGRES_DB: bibcnrs
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: S3cr3t
+    DATABASE_URL: postgres://postgres:S3cr3t@postgres:5432/bibcnrs
+    NODE_ENV: test
+    RENATER_FAKE_LOGIN: true
+    BIBAPI_HOST: http://localhost:3000/api
+    VITE_BIBAPI_HOST: http://localhost:3000/api
+    cookie_secret: ${cookie_secret}
+    header_secret: ${header_secret}
+    admin_secret: ${admin_secret}
+    ticket_secret: ${ticket_secret}
+    BIB_CONTENT_DELIVERY_HOST: http://localhost:3000/files
+    ebsco_host: ${ebsco_host}
+    EZ_UNPAYWALL_URL: ${EZ_UNPAYWALL_URL}
+    EZ_UNPAYWALL_KEY: ${EZ_UNPAYWALL_KEY}
+    METADORE_URL: ${METADORE_URL}
+    METADORE_API_KEY: ${METADORE_API_KEY}
+    DOAJ_URL: ${DOAJ_URL}
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    bib_admin_host: http://localhost:3000/admin
+    MAIL_FROM: bibcnrs@bib.cnrs.fr
+    MAIL_TO: assistance-portail@inist.fr
+    BIB_UPLOADS_DIR: /app/packages/api/uploads
+  timeout: 2h
+  script:
+    - apt-get update && apt-get install -y nginx
+    - mkdir -p /etc/nginx
+    - cp packages/proxy/e2e-ci.conf /etc/nginx/nginx.conf
+    - nginx -g 'daemon off;' &
+    - sleep 5
+    - yarn install --immutable
+    - yarn workspace @bibcnrs/api prisma generate
+    - yarn workspace @bibcnrs/e2e run playwright install
+    - yarn workspace @bibcnrs/api run start:e2e-ci -d > /dev/null 2>&1 &
+    - yarn workspace @bibcnrs/front run e2e-ci -d > /dev/null 2>&1 &
+    - yarn workspace @bibcnrs/admin run e2e-ci -d > /dev/null 2>&1 &
+    - sleep 20
+    - CI=1
+    - PLAYWRIGHT_JUNIT_OUTPUT_NAME=playwright-report/playwright.xunit.xml yarn workspace @bibcnrs/e2e run test --reporter=list,junit
+  artifacts:
+    name: E2E Test Artifacts
+    when: always
+    reports:
+      junit: packages/e2e/playwright-report/playwright.xunit.xml
+    paths:
+      - packages/e2e/playwright-report/
+      - packages/e2e/test-results/
+    expire_in: 10 days
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
+
 
 build:admin:
   stage: build
