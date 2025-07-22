@@ -351,6 +351,7 @@ const PublicationPage = () => {
 				value={publicationSearch}
 				onSearch={handleSearch}
 				isPlateformPage={false}
+				disabled={true}
 			>
 				<ChipFacet
 					value={search.domain}

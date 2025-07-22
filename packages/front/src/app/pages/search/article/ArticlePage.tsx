@@ -384,6 +384,7 @@ const ArticlePage = () => {
 				value={articleQuery}
 				onSearch={handleSearch}
 				isPlateformPage={false}
+				disabled={true}
 				secondaryAction={
 					<Tooltip arrow title={t("components.advancedSearch.modalTitle")}>
 						<Stack
@@ -505,6 +506,7 @@ const ArticlePage = () => {
 			<ArticleAdvancedSearch
 				open={showAdvancedSearch}
 				onClose={closeAdvancedSearch}
+				disabled={true}
 			/>
 		</>
 	);

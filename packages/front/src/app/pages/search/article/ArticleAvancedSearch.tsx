@@ -28,15 +28,18 @@ const Form = styled.form`
 export default function ArticleAdvancedSearch({
 	open,
 	onClose,
-}: ArticleAdvancedSearchProps) {
+	disabled = false,
+}: ArticleAdvancedSearchProps & { disabled?: boolean }) {
 	const t = useTranslator();
 
 	const { groups, humanReadableSearch, advancedSearchQuery, reset } =
 		useAdvancedSearchContext();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const handleSubmit = useCallback(
 		(e: FormEvent) => {
 			e.preventDefault();
+			if (disabled) return;
 
 			onClose?.(advancedSearchQuery);
 		},

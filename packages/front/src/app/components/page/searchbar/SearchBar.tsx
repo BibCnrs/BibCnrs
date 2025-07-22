@@ -48,8 +48,9 @@ const SearchBar = ({
 	disableAutocomplete,
 	disableSearchButton,
 	isPlateformPage,
+	disabled = false,
 	...props
-}: SearchBarProps) => {
+}: SearchBarProps & { disabled?: boolean }) => {
 	const t = useTranslator();
 	// Search bar states
 	const [value, setValue] = useState<string>(props.value ?? "");
@@ -164,7 +165,7 @@ const SearchBar = ({
 					style={{ width: "100%" }}
 					onSubmit={(e) => {
 						e.preventDefault();
-						onSearch(value);
+						if (!disabled) onSearch(value);
 					}}
 				>
 					<Stack
@@ -201,6 +202,7 @@ const SearchBar = ({
 									border: "none",
 								},
 							}}
+							disabled={disabled}
 						/>
 						{value !== "" ? (
 							<>
