@@ -212,11 +212,7 @@ const SearchBar = ({
 								<Divider orientation="vertical" id="search-box-divider" />
 							</>
 						) : null}
-						<IconButton
-							onClick={searchOnClick}
-							data-testid="search-box-button"
-							type="submit"
-						>
+						<IconButton data-testid="search-box-button" type="submit">
 							<SearchIcon />
 						</IconButton>
 						{secondaryAction && (
