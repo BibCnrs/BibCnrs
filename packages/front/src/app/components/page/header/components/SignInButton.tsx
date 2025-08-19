@@ -12,19 +12,12 @@ const SignInButton = () => {
 
 	return (
 		<Button
-			onClick={showLoginModal}
 			color="secondary"
 			variant="contained"
 			disableElevation
 			sx={{
 				borderRadius: "20px",
 				fontWeight: "bold",
-				":hover": {
-					backgroundColor: (theme) => theme.palette.background.default,
-					color: (theme) => theme.palette.text.primary,
-					boxShadow: (theme) =>
-						`inset 0 0 0 2px ${theme.palette.secondary.main}`,
-				},
 			}}
 		>
 			{t("components.header.login")}

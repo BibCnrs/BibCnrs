@@ -3,7 +3,7 @@ import { Box, Container } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useTranslator } from "../../../shared/locales/I18N";
 
-export const FakeSearchBar = ({ title }: { title: string }) => {
+export const FakeSearchBar = ({ title }: { title: string; }) => {
 	const t = useTranslator();
 	return (
 		<Box

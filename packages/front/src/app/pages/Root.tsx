@@ -59,6 +59,7 @@ const Root = () => {
 			<SearchBar
 				placeholder={t("pages.article.searchBar")}
 				onSearch={handleSearch}
+				disabled={true}
 				isPlateformPage={false}
 			>
 				<ChipFacet

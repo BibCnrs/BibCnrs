@@ -4,13 +4,7 @@ import { Stack, type SxProps } from "@mui/system";
 import { memo } from "react";
 import { NavLink } from "react-router-dom";
 import { useBibContext } from "../../../context/BibContext";
-import {
-	RouteArticle,
-	RouteDatabase,
-	RouteMetadore,
-	RoutePublication,
-	useClickHandler,
-} from "../../../shared/Routes";
+import { useClickHandler } from "../../../shared/Routes";
 import { useTranslator } from "../../../shared/locales/I18N";
 
 const buttonStyles: SxProps<Theme> = {
@@ -23,11 +17,7 @@ const buttonStyles: SxProps<Theme> = {
 	fontWeight: "900",
 	fontSize: "1rem",
 	":hover": {
-		backgroundColor: (theme) => theme.palette.secondary.main,
-		color: (theme) => theme.palette.secondary.contrastText,
-	},
-	"&.active": {
-		backgroundColor: (theme) => theme.palette.secondary.main,
+		backgroundColor: (theme) => theme.palette.background.default,
 		color: (theme) => theme.palette.secondary.contrastText,
 	},
 };
@@ -41,10 +31,10 @@ const SearchModeSelection = () => {
 	const { theme } = useBibContext();
 
 	// Button action handler
-	const article = useClickHandler(RouteArticle);
-	const publication = useClickHandler(RoutePublication);
-	const database = useClickHandler(RouteDatabase);
-	const researchData = useClickHandler(RouteMetadore);
+	const article = useClickHandler(null);
+	const publication = useClickHandler(null);
+	const database = useClickHandler(null);
+	const researchData = useClickHandler(null);
 
 	return (
 		<Stack direction={{ xs: "column", md: "row" }} gap={3}>
