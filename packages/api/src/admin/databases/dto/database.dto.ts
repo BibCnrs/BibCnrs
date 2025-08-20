@@ -9,6 +9,7 @@ export class CreateDatabaseDto implements Omit<database, "id"> {
 	name_en: string | null;
 	active: boolean;
 	oa: boolean;
+	diamond: boolean;
 	use_proxy: boolean;
 	communities?: number[];
 	domains?: string[];

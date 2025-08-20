@@ -50,6 +50,7 @@ model database {
   name_en          String?              @db.VarChar(255)
   active           Boolean              @default(true)
   oa               Boolean              @default(false)
+  diamond          Boolean              @default(false)
   use_proxy        Boolean              @default(true)
   communities      database_community[]
   is_text_integral Boolean              @default(false)

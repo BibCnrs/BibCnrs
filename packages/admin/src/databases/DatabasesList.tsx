@@ -81,6 +81,10 @@ const DatabasesList = () => (
 				label="resources.databases.fields.open_access"
 			/>
 			<BooleanField
+				source="diamond"
+				label="resources.databases.fields.diamond"
+			/>
+			<BooleanField
 				source="use_proxy"
 				label="resources.databases.fields.has_proxy"
 			/>{" "}

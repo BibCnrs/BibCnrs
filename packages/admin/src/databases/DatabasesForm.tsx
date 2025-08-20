@@ -106,6 +106,10 @@ export const DatabasesForm = () => {
 						source="is_archived"
 						label="resources.databases.fields.is_archived"
 					/>
+					<BooleanInput
+						source="diamond"
+						label="resources.databases.fields.diamond"
+					/>
 				</Grid>
 			</Grid>
 		</>

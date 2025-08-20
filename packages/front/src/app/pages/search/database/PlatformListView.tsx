@@ -4,6 +4,7 @@ import { Stack } from "@mui/system";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import { CompleteIcon } from "../../../components/element/icon/CompleteIcon";
+import Diamond from "../../../components/element/icon/Diamond";
 import { EmbargoIcon } from "../../../components/element/icon/EmbargoIcon";
 import OpenAccess from "../../../components/element/icon/OpenAccess";
 import { useTranslator } from "../../../shared/locales/I18N";
@@ -58,6 +59,20 @@ export function PlatformListView({ platforms }: PlatformListViewProps) {
 				return (
 					<Typography fontSize="1.1em" mt="0.2em">
 						{params.row.oa ? <OpenAccess /> : null}
+					</Typography>
+				);
+			},
+		},
+		{
+			field: "diamond",
+			headerName: t("pages.database.diamond"),
+			headerAlign: "center",
+			align: "center",
+			width: 150,
+			renderCell: (params) => {
+				return (
+					<Typography fontSize="1.1em" mt="0.2em">
+						{params.row.diamond ? <Diamond /> : null}
 					</Typography>
 				);
 			},
