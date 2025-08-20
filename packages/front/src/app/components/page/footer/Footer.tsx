@@ -3,6 +3,7 @@ import { Container, Stack, useTheme } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
 import CNRSRFLogo from "/logos/CNRS-RF-Footer.png";
 import INISTLogo from "/logos/Opere_par_Inist long.png";
+import INISTLogoEN from "/logos/Opereted_by_Inist long.png";
 import {
 	RouteAbout,
 	RouteAccessibility,
@@ -10,7 +11,7 @@ import {
 	RoutePlan,
 	RoutePrivacy,
 } from "../../../shared/Routes";
-import { useTranslator } from "../../../shared/locales/I18N";
+import i18next, { useTranslator } from "../../../shared/locales/I18N";
 
 const FOOTER_SX = {
 	color: (theme) => theme.palette.text.primary,
@@ -160,7 +161,7 @@ const Footer = () => {
 					rel="noopener noreferrer"
 				>
 					<img
-						src={INISTLogo}
+						src={i18next.language === "fr" ? INISTLogo : INISTLogoEN}
 						alt="Inist logo"
 						aria-label="Inist logo"
 						style={{
