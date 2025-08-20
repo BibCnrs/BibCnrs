@@ -74,7 +74,6 @@ const DatabasesList = () => (
 	>
 		<Datagrid bulkActionButtons={<BulkActionButtons />}>
 			<LinkEdit source="name_fr" label="resources.databases.fields.name_fr" />
-			<LinkEdit source="name_en" label="resources.databases.fields.name_en" />
 			<BooleanField source="active" label="resources.databases.fields.active" />
 			<BooleanField
 				source="oa"
