@@ -69,7 +69,7 @@ test:api:
   stage: test
   image: node:22
   services:
-    - postgres:16.3
+    - postgres:17.6
   variables:
     POSTGRES_DB: bibcnrs
     POSTGRES_USER: postgres
@@ -99,7 +99,7 @@ test:front:
   stage: test
   image: node:22
   services:
-    - postgres:16.3
+    - postgres:17.6
   variables:
     POSTGRES_DB: bibcnrs
     POSTGRES_USER: postgres
@@ -122,7 +122,7 @@ test:e2e:
   stage: test
   image: mcr.microsoft.com/playwright:v1.51.1-noble
   services:
-    - postgres:16.3
+    - postgres:17.6
     - redis:7.2.5
   variables:
     POSTGRES_DB: bibcnrs
