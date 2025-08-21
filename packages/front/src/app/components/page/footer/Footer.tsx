@@ -2,8 +2,8 @@ import { Button, Divider, IconButton, Link } from "@mui/material";
 import { Container, Stack, useTheme } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
 import CNRSRFLogo from "/logos/CNRS-RF-Footer.png";
-import INISTLogo from "/logos/Opere_par_Inist long.png";
-import INISTLogoEN from "/logos/Opereted_by_Inist long.png";
+import INISTLogo from "/logos/Opere_par_Inist.png";
+import INISTLogoEN from "/logos/Opereted_by_Inist.png";
 import {
 	RouteAbout,
 	RouteAccessibility,
