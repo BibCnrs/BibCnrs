@@ -330,6 +330,7 @@ export type Common = {
 			title: string;
 			name: string;
 			oa: string;
+			diamond: string;
 			is_completed: string;
 			embargo: string;
 			anonymousMessage: string;

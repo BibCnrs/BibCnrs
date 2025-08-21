@@ -156,6 +156,7 @@ const i18n = {
 				without_embargo: "Sans embargo",
 				type: "Type de contenu",
 				complete: "Communautés",
+				diamond: "Diamant",
 			},
 		},
 		section_cn: {

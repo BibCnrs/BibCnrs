@@ -74,11 +74,14 @@ const DatabasesList = () => (
 	>
 		<Datagrid bulkActionButtons={<BulkActionButtons />}>
 			<LinkEdit source="name_fr" label="resources.databases.fields.name_fr" />
-			<LinkEdit source="name_en" label="resources.databases.fields.name_en" />
 			<BooleanField source="active" label="resources.databases.fields.active" />
 			<BooleanField
 				source="oa"
 				label="resources.databases.fields.open_access"
+			/>
+			<BooleanField
+				source="diamond"
+				label="resources.databases.fields.diamond"
 			/>
 			<BooleanField
 				source="use_proxy"
