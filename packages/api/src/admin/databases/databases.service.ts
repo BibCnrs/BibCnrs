@@ -29,6 +29,7 @@ export class DatabasesService {
 						mode: "equals",
 						excludeBatch: true,
 					},
+					{ field: "diamond", mode: "equals", excludeMatch: true },
 				])
 			: {};
 	}

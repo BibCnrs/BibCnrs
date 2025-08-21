@@ -75,6 +75,7 @@ export type DatabaseEntryDataType = {
 	url_en: string;
 	active: boolean;
 	oa: boolean;
+	diamond?: boolean;
 	use_proxy: boolean;
 	communities: number[]; // Make a type
 	domains: Institute[]; // Make a type
