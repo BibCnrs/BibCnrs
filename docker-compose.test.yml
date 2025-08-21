@@ -57,7 +57,7 @@ services:
       - api-test
 
   db-test:
-    image: postgres:16.3
+    image: postgres:17.6
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=S3cr3t

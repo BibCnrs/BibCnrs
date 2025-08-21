@@ -100,7 +100,7 @@ services:
       start_period: 10s
 
   db:
-    image: postgres:16.3
+    image: postgres:17.6
     ports:
       - "5432:5432"
     environment:
