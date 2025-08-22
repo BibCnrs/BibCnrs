@@ -15,10 +15,12 @@ import type {
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import { INITIAL_FILTER } from "./filters";
+import Diamond from "../../../components/element/icon/Diamond";
 
 const iconPerFilter = {
 	oa: <OpenAccess />,
 	is_completed: <CompleteIcon />,
+	diamond: <Diamond />,
 };
 
 export default function FilterTab({

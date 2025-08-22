@@ -1,5 +1,6 @@
 export const INITIAL_FILTER = [
 	{ props: "oa", value: false, type: "boolean", section: "default" },
+	{ props: "diamond", value: false, type: "boolean", section: "default" },
 	{
 		props: "is_completed",
 		value: false,
