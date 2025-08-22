@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { CompleteIcon } from "../../../components/element/icon/CompleteIcon";
+import Diamond from "../../../components/element/icon/Diamond";
 import OpenAccess from "../../../components/element/icon/OpenAccess";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
@@ -15,7 +16,6 @@ import type {
 	TypeDatabaseEnum,
 } from "../../../shared/types/data.types";
 import { INITIAL_FILTER } from "./filters";
-import Diamond from "../../../components/element/icon/Diamond";
 
 const iconPerFilter = {
 	oa: <OpenAccess />,
