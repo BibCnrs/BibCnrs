@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { CompleteIcon } from "../../../components/element/icon/CompleteIcon";
+import Diamond from "../../../components/element/icon/Diamond";
 import OpenAccess from "../../../components/element/icon/OpenAccess";
 import { useTranslator } from "../../../shared/locales/I18N";
 import type {
@@ -19,6 +20,7 @@ import { INITIAL_FILTER } from "./filters";
 const iconPerFilter = {
 	oa: <OpenAccess />,
 	is_completed: <CompleteIcon />,
+	diamond: <Diamond />,
 };
 
 export default function FilterTab({

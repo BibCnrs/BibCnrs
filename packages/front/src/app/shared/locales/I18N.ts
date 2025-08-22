@@ -346,6 +346,7 @@ export type Common = {
 				document: string;
 				content: string;
 				oa: string;
+				diamond: string;
 				is_text_integral: string;
 				is_completed: string;
 				without_embargo: string;
