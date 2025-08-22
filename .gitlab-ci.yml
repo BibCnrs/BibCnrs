@@ -31,6 +31,10 @@ default:
     BIB_ENV: "-prd"
     MATOMO_SITE_ID: 1
 
+.rule_merge_request: &rule_merge_request
+  if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+  when: never
+
 .before_script: &before_script
   before_script:
     - make install-immutable
@@ -51,6 +55,7 @@ lint:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 typecheck:
@@ -62,6 +67,7 @@ typecheck:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
@@ -91,6 +97,7 @@ test:api:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
@@ -115,6 +122,7 @@ test:front:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
@@ -178,6 +186,7 @@ test:e2e:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
@@ -199,6 +208,7 @@ build:admin:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - *rule
     - *rule_main
     - *rule_tag
@@ -221,6 +231,7 @@ build:api:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - *rule
     - *rule_main
     - *rule_tag
@@ -246,6 +257,7 @@ build:front:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - *rule_merge_request
     - *rule
     - *rule_main
     - *rule_tag
@@ -265,5 +277,4 @@ renovate:
     RENOVATE_ENDPOINT: $CI_API_V4_URL
     RENOVATE_COMMIT_MESSAGE_PREFIX: "[Renovate]"
     LOG_LEVEL: debug
-
 
