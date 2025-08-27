@@ -142,7 +142,9 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 						const formatedIssn = `${formatISSN(item.issnPrint[0])}`;
 						if (apcMap.has(formatedIssn)) {
 							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
-							item.isS2O = apcMap.get(formatedIssn).has_apc === false;
+							item.isS2O =
+								apcMap.get(formatedIssn).has_apc === false ||
+								apcMap.get(formatedIssn).labels.includes("s2o");
 						}
 					}
 					if (
@@ -154,7 +156,7 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 						const formatedIssn = `${formatISSN(item.issnOnline[0])}`;
 						if (apcMap.has(formatedIssn)) {
 							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
-							item.isS2O = apcMap.get(formatedIssn).has_apc === false;
+							item.isS2O = apcMap.get(formatedIssn).has_apc === false || apcMap.get(formatedIssn).labels.includes("s2o");
 						}
 					}
 				} catch {

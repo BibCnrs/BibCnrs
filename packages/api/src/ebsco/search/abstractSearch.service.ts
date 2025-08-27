@@ -452,32 +452,45 @@ export class AbstractEbscoSearchService {
 
 	async getHasApcFromDoaj(issnList: string[]) {
 		if (!issnList.length) {
-			return new Map<string, { has_apc?: boolean }>();
+			return new Map<
+				string,
+				{
+					labels: string[];
+					has_apc?: boolean;
+				}
+			>();
 		}
 
 		try {
 			const response = await this.http.request<{
-				results: { bibjson: { eissn: string; apc?: { has_apc: boolean } } }[];
+				results: {
+					bibjson: {
+						eissn: string;
+						apc?: { has_apc: boolean };
+						labels: string[];
+					};
+				}[];
 			}>(
 				`${this.ebsco.doajUrl}search/journals/issn:(${issnList.join(" OR ")})`,
 			);
 
 			if (response.status !== 200 || !response.data?.results) {
-				return new Map<string, { has_apc?: boolean }>();
+				return new Map<string, { has_apc?: boolean; labels?: string[] }>();
 			}
 
 			return response.data.results.reduce((map, result) => {
 				const hasApc = result.bibjson.apc?.has_apc ?? null;
+				const labels = result.bibjson.labels ?? [];
 				map.set(
 					result.bibjson.eissn,
-					hasApc !== null ? { has_apc: hasApc } : {},
+					hasApc !== null ? { has_apc: hasApc, labels: labels } : {},
 				);
 				return map;
-			}, new Map<string, { has_apc?: boolean }>());
+			}, new Map<string, { has_apc?: boolean; labels?: string[] }>());
 		} catch (error) {
 			logger.error(`Error while fetching DOAJ info ${error}`);
 
-			return new Map<string, { has_apc?: boolean }>();
+			return new Map<string, { has_apc?: boolean; labels?: string[] }>();
 		}
 	}
 }
