@@ -222,6 +222,7 @@ const en: Common = {
 				complete: "100%",
 				diamond: "diamond",
 				openAccess: "lock",
+				s2o: "S2O",
 				withEmbargo: "clock",
 			},
 		},

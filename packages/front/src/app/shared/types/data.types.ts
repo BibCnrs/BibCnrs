@@ -361,6 +361,7 @@ export type PublicationHolding = Url & {
 };
 
 export type PublicationResultDataType = {
+	isS20: any;
 	id: number;
 	publicationId: string;
 	issnOnline: string[] | null;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import Diamond from "../../../components/element/icon/Diamond";
 import OpenAccess from "../../../components/element/icon/OpenAccess";
+import S2O from "../../../components/element/icon/S20";
 import { useBibContext } from "../../../context/BibContext";
 import { environment } from "../../../services/Environment";
 import type {
@@ -81,6 +82,7 @@ export function PublicationTitle({
 				}}
 			>
 				{publication.isDiamond ? <Diamond /> : null}
+				{publication.isS20 ? <S2O /> : null}
 				{publication.title} [{publication.type}] {titleCoverage}
 			</Typography>
 		);
@@ -108,14 +110,15 @@ export function PublicationTitle({
 					onClick={(event) => handlePopoverClick(event)}
 				>
 					{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
-					{isOpenAccess || publication.isDiamond ? (
+					{isOpenAccess || publication.isDiamond || publication.isS20 ? (
 						<Box mr={1} display="inline-block">
 							<OpenAccess />
 						</Box>
 					) : null}
-					{publication.isDiamond ? (
+					{publication.isDiamond && publication.isS20 ? (
 						<Box mr={1} display="inline-block">
 							<Diamond />
+							<S2O />
 						</Box>
 					) : null}
 					{publication.title} [{publication.type}] {titleCoverage}
@@ -202,14 +205,15 @@ export function PublicationTitle({
 			underline={href ? "hover" : "none"}
 		>
 			{/* The component OpenablePaper has been incorrectly designed. It requires a lot of refacto and so we are obliged to make hacks for the presta */}
-			{isOpenAccess || publication.isDiamond ? (
+			{isOpenAccess || publication.isDiamond || publication.isS20 ? (
 				<Box mr={1} display="inline-block">
 					<OpenAccess />
 				</Box>
 			) : null}
-			{publication.isDiamond ? (
+			{publication.isDiamond && publication.isS20 ? (
 				<Box mr={1} display="inline-block">
 					<Diamond />
+					<S2O />
 				</Box>
 			) : null}
 			{publication.title} [{publication.type}]{" "}

@@ -224,6 +224,7 @@ const fr: Common = {
 				complete: "100%",
 				diamond: "diamant",
 				openAccess: "cadenas",
+				s2o: "S2O",
 				withEmbargo: "horloge",
 			},
 		},

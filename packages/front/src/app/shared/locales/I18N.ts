@@ -233,6 +233,7 @@ export type Common = {
 				openAccess: string;
 				complete: string;
 				diamond: string;
+				s2o: string;
 				withEmbargo: string;
 			};
 		};
