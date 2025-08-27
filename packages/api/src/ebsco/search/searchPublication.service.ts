@@ -137,24 +137,33 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 			parsedResult.results.map(async (item) => {
 				try {
 					item.isDiamond = false;
+					item.isS2O = false;
 					if (item.issnPrint && item.issnPrint.length > 0) {
 						const formatedIssn = `${formatISSN(item.issnPrint[0])}`;
 						if (apcMap.has(formatedIssn)) {
 							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
+							item.isS2O =
+								apcMap.get(formatedIssn).has_apc === false &&
+								apcMap.get(formatedIssn).labels.includes("s2o");
 						}
 					}
 					if (
 						item.isDiamond === false &&
+						item.isS2O === false &&
 						item.issnOnline &&
 						item.issnOnline.length > 0
 					) {
 						const formatedIssn = `${formatISSN(item.issnOnline[0])}`;
 						if (apcMap.has(formatedIssn)) {
 							item.isDiamond = apcMap.get(formatedIssn).has_apc === false;
+							item.isS2O =
+								apcMap.get(formatedIssn).has_apc === false &&
+								apcMap.get(formatedIssn).labels.includes("s2o");
 						}
 					}
 				} catch {
 					item.isDiamond = false;
+					item.isS2O = false;
 				}
 			}),
 		);
