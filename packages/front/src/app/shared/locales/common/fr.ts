@@ -220,6 +220,7 @@ const fr: Common = {
 				"Publication en Accès Ouvert gratuit pour les auteurs et les lecteurs",
 			withEmbargo:
 				"Présence d'un embargo pour la majorité des titres de la plateforme (en général 1 an)",
+			s2o: "Publication en Accès Ouvert gratuit pour les auteurs et les lecteurs via le dispositif S2O (Subscribe to Open)",
 			tooltip: {
 				complete: "100%",
 				diamond: "diamant",

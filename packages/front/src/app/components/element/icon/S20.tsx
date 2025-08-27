@@ -7,7 +7,7 @@ const S2O = () => {
 	return (
 		<Tooltip title={t("components.icon.s2o")} placement="top" arrow>
 			<img
-				style={{ height: "1em" }}
+				style={{ height: "1.7em", verticalAlign: "-0.5em" }}
 				src="/icons/S2O.svg"
 				alt={t("components.icon.tooltip.s2o")}
 			/>
