@@ -210,9 +210,13 @@ export function PublicationTitle({
 					<OpenAccess />
 				</Box>
 			) : null}
-			{publication.isDiamond && publication.isS2O ? (
+			{publication.isDiamond ? (
 				<Box mr={1} display="inline-block">
 					<Diamond />
+				</Box>
+			) : null}
+			{publication.isS2O ? (
+				<Box mr={1} display="inline-block">
 					<S2O />
 				</Box>
 			) : null}
