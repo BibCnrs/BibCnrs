@@ -35,6 +35,7 @@ export default function TestsNewsList() {
 			filters={TestsNewsFilter}
 			perPage={10}
 			pagination={<CustomPagination />}
+			sort={{ field: "from", order: "DESC" }}
 		>
 			<Datagrid bulkActionButtons={<BulkActionButtons />}>
 				<LinkEdit source="name_fr" label="Nom" />
