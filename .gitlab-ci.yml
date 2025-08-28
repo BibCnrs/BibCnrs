@@ -187,6 +187,8 @@ test:e2e:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
     - *rule_merge_request
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TITLE =~ /^\[Renovate\]/
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
