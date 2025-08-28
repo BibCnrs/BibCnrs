@@ -1,38 +1,22 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": [
-		"config:recommended",
-		"group:jsTest"
-	],
-	"labels": [
-		"renovate"
-	],
-	"reviewers": [
-		"join"
-	],
-	"enabledManagers": [
-		"npm"
-	],
-	"baseBranches": [
-		"develop"
-	],
+	"extends": ["config:recommended", "group:jsTest"],
+	"labels": ["renovate"],
+	"reviewers": ["join"],
+	"enabledManagers": ["npm"],
+	"baseBranches": ["develop"],
 	"rebaseWhen": "behind-base-branch",
 	"prHourlyLimit": 5,
 	"prConcurrentLimit": 5,
 	"configMigration": true,
 	"packageRules": [
 		{
-			"matchUpdateTypes": [
-				"major"
-			],
+			"matchUpdateTypes": ["major"],
 			"enabled": false
 		},
 		{
 			"groupName": "MUI",
-			"matchPackageNames": [
-				"@emotion{/,}**",
-				"@mui{/,}**"
-			]
+			"matchPackageNames": ["@emotion{/,}**", "@mui{/,}**"]
 		},
 		{
 			"groupName": "React ",
@@ -45,32 +29,19 @@
 		},
 		{
 			"groupName": "React Query",
-			"matchPackageNames": [
-				"@tanstack{/,}**"
-			]
+			"matchPackageNames": ["@tanstack{/,}**"]
 		},
 		{
 			"groupName": "Vite & Vitest",
-			"matchPackageNames": [
-				"vite{/,}**",
-				"vitest{/,}**",
-				"@vitejs{/,}**"
-			]
+			"matchPackageNames": ["vite{/,}**", "vitest{/,}**", "@vitejs{/,}**"]
 		},
 		{
 			"groupName": "NestJS & Prisma",
-			"matchPackageNames": [
-				"@nestjs{/,}**",
-				"@prisma{/,}**",
-				"prisma"
-			]
+			"matchPackageNames": ["@nestjs{/,}**", "@prisma{/,}**", "prisma"]
 		},
 		{
 			"groupName": "Linters and Formatters",
-			"matchPackageNames": [
-				"@biomejs{/,}**",
-				"eslint{/,}**"
-			]
+			"matchPackageNames": ["@biomejs{/,}**", "eslint{/,}**"]
 		},
 		{
 			"groupName": "Testing",
@@ -83,9 +54,7 @@
 		},
 		{
 			"groupName": "Types",
-			"matchPackageNames": [
-				"@types{/,}**"
-			]
+			"matchPackageNames": ["@types{/,}**"]
 		}
 	]
 }
