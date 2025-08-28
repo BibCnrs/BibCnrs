@@ -6,7 +6,6 @@
 	"enabledManagers": ["npm"],
 	"baseBranches": ["develop"],
 	"rebaseWhen": "behind-base-branch",
-	"rebaseStalePrs": true,
 	"prHourlyLimit": 5,
 	"prConcurrentLimit": 5,
 	"configMigration": true,
