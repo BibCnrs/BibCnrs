@@ -4,8 +4,11 @@
 	"labels": ["renovate"],
 	"reviewers": ["join"],
 	"enabledManagers": ["npm"],
-	"prHourlyLimit": 8,
-	"prConcurrentLimit": 8,
+	"baseBranches": ["develop"],
+	"rebaseWhen": "behind-base-branch",
+	"rebaseStalePrs": true,
+	"prHourlyLimit": 5,
+	"prConcurrentLimit": 5,
 	"configMigration": true,
 	"packageRules": [
 		{
@@ -13,12 +16,14 @@
 			"enabled": false
 		},
 		{
-			"groupName": "React & MUI",
+			"groupName": "MUI",
+			"matchPackageNames": ["@emotion{/,}**", "@mui{/,}**"]
+		},
+		{
+			"groupName": "React ",
 			"matchPackageNames": [
 				"react{/,}**",
 				"react-dom{/,}**",
-				"@mui{/,}**",
-				"@emotion{/,}**",
 				"@types/react{/,}**",
 				"@types/react-dom{/,}**"
 			]
