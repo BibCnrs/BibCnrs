@@ -541,7 +541,22 @@ describe("publicationParser", () => {
 				}),
 			).toEqual([
 				{
-					coverage: undefined,
+					coverage: [
+						{
+							EndDate: "99991231",
+							StartDate: "17890101",
+							end: {
+								day: "31",
+								month: "12",
+								year: "9999",
+							},
+							start: {
+								day: "01",
+								month: "01",
+								year: "1789",
+							},
+						},
+					],
 					embargo: undefined,
 					isCurrent: false,
 					name: "Project MUSE - Premium Collection",
