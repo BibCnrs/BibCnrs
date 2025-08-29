@@ -84,6 +84,9 @@ export const PublicationSidebar = ({ publication, onClose }) => {
 						? t("components.search.content.present")
 						: end.toLocaleDateString()
 				}`;
+				if (coverageString.includes("01/01/1789")) {
+					coverageString = "";
+				}
 			});
 		} catch (e) {
 			console.error(e);
