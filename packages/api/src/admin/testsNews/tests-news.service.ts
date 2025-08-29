@@ -60,6 +60,8 @@ export class TestsNewsService {
 			},
 		});
 
+		await this.desactivateExpiredNews();
+
 		const total = await this.prismaService.tests_news.count({
 			where: filters,
 		});
@@ -106,8 +108,6 @@ export class TestsNewsService {
 			},
 		});
 
-		await this.desactivateExpiredNews();
-
 		const tests_news_community =
 			await this.prismaService.tests_news_community.createManyAndReturn({
 				data: (communities ?? []).map((community_id) => ({
@@ -139,8 +139,6 @@ export class TestsNewsService {
 					: undefined,
 			},
 		});
-
-		await this.desactivateExpiredNews();
 
 		return updatedNews;
 	}
