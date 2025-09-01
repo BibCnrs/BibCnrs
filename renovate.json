@@ -5,7 +5,7 @@
 	"reviewers": ["join"],
 	"enabledManagers": ["npm"],
 	"baseBranches": ["develop"],
-	"rebaseWhen": "behind-base-branch",
+	"rebaseWhen": "auto",
 	"prHourlyLimit": 5,
 	"prConcurrentLimit": 5,
 	"configMigration": true,
@@ -19,12 +19,22 @@
 			"matchPackageNames": ["@emotion{/,}**", "@mui{/,}**"]
 		},
 		{
-			"groupName": "React ",
+			"groupName": "React Core",
 			"matchPackageNames": [
-				"react{/,}**",
-				"react-dom{/,}**",
-				"@types/react{/,}**",
-				"@types/react-dom{/,}**"
+				"react",
+				"react-dom",
+				"@types/react",
+				"@types/react-dom"
+			]
+		},
+		{
+			"groupName": "React Admin",
+			"matchPackageNames": [
+				"react-admin",
+				"ra-core",
+				"ra-ui-materialui",
+				"ra-data-*",
+				"ra-*"
 			]
 		},
 		{
