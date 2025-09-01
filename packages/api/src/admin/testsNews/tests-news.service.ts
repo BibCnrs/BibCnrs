@@ -60,6 +60,8 @@ export class TestsNewsService {
 			},
 		});
 
+		await this.desactivateExpiredNews();
+
 		const total = await this.prismaService.tests_news.count({
 			where: filters,
 		});
@@ -78,6 +80,17 @@ export class TestsNewsService {
 				},
 			})
 			.then(this.mapTestNewsCommunities);
+	}
+
+	async desactivateExpiredNews() {
+		const date = new Date();
+		await this.prismaService.tests_news.updateMany({
+			where: {
+				to: { lt: date },
+				enable: true,
+			},
+			data: { enable: false },
+		});
 	}
 
 	async create(createTestNewsDto: CreateTestNewsDto) {
@@ -111,35 +124,23 @@ export class TestsNewsService {
 
 	async update(id: number, updateTestNewsDto: Partial<UpdateTestNewsDto>) {
 		const { id: _, media_id, media, communities, ...data } = updateTestNewsDto;
-		return this.prismaService.tests_news.update({
-			where: {
-				id,
-			},
+		const updatedNews = await this.prismaService.tests_news.update({
+			where: { id },
 			data: {
 				...this.formatData(data),
-				media: media_id
-					? {
-							connect: {
-								id: media_id,
-							},
-						}
-					: {
-							disconnect: true,
-						},
+				media: media_id ? { connect: { id: media_id } } : { disconnect: true },
 				tests_news_community: communities
 					? {
 							deleteMany: {},
 							create: communities.map((id) => ({
-								community: {
-									connect: {
-										id,
-									},
-								},
+								community: { connect: { id } },
 							})),
 						}
 					: undefined,
 			},
 		});
+
+		return updatedNews;
 	}
 
 	remove(id: number) {

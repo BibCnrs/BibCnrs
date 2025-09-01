@@ -103,6 +103,9 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 		let reconciledFullTextHoldingString = getCoverage(
 			reconciledFullTextHoldings[0].coverage,
 		);
+		if (reconciledFullTextHoldingString.includes("01/01/1789")) {
+			reconciledFullTextHoldingString = "";
+		}
 		reconciledFullTextHoldingString +=
 			reconciledFullTextHoldings.length < 2 &&
 			reconciledFullTextHoldings[0].embargo

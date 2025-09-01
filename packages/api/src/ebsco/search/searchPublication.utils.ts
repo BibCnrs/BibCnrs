@@ -101,10 +101,20 @@ export function parseFullTextHolding(fullTextHolding: any) {
 				endIndex: coverageDate.EndDate,
 			}))
 		: null;
+
 	return {
 		url: fullTextHolding.URL,
 		name: fullTextHolding.Name,
-		coverage,
+		coverage: coverage
+			? coverage
+			: [
+					{
+						start: { month: "01", day: "01", year: "1789" },
+						end: { month: "12", day: "31", year: "9999" },
+						StartDate: "17890101",
+						EndDate: "99991231",
+					},
+				],
 		isCurrent: coverage?.[0]?.end?.year === "9999",
 		embargo: fullTextHolding.Embargo
 			? {
