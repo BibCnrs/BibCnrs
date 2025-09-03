@@ -19,6 +19,8 @@ import {
 
 @Injectable()
 export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	httpService: any;
 	constructor(
 		config: ConfigService<Config, true>,
 		httpService: HttpService,
@@ -86,91 +88,28 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		};
 	}
 
-	async searchPublications(
-		token: EbscoToken,
-		rawQuery: Request["query"],
-		communityName: string,
-	) {
-		const query = this.parsePublicationSearch(rawQuery);
+	async searchPublications() {
+		const profile = "ns253195.main.pfui";
+		const baseUrl = "https://api.ebsco.io/pf/v1/pfaccount/ns253195.main.pfui/";
 
-		const searchResult = await this.ebscoSearch(
-			async (authToken, sessionToken) => {
-				return this.ebscoRequest(
-					"/edsapi/publication/Search",
-					this.getEbscoQuery(query),
-					authToken,
-					sessionToken,
-				);
-			},
-			token,
-			communityName,
-		);
+		try {
+			const response = await fetch(baseUrl, {
+				method: "GET",
+				headers: {
+					Accept: "application/json",
+				},
+			});
 
-		const parsedResult = await this.parsePublicationResults(
-			this.publicationParser,
-			searchResult,
-			communityName,
-		);
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
 
-		const formatISSN = (issn: string) => {
-			return `${issn.slice(0, 4)}-${issn.slice(4)}`;
-		};
-
-		const apcMap = await this.getHasApcFromDoaj([
-			...new Set(
-				parsedResult.results.flatMap((item) => {
-					const issns: string[] = [];
-					if (item.issnPrint && item.issnPrint.length > 0) {
-						issns.push(formatISSN(item.issnPrint[0]));
-					}
-
-					if (item.issnOnline && item.issnOnline.length > 0) {
-						issns.push(formatISSN(item.issnOnline[0]));
-					}
-					return issns;
-				}),
-			),
-		]);
-
-		// Parallel process results
-		await Promise.all(
-			parsedResult.results.map(async (item) => {
-				try {
-					item.isDiamond = false;
-					item.isS2O = false;
-					if (item.issnPrint && item.issnPrint.length > 0) {
-						const formatedIssn = `${formatISSN(item.issnPrint[0])}`;
-						if (apcMap.has(formatedIssn)) {
-							const data = apcMap.get(formatedIssn);
-							item.isS2O =
-								data.has_apc === false && data.labels.includes("s2o");
-							item.isDiamond =
-								data.has_apc === false && !data.labels.includes("s2o");
-						}
-					}
-					if (
-						item.isDiamond === false &&
-						item.isS2O === false &&
-						item.issnOnline &&
-						item.issnOnline.length > 0
-					) {
-						const formatedIssn = `${formatISSN(item.issnOnline[0])}`;
-						if (apcMap.has(formatedIssn)) {
-							const data = apcMap.get(formatedIssn);
-							item.isS2O =
-								data.has_apc === false && data.labels.includes("s2o");
-							item.isDiamond =
-								data.has_apc === false && !data.labels.includes("s2o");
-						}
-					}
-				} catch {
-					item.isDiamond = false;
-					item.isS2O = false;
-				}
-			}),
-		);
-
-		return parsedResult;
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error("Erreur :", error);
+			return null;
+		}
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: parsing helper

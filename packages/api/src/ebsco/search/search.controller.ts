@@ -24,12 +24,8 @@ export class EbscoSearchController {
 
 	@Get("publication/search")
 	@UseGuards(EbscoTokenGuard)
-	async searchPublications(@Param("communityName") communityName: string) {
-		return this.ebscoSearchPublicationService.searchPublications(
-			this.request.ebscoToken,
-			this.request.query,
-			communityName,
-		);
+	async searchPublications() {
+		return this.ebscoSearchPublicationService.searchPublications();
 	}
 
 	@Get("publication/retrieve/:id")

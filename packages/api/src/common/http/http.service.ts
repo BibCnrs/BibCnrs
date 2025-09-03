@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import axios, { AxiosResponse, type AxiosRequestConfig } from "axios";
+import { ParsedQs } from "qs";
 import { Config } from "../../config";
 import { AppLogger } from "../logger/AppLogger";
 
@@ -16,6 +17,20 @@ type Response<R> =
 
 @Injectable()
 export class HttpService {
+	get(
+		baseUrl: string,
+		arg1: {
+			params: {
+				menuid: string | string[] | ParsedQs | ParsedQs[];
+				resourcetype: string | string[] | ParsedQs | ParsedQs[];
+			};
+			headers: { Accept: string };
+		},
+	) {
+		return this.request(baseUrl, {
+			method: "GET",
+		});
+	}
 	private readonly logger = new AppLogger(HttpService.name);
 
 	constructor(configService: ConfigService<Config, true>) {
