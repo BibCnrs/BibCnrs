@@ -142,7 +142,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 					className="table-bookmark-button"
 					title={title}
 					url={href}
-					aria-label={t("components.search.content.bookmark", { title })}
+					aria-label={title}
 					source="article"
 				/>
 			</CardActions>
