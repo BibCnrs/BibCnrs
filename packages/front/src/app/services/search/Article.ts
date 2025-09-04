@@ -383,7 +383,11 @@ export class ArticleContentGetter {
 			return "doaj";
 		}
 
-		if (HAL_REGEX.test(url)) {
+		if (url.includes("hal.")) {
+			return "hal";
+		}
+
+		if (url.includes("hal-")) {
 			return "hal";
 		}
 
