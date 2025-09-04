@@ -161,7 +161,8 @@ export const article = async (
 	}
 	return result;
 };
-const HAL_REGEX = /https?:\/\/(?:www\.)?(hal|tel)(shs)?(-.*)?\.(.*)\.(.*)/;
+const HAL_REGEX =
+	/https?:\/\/(?:www.)?(hal|tel)(shs)?(-\.)?(.*)?\/(hal-)?(.*)/gm;
 export class ArticleContentGetter {
 	private readonly initial: ArticleResultDataType;
 	private readonly retrieve: ArticleRetrieveDataType | null;
@@ -383,11 +384,7 @@ export class ArticleContentGetter {
 			return "doaj";
 		}
 
-		if (url.includes("hal.")) {
-			return "hal";
-		}
-
-		if (url.includes("hal-")) {
+		if (HAL_REGEX.test(url)) {
 			return "hal";
 		}
 
