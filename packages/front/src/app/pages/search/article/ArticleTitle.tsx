@@ -30,11 +30,7 @@ export const ArticleTitle = ({ title, href, openAccess, type }) => {
 			}
 		>
 			{openAccess && href ? (
-				<Box
-					mr={1}
-					display="inline-block"
-					aria-label={t("components.search.content.openAccess")}
-				>
+				<Box mr={1} display="inline-block">
 					<OpenAccess />
 				</Box>
 			) : null}

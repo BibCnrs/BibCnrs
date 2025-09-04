@@ -161,7 +161,8 @@ export const article = async (
 	}
 	return result;
 };
-const HAL_REGEX = /https?:\/\/(?:www\.)?(hal|tel)(shs)?(-.*)?\.(.*)\.(.*)/;
+const HAL_REGEX =
+	/https?:\/\/(?:www.)?(hal|tel)(shs)?(-\.)?(.*)?\/(hal-)?(.*)/gm;
 export class ArticleContentGetter {
 	private readonly initial: ArticleResultDataType;
 	private readonly retrieve: ArticleRetrieveDataType | null;

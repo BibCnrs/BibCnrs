@@ -1,6 +1,7 @@
 import flattenDeep from "lodash.flattendeep";
 
-const HAL_REGEX = /https?:\/\/(?:www\.)?(hal|tel)(shs)?(-.*)?\.(.*)\.(.*)/;
+const HAL_REGEX =
+	/https?:\/\/(?:www.)?(hal|tel)(shs)?(-\.)?(.*)?\/(hal-)?(.*)/gm;
 const EXTRACT_DOI_REGEX = /https?:\/\/(?:www\.)?(?:.*)?\.doi\.org\/(.*)/;
 
 export const fieldLabel = {
