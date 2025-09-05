@@ -5,7 +5,7 @@ import {
 	Link,
 	Typography,
 } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
 import { useBibContext } from "../../../context/BibContext";
@@ -48,6 +48,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const authors = getterArticle.getAuthors();
 	const doi = getterArticle.getDOI();
 	const source = getterArticle.getSource();
+	const publicationYear = getterArticle.getPublicationYear();
 	const openAccess = getterArticle.isOpenAccess(
 		user?.settings?.articleLinkType === "fullText",
 	);
@@ -104,12 +105,17 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 					openAccess={openAccess}
 					type={getterArticle.getType()}
 				/>
-				{authors && (
-					<Typography variant="body1">
-						{authors.slice(0, 5).join(" | ")}
-					</Typography>
-				)}
-				{source && <Typography variant="body1">{source}</Typography>}
+				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">
+					{authors && (
+						<Typography variant="body1">
+							{authors.slice(0, 5).join(" | ")}
+						</Typography>
+					)}
+					{source && <Typography variant="body1">{source}</Typography>}
+					{publicationYear && (
+						<Typography variant="body1">{publicationYear}</Typography>
+					)}
+				</Box>
 				{doi && (
 					<Typography variant="body1">
 						{t("components.search.content.doiColon")} {doi}
