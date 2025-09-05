@@ -454,6 +454,20 @@ export class ArticleContentGetter {
 		if (retrieve) {
 			return retrieve;
 		}
+		if (this.initial.publicationDate) {
+			try {
+				const date = new Date(this.initial.publicationDate);
+				// biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
+				if (!isNaN(date.getTime())) {
+					return date.getFullYear().toString();
+				}
+			} catch (e) {
+				console.warn(
+					"Invalid date format:",
+					this.initial.publicationDate,
+				);
+			}
+		}
 		return null;
 	};
 

@@ -48,6 +48,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const authors = getterArticle.getAuthors();
 	const doi = getterArticle.getDOI();
 	const source = getterArticle.getSource();
+	const publicationYear = getterArticle.getPublicationYear();
 	const openAccess = getterArticle.isOpenAccess(
 		user?.settings?.articleLinkType === "fullText",
 	);
@@ -109,7 +110,10 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 						{authors.slice(0, 5).join(" | ")}
 					</Typography>
 				)}
-				{source && <Typography variant="body1">{source}</Typography>}
+				{(source || publicationYear) && (
+					<Typography variant="body1">{source || publicationYear}</Typography>
+				)}
+
 				{doi && (
 					<Typography variant="body1">
 						{t("components.search.content.doiColon")} {doi}
