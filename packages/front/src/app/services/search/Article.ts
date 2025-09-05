@@ -462,10 +462,7 @@ export class ArticleContentGetter {
 					return date.getFullYear().toString();
 				}
 			} catch (e) {
-				console.warn(
-					"Invalid date format:",
-					this.initial.publicationDate,
-				);
+				console.warn("Invalid date format:", this.initial.publicationDate);
 			}
 		}
 		return null;
