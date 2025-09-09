@@ -46,7 +46,7 @@ export class EbscoOaController {
 			message: "open access",
 			timestamp: new Date().toISOString(),
 			sid,
-			domain,
+			domain: domain.toUpperCase(),
 			doi,
 			login,
 			O,
