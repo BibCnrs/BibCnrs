@@ -276,6 +276,7 @@ const ArticlePage = () => {
 	};
 
 	const handlePagination = (currentPage: number, resultsPerPage: number) => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
 		handleTable({
 			...search.article.table,
 			perPage: resultsPerPage,
