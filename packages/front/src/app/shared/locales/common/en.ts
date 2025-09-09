@@ -216,14 +216,14 @@ const en: Common = {
 			diamond:
 				"Open Access publication, free of charge for authors and readers",
 			complete: "Access to 100% of platform content",
-			s2o: "Open Access publication, free of charge for authors and readers via the S2O (Subscribe to Open) system",
+			//s2o: "Open Access publication, free of charge for authors and readers via the S2O (Subscribe to Open) system",
 			withEmbargo:
 				"Presence of an embargo for the majority of titles on the platform (generally 1 year)",
 			tooltip: {
 				complete: "100%",
 				diamond: "diamond",
 				openAccess: "lock",
-				s2o: "S2O",
+				//s2o: "S2O",
 				withEmbargo: "clock",
 			},
 		},
