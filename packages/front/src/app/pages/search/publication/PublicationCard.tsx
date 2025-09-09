@@ -73,14 +73,23 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 					Number.parseInt(value.end.month, 10) - 1,
 					Number.parseInt(value.end.day, 10),
 				);
-				if (coverageString !== "") {
-					coverageString += ", ";
+
+				// biome-ignore lint/complexity/useOptionalChain: <explanation>
+				if (publication && publication.type.toLowerCase().includes("book")) {
+					if (coverageString !== "") {
+						coverageString += ", ";
+					}
+					coverageString += `${end.getFullYear()}`;
+				} else {
+					if (coverageString !== "") {
+						coverageString += ", ";
+					}
+					coverageString += `${start.toLocaleDateString()} - ${
+						end.getFullYear() > new Date().getFullYear()
+							? t("components.search.content.present")
+							: end.toLocaleDateString()
+					}`;
 				}
-				coverageString += `${start.toLocaleDateString()} - ${
-					end.getFullYear() > new Date().getFullYear()
-						? t("components.search.content.present")
-						: end.toLocaleDateString()
-				}`;
 			});
 		} catch (e) {
 			console.error(e);
