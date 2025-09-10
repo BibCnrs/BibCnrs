@@ -295,7 +295,9 @@ const PublicationPage = () => {
 	};
 
 	const handlePagination = (currentPage: number, resultsPerPage: number) => {
-		window.scrollTo({ top: 0, behavior: "smooth" });
+		setTimeout(() => {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}, 0);
 		handleTable({
 			...search.publication.table,
 			perPage: resultsPerPage,
