@@ -96,6 +96,7 @@ const ArticlePage = () => {
 			search.article.facets,
 			search.article.table.page,
 			search.article.table.perPage,
+			seed,
 		],
 		queryFn: async () => {
 			if (
@@ -209,6 +210,7 @@ const ArticlePage = () => {
 	const handleSearch = useCallback(
 		(value: string | undefined): void => {
 			setSaveHistory(true);
+			setSeed((seed) => seed + 1);
 			setSearch((search) => ({
 				...search,
 				query: value,
