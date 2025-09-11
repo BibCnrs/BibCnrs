@@ -76,10 +76,12 @@ export const PublicationCard = ({ publication, setSelectedPublication }) => {
 
 				// biome-ignore lint/complexity/useOptionalChain: <explanation>
 				if (publication && publication.type.toLowerCase().includes("book")) {
-					if (coverageString !== "") {
-						coverageString += ", ";
+					if (end.getFullYear() !== 9999) {
+						if (coverageString !== "") {
+							coverageString += ", ";
+						}
+						coverageString += `${end.getFullYear()}`;
 					}
-					coverageString += `${end.getFullYear()}`;
 				} else {
 					if (coverageString !== "") {
 						coverageString += ", ";
