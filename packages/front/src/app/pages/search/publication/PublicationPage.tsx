@@ -242,6 +242,7 @@ const PublicationPage = () => {
 	const handleSearchByLetterL1 = (letter: string) => {
 		setSearchByNumber("");
 		setSearchByLetter(letter);
+		setSearchByLetterL2("");
 		performLetterSearch(`${letter}*`);
 	};
 	const handleSearchByLetterL2 = (letter: string) => {

@@ -79,7 +79,7 @@ test("Disable search alert", async ({ page }) => {
 
 	expect(page.getByText("INIST").first()).toBeVisible();
 
-	await page.getByLabel("alerte pour la recherche INIST").click();
+	await page.getByLabel("alerte pour la recherche INIST").first().click();
 	await page.getByRole("button", { name: "Enregistrer" }).click();
 
 	await goToAlerts(page);
