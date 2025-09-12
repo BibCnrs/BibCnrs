@@ -24,7 +24,10 @@ test("Should delete history entry", async ({ page }) => {
 	expect(page.getByText("Le Cun").first()).toBeVisible();
 	expect(page.getByText("46 405").first()).toBeVisible();
 
-	await page.getByRole("button", { name: "Supprimer l'entrée Le Cun" }).click();
+	await page
+		.getByRole("button", { name: "Supprimer l'entrée Le Cun" })
+		.first()
+		.click();
 	await page.getByRole("button", { name: "Confirmer" }).click();
 
 	expect(page.getByText("Le Cun").first()).not.toBeVisible();
@@ -33,7 +36,7 @@ test("Should delete history entry", async ({ page }) => {
 });
 
 test("Should perform search", async ({ page }) => {
-	await page.route("**/api/ebsco/*/article/search?queries=*", async (route) => {
+	await page.route("**/api/ebsco/**/article/search**", async (route) => {
 		await route.fulfill({ json: SEARCH_ARTICLE_MOCK });
 	});
 
@@ -54,6 +57,7 @@ test("Should perform search", async ({ page }) => {
 
 	await page
 		.getByRole("button", { name: "Lancer la recherche Jeff Dean" })
+		.first()
 		.click();
 
 	expect(page.getByPlaceholder(/Rechercher des articles/i)).toHaveValue(
