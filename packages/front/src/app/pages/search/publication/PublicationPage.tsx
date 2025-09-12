@@ -107,7 +107,6 @@ const PublicationPage = () => {
 			search.publication.facets,
 			search.publication.table.page,
 			search.publication.table.perPage,
-			seed,
 		],
 		queryFn: async () => {
 			if (
@@ -236,27 +235,23 @@ const PublicationPage = () => {
 	};
 
 	const handleSearch = (value: string | undefined): void => {
-		setSeed((seed) => seed + 1);
 		setSearchByLetter("");
 		performSearch(value);
 	};
 
 	const handleSearchByLetterL1 = (letter: string) => {
-		setSeed((seed) => seed + 1);
 		setSearchByNumber("");
 		setSearchByLetter(letter);
 		setSearchByLetterL2("");
 		performLetterSearch(`${letter}*`);
 	};
 	const handleSearchByLetterL2 = (letter: string) => {
-		setSeed((seed) => seed + 1);
 		setSearchByNumber("");
 		setSearchByLetterL2(letter);
 		performLetterSearch(`${letter}*`);
 	};
 
 	const handleSearchByNumber = () => {
-		setSeed((seed) => seed + 1);
 		setSearchByLetter("");
 		setSearchByNumber(
 			"0* OR 1* OR 2* OR 3* OR 4* OR 5* OR 6* OR 7* OR 8* OR 9*",
