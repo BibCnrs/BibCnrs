@@ -490,4 +490,28 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 		return this.retrieveArticleParser(searchResult, communityName);
 	}
+	async validateReferenceWithIstex(reference: string) {
+		console.log(" Requête bibcheck pour :", reference);
+
+		try {
+			const response = await this.http.request(
+				"https://biblio-ref.services.istex.fr/v1/validate",
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					data: reference,
+				},
+			);
+
+			console.log(" bibcheck response:", response.data);
+
+			return {
+				status: response.data?.status || "not_found",
+				metadata: response.data?.metadata || null,
+			};
+		} catch (error) {
+			console.error(" bibcheck ERROR:", error);
+			return { status: "error" };
+		}
+	}
 }

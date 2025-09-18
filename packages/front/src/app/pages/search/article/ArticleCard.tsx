@@ -2,6 +2,7 @@ import {
 	Card,
 	CardActions,
 	CardContent,
+	Chip,
 	Link,
 	Typography,
 } from "@mui/material";
@@ -43,6 +44,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	} = useBibContext();
 
 	const [href, setHref] = useState<string | null>(null);
+	const [bibCheck, setBibCheck] = useState<null | string>(null);
 
 	const title = getterArticle.getTitle();
 	const authors = getterArticle.getAuthors();
@@ -52,6 +54,23 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const openAccess = getterArticle.isOpenAccess(
 		user?.settings?.articleLinkType === "fullText",
 	);
+
+	useEffect(() => {
+		if (!doi) return;
+
+		getterArticle
+			.getDOIStatus(search.domain)
+			.then((data) => {
+				if (!data || !data.status) {
+					setBibCheck("not_found");
+				} else {
+					setBibCheck(data.status);
+				}
+			})
+			.catch(() => {
+				setBibCheck("error");
+			});
+	}, [doi, search.domain, getterArticle]);
 
 	useEffect(() => {
 		const resultHref = getterArticle.getHref(
@@ -82,6 +101,23 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			});
 	}, [article, getterArticle, search.domain, user?.settings?.articleLinkType]);
 
+	const renderBibCheck = () => {
+		if (!bibCheck) return null;
+
+		switch (bibCheck) {
+			case "found":
+				return <Chip label=" Found" color="success" size="small" />;
+			case "retracted":
+				return <Chip label=" Retracted" color="error" size="small" />;
+			case "hallucinated":
+				return <Chip label=" Hallucinated" color="warning" size="small" />;
+			case "not_found":
+				return <Chip label=" Not Found" color="default" size="small" />;
+			default:
+				return <Chip label="  Error" color="warning" size="small" />;
+		}
+	};
+
 	return (
 		<Card
 			sx={{
@@ -105,6 +141,9 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 					openAccess={openAccess}
 					type={getterArticle.getType()}
 				/>
+				<Box mt={1} mb={1}>
+					{renderBibCheck()}
+				</Box>
 				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">
 					{authors && (
 						<Typography variant="body1">
