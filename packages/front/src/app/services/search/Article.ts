@@ -200,38 +200,6 @@ export class ArticleContentGetter {
 		}
 		return null;
 	};
-	public async getDOIStatus(
-		domain: string,
-	): Promise<{ status: string; metadata: { doi: string } | null }> {
-		const doi = this.getDOI();
-		if (!doi) {
-			return { status: "not_found", metadata: null };
-		}
-
-		try {
-			const response = await fetch(`/api/ebsco/${domain}/bibcheck`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ reference: doi }),
-			});
-
-			const data = await response.json();
-
-			// biome-ignore lint/complexity/useOptionalChain: <explanation>
-			if (data && data.status) {
-				return {
-					status: data.status,
-					metadata: data.metadata ? { doi: data.metadata.doi } : null,
-				};
-				// biome-ignore lint/style/noUselessElse: <explanation>
-			} else {
-				return { status: "not_found", metadata: null };
-			}
-		} catch (error) {
-			console.error("Erreur lors de la vérification du statut du DOI:", error);
-			return { status: "error", metadata: null };
-		}
-	}
 
 	public getSource = (): string | null => {
 		const retrieveObj = this.getEntry("TitleSource");

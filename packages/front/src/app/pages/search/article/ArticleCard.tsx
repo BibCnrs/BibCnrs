@@ -44,7 +44,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	} = useBibContext();
 
 	const [href, setHref] = useState<string | null>(null);
-	const [bibCheck, setBibCheck] = useState<null | string>(null);
+	const bibCheck = article.bibcheck;
 
 	const title = getterArticle.getTitle();
 	const authors = getterArticle.getAuthors();
@@ -54,23 +54,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	const openAccess = getterArticle.isOpenAccess(
 		user?.settings?.articleLinkType === "fullText",
 	);
-
-	useEffect(() => {
-		if (!doi) return;
-
-		getterArticle
-			.getDOIStatus(search.domain)
-			.then((data) => {
-				if (!data || !data.status) {
-					setBibCheck("not_found");
-				} else {
-					setBibCheck(data.status);
-				}
-			})
-			.catch(() => {
-				setBibCheck("error");
-			});
-	}, [doi, search.domain, getterArticle]);
 
 	useEffect(() => {
 		const resultHref = getterArticle.getHref(
@@ -105,12 +88,8 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 		if (!bibCheck) return null;
 
 		switch (bibCheck) {
-			case "found":
-				return <Chip label=" Found" color="success" size="small" />;
 			case "retracted":
-				return <Chip label=" Retracted" color="error" size="small" />;
-			case "hallucinated":
-				return <Chip label=" Hallucinated" color="warning" size="small" />;
+				return <Chip label=" Retracted" color="default" size="small" />;
 			case "not_found":
 				return <Chip label=" Not Found" color="default" size="small" />;
 			default:
@@ -135,13 +114,13 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 				<ArticleId id={getterArticle.getId()} />
 			</Stack>
 			<CardContent sx={{ flex: 1, paddingY: 0 }}>
-				<ArticleTitle
-					title={title}
-					href={href}
-					openAccess={openAccess}
-					type={getterArticle.getType()}
-				/>
-				<Box mt={1} mb={1}>
+				<Box display="flex" gap={2}>
+					<ArticleTitle
+						title={title}
+						href={href}
+						openAccess={openAccess}
+						type={getterArticle.getType()}
+					/>
 					{renderBibCheck()}
 				</Box>
 				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">

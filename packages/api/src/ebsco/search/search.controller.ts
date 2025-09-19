@@ -1,10 +1,8 @@
 import {
-	Body,
 	Controller,
 	Get,
 	Inject,
 	Param,
-	Post,
 	Query,
 	Scope,
 	UseGuards,
@@ -32,19 +30,6 @@ export class EbscoSearchController {
 			this.request.query,
 			communityName,
 		);
-	}
-
-	@Post("bibcheck")
-	async validateReference(@Body() body: { reference: string }) {
-		console.log("Reçu POST /bibcheck avec reference:", body.reference);
-
-		const result =
-			await this.ebscoSearchArticleService.validateReferenceWithIstex(
-				body.reference,
-			);
-
-		console.log("Réponse bibcheck envoyée:", result);
-		return result;
 	}
 
 	@Get("publication/retrieve/:id")

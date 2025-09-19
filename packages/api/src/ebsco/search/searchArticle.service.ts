@@ -446,11 +446,20 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			}
 		}
 
-		return this.parsePublicationResults(
+		const results = await this.parsePublicationResults(
 			this.searchArticleParser.bind(this),
 			searchResult,
 			communityName,
 		);
+
+		for (const article of results.results) {
+			if (article.doi) {
+				const bibcheck = await this.bibCheck(article.doi);
+				article.bibcheck = bibcheck.status;
+			}
+		}
+
+		return results;
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -490,27 +499,26 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 		return this.retrieveArticleParser(searchResult, communityName);
 	}
-	async validateReferenceWithIstex(reference: string) {
-		console.log(" Requête bibcheck pour :", reference);
-
+	async bibCheck(reference: string) {
 		try {
 			const response = await this.http.request(
 				"https://biblio-ref.services.istex.fr/v1/validate",
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					data: reference,
+					data: [{ value: reference }],
 				},
 			);
 
-			console.log(" bibcheck response:", response.data);
+			const result = Array.isArray(response.data)
+				? response.data[0]?.value
+				: null;
 
 			return {
-				status: response.data?.status || "not_found",
-				metadata: response.data?.metadata || null,
+				status: result?.status || "not_found",
+				data: result || null,
 			};
 		} catch (error) {
-			console.error(" bibcheck ERROR:", error);
 			return { status: "error" };
 		}
 	}
