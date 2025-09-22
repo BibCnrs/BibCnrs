@@ -93,7 +93,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			case "not_found":
 				return <Chip label=" Not Found" color="default" size="small" />;
 			default:
-				return <Chip label="  Error" color="warning" size="small" />;
+				return;
 		}
 	};
 
