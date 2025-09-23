@@ -11,9 +11,16 @@ import {
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { useRef } from "react";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+	createContext,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import SearchSkeleton from "../../../components/element/skeleton/SearchSkeleton";
 import PageTitle from "../../../components/internal/PageTitle";
@@ -32,7 +39,7 @@ import type {
 	ArticleParam,
 	OrderByType,
 } from "../../../services/search/Article";
-import { article } from "../../../services/search/Article";
+import { article, retrieveExport } from "../../../services/search/Article";
 import {
 	RouteArticle,
 	getJSON,
@@ -56,6 +63,18 @@ import { ArticleCard } from "./ArticleCard";
 import { ArticlePageHeader } from "./ArticlePageHeader";
 import { ArticleSidebar } from "./ArticleSidebar";
 
+type ContextData = Array<{
+	id: number;
+	ris: string;
+	bibtex: string;
+}>;
+
+export const ArticleContext = createContext<{
+	exports: ContextData;
+	setExports: Dispatch<SetStateAction<ContextData>>;
+	// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
+}>(null as any);
+
 const ArticlePage = () => {
 	const navigate = useNavigate();
 	const { trackEvent, trackSearch } = useMatomo();
@@ -68,6 +87,7 @@ const ArticlePage = () => {
 
 	const [seed, setSeed] = useState<number>(0);
 	const [saveHistory, setSaveHistory] = useState<boolean>(true);
+	const [exports, setExports] = useState<ContextData>([]);
 	const [selectedArticle, setSelectedArticle] = useState(null);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -267,6 +287,37 @@ const ArticlePage = () => {
 		setSeed((seed) => seed + 1);
 	}, [setSearch]);
 
+	const handleSelectAll = (
+		_: ChangeEvent<HTMLInputElement>,
+		checked: boolean,
+	) => {
+		if (data && checked) {
+			const all: ContextData = data.results.map((value) => {
+				return {
+					id: value.id,
+					ris: value.exportLinks?.ris ?? "",
+					bibtex: value.exportLinks?.bibtex ?? "",
+				};
+			});
+			setExports(all);
+			return;
+		}
+		setExports([]);
+	};
+
+	const handleDownload = (target: "bibtex" | "ris") => {
+		const links = exports.map((value) => value[target]);
+		retrieveExport(links).then((exportValues) => {
+			const blob = new Blob([exportValues.join("\n")], { type: "text/plain" });
+			const elem = document.createElement("a");
+			elem.href = URL.createObjectURL(blob);
+			elem.download = `notices.${target === "bibtex" ? "bib" : "ris"}`;
+			document.body.appendChild(elem);
+			elem.click();
+			document.body.removeChild(elem);
+		});
+	};
+
 	const handleTable = (tableArgs: SearchResultsArgsProps) => {
 		setSearch({
 			...search,
@@ -441,10 +492,17 @@ const ArticlePage = () => {
 						) : isError ? (
 							<SearchError />
 						) : (
-							<>
+							<ArticleContext.Provider
+								value={{
+									exports,
+									setExports,
+								}}
+							>
 								<ArticlePageHeader
 									totalHits={data?.totalHits ?? 0}
 									orderBy={search.article.orderBy}
+									handleDownload={handleDownload}
+									handleSelectAll={handleSelectAll}
 									handleOrderChange={handleOrderChange}
 								/>
 
@@ -502,7 +560,7 @@ const ArticlePage = () => {
 										/>
 									)}
 								</Drawer>
-							</>
+							</ArticleContext.Provider>
 						)}
 					</Grid>
 				</Grid>
