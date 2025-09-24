@@ -28,7 +28,12 @@ test("Add search alert", async ({ page }) => {
 
 	expect(page.getByText("Marmelab").first()).toBeVisible();
 
-	await page.getByLabel("alerte pour la recherche Marmelab").click();
+	await page
+		.getByRole("button", {
+			name: "Ajouter une alerte pour la recherche Marmelab",
+		})
+		.first()
+		.click();
 	await page.getByRole("button", { name: "Enregistrer" }).click();
 
 	await goToAlerts(page);
