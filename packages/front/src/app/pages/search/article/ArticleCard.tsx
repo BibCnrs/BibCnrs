@@ -2,7 +2,6 @@ import {
 	Card,
 	CardActions,
 	CardContent,
-	Chip,
 	Link,
 	Typography,
 } from "@mui/material";
@@ -45,8 +44,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	} = useBibContext();
 
 	const [href, setHref] = useState<string | null>(null);
-	const bibCheck = article.bibcheck;
-
 	const title = getterArticle.getTitle();
 	const authors = getterArticle.getAuthors();
 	const doi = getterArticle.getDOI();
@@ -85,19 +82,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			});
 	}, [article, getterArticle, search.domain, user?.settings?.articleLinkType]);
 
-	const renderBibCheck = () => {
-		if (!bibCheck) return null;
-
-		switch (bibCheck) {
-			case "retracted":
-				return <Chip label=" Retracted" color="default" size="small" />;
-			case "not_found":
-				return <Chip label=" Not Found" color="default" size="small" />;
-			default:
-				return;
-		}
-	};
-
 	return (
 		<Card
 			sx={{
@@ -123,7 +107,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 						openAccess={openAccess}
 						type={getterArticle.getType()}
 					/>
-					{renderBibCheck()}
 				</Box>
 				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">
 					{authors && (
