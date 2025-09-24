@@ -2,13 +2,13 @@ import {
 	Card,
 	CardActions,
 	CardContent,
-	Chip,
 	Link,
 	Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import BookmarkButton from "../../../components/element/button/BookmarkButton";
+import ExportArticleCheckbox from "../../../components/element/button/ExportArticleCheckbox";
 import { useBibContext } from "../../../context/BibContext";
 import { createQuery, environment } from "../../../services/Environment";
 import { ArticleContentGetter } from "../../../services/search/Article";
@@ -44,8 +44,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 	} = useBibContext();
 
 	const [href, setHref] = useState<string | null>(null);
-	const bibCheck = article.bibcheck;
-
 	const title = getterArticle.getTitle();
 	const authors = getterArticle.getAuthors();
 	const doi = getterArticle.getDOI();
@@ -84,19 +82,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			});
 	}, [article, getterArticle, search.domain, user?.settings?.articleLinkType]);
 
-	const renderBibCheck = () => {
-		if (!bibCheck) return null;
-
-		switch (bibCheck) {
-			case "retracted":
-				return <Chip label=" Retracted" color="default" size="small" />;
-			case "not_found":
-				return <Chip label=" Not Found" color="default" size="small" />;
-			default:
-				return;
-		}
-	};
-
 	return (
 		<Card
 			sx={{
@@ -111,6 +96,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			elevation={3}
 		>
 			<Stack direction="row" alignItems="center" justifyContent="space-between">
+				<ExportArticleCheckbox getter={getterArticle} />
 				<ArticleId id={getterArticle.getId()} />
 			</Stack>
 			<CardContent sx={{ flex: 1, paddingY: 0 }}>
@@ -121,7 +107,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 						openAccess={openAccess}
 						type={getterArticle.getType()}
 					/>
-					{renderBibCheck()}
 				</Box>
 				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">
 					{authors && (
