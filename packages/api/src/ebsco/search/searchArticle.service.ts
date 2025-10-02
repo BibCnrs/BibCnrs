@@ -501,25 +501,32 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	}
 	async bibCheck(reference: string) {
 		try {
+			const DOI = reference.toLowerCase();
 			const response = await this.http.request(
-				"https://biblio-ref.services.istex.fr/v1/validate",
+				"https://biblio-ref.services.istex.fr/v1/is-retracted",
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					data: [{ value: reference }],
+					data: [{ value: DOI }],
 				},
 			);
 
-			const result = Array.isArray(response.data)
-				? response.data[0]?.value
-				: null;
+			if (!Array.isArray(response.data) || !response.data[0]?.value) {
+				return { status: "not_found", data: null };
+			}
 
-			return {
-				status: result?.status || "not_found",
-				data: result || null,
-			};
+			const result = response.data[0].value;
+			if (typeof result.is_retracted === "undefined") {
+				return { status: "not_found", data: null };
+			}
+
+			const status = result.is_retracted ? "retracted" : "not_retracted";
+			return { status, data: result };
 		} catch (error) {
-			return { status: "error" };
+			this.logger.error(
+				`Bibcheck error for ${reference}: ${error.message || error}`,
+			);
+			return { status: "error", data: null };
 		}
 	}
 }

@@ -91,8 +91,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 		switch (bibCheck) {
 			case "retracted":
 				return <Chip label=" Retracted" color="default" size="small" />;
-			case "not_found":
-				return <Chip label=" Not Found" color="default" size="small" />;
 			default:
 				return;
 		}
