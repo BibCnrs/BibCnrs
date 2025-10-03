@@ -77,7 +77,13 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		prismaService: PrismaService,
 		redisService: RedisService,
 	) {
-		super(configService.get("ebsco"), httpService, prismaService, redisService);
+		super(
+			configService.get("ebsco"),
+			configService.get("bibcheck"),
+			httpService,
+			prismaService,
+			redisService,
+		);
 	}
 
 	parseArticleQueries({ queries }) {
@@ -452,10 +458,16 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			communityName,
 		);
 
+		const dois = results.results
+			.map((article) => article.doi)
+			.filter((doi) => doi);
+
+		const bibCheckResults = await this.bibCheck(dois);
+
 		for (const article of results.results) {
 			if (article.doi) {
-				const bibcheck = await this.bibCheck(article.doi);
-				article.bibcheck = bibcheck.status;
+				const DOI = article.doi.toLowerCase();
+				article.bibcheck = bibCheckResults[DOI]?.status || "not_found";
 			}
 		}
 
@@ -499,34 +511,38 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 
 		return this.retrieveArticleParser(searchResult, communityName);
 	}
-	async bibCheck(reference: string) {
+	async bibCheck(
+		references: string[],
+	): Promise<Record<string, { status: string; data: string[] }>> {
 		try {
-			const DOI = reference.toLowerCase();
+			const DOIs = references.map((doi) => doi.toLowerCase());
 			const response = await this.http.request(
-				"https://biblio-ref.services.istex.fr/v1/is-retracted",
+				`${this.bibcheck.BIBCHECK_URL}`,
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					data: [{ value: DOI }],
+					data: DOIs.map((value) => ({ value })),
 				},
 			);
 
-			if (!Array.isArray(response.data) || !response.data[0]?.value) {
-				return { status: "not_found", data: null };
+			const resultDOI: Record<string, { status: string; data: string[] }> = {};
+
+			if (Array.isArray(response.data)) {
+				response.data.forEach((item, index) => {
+					const doi = DOIs[index];
+					const result = item?.value;
+					if (!result || typeof result.is_retracted === "undefined") {
+						resultDOI[doi] = { status: "not_found", data: null };
+					} else {
+						const status = result.is_retracted ? "retracted" : "not_retracted";
+						resultDOI[doi] = { status, data: result };
+					}
+				});
 			}
 
-			const result = response.data[0].value;
-			if (typeof result.is_retracted === "undefined") {
-				return { status: "not_found", data: null };
-			}
-
-			const status = result.is_retracted ? "retracted" : "not_retracted";
-			return { status, data: result };
+			return resultDOI;
 		} catch (error) {
-			this.logger.error(
-				`Bibcheck error for ${reference}: ${error.message || error}`,
-			);
-			return { status: "error", data: null };
+			this.logger.error(`Bibcheck error for ${error}`);
 		}
 	}
 }

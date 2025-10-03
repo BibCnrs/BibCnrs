@@ -24,6 +24,7 @@ services:
       - ebsco_host=${ebsco_host}
       - EZ_UNPAYWALL_URL=${EZ_UNPAYWALL_URL}
       - EZ_UNPAYWALL_KEY=${EZ_UNPAYWALL_KEY}
+      - BIBCHECK_URL=${BIBCHECK_URL}
       - METADORE_URL=${METADORE_URL}
       - METADORE_API_KEY=${METADORE_API_KEY}
       - DOAJ_URL=${DOAJ_URL}

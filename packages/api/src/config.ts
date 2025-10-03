@@ -63,6 +63,9 @@ const configFunction = () => ({
 		httpProxy: process.env.http_proxy,
 		httpsProxy: process.env.https_proxy,
 	},
+	bibcheck: {
+		BIBCHECK_URL: process.env.BIBCHECK_URL,
+	},
 });
 
 export type Config = ReturnType<typeof configFunction>;
