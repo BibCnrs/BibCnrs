@@ -14,6 +14,7 @@ import { EbscoSearchArticleService } from "./searchArticle.service";
 
 describe("EbscoSearchArticleService", () => {
 	let service: EbscoSearchArticleService;
+	let httpService: HttpService;
 
 	beforeEach(async () => {
 		const contextId = ContextIdFactory.create();
@@ -38,6 +39,72 @@ describe("EbscoSearchArticleService", () => {
 			EbscoSearchArticleService,
 			contextId,
 		);
+		httpService = module.get<HttpService>(HttpService);
+	});
+	it("should return 'not_retracted' for a valid DOI", async () => {
+		const DOI = "10.1088/1748-0221/13/01/C01029";
+		const mockResponse = {
+			status: 200,
+			data: [
+				{
+					value: {
+						is_retracted: false,
+					},
+				},
+			],
+		};
+
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		vi.spyOn(httpService, "request").mockResolvedValue(mockResponse as any);
+
+		const result = await service.bibCheck([DOI]);
+
+		expect(result[DOI.toLowerCase()]).toEqual({
+			status: "not_retracted",
+			data: { is_retracted: false },
+		});
+	});
+
+	it("should return 'retracted' for a retracted DOI", async () => {
+		const DOI = "10.1056/nejmoa1200303";
+		const mockResponse = {
+			status: 200,
+			data: [
+				{
+					value: {
+						is_retracted: true,
+					},
+				},
+			],
+		};
+
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		vi.spyOn(httpService, "request").mockResolvedValue(mockResponse as any);
+
+		const result = await service.bibCheck([DOI]);
+
+		expect(result[DOI.toLowerCase()]).toEqual({
+			status: "retracted",
+			data: { is_retracted: true },
+		});
+	});
+
+	it("should return 'not_found' for a missing DOI", async () => {
+		const DOI = "10.1088/1748-0221/13/01/C01029";
+		const mockResponse = {
+			status: 200,
+			data: [null],
+		};
+
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		vi.spyOn(httpService, "request").mockResolvedValue(mockResponse as any);
+
+		const result = await service.bibCheck([DOI]);
+
+		expect(result[DOI.toLowerCase()]).toEqual({
+			status: "not_found",
+			data: null,
+		});
 	});
 
 	it("should be defined", () => {

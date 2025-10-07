@@ -97,6 +97,7 @@ const fr: Common = {
 				description: "Description",
 				subjects: "Mots clés",
 				term: "Terme recherchés",
+				retracted: "Selon le Problematic Paper Screener (PPS), le DOI de cet article est indiqué rétracté.",
 				domain: "Domaine",
 				limiters: "Limites",
 				facets: "Facettes",

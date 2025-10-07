@@ -4,6 +4,7 @@ import {
 	CardContent,
 	Chip,
 	Link,
+	Tooltip,
 	Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
@@ -90,7 +91,16 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 
 		switch (bibCheck) {
 			case "retracted":
-				return <Chip label=" Retracted" color="default" size="small" />;
+				return (
+					<Tooltip title={t("components.search.content.retracted")}>
+						<Chip
+							label="Retracted"
+							color="secondary"
+							size="small"
+							sx={{ fontWeight: "bold", height: "25px" }}
+						/>
+					</Tooltip>
+				);
 			default:
 				return;
 		}
