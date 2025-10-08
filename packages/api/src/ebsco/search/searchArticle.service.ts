@@ -77,7 +77,13 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		prismaService: PrismaService,
 		redisService: RedisService,
 	) {
-		super(configService.get("ebsco"), httpService, prismaService, redisService);
+		super(
+			configService.get("ebsco"),
+			configService.get("bibcheck"),
+			httpService,
+			prismaService,
+			redisService,
+		);
 	}
 
 	parseArticleQueries({ queries }) {
@@ -452,6 +458,19 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			communityName,
 		);
 
+		const dois = results.results
+			.map((article) => article.doi)
+			.filter((doi) => doi);
+
+		const bibCheckResults = await this.bibCheck(dois);
+
+		for (const article of results.results) {
+			if (article.doi) {
+				const DOI = article.doi.toLowerCase();
+				article.bibcheck = bibCheckResults[DOI]?.status || "not_found";
+			}
+		}
+
 		return results;
 	}
 
@@ -491,5 +510,39 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 		);
 
 		return this.retrieveArticleParser(searchResult, communityName);
+	}
+	async bibCheck(
+		references: string[],
+	): Promise<Record<string, { status: string; data: string[] }>> {
+		try {
+			const DOIs = references.map((doi) => doi.toLowerCase());
+			const response = await this.http.request(
+				`${this.bibcheck.BIBCHECK_URL}`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					data: DOIs.map((value) => ({ value })),
+				},
+			);
+
+			const resultDOI: Record<string, { status: string; data: string[] }> = {};
+
+			if (Array.isArray(response.data)) {
+				response.data.forEach((item, index) => {
+					const doi = DOIs[index];
+					const result = item?.value;
+					if (!result || typeof result.is_retracted === "undefined") {
+						resultDOI[doi] = { status: "not_found", data: null };
+					} else {
+						const status = result.is_retracted ? "retracted" : "not_retracted";
+						resultDOI[doi] = { status, data: result };
+					}
+				});
+			}
+
+			return resultDOI;
+		} catch (error) {
+			this.logger.error(`Bibcheck error for ${error}`);
+		}
 	}
 }

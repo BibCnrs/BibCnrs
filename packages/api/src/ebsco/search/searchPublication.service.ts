@@ -25,7 +25,13 @@ export class EbscoSearchPublicationService extends AbstractEbscoSearchService {
 		prismaService: PrismaService,
 		redisService: RedisService,
 	) {
-		super(config.get("ebsco"), httpService, prismaService, redisService);
+		super(
+			config.get("ebsco"),
+			config.get("bibcheck"),
+			httpService,
+			prismaService,
+			redisService,
+		);
 	}
 
 	parsePublicationQueries(queries: Request["query"]["queries"]) {
