@@ -26,6 +26,7 @@ type EbscoError = {
 export class AbstractEbscoSearchService {
 	constructor(
 		protected readonly ebsco: Config["ebsco"],
+		protected readonly bibcheck: Config["bibcheck"],
 		protected readonly http: HttpService,
 		protected readonly prismaService: PrismaService,
 		protected readonly redisService: RedisService,

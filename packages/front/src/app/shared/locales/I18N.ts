@@ -114,6 +114,7 @@ export type Common = {
 				actions: string;
 				nbResult: string;
 				result_one: string;
+				retracted: string;
 				result_other: string;
 				noAccess: string;
 				publisherUrl: string;

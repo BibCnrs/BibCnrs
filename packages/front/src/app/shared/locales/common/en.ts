@@ -102,6 +102,8 @@ const en: Common = {
 				nbResult: "Results count:",
 				result_one: "result",
 				result_other: "results",
+				retracted:
+					'According to the Problematic Paper Screener (PPS), the DOI for this article is listed as "retracted".',
 				accessNumber: "Accession number",
 				dbId: "D&B Key Business Ratios",
 				languages: "Language",
