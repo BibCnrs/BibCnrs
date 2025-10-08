@@ -76,16 +76,24 @@ export const PublicationSidebar = ({ publication, onClose }) => {
 					Number.parseInt(value.end.month, 10) - 1,
 					Number.parseInt(value.end.day, 10),
 				);
-				if (coverageString !== "") {
-					coverageString += ", ";
-				}
-				coverageString += `${start.toLocaleDateString()} - ${
-					end.getFullYear() > new Date().getFullYear()
-						? t("components.search.content.present")
-						: end.toLocaleDateString()
-				}`;
-				if (coverageString.includes("01/01/1789")) {
-					coverageString = "";
+
+				// biome-ignore lint/complexity/useOptionalChain: <explanation>
+				if (publication && publication.type.toLowerCase().includes("book")) {
+					if (end.getFullYear() !== 9999) {
+						if (coverageString !== "") {
+							coverageString += ", ";
+						}
+						coverageString += `${end.getFullYear()}`;
+					}
+				} else {
+					if (coverageString !== "") {
+						coverageString += ", ";
+					}
+					coverageString += `${start.toLocaleDateString()} - ${
+						end.getFullYear() > new Date().getFullYear()
+							? t("components.search.content.present")
+							: end.toLocaleDateString()
+					}`;
 				}
 			});
 		} catch (e) {
