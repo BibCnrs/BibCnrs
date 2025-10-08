@@ -5,6 +5,7 @@ import {
 	IconButton,
 	Link,
 	Skeleton,
+	Tooltip,
 	Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
@@ -88,6 +89,27 @@ export const ArticleSidebar = ({ article, onClose }) => {
 		...articleLinks.pdfLinks,
 		...articleLinks.urls,
 	];
+	const bibCheck = article.bibcheck;
+
+	const renderBibCheck = () => {
+		if (!bibCheck) return null;
+
+		switch (bibCheck) {
+			case "retracted":
+				return (
+					<Tooltip title={t("components.search.content.retracted")}>
+						<Chip
+							label="Retracted"
+							color="secondary"
+							size="small"
+							sx={{ fontWeight: "bold", height: "25px" }}
+						/>
+					</Tooltip>
+				);
+			default:
+				return;
+		}
+	};
 
 	return (
 		<Box
@@ -129,20 +151,23 @@ export const ArticleSidebar = ({ article, onClose }) => {
 						source="article"
 					/>
 				</Stack>
-				<ArticleTitle
-					title={getterArticle.getTitle()}
-					href={getterArticle.proxify(
-						getterArticle.getHref(
+				<Box display="flex" gap={2}>
+					<ArticleTitle
+						title={getterArticle.getTitle()}
+						href={getterArticle.proxify(
+							getterArticle.getHref(
+								user?.settings?.articleLinkType === "fullText",
+							),
+							search.domain,
+						)}
+						openAccess={getterArticle.isOpenAccess(
 							user?.settings?.articleLinkType === "fullText",
-						),
-						search.domain,
-					)}
-					openAccess={getterArticle.isOpenAccess(
-						user?.settings?.articleLinkType === "fullText",
-					)}
-					type={getterArticle.getType()}
-				/>
+						)}
+						type={getterArticle.getType()}
+					/>
 
+					{renderBibCheck()}
+				</Box>
 				{isLoading && (
 					<>
 						<Skeleton />
