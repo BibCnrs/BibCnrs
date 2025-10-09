@@ -99,7 +99,7 @@ const ArticlePage = () => {
 	const handleDomain = useFacetsDomainHandler();
 	const domains = useDomain();
 
-	const { data, isFetching, isLoading, isError, error } = useQuery<
+	const { data, isFetching, isLoading, isError, error, refetch } = useQuery<
 		ArticleDataType,
 		// biome-ignore lint/suspicious/noExplicitAny: need to update it to the correct type (code migration)
 		any,
@@ -116,7 +116,6 @@ const ArticlePage = () => {
 			search.article.facets,
 			search.article.table.page,
 			search.article.table.perPage,
-			seed,
 		],
 		queryFn: async () => {
 			if (
@@ -229,8 +228,9 @@ const ArticlePage = () => {
 
 	const handleSearch = useCallback(
 		(value: string | undefined): void => {
+			const isSameQuery = search.query === value;
+
 			setSaveHistory(true);
-			setSeed((seed) => seed + 1);
 			setSearch((search) => ({
 				...search,
 				query: value,
@@ -243,8 +243,12 @@ const ArticlePage = () => {
 					},
 				},
 			}));
+
+			if (isSameQuery) {
+				refetch();
+			}
 		},
-		[setSearch],
+		[setSearch, refetch, search.query],
 	);
 
 	const handleOrderChange = (event: SelectChangeEvent<OrderByType>) => {
