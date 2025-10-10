@@ -117,7 +117,13 @@ export default function FilterTab({
 							{t(`pages.database.filters.${section}`)}
 						</FormLabel>
 						{filters
-							.filter((item) => item.section === section)
+							.filter((item) => {
+								const isDataFilter =
+									item.props === "type" && item.target === "data";
+								const count = getLabelCount(item);
+								return item.section === section && (!isDataFilter || count > 0);
+							})
+
 							.map((filter, index) => (
 								<FormControlLabel
 									key={`${filter.props}-${index}`}
