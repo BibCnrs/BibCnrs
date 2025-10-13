@@ -458,7 +458,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 			communityName,
 		);
 
-		const dois = results.results
+		/*const dois = results.results
 			.map((article) => article.doi)
 			.filter((doi) => doi);
 
@@ -469,7 +469,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				const DOI = article.doi.toLowerCase();
 				article.bibcheck = bibCheckResults[DOI]?.status || "not_found";
 			}
-		}
+		}*/
 
 		return results;
 	}
