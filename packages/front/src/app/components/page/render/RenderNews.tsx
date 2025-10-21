@@ -29,10 +29,19 @@ const RenderNews = ({ data }: TestsNewsProps) => {
 		if (!data) {
 			return [];
 		}
+		const today = new Date();
+		today.setHours(0, 0, 0, 0); // On compare uniquement la date, pas l'heure
 
-		return data.filter(
-			(data, index, self) => index === self.findIndex((t) => t.id === data.id),
-		);
+		return data
+			.filter((item) => {
+				const fromDate = new Date(item.from);
+				fromDate.setHours(0, 0, 0, 0);
+				return fromDate <= today;
+			})
+			.filter(
+				(data, index, self) =>
+					index === self.findIndex((t) => t.id === data.id),
+			);
 	}, [data]);
 
 	if (!filteredData || filteredData.length === 0) {
