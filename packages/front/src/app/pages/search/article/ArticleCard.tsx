@@ -2,7 +2,9 @@ import {
 	Card,
 	CardActions,
 	CardContent,
+	Chip,
 	Link,
+	Tooltip,
 	Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
@@ -84,6 +86,26 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 			});
 	}, [article, getterArticle, search.domain, user?.settings?.articleLinkType]);
 
+	const renderBibCheck = () => {
+		if (!bibCheck) return null;
+
+		switch (bibCheck) {
+			case "retracted":
+				return (
+					<Tooltip title={t("components.search.content.retracted")}>
+						<Chip
+							label="Retracted"
+							color="secondary"
+							size="small"
+							sx={{ fontWeight: "bold", height: "25px" }}
+						/>
+					</Tooltip>
+				);
+			default:
+				return;
+		}
+	};
+
 	return (
 		<Card
 			sx={{
@@ -109,6 +131,7 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 						openAccess={openAccess}
 						type={getterArticle.getType()}
 					/>
+					{renderBibCheck()}
 				</Box>
 				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">
 					{authors && (
