@@ -131,7 +131,6 @@ export const ArticleCard = ({ article, setSelectedArticle }) => {
 						openAccess={openAccess}
 						type={getterArticle.getType()}
 					/>
-					{renderBibCheck()}
 				</Box>
 				<Box mt={1} mb={2} display="flex" gap={2} flexWrap="wrap">
 					{authors && (

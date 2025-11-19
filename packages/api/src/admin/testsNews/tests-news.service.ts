@@ -48,6 +48,8 @@ export class TestsNewsService {
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
 
+		await this.desactivateExpiredNews();
+
 		const data = await this.prismaService.tests_news.findMany({
 			skip: offset || 0,
 			take: take || 100,
@@ -59,8 +61,6 @@ export class TestsNewsService {
 				tests_news_community: true,
 			},
 		});
-
-		await this.desactivateExpiredNews();
 
 		const total = await this.prismaService.tests_news.count({
 			where: filters,
