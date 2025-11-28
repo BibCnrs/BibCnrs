@@ -38,7 +38,5 @@ before_script:
   - echo "MAT_SITE_ID: $MATOMO_SITE_ID"
   - echo "DOCKERFILE_DIR: $DOCKERFILE_DIR"
   - echo "IMAGE_NAME: $IMAGE_NAME"
-  - echo "BUILD_ARGS:"
-  - echo "$BUILD_ARGS"
   - echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
   - echo "========================================"
