@@ -9,23 +9,77 @@ default:
     paths:
       - .yarn/
 
+stages:
+  - publish
+
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
   VERSION_NUM: "dev"
   BIB_ENV: "-dev"
   MATOMO_SITE_ID: 86
   DOCKERFILE_DIR: "${CI_PROJECT_DIR}/packages/front"
-  IMAGE_NAME: "${CI_NEXUS_REGISTRY_URL}:${CI_NEXUS_REGISTRY_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
+  IMAGE_NAME: "bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
   BUILD_ARGS: |
     BIBAPI_HOST=${BIBAPI_HOST}
     MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
     MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
     MATOMO_SITE_ID=${MATOMO_SITE_ID}
 
-include:
-  - project: "resinglog/ci-templates"
-    file: "docker-publish.yml"
-
 docker:publish:
+  stage: publish
+  image:
+    name: venexus-registry.intra.inist.fr:8083/buildkit:v0.23.2-rootless
+    entrypoint: ["sh", "-c"]
+  tags:
+    - build
+    - buildkit
+  before_script:
+    # Check presence of IMAGE_NAME variable
+    - |
+      if [ -z $IMAGE_NAME ]; then
+        echo "[ERROR] IMAGE_NAME is not set. Please define it."
+        exit 1
+      fi
+    # Check presence of Dockerfile
+    - |
+      DOCKERFILE_FULL_PATH="${DOCKERFILE_DIR}/${DOCKERFILE_NAME}"
+      if [ ! -e "$DOCKERFILE_FULL_PATH" ]; then
+        echo "Error: Dockerfile not found at '$DOCKERFILE_FULL_PATH'. Please provide a valid path." >&2
+        exit 1
+      fi
+    # Adding authentication
+    - mkdir -p ~/.docker
+    - cat $CI_DOCKER_AUTH_CONFIG | base64 -d > ~/.docker/config.json
+  script:
+    - COMMIT_TAG=$CI_COMMIT_TAG
+    # Removing tag prefix
+    - if echo "$COMMIT_TAG" | grep -q '^v'; then COMMIT_TAG="${COMMIT_TAG:1}"; fi
+    # Building --build-args
+    - |
+      DOCKER_BUILD_ARGS=""
+      while IFS= read -r line; do
+        if [ -n "$line" ]; then
+          DOCKER_BUILD_ARGS="$DOCKER_BUILD_ARGS --opt build-arg:$line"
+        fi
+      done <<EOF
+      $BUILD_ARGS
+      EOF
+    # Print building informations
+    - |
+      echo `[INFO] Building image ${CI_NEXUS_REGISTRY_URL}/${IMAGE_NAME}:${COMMIT_TAG}
+      echo "[INFO] Using Dockerfile: ${DOCKERFILE_DIR}/${DOCKERFILE_NAME}"
+      echo "[INFO] Build context: ${DOCKERFILE_CONTEXT}"
+    # Image creation and upload to the register
+    - |
+      buildctl-daemonless.sh build \
+        --frontend=dockerfile.v0 \
+        --local context=${DOCKERFILE_CONTEXT} \
+        --local dockerfile=${DOCKERFILE_DIR} \
+        --opt filename=${DOCKERFILE_NAME} \
+        ${DOCKER_BUILD_ARGS} \
+        $([ -n "$TARGET" ] && echo "--opt target=${TARGET}") \
+        --output type=image,name="${CI_NEXUS_REGISTRY_URL}:${CI_NEXUS_DOCKER_PORT}/${IMAGE_NAME}",push=true
   rules:
+    # Triggering tag creation
+    #- if: $CI_COMMIT_TAG =~ /^[a-z]?[0-9]+\.[0-9]+\.[0-9]+[a-z0-9_\-.]*/i
     - if: '$CI_COMMIT_BRANCH == "test"'
