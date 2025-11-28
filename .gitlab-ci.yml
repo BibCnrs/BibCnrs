@@ -8,6 +8,14 @@ default:
     policy: pull-push
     paths:
       - .yarn/
+include:
+  - project: "resinglog/ci-templates"
+    file: "docker-publish.yml"
+
+# Surcharge de la règle
+docker:publish:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test"'
 
 .rule: &rule
   if: $CI_COMMIT_BRANCH == "develop"
@@ -39,12 +47,26 @@ default:
   before_script:
     - make install-immutable
 
+variables:
+  BIBAPI_HOST: "https://bib-dev.inist.fr/api"
+  VERSION_NUM: "develop"
+  BIB_ENV: "-dev"
+  MATOMO_SITE_ID: 86
+  DOCKERFILE_DIR: "${CI_PROJECT_DIR}/packages/front"
+  IMAGE_NAME: ${CI_NEXUS_REGISTRY_URL}:${CI_NEXUS_REGISTRY_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
+  BUILD_ARGS: |
+    BIBAPI_HOST=${BIBAPI_HOST}
+    MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
+    MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
+    MATOMO_SITE_ID=${MATOMO_SITE_ID}
+
 stages:
-  - lint
-  - typecheck
-  - test
-  - build
-  - renovate
+  - publish
+  #- lint
+  #- typecheck
+  #- test
+  #- build
+  #- renovate
 
 lint:
   stage: lint
@@ -100,7 +122,6 @@ test:api:
     - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
-
 
 test:front:
   stage: test
@@ -192,7 +213,6 @@ test:e2e:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
-
 build:admin:
   stage: build
   image:
@@ -237,7 +257,6 @@ build:api:
     - *rule
     - *rule_main
     - *rule_tag
-  
 
 build:front:
   stage: build
@@ -279,4 +298,3 @@ renovate:
     RENOVATE_ENDPOINT: $CI_API_V4_URL
     RENOVATE_COMMIT_MESSAGE_PREFIX: "[Renovate]"
     LOG_LEVEL: debug
-
