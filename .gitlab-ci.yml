@@ -11,7 +11,7 @@ default:
 
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
-  VERSION_NUM: "develop"
+  VERSION_NUM: "dev"
   BIB_ENV: "-dev"
   MATOMO_SITE_ID: 86
   DOCKERFILE_DIR: "${CI_PROJECT_DIR}/packages/front"
@@ -29,7 +29,6 @@ include:
 docker:publish:
   rules:
     - if: '$CI_COMMIT_BRANCH == "test"'
-
 before_script:
   - echo "=== Variables du job docker:publish ==="
   - echo "BI_HOST: $BIBAPI_HOST"
