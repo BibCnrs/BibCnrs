@@ -29,13 +29,3 @@ include:
 docker:publish:
   rules:
     - if: '$CI_COMMIT_BRANCH == "test"'
-before_script:
-  - echo "=== Variables du job docker:publish ==="
-  - echo "BI_HOST: $BIBAPI_HOST"
-  - echo "VERSION_NUM: $VERSION_NUM"
-  - echo "BI_ENV: $BIB_ENV"
-  - echo "MAT_SITE_ID: $MATOMO_SITE_ID"
-  - echo "DOCKERFILE_DIR: $DOCKERFILE_DIR"
-  - echo "IMAGE_NAME: $IMAGE_NAME"
-  - echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
-  - echo "========================================"
