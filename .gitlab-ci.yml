@@ -8,9 +8,7 @@ default:
     policy: pull-push
     paths:
       - .yarn/
-include:
-  - project: "resinglog/ci-templates"
-    file: "docker-publish.yml"
+
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
   VERSION_NUM: "develop"
@@ -24,9 +22,14 @@ variables:
     MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
     MATOMO_SITE_ID=${MATOMO_SITE_ID}
 
+include:
+  - project: "resinglog/ci-templates"
+    file: "docker-publish.yml"
+
 docker:publish:
   rules:
     - if: '$CI_COMMIT_BRANCH == "test"'
+
 before_script:
   - echo "=== Variables du job docker:publish ==="
   - echo "BI_HOST: $BIBAPI_HOST"
