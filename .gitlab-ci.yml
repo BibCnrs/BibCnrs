@@ -11,20 +11,29 @@ default:
 include:
   - project: "resinglog/ci-templates"
     file: "docker-publish.yml"
-
 docker:publish:
   rules:
     - if: '$CI_COMMIT_BRANCH == "test"'
-
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
   VERSION_NUM: "develop"
   BIB_ENV: "-dev"
   MATOMO_SITE_ID: 86
   DOCKERFILE_DIR: "${CI_PROJECT_DIR}/packages/front"
-  IMAGE_NAME: ${CI_NEXUS_REGISTRY_URL}:${CI_NEXUS_REGISTRY_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
+  IMAGE_NAME: "${CI_NEXUS_REGISTRY_URL}:${CI_NEXUS_REGISTRY_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
   BUILD_ARGS: |
     BIBAPI_HOST=${BIBAPI_HOST}
     MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
     MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
     MATOMO_SITE_ID=${MATOMO_SITE_ID}
+before_script:
+  - echo "=== Variables du job docker:publish ==="
+  - echo "BI_HOST: $BIBAPI_HOST"
+  - echo "VERSION_NUM: $VERSION_NUM"
+  - echo "BI_ENV: $BIB_ENV"
+  - echo "MAT_SITE_ID: $MATOMO_SITE_ID"
+  - echo "DOCKERFILE_DIR: $DOCKERFILE_DIR"
+  - echo "IMAGE_NAME: $IMAGE_NAME"
+  - echo "BUILD_ARGS: $BUILD_ARGS"
+  - echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
+  - echo "========================================"
