@@ -11,9 +11,6 @@ default:
 include:
   - project: "resinglog/ci-templates"
     file: "docker-publish.yml"
-docker:publish:
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "test"'
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
   VERSION_NUM: "develop"
@@ -26,6 +23,10 @@ variables:
     MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
     MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
     MATOMO_SITE_ID=${MATOMO_SITE_ID}
+
+docker:publish:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test"'
 before_script:
   - echo "=== Variables du job docker:publish ==="
   - echo "BI_HOST: $BIBAPI_HOST"
@@ -34,6 +35,7 @@ before_script:
   - echo "MAT_SITE_ID: $MATOMO_SITE_ID"
   - echo "DOCKERFILE_DIR: $DOCKERFILE_DIR"
   - echo "IMAGE_NAME: $IMAGE_NAME"
-  - echo "BUILD_ARGS: $BUILD_ARGS"
+  - echo "BUILD_ARGS:"
+  - echo "$BUILD_ARGS"
   - echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
   - echo "========================================"
