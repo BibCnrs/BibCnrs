@@ -49,7 +49,7 @@ include:
     file: docker-publish.yml
     ref: feat/docker-publish-inputs
     inputs:
-      image_name: bibcnrs/admin${BIB_ENV}
+      image_name: bibcnrs/admin
       image_tag: $VERSION_NUM$BIB_ENV
       registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
       job_name: publish-admin-to-nexus
