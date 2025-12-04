@@ -11,7 +11,7 @@ default:
 
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
-  VERSION_NUM: "dev"
+  VERSION_NUM: "develop"
   BIB_ENV: "-dev"
   MATOMO_SITE_ID: 86
 
@@ -20,8 +20,8 @@ include:
     file: docker-publish.yml
     ref: feat/docker-publish-inputs
     inputs:
-      image_name: bibcnrs/front${BIB_ENV}
-      image_tag: $VERSION_NUM
+      image_name: bibcnrs/front
+      image_tag: $VERSION_NUM$BIB_ENV
       registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
       job_name: publish-front-to-nexus
       dockerfile_dir: $CI_PROJECT_DIR/packages/front
@@ -50,7 +50,7 @@ include:
     ref: feat/docker-publish-inputs
     inputs:
       image_name: bibcnrs/admin${BIB_ENV}
-      image_tag: $VERSION_NUM
+      image_tag: $VERSION_NUM$BIB_ENV
       registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
       job_name: publish-admin-to-nexus
       dockerfile_dir: $CI_PROJECT_DIR/packages/admin
