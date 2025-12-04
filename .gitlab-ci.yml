@@ -14,19 +14,50 @@ variables:
   VERSION_NUM: "dev"
   BIB_ENV: "-dev"
   MATOMO_SITE_ID: 86
-  DOCKERFILE_DIR: "${CI_PROJECT_DIR}/packages/front"
-  COMMIT_TAG: "dev-dev"
-  IMAGE_NAME: "/bibcnrs/front"
-  BUILD_ARGS: |
-    BIBAPI_HOST=${BIBAPI_HOST}
-    MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
-    MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
-    MATOMO_SITE_ID=${MATOMO_SITE_ID}
 
 include:
-  - project: "resinglog/ci-templates"
-    file: "docker-publish.yml"
+  - project: resinglog/ci-templates
+    file: docker-publish.yml
+    ref: feat/docker-publish-inputs
+    inputs:
+      image_name: bibcnrs/front${BIB_ENV}
+      image_tag: $VERSION_NUM
+      registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
+      job_name: publish-front-to-nexus
+      dockerfile_dir: $CI_PROJECT_DIR/packages/front
+      dockerfile_context: $CI_PROJECT_DIR/packages/front
+      build_args:
+        - BIBAPI_HOST=${BIBAPI_HOST}
+        - MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
+        - MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
+        - MATOMO_SITE_ID=${MATOMO_SITE_ID}
+  - project: resinglog/ci-templates
+    file: docker-publish.yml
+    ref: feat/docker-publish-inputs
+    inputs:
+      image_name: bibcnrs/api
+      image_tag: $VERSION_NUM
+      registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
+      job_name: publish-api-to-nexus
+      dockerfile_dir: $CI_PROJECT_DIR/packages/api
+      dockerfile_context: $CI_PROJECT_DIR/packages/api
+      build_args:
+        - BIBAPI_HOST=${BIBAPI_HOST}
+        - http_proxy=${http_proxy}
+        - https_proxy=${https_proxy}
+  - project: resinglog/ci-templates
+    file: docker-publish.yml
+    ref: feat/docker-publish-inputs
+    inputs:
+      image_name: bibcnrs/admin${BIB_ENV}
+      image_tag: $VERSION_NUM
+      registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
+      job_name: publish-admin-to-nexus
+      dockerfile_dir: $CI_PROJECT_DIR/packages/admin
+      dockerfile_context: $CI_PROJECT_DIR/packages/admin
+      build_args:
+        - BIBAPI_HOST=${BIBAPI_HOST}
 
-docker:publish:
+publish-image-to-nexus:
   rules:
     - if: '$CI_COMMIT_BRANCH == "test"'
