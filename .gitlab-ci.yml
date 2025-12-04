@@ -58,6 +58,14 @@ include:
       build_args:
         - BIBAPI_HOST=${BIBAPI_HOST}
 
-docker-publish:
+publish-admin-to-nexus:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test"'
+
+publish-api-to-nexus:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test"'
+
+publish-front-to-nexus:
   rules:
     - if: '$CI_COMMIT_BRANCH == "test"'
