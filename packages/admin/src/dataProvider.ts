@@ -29,7 +29,9 @@ const upsertFile = async (
 	id?: number,
 ) => {
 	const formData = new FormData();
-	formData.append("name", name);
+	const onlyName = name.split(".")[0];
+
+	formData.append("name", onlyName);
 	formData.append("file", file);
 	formData.append("tags_id", tags);
 	const mediaRoute = id ? `/medias/${id}` : "/medias";
