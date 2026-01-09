@@ -19,10 +19,10 @@ function validate(values: any) {
 	if (!values.name) {
 		errors.name = "ra.validation.required";
 	} else {
-		const invalidName = /[^a-zA-Z\s]|(\.[a-zA-Z0-9]+)$/;
+		const invalidName = /[^a-zA-Z0-9_-]|\.[a-zA-Z0-9]+$/;
 		if (invalidName.test(values.name)) {
 			errors.name =
-				"Le nom du média ne doit contenir que des lettres sans chiffres, tirets ou extensions.";
+				"Le nom du média ne doit contenir que des lettres (a-z, A-Z), chiffres, tirets ou underscores (sans autre caractère spécial, sans espace).";
 		}
 	}
 

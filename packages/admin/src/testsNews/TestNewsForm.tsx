@@ -43,6 +43,9 @@ const FileComponent = () => {
 	);
 };
 
+// Regex pour valider le nom du fichier (autorise lettres, chiffres, tirets et underscores)
+const invalidFileNameRegex = /[^a-zA-Z0-9_-]|\.[a-zA-Z0-9]+$/;
+
 // biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
 const validate = (values: any) => {
 	// biome-ignore lint/suspicious/noExplicitAny: Need to type after marmelab's mission
@@ -75,6 +78,15 @@ const validate = (values: any) => {
 
 	if (!values.communities || values.communities.length < 1) {
 		errors.communities = "ra.validation.required";
+	}
+
+	// Vérification du nom du fichier avec optional chaining
+	if (values.file?.rawFile?.name) {
+		const fileName = values.file.rawFile.name;
+		if (invalidFileNameRegex.test(fileName.split(".")[0])) {
+			errors.file =
+				"Le nom du média ne doit contenir que des lettres (a-z, A-Z), chiffres, tirets ou underscores (sans autre caractère spécial, sans espace).";
+		}
 	}
 
 	return errors;
