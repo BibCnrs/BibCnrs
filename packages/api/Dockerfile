@@ -1,4 +1,4 @@
-FROM node:23.3-alpine3.21 AS base
+FROM node:20-alpine AS base
 
 RUN apk update && apk upgrade && apk add --no-cache curl && apk add openssl
 RUN mkdir -p /app/.yarn
@@ -35,6 +35,8 @@ FROM sources AS dev
 ENV NODE_ENV=development
 
 CMD ["yarn", "workspace", "@bibcnrs/api", "run", "start:dev"]
+
+
 
 FROM sources AS e2e
 
