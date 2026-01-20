@@ -1,38 +1,48 @@
 import {
-	AutocompleteInput,
 	BooleanField,
 	Datagrid,
 	DateField,
 	DeleteWithConfirmButton,
 	EditButton,
+	Filter,
 	List,
 	ReferenceArrayField,
-	ReferenceInput,
+	SelectInput,
 	SingleFieldList,
 	TextField,
 	TextInput,
 	UrlField,
+	useGetList,
 	useRecordContext,
 } from "react-admin";
 import CustomPagination from "../components/CustomPagination";
 
-const MediasFilter = [
-	<TextInput key="name" label="Rechercher" source="name" alwaysOn />,
-	<ReferenceInput
-		key="tags_medias"
-		label="tags"
-		source="tags_medias.tags_id"
-		reference="tags"
-		sort={{ field: "id", order: "ASC" }}
-	>
-		<AutocompleteInput
-			key="tags_autocomplete"
-			filterToQuery={(searchText) => ({ name: searchText })}
-			optionText="name"
-			label="tags"
-		/>
-	</ReferenceInput>,
-];
+export const MediasFilter = (props) => {
+	const { data: tags, isLoading } = useGetList("tags", {
+		pagination: { page: 1, perPage: 1000 },
+		sort: { field: "name", order: "ASC" },
+	});
+
+	const tagChoices = tags
+		? [
+				{ id: 0, name: "sans tag" },
+				...tags.map((tag) => ({ id: tag.id, name: tag.name })),
+			]
+		: [];
+
+	return (
+		<Filter {...props}>
+			<TextInput label="Rechercher" source="name" alwaysOn />
+			<SelectInput
+				label="Tags"
+				source="tags_medias.tags_id"
+				choices={tagChoices}
+				isLoading={isLoading}
+				alwaysOn
+			/>
+		</Filter>
+	);
+};
 
 const MediasActions = () => {
 	const record = useRecordContext();
@@ -46,10 +56,11 @@ const MediasActions = () => {
 };
 
 const BulkActionButtons2 = () => <></>;
+
 export default function MediasList() {
 	return (
 		<List
-			filters={MediasFilter}
+			filters={<MediasFilter />}
 			perPage={10}
 			pagination={<CustomPagination />}
 			sort={{ field: "created_at", order: "DESC" }}

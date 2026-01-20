@@ -14,6 +14,15 @@ export class MediasService {
 		if (!query) return {};
 
 		const filters = JSON.parse(query._filters || "{}");
+
+		// si filtre sans tag
+		if (filters["tags_medias.tags_id"] === 0) {
+			return {
+				tags_medias: {
+					none: {},
+				},
+			};
+		}
 		return filters
 			? transformFilters(filters, [
 					{ field: "name", mode: "contains" },
@@ -39,56 +48,6 @@ export class MediasService {
 		const take = Number.parseInt(query._perPage) || 100;
 		const offset = this.calculateOffset(query, take);
 
-		/*const sortField = query._sortField
-			? `${query._sortField} ${query._sortDir}`
-			: "m.id";
-
-		const data = await this.prismaService.$queryRaw<
-			(medias & { isUsed: boolean })[]
-		>(Prisma.sql`
-        SELECT
-            m.*,
-            EXISTS (
-                SELECT 1
-                FROM content_management cm
-                WHERE cm.media_id = m.id
-                UNION
-                SELECT 1
-                FROM resources r
-                WHERE r.media_id = m.id
-                UNION
-                SELECT 1
-                FROM tests_news tn
-                WHERE tn.media_id = m.id
-                UNION
-				SELECT 1
-                FROM tests_news tn
-                WHERE tn.content_fr LIKE '%' || m.url || '%'
-                OR tn.content_en LIKE '%' || m.url || '%'
-				UNION
-                SELECT 1
-                FROM license l
-                WHERE l.media_id = m.id
-                UNION
-				SELECT 1
-                FROM license l
-                WHERE l.content_fr LIKE '%' || m.url || '%'
-                OR l.content_en LIKE '%' || m.url || '%'
-				UNION
-                SELECT 1
-                FROM content_management cm
-                WHERE cm.content_fr LIKE '%' || m.url || '%'
-                OR cm.content_en LIKE '%' || m.url || '%'
-            ) AS isUsed
-			FROM medias m
-            ORDER BY created_at desc  
-            LIMIT ${take} OFFSET ${offset}
-    `);
-		const total = await this.prismaService.medias.count({
-			where: filters,
-		});
-
-		return { data, total };*/
 		const sortField =
 			query._sortField === "isUsed" ? undefined : query._sortField;
 
