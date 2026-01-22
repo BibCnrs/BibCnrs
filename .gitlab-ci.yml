@@ -193,7 +193,6 @@ test:e2e:
 include:
   - project: resinglog/ci-templates
     file: docker-publish.yml
-    ref: feat/docker-publish-inputs
     inputs:
       image_name: bibcnrs/front
       image_tag: $VERSION_NUM$BIB_ENV
@@ -208,7 +207,6 @@ include:
         - MATOMO_SITE_ID=${MATOMO_SITE_ID}
   - project: resinglog/ci-templates
     file: docker-publish.yml
-    ref: feat/docker-publish-inputs
     inputs:
       image_name: bibcnrs/api
       image_tag: $VERSION_NUM
@@ -222,7 +220,6 @@ include:
         - https_proxy=${https_proxy}
   - project: resinglog/ci-templates
     file: docker-publish.yml
-    ref: feat/docker-publish-inputs
     inputs:
       image_name: bibcnrs/admin
       image_tag: $VERSION_NUM$BIB_ENV
