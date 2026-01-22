@@ -43,6 +43,7 @@ stages:
   - lint
   - typecheck
   - test
+  - publish
   - renovate
 
 lint:
