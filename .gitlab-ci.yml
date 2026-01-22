@@ -43,7 +43,6 @@ stages:
   - lint
   - typecheck
   - test
-  - build
   - renovate
 
 lint:
@@ -100,7 +99,6 @@ test:api:
     - *rule_merge_request
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
-
 
 test:front:
   stage: test
@@ -192,73 +190,74 @@ test:e2e:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
 
+include:
+  - project: resinglog/ci-templates
+    file: docker-publish.yml
+    ref: feat/docker-publish-inputs
+    inputs:
+      image_name: bibcnrs/front
+      image_tag: $VERSION_NUM$BIB_ENV
+      registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
+      job_name: publish-front-to-nexus
+      dockerfile_dir: $CI_PROJECT_DIR/packages/front
+      dockerfile_context: $CI_PROJECT_DIR
+      build_args:
+        - BIBAPI_HOST=${BIBAPI_HOST}
+        - MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}
+        - MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}
+        - MATOMO_SITE_ID=${MATOMO_SITE_ID}
+  - project: resinglog/ci-templates
+    file: docker-publish.yml
+    ref: feat/docker-publish-inputs
+    inputs:
+      image_name: bibcnrs/api
+      image_tag: $VERSION_NUM
+      registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
+      job_name: publish-api-to-nexus
+      dockerfile_dir: $CI_PROJECT_DIR/packages/api
+      dockerfile_context: $CI_PROJECT_DIR
+      build_args:
+        - BIBAPI_HOST=${BIBAPI_HOST}
+        - http_proxy=${http_proxy}
+        - https_proxy=${https_proxy}
+  - project: resinglog/ci-templates
+    file: docker-publish.yml
+    ref: feat/docker-publish-inputs
+    inputs:
+      image_name: bibcnrs/admin
+      image_tag: $VERSION_NUM$BIB_ENV
+      registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
+      job_name: publish-admin-to-nexus
+      dockerfile_dir: $CI_PROJECT_DIR/packages/admin
+      dockerfile_context: $CI_PROJECT_DIR
+      build_args:
+        - BIBAPI_HOST=${BIBAPI_HOST}
 
-build:admin:
-  stage: build
-  image:
-    name: gcr.io/kaniko-project/executor:v1.20.0-debug
-    entrypoint: [""]
-  before_script:
-    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
-  script:
-    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/packages/admin/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/admin:${VERSION_NUM}${BIB_ENV}"
-      --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
+publish-admin-to-nexus:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - if: '$CI_COMMIT_BRANCH == "test"'
     - *rule_merge_request
     - *rule
     - *rule_main
     - *rule_tag
 
-build:api:
-  stage: build
-  image:
-    name: gcr.io/kaniko-project/executor:v1.20.0-debug
-    entrypoint: [""]
-  before_script:
-    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
-  script:
-    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr ‘[A-Z]’ ‘[a-z]’)
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/packages/api/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/api:${VERSION_NUM}"
-      --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
-      --build-arg http_proxy
+publish-api-to-nexus:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - if: '$CI_COMMIT_BRANCH == "test"'
     - *rule_merge_request
     - *rule
     - *rule_main
     - *rule_tag
-  
 
-build:front:
-  stage: build
-  image:
-    name: gcr.io/kaniko-project/executor:v1.20.0-debug
-    entrypoint: [""]
-  before_script:
-    - cat $CI_NEXUS_AUTH_CONFIG > /kaniko/.docker/config.json
-  script:
-    - PROJECT_PATH=$(echo $CI_PROJECT_PATH | tr '[A-Z]' '[a-z]')
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/packages/front/Dockerfile"
-      --destination "${REGISTRY_URL}:${REGISTRY_DOCKER_PORT}/bibcnrs/front:${VERSION_NUM}${BIB_ENV}"
-      --build-arg "BIBAPI_HOST=${BIBAPI_HOST}"
-      --build-arg "MATOMO_TRACKER_URL=${MATOMO_TRACKER_URL}"
-      --build-arg "MATOMO_SCRIPT_URL=${MATOMO_SCRIPT_URL}"
-      --build-arg "MATOMO_SITE_ID=${MATOMO_SITE_ID}"
+publish-front-to-nexus:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
+    - if: '$CI_COMMIT_BRANCH == "test"'
     - *rule_merge_request
     - *rule
     - *rule_main
@@ -279,4 +278,3 @@ renovate:
     RENOVATE_ENDPOINT: $CI_API_V4_URL
     RENOVATE_COMMIT_MESSAGE_PREFIX: "[Renovate]"
     LOG_LEVEL: debug
-
