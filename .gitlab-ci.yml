@@ -9,6 +9,36 @@ default:
     paths:
       - .yarn/
 
+.rule: &rule
+  if: $CI_COMMIT_BRANCH == "test"
+  variables:
+    BIBAPI_HOST: "https://bib-dev.inist.fr/api"
+    VERSION_NUM: "develop"
+    BIB_ENV: "-dev"
+    MATOMO_SITE_ID: 86
+.rule_main: &rule_main
+  if: $CI_COMMIT_BRANCH == "main"
+  variables:
+    BIBAPI_HOST: "https://bib-preprod.inist.fr/api"
+    VERSION_NUM: "main"
+    BIB_ENV: "-int"
+    MATOMO_SITE_ID: 86
+.rule_tag: &rule_tag
+  if: $CI_COMMIT_TAG
+  variables:
+    BIBAPI_HOST: "https://bib.cnrs.fr/api"
+    VERSION_NUM: $CI_COMMIT_TAG
+    BIB_ENV: "-prd"
+    MATOMO_SITE_ID: 1
+
+.rule_merge_request: &rule_merge_request
+  if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+  when: never
+
+.before_script: &before_script
+  before_script:
+    - make install-immutable
+
 variables:
   BIBAPI_HOST: "https://bib-dev.inist.fr/api"
   VERSION_NUM: "develop"
@@ -57,12 +87,12 @@ include:
 
 publish-admin-to-nexus:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test"'
+    - *rule
 
 publish-api-to-nexus:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test"'
+    - *rule
 
 publish-front-to-nexus:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test"'
+    - *rule
