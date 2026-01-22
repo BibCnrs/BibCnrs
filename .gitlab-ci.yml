@@ -45,7 +45,7 @@ include:
         - https_proxy=${https_proxy}
   - project: resinglog/ci-templates
     file: docker-publish.yml
-     inputs:
+    inputs:
       image_name: bibcnrs/admin
       image_tag: $VERSION_NUM$BIB_ENV
       registry_url: $CI_NEXUS_REGISTRY_URL:$CI_NEXUS_DOCKER_PORT
