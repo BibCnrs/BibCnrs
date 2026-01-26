@@ -26,13 +26,13 @@ services:
       db-test:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgres://postgres:S3cr3t@db-test/bibcnrs
+      - DATABASE_URL=postgres://postgres:secret@db-test/bibcnrs
       - NODE_ENV=${NODE_ENV:-development}
       - MAIL_SERVER_HOST= mail
       - MAIL_SERVER_PORT= 1025
-      - cookie_secret=S3cr3t!C00kie
-      - header_secret=S3cr3t!H34d3r
-      - admin_secret=S3cr3t!4dm1n
+      - cookie_secret=${cookie_secret}
+      - header_secret=${header_secret}
+      - admin_secret=${admin_secret}
       - BIB_CONTENT_DELIVERY_HOST=http://localhost:3000/files
       - MAIL_FROM=bibcnrs@bib.cnrs.fr
       - MAIL_TO=assistance-portail@inist.fr
@@ -60,7 +60,7 @@ services:
     image: postgres:17.6
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=S3cr3t
+      - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=bibcnrs_test
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
