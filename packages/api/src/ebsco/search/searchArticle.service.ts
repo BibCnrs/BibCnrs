@@ -430,7 +430,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 				searchResult.doiRetry = true;
 			}
 
-			if (
+			/*if (
 				!searchResult?.SearchResult?.Statistics?.TotalHits &&
 				retryQuery?.FT === "Y"
 			) {
@@ -449,7 +449,7 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 					communityName,
 				);
 				searchResult.noFullText = true;
-			}
+			}*/
 		}
 
 		const results = await this.parsePublicationResults(
