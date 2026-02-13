@@ -44,6 +44,9 @@ export class FrontTestNewsService {
 			where: {
 				AND: {
 					enable: true,
+					from: {
+						lte: this.getNow(),
+					},
 					tests_news_community: domains?.length
 						? {
 								some: {
