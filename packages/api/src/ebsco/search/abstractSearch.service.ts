@@ -81,19 +81,20 @@ export class AbstractEbscoSearchService {
 			: { field, term, ...rest };
 	}
 
-	protected async ebscoRequest<T>(
+	async ebscoRequest<T>(
 		url: string,
 		json: JsonObject,
 		authToken: string | null = null,
 		sessionToken: string | null = null,
+		method: "POST" | "GET" = "POST",
 	): Promise<T> {
 		const start = Date.now();
-
 		const response = await this.http.request(
 			`${this.ebsco.host}${this.ebsco.port || ""}${url}`,
 			{
-				method: "POST",
-				data: JSON.stringify(json),
+				method,
+				params: method === "GET" ? json : undefined,
+				data: method === "POST" ? JSON.stringify(json) : undefined,
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -107,7 +108,7 @@ export class AbstractEbscoSearchService {
 
 		const { UserId: _userid, Password: _password, ...cleanedJson } = json;
 		logger.log(
-			`POST ${url} ${response.status} ${JSON.stringify({
+			`${method} ${url} ${response.status} ${JSON.stringify({
 				cleanedJson,
 				authToken,
 				sessionToken,
@@ -143,7 +144,7 @@ export class AbstractEbscoSearchService {
 		);
 	}
 
-	protected async getEbscoAuthToken(
+	async getEbscoAuthToken(
 		{ username, domains }: EbscoToken,
 		{ name: communityName, user_id, password, profile }: community,
 	) {
@@ -192,7 +193,7 @@ export class AbstractEbscoSearchService {
 		await this.redisService.delAsync(communityName);
 	}
 
-	protected async ebscoSearch<
+	async ebscoSearch<
 		F extends (authToken: string, sessionToken: string) => Promise<R>,
 		R,
 	>(

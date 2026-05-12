@@ -697,20 +697,32 @@ export const retrieve = async (
 	return json<ArticleRetrieveDataType>(response);
 };
 
-export const retrieveExport = async (links: string[]): Promise<string[]> => {
-	const response: Response = await fetch(
-		createQuery(environment.post.retrieve.articleExport),
-		{
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				links,
-			}),
-		},
+export const retrieveExport = async (
+	domain: Institute,
+	exportType: "bibtex" | "ris",
+	links: string[],
+): Promise<string[]> => {
+	const path = environment.post.retrieve.articleExport.replace(
+		"{domain}",
+		domain,
 	);
-	throwIfNotOk(response);
-	return json<string[]>(response);
+	const url = createQuery(path, undefined, false);
+
+	const response = await fetch(url.toString(), {
+		method: "POST",
+		credentials: "include",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ domain, exportType, links }),
+	});
+
+	if (!response.ok) {
+		const errorText = await response.text();
+		throw new Error(`Erreur ${response.status}: ${errorText}`);
+	}
+
+	const exportValues: string[] = await response.json();
+	return exportValues;
 };

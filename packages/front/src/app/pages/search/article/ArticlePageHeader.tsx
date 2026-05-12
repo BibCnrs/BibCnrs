@@ -52,18 +52,6 @@ export const ArticlePageHeader = ({
 				{exports.length !== 0 ? (
 					<>
 						<Button
-							color="primary"
-							variant="contained"
-							sx={{ paddingLeft: 1, paddingRight: 2 }}
-							className="article-action-element"
-							onClick={() => {
-								handleDownload("bibtex");
-							}}
-						>
-							<SaveAltIcon sx={{ marginRight: 1 }} />
-							BIBTEX
-						</Button>
-						<Button
 							variant="contained"
 							sx={{ paddingLeft: 1, paddingRight: 2 }}
 							className="article-action-element"
