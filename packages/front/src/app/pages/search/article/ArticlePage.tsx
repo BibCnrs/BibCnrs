@@ -311,7 +311,7 @@ const ArticlePage = () => {
 
 	const handleDownload = (target: "bibtex" | "ris") => {
 		const links = exports.map((value) => value[target]);
-		retrieveExport(links).then((exportValues) => {
+		retrieveExport(search.domain, target, links).then((exportValues) => {
 			const blob = new Blob([exportValues.join("\n")], { type: "text/plain" });
 			const elem = document.createElement("a");
 			elem.href = URL.createObjectURL(blob);

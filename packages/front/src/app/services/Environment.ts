@@ -37,7 +37,7 @@ export const environment = {
 			history: "/front/history",
 		},
 		retrieve: {
-			articleExport: "/ebsco/retrieve_ris",
+			articleExport: "/ebsco/{domain}/article/retrieve_ris",
 		},
 	},
 	put: {
