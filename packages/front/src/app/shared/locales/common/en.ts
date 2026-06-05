@@ -31,7 +31,7 @@ const en: Common = {
 			skipToNav: "Skip to navigation",
 			title: "CNRS document access",
 			questions: "Q&A",
-			resources: "Lists of resources",
+			resources: "Overview of resources",
 			licences: "Licences",
 			tests: "Tests",
 			news: "News",
@@ -305,7 +305,7 @@ Sincerely`,
 			emptyFavorites: "Pin your favourite resources to find them easily later.",
 		},
 		resources: {
-			title: "Lists of document resources",
+			title: "Overwiew of document resources",
 		},
 		about: {
 			title: "About",
