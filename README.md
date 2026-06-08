@@ -1,6 +1,6 @@
 # BibCnrs
 
-<!-- BIB LOGO TODO add link-->
+<!-- BIB LOGO TODO add a link-->
 <p align="center">
   
 This is a monorepo containing several packages for the BibCnrs project. Each package serves a different purpose and can be used independently.

@@ -206,7 +206,7 @@ const i18n = {
 			},
 		},
 		resources: {
-			name: "Ressources",
+			name: "Fiches panorama",
 		},
 		medias: {
 			name: "Média, fichier...",

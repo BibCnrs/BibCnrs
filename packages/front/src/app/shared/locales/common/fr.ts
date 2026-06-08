@@ -31,7 +31,7 @@ const fr: Common = {
 			skipToNav: "Aller à la navigation",
 			title: "Accès aux ressources documentaires du CNRS",
 			questions: "FAQ",
-			resources: "Listes des ressources",
+			resources: "Fiches panorama",
 			licences: "Licences",
 			tests: "Tests",
 			news: "Actualités",
@@ -308,7 +308,7 @@ Cordialement`,
 				"Epingler des favoris dans la page des favoris pour les voir apparaitre ici.",
 		},
 		resources: {
-			title: "Listes des ressources documentaires",
+			title: "Fiches panorama des ressources documentaires",
 		},
 		about: {
 			title: "A propos",
