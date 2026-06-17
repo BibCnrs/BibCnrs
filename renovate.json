@@ -4,7 +4,6 @@
 	"labels": ["renovate"],
 	"reviewers": ["join"],
 	"enabledManagers": ["npm"],
-	"baseBranches": ["develop"],
 	"rebaseWhen": "auto",
 	"prHourlyLimit": 5,
 	"prConcurrentLimit": 5,

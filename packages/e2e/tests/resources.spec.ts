@@ -35,7 +35,7 @@ test("Display resource items on the home page", async ({ page }) => {
 
 test("Display resource items on the resources page", async ({ page }) => {
 	await page.goto("/resources");
-	await page.getByRole("link", { name: "Listes des ressources" }).click();
+	await page.getByRole("link", { name: "Fiches panorama" }).click();
 
 	await expect(
 		page.getByRole("listitem", {
