@@ -111,6 +111,7 @@ export default function LimiterList({
 			trackEvent("Facet", "dateRange", key, value);
 
 			onLimitersChange({
+				...activeLimiters,
 				dateRange: {
 					...dateRange,
 					[key]: value,
