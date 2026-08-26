@@ -89,18 +89,20 @@ export class AbstractEbscoSearchService {
 		method: "POST" | "GET" = "POST",
 	): Promise<T> {
 		const start = Date.now();
+		const headers = {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			"x-authenticationToken": authToken || undefined,
+			"x-sessionToken": sessionToken || undefined,
+			"User-Agent": "Mozilla/5.0 (compatible; BibCNRS; +https://bib.cnrs.fr)",
+		};
 		const response = await this.http.request(
 			`${this.ebsco.host}${this.ebsco.port || ""}${url}`,
 			{
 				method,
 				params: method === "GET" ? json : undefined,
 				data: method === "POST" ? JSON.stringify(json) : undefined,
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-					"x-authenticationToken": authToken || undefined,
-					"x-sessionToken": sessionToken || undefined,
-				},
+				headers,
 			},
 		);
 
@@ -110,8 +112,7 @@ export class AbstractEbscoSearchService {
 		logger.log(
 			`${method} ${url} ${response.status} ${JSON.stringify({
 				cleanedJson,
-				authToken,
-				sessionToken,
+				headers,
 				time: `took ${Date.now() - start}ms`,
 			})}`,
 		);

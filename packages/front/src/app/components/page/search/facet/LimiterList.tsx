@@ -118,7 +118,7 @@ export default function LimiterList({
 				},
 			});
 		},
-		[dateRange, trackEvent, onLimitersChange],
+		[dateRange, trackEvent, onLimitersChange, activeLimiters],
 	);
 
 	return (
