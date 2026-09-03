@@ -278,7 +278,8 @@ export class AbstractEbscoSearchService {
 				FacetFilters: query.activeFacets
 					? this.unparseActiveFacet(query.activeFacets)
 					: [],
-				Limiters:
+				Limiters: this.getEbscoLimiters(query),
+				/*Limiters:
 					query.fullText === true
 						? [{ Id: "FT", Values: ["Y"] }]
 						: query.limiters?.fullText === true
@@ -288,17 +289,52 @@ export class AbstractEbscoSearchService {
 									.map((id) => ({
 										Id: id,
 										Values: [].concat(query[id]),
-									})),
+									})),*/
 
 				Sort: query.sort || "relevance",
 			},
 			RetrievalCriteria: {
 				View: view,
-				ResultsPerPage: query.resultsPerPage,
-				PageNumber: query.currentPage,
+				ResultsPerPage: String(query.resultsPerPage),
+				PageNumber: String(query.currentPage ?? 1),
 				Highlight: "n",
 			},
 		};
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	protected getEbscoLimiters(query: any): { Id: string; Values: string[] }[] {
+		const limiters: { Id: string; Values: string[] }[] = [];
+
+		const fullText =
+			query.fullText === true || query.limiters?.fullText === true;
+		if (fullText) {
+			limiters.push({ Id: "FT", Values: ["Y"] });
+		}
+
+		if (query.limiters?.peerReviewed === true) {
+			limiters.push({ Id: "RV", Values: ["Y"] });
+		}
+
+		// alerte
+		const publicationDate = query.limiters?.publicationDate;
+		if (publicationDate?.from && publicationDate?.to) {
+			limiters.push({
+				Id: "DT1",
+				Values: [`${publicationDate.from}-01/${publicationDate.to}-01`],
+			});
+		}
+
+		// limiters in query
+		for (const id of Object.keys(query)) {
+			if (
+				this.ebsco.allowedLimiters.indexOf(id) !== -1 &&
+				!limiters.some((l) => l.Id === id)
+			) {
+				limiters.push({ Id: id, Values: [].concat(query[id]) });
+			}
+		}
+		return limiters;
 	}
 
 	parseDateRange(

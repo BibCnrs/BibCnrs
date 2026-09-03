@@ -41,6 +41,7 @@ export class EbscoSearchAlertService {
 							limiters,
 							activeFacets,
 							resultsPerPage: 100,
+							currentPage: 1,
 						},
 						domain as string,
 					);
