@@ -54,8 +54,9 @@ export class EbscoSearchAlertCronService {
 			? {
 					queries,
 					activeFacets,
-					...limiters,
+					limiters,
 					resultsPerPage: 100,
+					currentPage: 1,
 				}
 			: null;
 	}
@@ -206,6 +207,7 @@ export class EbscoSearchAlertCronService {
 									limiters,
 									activeFacets,
 									resultsPerPage: 1,
+									currentPage: 1,
 								},
 								domain,
 							);
@@ -234,6 +236,7 @@ export class EbscoSearchAlertCronService {
 									limiters,
 									activeFacets,
 									resultsPerPage: 100,
+									currentPage: 1,
 								},
 								domain,
 							);
