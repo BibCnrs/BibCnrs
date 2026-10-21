@@ -222,8 +222,8 @@ export class EbscoSearchArticleService extends AbstractEbscoSearchService {
 	async getUrlFromUnpaywall(unpaywallUrl: any, domain: any) {
 		try {
 			const doi = unpaywallUrl
-				.replace("https://api.unpaywall.org/v2/doi=", "")
-				.replace("?email=jjoly@ebsco.com", "");
+				.replace("https://api.unpaywall.org/v2/", "")
+				.replace("?email=bibcnrs@inist.fr", "");
 			const query = `{GetByDOI(dois:["${doi}"]){is_oa, best_oa_location{ url_for_pdf }}}`;
 
 			const response = await this.http.request<{
