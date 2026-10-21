@@ -87,7 +87,7 @@ export const ArticleSidebar = ({ article, onClose }) => {
 	const allLinks = [
 		...articleLinks.fullTextLinks,
 		...articleLinks.pdfLinks,
-		...articleLinks.urls,
+		...articleLinks.urls.filter((link) => !/unpaywall/i.test(link.name)),
 	];
 	const bibCheck = article.bibcheck;
 
