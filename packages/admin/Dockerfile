@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24.22.1-alpine3.24 AS base
 
 RUN apk update && apk upgrade
 RUN mkdir -p /app/.yarn
