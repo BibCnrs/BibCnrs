@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24.22.1-alpine3.24 AS base
 
 RUN apk update && apk upgrade && apk add --no-cache curl && apk add openssl
 RUN mkdir -p /app/.yarn
